@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="45dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentBackgroundChange"
+        tools:context=".TabFragmentBuy"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/descriptionCryptoNameChangeBuy"
+            android:text="@string/cryptoNameChangeBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextNameChangeBuy"
+            android:text="Předělat do snipperu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeBuy"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoNameChangeSell"
+            android:text="@string/cryptoNameChangeSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextNameChangeSell"
+            android:text="Předělat do snipperu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeSell"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoQuantityChangeBuy"
+            android:text="@string/quantityBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextQuantityChangeBuy"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantityChangeBuy"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoQuantityChangeSell"
+            android:text="@string/quantitySell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextQuantityChangeSell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantityChangeSell"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoPriceChangeBuy"
+            android:text="@string/priceChangeBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextPriceChangeBuy"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoPriceChangeBuy"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoPriceChangeSell"
+            android:text="@string/priceChangeSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPriceChangeBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextPriceChangeSell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoPriceChangeSell"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoFeeChange"
+            android:text="@string/fee"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPriceChangeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextFeeChange"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoFeeChange"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoDateChange"
+            android:text="@string/date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFeeChange"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextDateChange"
+            android:inputType="datetime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateChange"
+            style="@style/MyEditTextStyle"/>
+
+        <ImageButton
+            android:id="@+id/imgButtonCalendarChange"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="@+id/editTextDateChange"
+            app:layout_constraintTop_toTopOf="@id/editTextDateChange"
+            style="@style/MyImageButtonCalendar"
+            />
+
+        <TextView
+            android:id="@+id/descriptionPhotoChange"
+            android:text="@string/photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDateChange"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <ImageButton
+            android:id="@+id/imgButtonAddPhotoChange"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionPhotoChange"
+            style="@style/MyImageButtonPhoto"/>
+
+        <Button
+            android:id="@+id/buttonSaveChange"
+            android:text="Uložit"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgButtonAddPhotoChange"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/MyButtonSave"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

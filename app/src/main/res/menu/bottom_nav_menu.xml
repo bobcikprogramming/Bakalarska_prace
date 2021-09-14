@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/add"
+        android:title="@string/btmNBAdd"
+        android:icon="@drawable/ic_add_24"/>
+
+    <item
+        android:id="@+id/overview"
+        android:title="@string/btmNBOverView"
+        android:icon="@drawable/ic_overview_24"/>
+
+    <item
+        android:id="@+id/pdf"
+        android:title="@string/btmNBPDF"
+        android:icon="@drawable/ic_pdf_24"/>
+</menu>

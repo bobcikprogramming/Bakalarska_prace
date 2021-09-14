@@ -1,0 +1,135 @@
+<ScrollView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginTop="45dp">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/fragmentBackgroundSell"
+    tools:context=".TabFragmentBuy"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/descriptionCryptoNameSell"
+        android:text="@string/cryptoName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextNameSell"
+        android:text="Předělat do snipperu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameSell"
+        style="@style/MyEditTextStyle"/>
+
+    <TextView
+        android:id="@+id/descriptionCryptoQuantitySell"
+        android:text="@string/quantitySell"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNameSell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextQuantitySell"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantitySell"
+        style="@style/MyEditTextStyle"/>
+
+    <TextView
+        android:id="@+id/descriptionCryptoPriceSell"
+        android:text="@string/price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextQuantitySell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextPriceSell"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoPriceSell"
+        style="@style/MyEditTextStyle"/>
+
+    <TextView
+        android:id="@+id/descriptionCryptoFeeSell"
+        android:text="@string/fee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPriceSell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextFeeSell"
+        android:inputType="numberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoFeeSell"
+        style="@style/MyEditTextStyle"/>
+
+    <TextView
+        android:id="@+id/descriptionCryptoDateSell"
+        android:text="@string/date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFeeSell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextDateSell"
+        android:inputType="datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateSell"
+        style="@style/MyEditTextStyle"/>
+
+    <ImageButton
+        android:id="@+id/imgButtonCalendarSell"
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDateSell"
+        app:layout_constraintTop_toTopOf="@id/editTextDateSell"
+        style="@style/MyImageButtonCalendar"
+        />
+
+    <TextView
+        android:id="@+id/descriptionCurrencySell"
+        android:text="@string/currencySell"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDateSell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <EditText
+        android:id="@+id/editTextCurrencySell"
+        android:text="Předělat do snipperu"
+        android:inputType="datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCurrencySell"
+        style="@style/MyEditTextStyle" />
+
+    <TextView
+        android:id="@+id/descriptionPhotoSell"
+        android:text="@string/photo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCurrencySell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <ImageButton
+        android:id="@+id/imgButtonAddPhotoSell"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionPhotoSell"
+        style="@style/MyImageButtonPhoto"/>
+
+    <Button
+        android:id="@+id/buttonSaveSell"
+        android:text="Uložit"
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgButtonAddPhotoSell"
+        app:layout_constraintBottom_toBottomOf="parent"
+        style="@style/MyButtonSave"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

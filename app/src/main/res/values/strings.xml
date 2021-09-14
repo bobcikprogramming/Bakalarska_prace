@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Krypto Evidence</string>
+    <!-- Popis spodní lišty -->
+    <string name="btmNBAdd">Vytvořit</string>
+    <string name="btmNBOverView">Přehled</string>
+    <string name="btmNBPDF">PDF archiv</string>
+    <!-- Popis horní lišty - sekce vytvořit -->
+    <string name="tabAddBuy">Nákup</string>
+    <string name="tabAddSell">Prodej</string>
+    <string name="tabAddChange">Směna</string>
+    <!-- Text Vytvořit -->
+    <string name="cryptoName">Název kryptoměny</string>
+    <string name="cryptoNameChangeBuy">Nakoupená kryptoměna</string>
+    <string name="cryptoNameChangeSell">Prodaná kryptoměna</string>
+    <string name="quantityBuy">Množství nakoupené kryptoměny</string>
+    <string name="quantitySell">Množství prodané kryptoměny</string>
+    <string name="price">Cena za jednu kryptoměnu</string>
+    <string name="priceChangeBuy">Cena za jednu nabytou kryptoměnu</string>
+    <string name="priceChangeSell">Cena za jednu prodanou kryptoměnu</string>
+    <string name="fee">Poplatek za transakci</string>
+    <string name="date">Datum provedení transakce</string>
+    <string name="currencyBuy">Platba v měně</string>
+    <string name="currencySell">Prodáno v měně</string>
+    <string name="photo">Vložit snímek</string>
+</resources>

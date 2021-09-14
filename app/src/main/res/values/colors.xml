@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="navBarSelect">#F9B720</color>
+    <color name="navBarIconVariant">#E7B647</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="mainBackground">#212121</color>
+    <color name="navBarBachground">#191919</color>
+    <color name="editTextBachground">#303030</color>
+    <color name="editTextIsEmptyBachground">#EE8C78</color>
+    <color name="editTextBorder">#505050</color>
+    <color name="descripton">#F9B720</color>
+    <color name="cursor">#E7B647</color>
+    <color name="colorAccent">#F9B720</color>
+    <color name="button">#EBB742</color>
+</resources>
