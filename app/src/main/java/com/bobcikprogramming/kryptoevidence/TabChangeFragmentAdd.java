@@ -20,7 +20,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TabFragmentChange extends Fragment implements View.OnClickListener {
+public class TabChangeFragmentAdd extends Fragment implements View.OnClickListener {
 
     private EditText etNameOfBought, etNameOfSold, etQuantityOfBought, etQuantityOfSold, etQuantitySold, etPriceOfBought, etPriceOfSold, etFee, etDate;
     private Button btnSave;
@@ -29,7 +29,7 @@ public class TabFragmentChange extends Fragment implements View.OnClickListener 
     private View view;
     private ArrayList<EditText> mandatoryField;
 
-    public TabFragmentChange() {
+    public TabChangeFragmentAdd() {
         // Required empty public constructor
     }
 

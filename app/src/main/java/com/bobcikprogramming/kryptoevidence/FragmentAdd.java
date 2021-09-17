@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 public class FragmentAdd extends Fragment implements View.OnClickListener {
 
-    private View view;
     private LinearLayout btnBuy, btnSell, btnChange;
     private TextView txBuy, txSell, txChange;
+    private View view;
 
     public FragmentAdd() {
         // Required empty public constructor
@@ -26,19 +26,8 @@ public class FragmentAdd extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add, container, false);
-
-        btnBuy = view.findViewById(R.id.tabButtonBuy);
-        btnSell = view.findViewById(R.id.tabButtonSell);
-        btnChange = view.findViewById(R.id.tabButtonChange);
-        txBuy = view.findViewById(R.id.tabTextViewBuy);
-        txSell = view.findViewById(R.id.tabTextViewSell);
-        txChange = view.findViewById(R.id.tabTextViewChange);
-
-        btnBuy.setOnClickListener(this);
-        btnSell.setOnClickListener(this);
-        btnChange.setOnClickListener(this);
-
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabFragmentBuy()).commit();
+        setupUIViews();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabBuyFragmentAdd()).commit();
         txBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
 
         return view;
@@ -49,21 +38,34 @@ public class FragmentAdd extends Fragment implements View.OnClickListener {
         ((MainActivity)getActivity()).selectBottomMenu(R.id.add); //change value depending on your bottom menu position
     }
 
+    private void setupUIViews(){
+        btnBuy = view.findViewById(R.id.tabButtonBuy);
+        btnSell = view.findViewById(R.id.tabButtonSell);
+        btnChange = view.findViewById(R.id.tabButtonChange);
+        txBuy = view.findViewById(R.id.tabTextViewBuy);
+        txSell = view.findViewById(R.id.tabTextViewSell);
+        txChange = view.findViewById(R.id.tabTextViewChange);
+
+        btnBuy.setOnClickListener(this);
+        btnSell.setOnClickListener(this);
+        btnChange.setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tabButtonBuy:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabFragmentBuy()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabBuyFragmentAdd()).commit();
                 resetColor();
                 txBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;
             case R.id.tabButtonSell:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabFragmentSell()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabSellFragmentBuy()).commit();
                 resetColor();
                 txSell.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabFragmentChange()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabChangeFragmentAdd()).commit();
                 resetColor();
                 txChange.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;

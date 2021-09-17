@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragmentBackgroundChange"
-        tools:context=".TabFragmentBuy"
+        tools:context=".TabChangeFragmentAdd"
         android:orientation="vertical">
 
         <TextView

@@ -6,6 +6,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mainBackground">#212121</color>
     <color name="navBarBachground">#191919</color>
+    <color name="overviewLayoutBackground">#161616</color>
     <color name="editTextBachground">#303030</color>
     <color name="editTextIsEmptyBachground">#EE8C78</color>
     <color name="editTextBorder">#505050</color>
@@ -13,4 +14,5 @@
     <color name="cursor">#E7B647</color>
     <color name="colorAccent">#F9B720</color>
     <color name="button">#EBB742</color>
+    <color name="recyclerViewItemUnderline">#E7B647</color>
 </resources>

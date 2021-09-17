@@ -20,8 +20,7 @@ import android.widget.ImageButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-public class TabFragmentBuy extends Fragment implements View.OnClickListener {
+public class TabSellFragmentBuy extends Fragment implements View.OnClickListener {
 
     private EditText etName, etQuantity, etPrice, etFee, etDate, etCurrency;
     private Button btnSave;
@@ -30,10 +29,9 @@ public class TabFragmentBuy extends Fragment implements View.OnClickListener {
     private View view;
     private ArrayList<EditText> mandatoryField;
 
-    public TabFragmentBuy() {
+    public TabSellFragmentBuy() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,41 +42,41 @@ public class TabFragmentBuy extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_tab_buy, container, false);
+        view = inflater.inflate(R.layout.fragment_add_tab_sell, container, false);
         setupUIViews();
         mandatoryField = new ArrayList<>(Arrays.asList(etName,etQuantity,etPrice,etFee,etDate,etCurrency));
         return view;
     }
 
     private void setupUIViews(){
-        etName = view.findViewById(R.id.editTextNameBuy);
-        etQuantity = view.findViewById(R.id.editTextQuantityBuy);
-        etPrice = view.findViewById(R.id.editTextPriceBuy);
-        etFee = view.findViewById(R.id.editTextFeeBuy);
-        etDate = view.findViewById(R.id.editTextDateBuy);
-        etCurrency = view.findViewById(R.id.editTextCurrencyBuy);
+        etName = view.findViewById(R.id.editTextNameSell);
+        etQuantity = view.findViewById(R.id.editTextQuantitySell);
+        etPrice = view.findViewById(R.id.editTextPriceSell);
+        etFee = view.findViewById(R.id.editTextFeeSell);
+        etDate = view.findViewById(R.id.editTextDateSell);
+        etCurrency = view.findViewById(R.id.editTextCurrencySell);
 
-        viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
+        viewBackgroung = view.findViewById(R.id.fragmentBackgroundSell);
         viewBackgroung.setOnClickListener(this);
 
-        btnSave = view.findViewById(R.id.buttonSaveBuy);
+        btnSave = view.findViewById(R.id.buttonSaveSell);
         btnSave.setOnClickListener(this);
-        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
+        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoSell);
         imgBtnAddPhoto.setOnClickListener(this);
-        imgBtnCalendar = view.findViewById(R.id.imgButtonCalendarBuy);
+        imgBtnCalendar = view.findViewById(R.id.imgButtonCalendarSell);
         imgBtnCalendar.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.buttonSaveBuy:
+            case R.id.buttonSaveSell:
                 hideKeyBoard();
                 if(!shakeEmpty()){
 
                 }
                 break;
-            case R.id.fragmentBackgroundBuy:
+            case R.id.fragmentBackgroundSell:
                 hideKeyBoard();
 
         }

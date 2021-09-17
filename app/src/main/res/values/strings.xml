@@ -22,4 +22,6 @@
     <string name="currencyBuy">Platba v měně</string>
     <string name="currencySell">Prodáno v měně</string>
     <string name="photo">Vložit snímek</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

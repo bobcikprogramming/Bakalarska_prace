@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".TabOverviewFragmentOverview"
+    android:layout_marginTop="45dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_overview_02"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_overview_layout"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="-15dp">
+
+            <!--<TextView
+                android:id="@+id/descriptionCryptoNameBuy"
+                android:text="Skutečný zisk / ztráta"
+                android:paddingTop="20dp"
+                style="@style/MyTextViewDescriptionStyle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="20dp"
+                    android:text="720"
+                    android:textSize="50dp"
+                    android:textColor="@color/white"
+                    android:gravity="right|bottom" />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="25dp"
+                    android:text="CZK"
+                    android:textSize="20dp"
+                    android:textColor="@color/descripton"
+                    android:gravity="bottom"/>
+
+            </LinearLayout>-->
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/tabButtonBuy"
+        android:id="@+id/tabButtonOverview"
         android:gravity="center"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tabTextViewBuy"
+            android:id="@+id/tabTextViewOverview"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textAlignment="center"
@@ -29,7 +29,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/tabButtonSell"
+        android:id="@+id/tabButtonTransactions"
         android:gravity="center"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tabTextViewSell"
+            android:id="@+id/tabTextViewTransactions"
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textAlignment="center"
