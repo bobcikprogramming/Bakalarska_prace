@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/circle_button.xml" value="0.2833333333333333" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/cursor.xml" value="0.37083333333333335" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_add_24.xml" value="0.36512820512820515" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_cancel.xml" value="0.21354166666666666" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_cancel_40.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_plus_12.xml" value="0.36512820512820515" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/recycler_view_item_underline.xml" value="0.287962962962963" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_button.xml" value="0.21354166666666666" />

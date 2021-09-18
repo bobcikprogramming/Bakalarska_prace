@@ -6,6 +6,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     private ArrayList<RecyclerViewTransactionsData> dataList;
     private Context context;
+    private boolean isEnable = false;
 
     public RecyclerViewTransactions(Context context/*, ArrayList<RecyclerViewRaidingAdvancedData> dataList*/) {
         this.context = context;
@@ -43,8 +46,28 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(view.getContext(), "TODO: Otevře možnost k mazání transakcí... Podrženo na itemu id: "+holder.getAdapterPosition(), Toast.LENGTH_LONG).show();
+                if(!isEnable) {
+                    Toast.makeText(view.getContext(), "TODO: Otevře možnost k mazání transakcí... Podrženo na itemu id: " + holder.getAdapterPosition(), Toast.LENGTH_LONG).show();
+                    holder.rbDeleteItem.setVisibility(View.VISIBLE);
+                    isEnable = true;
+                }
                 return false;
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RadioButton rbItem = holder.rbDeleteItem;
+                if(isEnable){
+                    rbItem.setVisibility(View.VISIBLE);
+                    if(rbItem.isChecked()){
+                        rbItem.setChecked(false);
+                        rbItem.setVisibility(View.INVISIBLE);
+                    }else{
+                        rbItem.setChecked(true);
+                        rbItem.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
     }
@@ -57,15 +80,18 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewOperation, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell;
+        private RadioButton rbDeleteItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            textViewOperation = (TextView) itemView.findViewById(R.id.textViewOperation);
-            textViewNameBuy = (TextView) itemView.findViewById(R.id.textViewNameBuy);
-            textViewNameSell = (TextView) itemView.findViewById(R.id.textViewNameSell);
-            textViewQuantityBuy = (TextView) itemView.findViewById(R.id.textViewQuantityBuy);
-            textViewQuantitySell = (TextView) itemView.findViewById(R.id.textViewQuantitySell);
+            textViewOperation = itemView.findViewById(R.id.textViewOperation);
+            textViewNameBuy = itemView.findViewById(R.id.textViewNameBuy);
+            textViewNameSell = itemView.findViewById(R.id.textViewNameSell);
+            textViewQuantityBuy = itemView.findViewById(R.id.textViewQuantityBuy);
+            textViewQuantitySell = itemView.findViewById(R.id.textViewQuantitySell);
+
+            rbDeleteItem = itemView.findViewById(R.id.radioButtonDeleteItemTransaction);
         }
     }
 
