@@ -10,8 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TabOverviewFragmentTransactions extends Fragment implements View.OnClickListener {
 
@@ -40,7 +45,7 @@ public class TabOverviewFragmentTransactions extends Fragment implements View.On
 
         adapter = new RecyclerViewTransactions((getActivity()));
         recyclerView.setAdapter(adapter);
-
+        loadDataFromDb();
 
 
         return view;
@@ -50,10 +55,17 @@ public class TabOverviewFragmentTransactions extends Fragment implements View.On
         btnAdd = view.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewTransaction);
+        recyclerView = view.findViewById(R.id.recyclerViewTransaction);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+
+    }
+
+    private void loadDataFromDb(){
+        AppDatabase db = AppDatabase.getDbInstance(getContext());
+        List<TransactionEntity> dataFromDatabase = db.databaseDao().getAll();
+        adapter.setTransactionData(dataFromDatabase);
     }
 
     @Override
@@ -62,7 +74,7 @@ public class TabOverviewFragmentTransactions extends Fragment implements View.On
             case R.id.btnAdd:
                 RecyclerViewTransactionsData dataToDataList = new RecyclerViewTransactionsData("Nákup", "BTC", 0.005178, "EUR", 100.0);
                 //dataList.add(dataToDataList);
-                adapter.addToArray(dataToDataList);
+                //adapter.addToArray(dataToDataList);
         }
     }
 }

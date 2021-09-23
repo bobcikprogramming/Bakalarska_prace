@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -75,13 +78,51 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
             case R.id.buttonSaveBuy:
                 hideKeyBoard();
                 if(!shakeEmpty()){
-
+                    saveToDb();
+                    clearEditText();
                 }
                 break;
             case R.id.fragmentBackgroundBuy:
                 hideKeyBoard();
 
         }
+    }
+
+    private void saveToDb() {
+        AppDatabase db = AppDatabase.getDbInstance(getContext());
+
+        Double cryptoQuantity = editTextToDouble(etQuantity);
+        Double cryptoPrice = editTextToDouble(etPrice);
+        Double fee = editTextToDouble(etFee);
+
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.transactionType = "Nákup";
+        transactionEntity.nameBought = "BTC";
+        transactionEntity.quantityBought = cryptoQuantity;
+        transactionEntity.priceBought = cryptoPrice;
+        transactionEntity.fee = fee;
+        transactionEntity.date = ""; //TODO
+        transactionEntity.nameSold = "EUR";
+        transactionEntity.quantitySold = getPriceOrProfit(cryptoQuantity, cryptoPrice, fee);
+
+        db.databaseDao().insertTransaction(transactionEntity);
+    }
+
+    private void clearEditText(){
+        //etName.setText("");
+        etQuantity.setText("");
+        etPrice.setText("");
+        etFee.setText("");
+        etDate.setText("");
+        //etCurrency.setText("");
+    }
+
+    private Double getPriceOrProfit(Double cryptoQuantity, Double cryptoPrice, Double fee) {
+        return (cryptoPrice * cryptoQuantity) + fee;
+    }
+
+    private Double editTextToDouble(EditText toParse){
+        return Double.parseDouble(toParse.getText().toString());
     }
 
     private boolean shakeEmpty(){

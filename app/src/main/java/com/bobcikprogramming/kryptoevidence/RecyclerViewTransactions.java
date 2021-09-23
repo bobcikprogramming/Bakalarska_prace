@@ -1,5 +1,6 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -7,22 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+
+import java.util.List;
 
 public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>  {
 
-    private ArrayList<RecyclerViewTransactionsData> dataList;
+    private List<TransactionEntity> dataList;
     private Context context;
-    private boolean isEnable = false;
 
     public RecyclerViewTransactions(Context context/*, ArrayList<RecyclerViewRaidingAdvancedData> dataList*/) {
         this.context = context;
-        //this.dataList = dataList;
-        this.dataList = new ArrayList<>();
 
     }
 
@@ -35,41 +34,15 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        RecyclerViewTransactionsData data = dataList.get(position);
+        TransactionEntity data = this.dataList.get(position);
 
-        holder.textViewOperation.setText(data.getOperation());
-        holder.textViewNameBuy.setText(data.getNameBuy());
-        holder.textViewNameSell.setText(data.getNameSell());
-        holder.textViewQuantityBuy.setText(data.getQuantityBuy().toString());
-        holder.textViewQuantitySell.setText(data.getQuantitySell().toString());
+        holder.textViewOperation.setText(data.transactionType);
+        holder.textViewNameBuy.setText(data.nameBought);
+        holder.textViewNameSell.setText(data.nameSold);
+        holder.textViewQuantityBuy.setText(String.valueOf(data.quantityBought));
+        holder.textViewQuantitySell.setText(String.valueOf(data.quantitySold));
 
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if(!isEnable) {
-                    Toast.makeText(view.getContext(), "TODO: Otevře možnost k mazání transakcí... Podrženo na itemu id: " + holder.getAdapterPosition(), Toast.LENGTH_LONG).show();
-                    holder.rbDeleteItem.setVisibility(View.VISIBLE);
-                    isEnable = true;
-                }
-                return false;
-            }
-        });
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RadioButton rbItem = holder.rbDeleteItem;
-                if(isEnable){
-                    rbItem.setVisibility(View.VISIBLE);
-                    if(rbItem.isChecked()){
-                        rbItem.setChecked(false);
-                        rbItem.setVisibility(View.INVISIBLE);
-                    }else{
-                        rbItem.setChecked(true);
-                        rbItem.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
+        changeItemViewByTransactionType(data.transactionType, holder.textViewOperation, holder.textViewDesPriceBuy, holder.textViewPriceBuy, holder.textViewDesPriceSell, holder.textViewPriceSell);
     }
 
     @Override
@@ -79,8 +52,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewOperation, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell;
-        private RadioButton rbDeleteItem;
+        private TextView textViewOperation, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell, textViewDesPriceBuy, textViewDesPriceSell, textViewPriceBuy, textViewPriceSell;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -90,14 +62,49 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
             textViewNameSell = itemView.findViewById(R.id.textViewNameSell);
             textViewQuantityBuy = itemView.findViewById(R.id.textViewQuantityBuy);
             textViewQuantitySell = itemView.findViewById(R.id.textViewQuantitySell);
-
-            rbDeleteItem = itemView.findViewById(R.id.radioButtonDeleteItemTransaction);
+            textViewDesPriceBuy = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
+            textViewDesPriceSell = itemView.findViewById(R.id.textViewDescriptionPriceSell);
+            textViewPriceBuy = itemView.findViewById(R.id.textViewPriceBuy);
+            textViewPriceSell = itemView.findViewById(R.id.textViewPriceSell);
         }
     }
 
-    public void addToArray(RecyclerViewTransactionsData data){
+    /*public void addToArray(RecyclerViewTransactionsData data){
         dataList.add(0, data);
         notifyItemInserted(0);
+    }*/
+
+    private void changeItemViewByTransactionType(String transactionType, TextView headline, TextView tvDesPriceBuy, TextView tvPriceBuy, TextView tvDesPriceSell, TextView tvPriceSell){
+        switch (transactionType){
+            case "Nákup":
+                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineBuy));
+                tvDesPriceBuy.setVisibility(View.VISIBLE);
+                tvPriceBuy.setVisibility(View.VISIBLE);
+                tvDesPriceSell.setVisibility(View.GONE);
+                tvPriceSell.setVisibility(View.GONE);
+                break;
+            case "Prodej":
+                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineSell));
+                tvDesPriceBuy.setVisibility(View.GONE);
+                tvPriceBuy.setVisibility(View.GONE);
+                tvDesPriceSell.setVisibility(View.VISIBLE);
+                tvPriceSell.setVisibility(View.VISIBLE);
+                break;
+            case "Směna":
+                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineChange));
+                tvDesPriceBuy.setVisibility(View.VISIBLE);
+                tvPriceBuy.setVisibility(View.VISIBLE);
+                tvDesPriceSell.setVisibility(View.VISIBLE);
+                tvPriceSell.setVisibility(View.VISIBLE);
+                break;
+
+        }
+    }
+
+    public void setTransactionData(List<TransactionEntity> transactionData){
+        this.dataList = transactionData;
+        Toast.makeText(context, String.valueOf(this.dataList.size()), Toast.LENGTH_SHORT).show();
+        notifyDataSetChanged();
     }
 
     public void removeFromArray(int position){
