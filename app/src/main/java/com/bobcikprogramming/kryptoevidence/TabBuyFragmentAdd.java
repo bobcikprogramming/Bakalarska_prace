@@ -91,19 +91,15 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
     private void saveToDb() {
         AppDatabase db = AppDatabase.getDbInstance(getContext());
 
-        Double cryptoQuantity = editTextToDouble(etQuantity);
-        Double cryptoPrice = editTextToDouble(etPrice);
-        Double fee = editTextToDouble(etFee);
-
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.transactionType = "Nákup";
         transactionEntity.nameBought = "BTC";
-        transactionEntity.quantityBought = cryptoQuantity;
-        transactionEntity.priceBought = cryptoPrice;
-        transactionEntity.fee = fee;
+        transactionEntity.quantityBought = etQuantity.getText().toString();
+        transactionEntity.priceBought = etQuantity.getText().toString();
+        transactionEntity.fee = etFee.getText().toString();
         transactionEntity.date = ""; //TODO
         transactionEntity.nameSold = "EUR";
-        transactionEntity.quantitySold = getPriceOrProfit(cryptoQuantity, cryptoPrice, fee);
+        transactionEntity.quantitySold = getPrice(etFee, etPrice, etFee);
 
         db.databaseDao().insertTransaction(transactionEntity);
     }
@@ -117,8 +113,10 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         //etCurrency.setText("");
     }
 
-    private Double getPriceOrProfit(Double cryptoQuantity, Double cryptoPrice, Double fee) {
-        return (cryptoPrice * cryptoQuantity) + fee;
+    private String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
+        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
+        double result = (double)Math.round(toRound * 10000d) / 10000d;
+        return String.valueOf(result);
     }
 
     private Double editTextToDouble(EditText toParse){

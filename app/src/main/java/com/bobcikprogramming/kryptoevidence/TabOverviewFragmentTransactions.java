@@ -18,10 +18,9 @@ import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabOverviewFragmentTransactions extends Fragment implements View.OnClickListener {
+public class TabOverviewFragmentTransactions extends Fragment {
 
     private RecyclerView recyclerView;
-    private Button btnAdd;
     private View view;
 
     private ArrayList<RecyclerViewTransactionsData> dataList = new ArrayList<>();
@@ -52,9 +51,6 @@ public class TabOverviewFragmentTransactions extends Fragment implements View.On
     }
 
     private void setupUIViews(){
-        btnAdd = view.findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(this);
-
         recyclerView = view.findViewById(R.id.recyclerViewTransaction);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -66,15 +62,5 @@ public class TabOverviewFragmentTransactions extends Fragment implements View.On
         AppDatabase db = AppDatabase.getDbInstance(getContext());
         List<TransactionEntity> dataFromDatabase = db.databaseDao().getAll();
         adapter.setTransactionData(dataFromDatabase);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnAdd:
-                RecyclerViewTransactionsData dataToDataList = new RecyclerViewTransactionsData("Nákup", "BTC", 0.005178, "EUR", 100.0);
-                //dataList.add(dataToDataList);
-                //adapter.addToArray(dataToDataList);
-        }
     }
 }

@@ -30,24 +30,10 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
-            android:id="@+id/descriptionCryptoNameChangeSell"
-            android:text="@string/cryptoNameChangeSell"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeBuy"
-            style="@style/MyTextViewDescriptionStyle"/>
-
-        <EditText
-            android:id="@+id/editTextNameChangeSell"
-            android:text="Předělat do snipperu"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeSell"
-            style="@style/MyEditTextStyle"/>
-
-        <TextView
             android:id="@+id/descriptionCryptoQuantityChangeBuy"
             android:text="@string/quantityBuy"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeSell"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -58,24 +44,10 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
-            android:id="@+id/descriptionCryptoQuantityChangeSell"
-            android:text="@string/quantitySell"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeBuy"
-            style="@style/MyTextViewDescriptionStyle"/>
-
-        <EditText
-            android:id="@+id/editTextQuantityChangeSell"
-            android:inputType="numberDecimal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantityChangeSell"
-            style="@style/MyEditTextStyle"/>
-
-        <TextView
             android:id="@+id/descriptionCryptoPriceChangeBuy"
             android:text="@string/priceChangeBuy"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeSell"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -86,10 +58,38 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
+            android:id="@+id/descriptionCryptoNameChangeSell"
+            android:text="@string/cryptoNameChangeSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPriceChangeBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextNameChangeSell"
+            android:text="Předělat do snipperu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeSell"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
+            android:id="@+id/descriptionCryptoQuantityChangeSell"
+            android:text="@string/quantitySell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <EditText
+            android:id="@+id/editTextQuantityChangeSell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantityChangeSell"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
             android:id="@+id/descriptionCryptoPriceChangeSell"
             android:text="@string/priceChangeSell"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPriceChangeBuy"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityChangeSell"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText

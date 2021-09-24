@@ -22,19 +22,19 @@ public class TransactionEntity {
     public String nameSold;
 
     @ColumnInfo(name = "quantity_bought")
-    public Double quantityBought;
+    public String quantityBought;
 
     @ColumnInfo(name = "quantity_sold")
-    public Double quantitySold;
+    public String quantitySold;
 
     @ColumnInfo(name = "price_bought")
-    public Double priceBought;
+    public String priceBought;
 
     @ColumnInfo(name = "price_sold")
-    public Double priceSold;
+    public String priceSold;
 
     @ColumnInfo(name = "fee")
-    public Double fee;
+    public String fee;
 
     @ColumnInfo(name = "date")
     public String date;

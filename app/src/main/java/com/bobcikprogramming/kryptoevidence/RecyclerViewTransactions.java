@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>  {
@@ -41,6 +43,8 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         holder.textViewNameSell.setText(data.nameSold);
         holder.textViewQuantityBuy.setText(String.valueOf(data.quantityBought));
         holder.textViewQuantitySell.setText(String.valueOf(data.quantitySold));
+        holder.textViewPriceBuy.setText(String.valueOf(data.priceBought));
+        holder.textViewPriceSell.setText(String.valueOf(data.priceSold));
 
         changeItemViewByTransactionType(data.transactionType, holder.textViewOperation, holder.textViewDesPriceBuy, holder.textViewPriceBuy, holder.textViewDesPriceSell, holder.textViewPriceSell);
     }

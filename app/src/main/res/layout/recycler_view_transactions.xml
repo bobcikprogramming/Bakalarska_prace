@@ -10,10 +10,9 @@ android:orientation="vertical"
 android:id="@+id/layoutTransactions"
 android:padding="5dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25dp"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
@@ -24,8 +23,8 @@ android:padding="5dp">
             android:textColor="@color/headlineBuy"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:paddingLeft="15dp"
-            android:paddingTop="5dp"/>
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +34,7 @@ android:padding="5dp">
             android:textColor="@color/descripton"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:gravity="bottom"
+            android:gravity="center_vertical"
             android:paddingRight="20dp"/>
     </LinearLayout>
 
@@ -51,7 +50,7 @@ android:padding="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
+                android:layout_height="40dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -62,7 +61,7 @@ android:padding="5dp">
                     <TextView
                         style="@style/MyTextViewRecyclerViewHeadline"
                         android:text="Nákup:"
-                        android:textColor="@color/headlineBuy"/>
+                        android:textColor="@color/dirtyWhite"/>
 
                     <TextView
                         style="@style/MyTextViewRecyclerViewName"
@@ -74,20 +73,13 @@ android:padding="5dp">
             </LinearLayout>
 
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="30dp"
+                style="@style/MyTextViewRecyclerViewPriceDescription"
                 android:id="@+id/textViewDescriptionPriceBuy"
-                android:text="Cena"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="15dp"
-                android:gravity="center|right"
-                android:layout_gravity="right"
-                android:paddingRight="5dp"/>
+                android:text="Cena" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
+                android:layout_height="40dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -98,7 +90,7 @@ android:padding="5dp">
                     <TextView
                         style="@style/MyTextViewRecyclerViewHeadline"
                         android:text="Platba:"
-                        android:textColor="@color/headlineSell"/>
+                        android:textColor="@color/dirtyWhite"/>
 
                     <TextView
                         style="@style/MyTextViewRecyclerViewName"
@@ -110,16 +102,9 @@ android:padding="5dp">
             </LinearLayout>
 
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="30dp"
+                style="@style/MyTextViewRecyclerViewPriceDescription"
                 android:id="@+id/textViewDescriptionPriceSell"
-                android:text="Cena"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="15dp"
-                android:gravity="center|right"
-                android:layout_gravity="right"
-                android:paddingRight="5dp"/>
+                android:text="Cena"/>
 
         </LinearLayout>
 
@@ -129,45 +114,32 @@ android:padding="5dp">
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
+                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
+                android:layout_height="40dp"
                 android:id="@+id/textViewQuantityBuy"
                 android:text="0.0514700"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:gravity="center|left"
-                android:paddingLeft="5dp"/>
+                android:textSize="20dp"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
+                android:layout_height="20dp"
                 android:id="@+id/textViewPriceBuy"
                 android:text="30000.0"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:gravity="center|left"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"/>
+                android:textSize="15dp"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
+                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
+                android:layout_height="40dp"
                 android:id="@+id/textViewQuantitySell"
                 android:text="100.0"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:gravity="center|left"/>
+                android:textSize="20dp"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
+                android:layout_height="20dp"
                 android:id="@+id/textViewPriceSell"
                 android:text="30000.0"
-                android:textColor="@color/white"
-                android:textSize="20dp"
-                android:gravity="center|left"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"/>
+                android:textSize="15dp"/>
 
         </LinearLayout>
 
@@ -178,5 +150,6 @@ android:padding="5dp">
         android:layout_height="1dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
         android:background="@color/recyclerViewItemUnderline"/>
 </LinearLayout>

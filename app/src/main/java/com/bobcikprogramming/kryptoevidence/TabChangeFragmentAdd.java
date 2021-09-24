@@ -17,12 +17,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TabChangeFragmentAdd extends Fragment implements View.OnClickListener {
 
-    private EditText etNameOfBought, etNameOfSold, etQuantityOfBought, etQuantityOfSold, etQuantitySold, etPriceOfBought, etPriceOfSold, etFee, etDate;
+    private EditText etNameBuy, etNameSell, etQuantityBuy, etQuantitySell, etQuantitySold, etPriceBuy, etPriceSell, etFee, etDate;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto, imgBtnCalendar;
     private ConstraintLayout viewBackgroung;
@@ -44,17 +47,17 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_tab_change, container, false);
         setupUIViews();
-        mandatoryField = new ArrayList<>(Arrays.asList(etNameOfBought,etNameOfSold,etQuantityOfBought,etQuantityOfSold,etPriceOfBought,etPriceOfSold,etFee,etDate));
+        mandatoryField = new ArrayList<>(Arrays.asList(etNameBuy, etNameSell, etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell,etFee,etDate));
         return view;
     }
 
     private void setupUIViews(){
-        etNameOfBought = view.findViewById(R.id.editTextNameChangeBuy);
-        etNameOfSold = view.findViewById(R.id.editTextNameChangeSell);
-        etQuantityOfBought = view.findViewById(R.id.editTextQuantityChangeBuy);
-        etQuantityOfSold = view.findViewById(R.id.editTextQuantityChangeSell);
-        etPriceOfBought = view.findViewById(R.id.editTextPriceChangeBuy);
-        etPriceOfSold = view.findViewById(R.id.editTextPriceChangeSell);
+        etNameBuy = view.findViewById(R.id.editTextNameChangeBuy);
+        etNameSell = view.findViewById(R.id.editTextNameChangeSell);
+        etQuantityBuy = view.findViewById(R.id.editTextQuantityChangeBuy);
+        etQuantitySell = view.findViewById(R.id.editTextQuantityChangeSell);
+        etPriceBuy = view.findViewById(R.id.editTextPriceChangeBuy);
+        etPriceSell = view.findViewById(R.id.editTextPriceChangeSell);
         etFee = view.findViewById(R.id.editTextFeeChange);
         etDate = view.findViewById(R.id.editTextDateChange);
 
@@ -75,13 +78,42 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
             case R.id.buttonSaveChange:
                 hideKeyBoard();
                 if(!shakeEmpty()){
-
+                    saveToDb();
+                    clearEditText();
                 }
                 break;
             case R.id.fragmentBackgroundChange:
                 hideKeyBoard();
 
         }
+    }
+
+    private void saveToDb() {
+        AppDatabase db = AppDatabase.getDbInstance(getContext());
+
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.transactionType = "Směna";
+        transactionEntity.nameBought = "BTC";
+        transactionEntity.quantityBought = etQuantityBuy.getText().toString();;
+        transactionEntity.priceBought = etPriceBuy.getText().toString();;
+        transactionEntity.fee = etFee.getText().toString();;
+        transactionEntity.date = ""; //TODO
+        transactionEntity.nameSold = "LINK";
+        transactionEntity.quantitySold = etQuantitySell.getText().toString();;
+        transactionEntity.priceSold = etPriceSell.getText().toString();;
+
+        db.databaseDao().insertTransaction(transactionEntity);
+    }
+
+    private void clearEditText(){
+        //etNameOfBought.setText("");
+        //etNameOfSold.setText("");
+        etQuantityBuy.setText("");
+        etQuantitySell.setText("");
+        etPriceBuy.setText("");
+        etPriceSell.setText("");
+        etFee.setText("");
+        etDate.setText("");
     }
 
     private boolean shakeEmpty(){
