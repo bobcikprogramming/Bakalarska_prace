@@ -39,6 +39,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity data = this.dataList.get(position);
 
         holder.textViewOperation.setText(data.transactionType);
+        holder.textViewDate.setText(data.date);
         holder.textViewNameBuy.setText(data.nameBought);
         holder.textViewNameSell.setText(data.nameSold);
         holder.textViewQuantityBuy.setText(String.valueOf(data.quantityBought));
@@ -56,12 +57,13 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewOperation, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell, textViewDesPriceBuy, textViewDesPriceSell, textViewPriceBuy, textViewPriceSell;
+        private TextView textViewOperation, textViewDate, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell, textViewDesPriceBuy, textViewDesPriceSell, textViewPriceBuy, textViewPriceSell;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewOperation = itemView.findViewById(R.id.textViewOperation);
+            textViewDate = itemView.findViewById(R.id.textViewDate);
             textViewNameBuy = itemView.findViewById(R.id.textViewNameBuy);
             textViewNameSell = itemView.findViewById(R.id.textViewNameSell);
             textViewQuantityBuy = itemView.findViewById(R.id.textViewQuantityBuy);

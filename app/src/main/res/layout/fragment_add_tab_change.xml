@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="45dp">
+    android:layout_marginTop="45dp"
+    android:id="@+id/scrollViewChange">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -120,26 +121,18 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextFeeChange"
             style="@style/MyTextViewDescriptionStyle"/>
 
-        <EditText
-            android:id="@+id/editTextDateChange"
-            android:inputType="datetime"
+        <TextView
+            android:id="@+id/textViewDateChange"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateChange"
             style="@style/MyEditTextStyle"/>
-
-        <ImageButton
-            android:id="@+id/imgButtonCalendarChange"
-            android:background="@null"
-            app:layout_constraintEnd_toEndOf="@+id/editTextDateChange"
-            app:layout_constraintTop_toTopOf="@id/editTextDateChange"
-            style="@style/MyImageButtonCalendar"
-            />
 
         <TextView
             android:id="@+id/descriptionPhotoChange"
             android:text="@string/photo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDateChange"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDateChange"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <ImageButton

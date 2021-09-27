@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="45dp">
+    android:layout_marginTop="45dp"
+    android:id="@+id/scrollViewBuy">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,9 +23,8 @@
             android:layout_marginTop="20dp"
             style="@style/MyTextViewDescriptionStyle"/>
 
-        <EditText
-            android:id="@+id/editTextNameBuy"
-            android:text="Předělat do snipperu"
+        <Spinner
+            android:id="@+id/spinnerNameBuy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameBuy"
             style="@style/MyEditTextStyle"/>
@@ -33,7 +33,7 @@
             android:id="@+id/descriptionCryptoQuantityBuy"
             android:text="@string/quantityBuy"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNameBuy"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerNameBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -44,10 +44,23 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
+            android:id="@+id/descriptionCurrencyBuy"
+            android:text="@string/currencyBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <Spinner
+            android:id="@+id/spinnerCurrencyBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencyBuy"
+            style="@style/MyEditTextStyle" />
+
+        <TextView
             android:id="@+id/descriptionCryptoPriceBuy"
             android:text="@string/price"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityBuy"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencyBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -78,41 +91,18 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextFeeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
-        <EditText
-            android:id="@+id/editTextDateBuy"
-            android:inputType="datetime"
+        <TextView
+            android:id="@+id/textViewDateBuy"
+            android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateBuy"
             style="@style/MyEditTextStyle"/>
-
-        <ImageButton
-            android:id="@+id/imgButtonCalendarBuy"
-            android:background="@null"
-            app:layout_constraintEnd_toEndOf="@+id/editTextDateBuy"
-            app:layout_constraintTop_toTopOf="@id/editTextDateBuy"
-            style="@style/MyImageButtonCalendar"
-            />
-
-        <TextView
-            android:id="@+id/descriptionCurrencyBuy"
-            android:text="@string/currencyBuy"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDateBuy"
-            style="@style/MyTextViewDescriptionStyle"/>
-
-        <EditText
-            android:id="@+id/editTextCurrencyBuy"
-            android:text="Předělat do snipperu"
-            android:inputType="datetime"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencyBuy"
-            style="@style/MyEditTextStyle" />
 
         <TextView
             android:id="@+id/descriptionPhotoBuy"
             android:text="@string/photo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextCurrencyBuy"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDateBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <ImageButton

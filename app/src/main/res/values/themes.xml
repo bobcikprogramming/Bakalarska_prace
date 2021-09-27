@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="colorPrimary">@color/navBarSelect</item>
@@ -35,12 +36,12 @@
         <item name="android:layout_marginTop">20dp</item>
     </style>
 
-    <style name="MyImageButtonCalendar">
+    <!--<style name="MyImageButtonCalendar">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:src">@drawable/ic_calendar_24</item>
-    </style>
+    </style>-->
 
     <style name="MyImageButtonPhoto">
         <item name="android:layout_width">100dp</item>
@@ -103,6 +104,11 @@
         <item name="android:gravity">bottom|left</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>
