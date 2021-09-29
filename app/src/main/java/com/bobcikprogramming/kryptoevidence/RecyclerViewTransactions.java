@@ -7,14 +7,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
 
 public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>  {
@@ -40,14 +37,9 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
         holder.textViewOperation.setText(data.transactionType);
         holder.textViewDate.setText(data.date);
-        holder.textViewNameBuy.setText(data.nameBought);
-        holder.textViewNameSell.setText(data.nameSold);
-        holder.textViewQuantityBuy.setText(String.valueOf(data.quantityBought));
-        holder.textViewQuantitySell.setText(String.valueOf(data.quantitySold));
-        holder.textViewPriceBuy.setText(String.valueOf(data.priceBought));
-        holder.textViewPriceSell.setText(String.valueOf(data.priceSold));
+        holder.textViewTime.setText(data.time);
 
-        changeItemViewByTransactionType(data.transactionType, holder.textViewOperation, holder.textViewDesPriceBuy, holder.textViewPriceBuy, holder.textViewDesPriceSell, holder.textViewPriceSell);
+        changeItemViewByTransactionType(data.transactionType, holder, data);
     }
 
     @Override
@@ -57,21 +49,24 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewOperation, textViewDate, textViewNameBuy, textViewNameSell, textViewQuantityBuy, textViewQuantitySell, textViewDesPriceBuy, textViewDesPriceSell, textViewPriceBuy, textViewPriceSell;
+        private TextView textViewOperation, textViewDate, textViewTime, tvNameFL, tvNameSL, tvQuantityFL, tvQuantitySL, tvDesPriceFL, tvDesPriceSL, tvPriceFL, tvPriceSL, tvDescriptionFL, tvDescriptionSL;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewOperation = itemView.findViewById(R.id.textViewOperation);
             textViewDate = itemView.findViewById(R.id.textViewDate);
-            textViewNameBuy = itemView.findViewById(R.id.textViewNameBuy);
-            textViewNameSell = itemView.findViewById(R.id.textViewNameSell);
-            textViewQuantityBuy = itemView.findViewById(R.id.textViewQuantityBuy);
-            textViewQuantitySell = itemView.findViewById(R.id.textViewQuantitySell);
-            textViewDesPriceBuy = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
-            textViewDesPriceSell = itemView.findViewById(R.id.textViewDescriptionPriceSell);
-            textViewPriceBuy = itemView.findViewById(R.id.textViewPriceBuy);
-            textViewPriceSell = itemView.findViewById(R.id.textViewPriceSell);
+            textViewTime = itemView.findViewById(R.id.textViewTime);
+            tvNameFL = itemView.findViewById(R.id.textViewNameFirstLine);
+            tvNameSL = itemView.findViewById(R.id.textViewNameSecondLine);
+            tvQuantityFL = itemView.findViewById(R.id.textViewQuantityFirstLine);
+            tvQuantitySL = itemView.findViewById(R.id.textViewQuantitySecondLine);
+            tvDesPriceFL = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
+            tvDesPriceSL = itemView.findViewById(R.id.textViewDescriptionPriceSell);
+            tvPriceFL = itemView.findViewById(R.id.textViewPriceFirst);
+            tvPriceSL = itemView.findViewById(R.id.textViewPriceSecondLine);
+            tvDescriptionFL = itemView.findViewById(R.id.textViewDescriptionFirstLine);
+            tvDescriptionSL = itemView.findViewById(R.id.textViewDescriptionSecondLine);
         }
     }
 
@@ -80,28 +75,56 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         notifyItemInserted(0);
     }*/
 
-    private void changeItemViewByTransactionType(String transactionType, TextView headline, TextView tvDesPriceBuy, TextView tvPriceBuy, TextView tvDesPriceSell, TextView tvPriceSell){
+    private void changeItemViewByTransactionType(String transactionType, ViewHolder holder, TransactionEntity data){
         switch (transactionType){
             case "Nákup":
-                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineBuy));
-                tvDesPriceBuy.setVisibility(View.VISIBLE);
-                tvPriceBuy.setVisibility(View.VISIBLE);
-                tvDesPriceSell.setVisibility(View.GONE);
-                tvPriceSell.setVisibility(View.GONE);
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineBuy));
+                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                holder.tvPriceFL.setVisibility(View.VISIBLE);
+                holder.tvDesPriceSL.setVisibility(View.GONE);
+                holder.tvPriceSL.setVisibility(View.GONE);
+
+                holder.tvDescriptionFL.setText("Koupeno:");
+                holder.tvDescriptionSL.setText("Platba:");
+
+                holder.tvNameFL.setText(data.nameBought);
+                holder.tvQuantityFL.setText(String.valueOf(data.quantityBought));
+                holder.tvPriceFL.setText(String.valueOf(data.priceBought + " " + data.currency));
+                holder.tvNameSL.setText(data.currency);
+                holder.tvQuantitySL.setText(String.valueOf(data.quantitySold));
                 break;
             case "Prodej":
-                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineSell));
-                tvDesPriceBuy.setVisibility(View.GONE);
-                tvPriceBuy.setVisibility(View.GONE);
-                tvDesPriceSell.setVisibility(View.VISIBLE);
-                tvPriceSell.setVisibility(View.VISIBLE);
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineSell));
+                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                holder.tvPriceFL.setVisibility(View.VISIBLE);
+                holder.tvDesPriceSL.setVisibility(View.GONE);
+                holder.tvPriceSL.setVisibility(View.GONE);
+
+                holder.tvDescriptionFL.setText("Prodáno:");
+                holder.tvDescriptionSL.setText("Zisk:");
+
+                holder.tvNameFL.setText(data.nameSold);
+                holder.tvQuantityFL.setText(String.valueOf(data.quantitySold));
+                holder.tvPriceFL.setText(String.valueOf(data.priceSold + " " + data.currency));
+                holder.tvNameSL.setText(data.currency);
+                holder.tvQuantitySL.setText(String.valueOf(data.quantityBought));
                 break;
             case "Směna":
-                headline.setTextColor(ContextCompat.getColor(context, R.color.headlineChange));
-                tvDesPriceBuy.setVisibility(View.VISIBLE);
-                tvPriceBuy.setVisibility(View.VISIBLE);
-                tvDesPriceSell.setVisibility(View.VISIBLE);
-                tvPriceSell.setVisibility(View.VISIBLE);
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineChange));
+                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                holder.tvPriceFL.setVisibility(View.VISIBLE);
+                holder.tvDesPriceSL.setVisibility(View.VISIBLE);
+                holder.tvPriceSL.setVisibility(View.VISIBLE);
+
+                holder.tvDescriptionFL.setText("Prodáno:");
+                holder.tvDescriptionSL.setText("Zisk:");
+
+                holder.tvNameFL.setText(data.nameSold);
+                holder.tvQuantityFL.setText(String.valueOf(data.quantitySold));
+                holder.tvPriceFL.setText(String.valueOf(data.priceSold + " " + data.currency));
+                holder.tvNameSL.setText(data.nameBought);
+                holder.tvQuantitySL.setText(String.valueOf(data.quantityBought));
+                holder.tvPriceSL.setText(String.valueOf(data.priceBought + " " + data.currency));
                 break;
 
         }

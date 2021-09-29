@@ -21,6 +21,9 @@ public class TransactionEntity {
     @ColumnInfo(name = "name_sold")
     public String nameSold;
 
+    @ColumnInfo(name = "currency")
+    public String currency;
+
     @ColumnInfo(name = "quantity_bought")
     public String quantityBought;
 
@@ -38,4 +41,7 @@ public class TransactionEntity {
 
     @ColumnInfo(name = "date")
     public String date;
+
+    @ColumnInfo(name = "time")
+    public String time;
 }

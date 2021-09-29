@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/descriptionCryptoNameBuy"
-            android:text="@string/cryptoName"
+            android:text="@string/cryptoNameBuy"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20dp"
@@ -44,23 +44,10 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
-            android:id="@+id/descriptionCurrencyBuy"
-            android:text="@string/currencyBuy"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityBuy"
-            style="@style/MyTextViewDescriptionStyle"/>
-
-        <Spinner
-            android:id="@+id/spinnerCurrencyBuy"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencyBuy"
-            style="@style/MyEditTextStyle" />
-
-        <TextView
             android:id="@+id/descriptionCryptoPriceBuy"
             android:text="@string/price"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencyBuy"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantityBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -71,10 +58,23 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
+            android:id="@+id/descriptionCurrencyBuy"
+            android:text="@string/currency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPriceBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <Spinner
+            android:id="@+id/spinnerCurrencyBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencyBuy"
+            style="@style/MyEditTextStyle" />
+
+        <TextView
             android:id="@+id/descriptionCryptoFeeBuy"
             android:text="@string/fee"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPriceBuy"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencyBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -99,10 +99,24 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
+            android:id="@+id/descriptionCryptoTimeBuy"
+            android:text="@string/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDateBuy"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <TextView
+            android:id="@+id/textViewTimeBuy"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoTimeBuy"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
             android:id="@+id/descriptionPhotoBuy"
             android:text="@string/photo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDateBuy"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTimeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <ImageButton

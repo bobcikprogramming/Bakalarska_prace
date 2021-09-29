@@ -2,6 +2,7 @@ package com.bobcikprogramming.kryptoevidence;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,17 +12,21 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
@@ -35,15 +40,18 @@ import java.util.Date;
 
 public class TabChangeFragmentAdd extends Fragment implements View.OnClickListener {
 
-    private EditText etNameBuy, etNameSell, etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
-    private TextView tvDate;
+    private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
+    private TextView tvDate, tvTime;
     private Button btnSave;
-    private ImageButton imgBtnAddPhoto, imgBtnCalendar;
+    private ImageButton imgBtnAddPhoto;
     private ConstraintLayout viewBackgroung;
+    private Spinner spinnerNameBuy, spinnerNameSell, spinnerCurrency;
     private ScrollView scrollView;
     private View view;
     private ArrayList<EditText> mandatoryField;
+
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     public TabChangeFragmentAdd() {
         // Required empty public constructor
@@ -61,19 +69,27 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         view = inflater.inflate(R.layout.fragment_add_tab_change, container, false);
         setupUIViews();
         openCalendar();
-        mandatoryField = new ArrayList<>(Arrays.asList(etNameBuy, etNameSell, etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell,etFee));
+        openClock();
+        hideKeyBoardOnSpinnerTouch();
+
+        spinnerNameBuy.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        spinnerNameSell.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        mandatoryField = new ArrayList<>(Arrays.asList(etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell,etFee));
         return view;
     }
 
     private void setupUIViews(){
-        etNameBuy = view.findViewById(R.id.editTextNameChangeBuy);
-        etNameSell = view.findViewById(R.id.editTextNameChangeSell);
         etQuantityBuy = view.findViewById(R.id.editTextQuantityChangeBuy);
         etQuantitySell = view.findViewById(R.id.editTextQuantityChangeSell);
         etPriceBuy = view.findViewById(R.id.editTextPriceChangeBuy);
         etPriceSell = view.findViewById(R.id.editTextPriceChangeSell);
         etFee = view.findViewById(R.id.editTextFeeChange);
         tvDate = view.findViewById(R.id.textViewDateChange);
+        tvTime = view.findViewById(R.id.textViewTimeChange);
+        spinnerNameBuy = view.findViewById(R.id.spinnerNameChangeBuy);
+        spinnerNameSell = view.findViewById(R.id.spinnerNameChangeSell);
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrencyChange);
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundChange);
         viewBackgroung.setOnClickListener(this);
@@ -109,12 +125,14 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
 
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.transactionType = "Směna";
-        transactionEntity.nameBought = "BTC";
+        transactionEntity.nameBought = spinnerNameBuy.getSelectedItem().toString();
+        transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
         transactionEntity.quantityBought = etQuantityBuy.getText().toString();;
         transactionEntity.priceBought = etPriceBuy.getText().toString();;
         transactionEntity.fee = etFee.getText().toString();;
-        transactionEntity.date = ""; //TODO
-        transactionEntity.nameSold = "LINK";
+        transactionEntity.date = tvDate.getText().toString();
+        transactionEntity.time = tvTime.getText().toString();
+        transactionEntity.nameSold = spinnerNameSell.getSelectedItem().toString();
         transactionEntity.quantitySold = etQuantitySell.getText().toString();;
         transactionEntity.priceSold = etPriceSell.getText().toString();;
 
@@ -122,8 +140,6 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
     }
 
     private void clearEditText(){
-        //etNameOfBought.setText("");
-        //etNameOfSold.setText("");
         etQuantityBuy.setText("");
         etQuantitySell.setText("");
         etPriceBuy.setText("");
@@ -174,6 +190,52 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         }
     }
 
+    public void openClock(){
+        tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimeDialogWindow();
+            }
+        });
+
+        timeSetListener = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                setTimeToTextView(hour, minute);
+            }
+        };
+    }
+
+    private void openTimeDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog dialog = new TimePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setTimeToTextView(int hour, int minute){
+        String time = hour + ":" + minute;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:m");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("HH:mm");
+        try{
+            Date timeToShow = dateFormat.parse(time);
+            tvTime.setText(dateFormatSecond.format(timeToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
+        }
+    }
+
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         boolean findEmpty = false;
@@ -191,11 +253,35 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
             findEmpty = true;
             tvDate.startAnimation(animShake);
             tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
-        }
-        else{
+        }else{
             tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
         }
+        if(tvTime.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvTime.startAnimation(animShake);
+            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+        }else{
+            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+        }
         return findEmpty;
+    }
+
+    private void hideKeyBoardOnSpinnerTouch(){
+        spinnerNameBuy.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
+
+        spinnerNameSell.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
     }
 
     private void hideKeyBoard(){

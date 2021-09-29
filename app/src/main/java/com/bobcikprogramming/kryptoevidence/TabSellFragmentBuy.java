@@ -2,6 +2,7 @@ package com.bobcikprogramming.kryptoevidence;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,17 +12,21 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
@@ -35,15 +40,18 @@ import java.util.Date;
 
 public class TabSellFragmentBuy extends Fragment implements View.OnClickListener {
 
-    private EditText etName, etQuantity, etPrice, etFee, etCurrency;
-    private TextView tvDate;
+    private EditText etQuantity, etPrice, etFee;
+    private TextView tvDate, tvTime;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
     private ScrollView scrollView;
+    private Spinner spinnerName, spinnerCurrency;
     private ConstraintLayout viewBackgroung;
     private View view;
     private ArrayList<EditText> mandatoryField;
+
     private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     public TabSellFragmentBuy() {
         // Required empty public constructor
@@ -61,18 +69,23 @@ public class TabSellFragmentBuy extends Fragment implements View.OnClickListener
         view = inflater.inflate(R.layout.fragment_add_tab_sell, container, false);
         setupUIViews();
         openCalendar();
-        mandatoryField = new ArrayList<>(Arrays.asList(etName,etQuantity,etPrice,etFee,etCurrency));
+        openClock();
+        hideKeyBoardOnSpinnerTouch();
+
+        spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        mandatoryField = new ArrayList<>(Arrays.asList(etQuantity,etPrice,etFee));
         return view;
     }
 
     private void setupUIViews(){
-        etName = view.findViewById(R.id.editTextNameSell);
         etQuantity = view.findViewById(R.id.editTextQuantitySell);
         etPrice = view.findViewById(R.id.editTextPriceSell);
         etFee = view.findViewById(R.id.editTextFeeSell);
-        etCurrency = view.findViewById(R.id.editTextCurrencySell);
-
         tvDate = view.findViewById(R.id.textViewDateSell);
+        tvTime = view.findViewById(R.id.textViewTimeSell);
+        spinnerName = view.findViewById(R.id.spinnerNameSell);
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrencySell);
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundSell);
         viewBackgroung.setOnClickListener(this);
@@ -108,24 +121,23 @@ public class TabSellFragmentBuy extends Fragment implements View.OnClickListener
 
         TransactionEntity transactionEntity = new TransactionEntity();
         transactionEntity.transactionType = "Prodej";
-        transactionEntity.nameSold = "BTC";
+        transactionEntity.nameSold = spinnerName.getSelectedItem().toString();
         transactionEntity.quantitySold = etQuantity.getText().toString();
         transactionEntity.priceSold = etPrice.getText().toString();
         transactionEntity.fee = etFee.getText().toString();
-        transactionEntity.date = ""; //TODO
-        transactionEntity.nameBought = "EUR";
+        transactionEntity.date = tvDate.getText().toString();
+        transactionEntity.time = tvTime.getText().toString();
+        transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
         transactionEntity.quantityBought = getProfit(etQuantity, etPrice, etFee);
 
         db.databaseDao().insertTransaction(transactionEntity);
     }
 
     private void clearEditText(){
-        //etName.setText("");
         etQuantity.setText("");
         etPrice.setText("");
         etFee.setText("");
         tvDate.setText("");
-        //etCurrency.setText("");
     }
 
     private String getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
@@ -180,6 +192,52 @@ public class TabSellFragmentBuy extends Fragment implements View.OnClickListener
         }
     }
 
+    public void openClock(){
+        tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimeDialogWindow();
+            }
+        });
+
+        timeSetListener = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                setTimeToTextView(hour, minute);
+            }
+        };
+    }
+
+    private void openTimeDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog dialog = new TimePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setTimeToTextView(int hour, int minute){
+        String time = hour + ":" + minute;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:m");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("HH:mm");
+        try{
+            Date timeToShow = dateFormat.parse(time);
+            tvTime.setText(dateFormatSecond.format(timeToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
+        }
+    }
+
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         boolean findEmpty = false;
@@ -193,8 +251,39 @@ public class TabSellFragmentBuy extends Fragment implements View.OnClickListener
                 checking.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
             }
         }
-
+        if(tvDate.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDate.startAnimation(animShake);
+            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+        }else{
+            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+        }
+        if(tvTime.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvTime.startAnimation(animShake);
+            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+        }else{
+            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+        }
         return findEmpty;
+    }
+
+    private void hideKeyBoardOnSpinnerTouch(){
+        spinnerName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
+
+        spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
     }
 
     private void hideKeyBoard(){

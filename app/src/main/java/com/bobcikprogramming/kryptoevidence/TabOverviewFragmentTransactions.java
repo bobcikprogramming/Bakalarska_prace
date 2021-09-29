@@ -62,11 +62,12 @@ public class TabOverviewFragmentTransactions extends Fragment {
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(getContext());
         List<TransactionEntity> dataFromDatabase = db.databaseDao().getAll();
-        sortList(dataFromDatabase);
+        sortListByTime(dataFromDatabase);
+        sortListByDate(dataFromDatabase);
         adapter.setTransactionData(dataFromDatabase);
     }
 
-    private void sortList(List<TransactionEntity> data){
+    private void sortListByDate(List<TransactionEntity> data){
         TransactionEntity tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
@@ -83,7 +84,26 @@ public class TabOverviewFragmentTransactions extends Fragment {
                     e.printStackTrace();
                 }
             }
+        }
+    }
 
+    private void sortListByTime(List<TransactionEntity> data){
+        TransactionEntity tmp;
+        for(int i = 0; i < data.size() - 1; i++){
+            for(int j = 0; j < data.size() - i - 1; j++){
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                try{
+                    Date timeFirst = format.parse(data.get(j).time);
+                    Date timeSecond = format.parse(data.get(j+1).time);
+                    if(timeFirst.compareTo(timeSecond) < 0){
+                        tmp = data.get(j);
+                        data.set(j, data.get(j+1));
+                        data.set(j+1, tmp);
+                    }
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

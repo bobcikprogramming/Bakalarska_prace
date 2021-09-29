@@ -9,7 +9,8 @@
     <string name="tabAddSell">Prodej</string>
     <string name="tabAddChange">Směna</string>
     <!-- Text Vytvořit -->
-    <string name="cryptoName">Název kryptoměny</string>
+    <string name="cryptoNameBuy">Nakoupená kryptoměna</string>
+    <string name="cryptoNameSell">Prodaná kryptoměna</string>
     <string name="cryptoNameChangeBuy">Nakoupená kryptoměna</string>
     <string name="cryptoNameChangeSell">Prodaná kryptoměna</string>
     <string name="quantityBuy">Množství nakoupené kryptoměny</string>
@@ -19,8 +20,10 @@
     <string name="priceChangeSell">Cena za jednu prodanou kryptoměnu</string>
     <string name="fee">Poplatek za transakci</string>
     <string name="date">Datum provedení transakce</string>
+    <string name="time">Čas provedení transakce</string>
     <string name="currencyBuy">Platba v měně</string>
     <string name="currencySell">Prodáno v měně</string>
+    <string name="currency">Cena uvedena v měně</string>
     <string name="photo">Vložit snímek</string>
     
     <string-array name="currency">

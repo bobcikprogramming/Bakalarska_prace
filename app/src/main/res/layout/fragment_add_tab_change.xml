@@ -23,8 +23,8 @@
             android:layout_marginTop="20dp"
             style="@style/MyTextViewDescriptionStyle"/>
 
-        <EditText
-            android:id="@+id/editTextNameChangeBuy"
+        <Spinner
+            android:id="@+id/spinnerNameChangeBuy"
             android:text="Předělat do snipperu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeBuy"
@@ -34,7 +34,7 @@
             android:id="@+id/descriptionCryptoQuantityChangeBuy"
             android:text="@string/quantityBuy"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeBuy"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerNameChangeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -59,14 +59,29 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
-            android:id="@+id/descriptionCryptoNameChangeSell"
-            android:text="@string/cryptoNameChangeSell"
+            android:id="@+id/descriptionCurrencyChange"
+            android:text="@string/currency"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextPriceChangeBuy"
             style="@style/MyTextViewDescriptionStyle"/>
 
-        <EditText
-            android:id="@+id/editTextNameChangeSell"
+        <Spinner
+            android:id="@+id/spinnerCurrencyChange"
+            android:text="Předělat do snipperu"
+            android:inputType="datetime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencyChange"
+            style="@style/MyEditTextStyle" />
+
+        <TextView
+            android:id="@+id/descriptionCryptoNameChangeSell"
+            android:text="@string/cryptoNameChangeSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencyChange"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <Spinner
+            android:id="@+id/spinnerNameChangeSell"
             android:text="Předělat do snipperu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameChangeSell"
@@ -76,7 +91,7 @@
             android:id="@+id/descriptionCryptoQuantityChangeSell"
             android:text="@string/quantitySell"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextNameChangeSell"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerNameChangeSell"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <EditText
@@ -129,10 +144,24 @@
             style="@style/MyEditTextStyle"/>
 
         <TextView
+            android:id="@+id/descriptionCryptoTimeChange"
+            android:text="@string/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDateChange"
+            style="@style/MyTextViewDescriptionStyle"/>
+
+        <TextView
+            android:id="@+id/textViewTimeChange"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoTimeChange"
+            style="@style/MyEditTextStyle"/>
+
+        <TextView
             android:id="@+id/descriptionPhotoChange"
             android:text="@string/photo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDateChange"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTimeChange"
             style="@style/MyTextViewDescriptionStyle"/>
 
         <ImageButton

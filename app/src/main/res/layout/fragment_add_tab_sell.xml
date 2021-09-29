@@ -16,14 +16,14 @@ android:id="@+id/scrollViewSell">
 
     <TextView
         android:id="@+id/descriptionCryptoNameSell"
-        android:text="@string/cryptoName"
+        android:text="@string/cryptoNameSell"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="20dp"
         style="@style/MyTextViewDescriptionStyle"/>
 
-    <EditText
-        android:id="@+id/editTextNameSell"
+    <Spinner
+        android:id="@+id/spinnerNameSell"
         android:text="Předělat do snipperu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameSell"
@@ -33,7 +33,7 @@ android:id="@+id/scrollViewSell">
         android:id="@+id/descriptionCryptoQuantitySell"
         android:text="@string/quantitySell"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNameSell"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerNameSell"
         style="@style/MyTextViewDescriptionStyle"/>
 
     <EditText
@@ -58,10 +58,25 @@ android:id="@+id/scrollViewSell">
         style="@style/MyEditTextStyle"/>
 
     <TextView
+        android:id="@+id/descriptionCurrencySell"
+        android:text="@string/currency"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPriceSell"
+        style="@style/MyTextViewDescriptionStyle"/>
+
+    <Spinner
+        android:id="@+id/spinnerCurrencySell"
+        android:text="Předělat do snipperu"
+        android:inputType="datetime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCurrencySell"
+        style="@style/MyEditTextStyle" />
+
+    <TextView
         android:id="@+id/descriptionCryptoFeeSell"
         android:text="@string/fee"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPriceSell"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencySell"
         style="@style/MyTextViewDescriptionStyle"/>
 
     <EditText
@@ -86,25 +101,24 @@ android:id="@+id/scrollViewSell">
         style="@style/MyEditTextStyle"/>
 
     <TextView
-        android:id="@+id/descriptionCurrencySell"
-        android:text="@string/currencySell"
+        android:id="@+id/descriptionCryptoTimeSell"
+        android:text="@string/time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDateSell"
         style="@style/MyTextViewDescriptionStyle"/>
 
-    <EditText
-        android:id="@+id/editTextCurrencySell"
-        android:text="Předělat do snipperu"
-        android:inputType="datetime"
+    <TextView
+        android:id="@+id/textViewTimeSell"
+        android:gravity="center_vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCurrencySell"
-        style="@style/MyEditTextStyle" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoTimeSell"
+        style="@style/MyEditTextStyle"/>
 
     <TextView
         android:id="@+id/descriptionPhotoSell"
         android:text="@string/photo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCurrencySell"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTimeSell"
         style="@style/MyTextViewDescriptionStyle"/>
 
     <ImageButton

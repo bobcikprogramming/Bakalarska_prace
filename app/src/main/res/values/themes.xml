@@ -36,6 +36,15 @@
         <item name="android:layout_marginTop">20dp</item>
     </style>
 
+    <style name="MyTextViewDescriptionStyleRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/descripton</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
     <!--<style name="MyImageButtonCalendar">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">50dp</item>
@@ -64,12 +73,12 @@
     </style>
 
     <style name="MyTextViewRecyclerViewHeadline">
-        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_width">80dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">15dp</item>
         <item name="android:gravity">bottom|right</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingRight">5dp</item>
         <item name="android:layout_marginLeft">5dp</item>
     </style>
 
