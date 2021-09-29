@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +108,7 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         switch(view.getId()){
             case R.id.buttonSaveChange:
                 hideKeyBoard();
-                if(!shakeEmpty()){
+                if(!shakeEmpty() && checkDateAndTime()){
                     saveToDb();
                     clearEditText();
                     scrollView.setScrollY(0);
@@ -234,6 +235,64 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
         return spinnerAdapter;
+    }
+
+    private boolean checkDateAndTime(){
+        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        Date actualDate = getDateFormat(getActualDay());
+        Date transactionDate = getDateFormat(tvDate.getText().toString());
+        if(actualDate.compareTo(transactionDate) < 0){
+            tvDate.startAnimation(animShake);
+            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            return false;
+        }else if(actualDate.compareTo(transactionDate) == 0) {
+            Date actualTime = getTimeFormat(getActualTime());
+            Date transactionTime = getTimeFormat(tvTime.getText().toString());
+            if (actualTime.compareTo(transactionTime) < 0) {
+                tvTime.startAnimation(animShake);
+                tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String getActualDay(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("dd.MM.yyyy");
+        String actualDay = dateFormatCompare.format(calendarDate.getTime());
+        return actualDay;
+    }
+
+    private String getActualTime(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("HH:mm");
+        String actualTime = dateFormatCompare.format(calendarDate.getTime());
+        return actualTime;
+    }
+
+    // TODO formátování data globalizovat
+    private Date getDateFormat(String dateInString){
+        Date date = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        try {
+            date = dateFormat.parse(String.valueOf(dateInString));
+        }catch (ParseException e) {
+            System.err.println("Chyba při parsování data: "+e);
+        }
+        return date;
+    }
+
+    private Date getTimeFormat(String timeInString){
+        Date time = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try{
+            time = dateFormat.parse(String.valueOf(timeInString));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
+        }
+        return time;
     }
 
     private boolean shakeEmpty(){
