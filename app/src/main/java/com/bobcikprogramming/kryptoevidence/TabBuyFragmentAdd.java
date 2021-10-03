@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,8 +47,9 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
     private TextView tvDate, tvTime;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
-    private ConstraintLayout viewBackgroung;
-    private ScrollView scrollView;
+    /*private ConstraintLayout viewBackgroung;
+    private ScrollView scrollView;*/
+    private LinearLayout viewBackgroung;
     private Spinner spinnerCurrency, spinnerName;
     private View view;
 
@@ -94,7 +96,7 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
         viewBackgroung.setOnClickListener(this);
-        scrollView = view.findViewById(R.id.scrollViewBuy);
+        //scrollView = view.findViewById(R.id.scrollViewBuy);
 
         btnSave = view.findViewById(R.id.buttonSaveBuy);
         imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
@@ -111,7 +113,7 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
                 if(!shakeEmpty() && checkDateAndTime()){
                     saveToDb();
                     clearEditText();
-                    scrollView.setScrollY(0);
+                    //scrollView.setScrollY(0);
                     Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                 }
                 break;

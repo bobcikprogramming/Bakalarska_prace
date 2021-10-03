@@ -1,142 +1,369 @@
-<ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:layout_marginTop="45dp"
-android:id="@+id/scrollViewSell">
-
-<androidx.constraintlayout.widget.ConstraintLayout
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/fragmentBackgroundSell"
-    tools:context=".TabSellFragmentAdd"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:layout_marginTop="45dp"
+    android:orientation="vertical"
+    tools:context=".TabBuyFragmentAdd"
+    android:id="@+id/fragmentBackgroundSell">
 
-    <TextView
-        android:id="@+id/descriptionCryptoNameSell"
-        android:text="@string/cryptoNameSell"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="20dp"
-        style="@style/MyTextViewDescriptionStyle"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
-    <Spinner
-        android:id="@+id/spinnerNameSell"
-        android:text="Předělat do snipperu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameSell"
-        style="@style/MyEditTextStyle"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
-    <TextView
-        android:id="@+id/descriptionCryptoQuantitySell"
-        android:text="@string/quantitySell"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerNameSell"
-        style="@style/MyTextViewDescriptionStyle"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
 
-    <EditText
-        android:id="@+id/editTextQuantitySell"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantitySell"
-        style="@style/MyEditTextStyle"/>
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="9">
 
-    <TextView
-        android:id="@+id/descriptionCryptoPriceSell"
-        android:text="@string/price"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextQuantitySell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoNameSell"
+                            android:text="Název kryptoměny"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextPriceSell"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoPriceSell"
-        style="@style/MyEditTextStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoQuantitySell"
+                            android:text="Koupené množství"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/descriptionCurrencySell"
-        android:text="@string/currency"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPriceSell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoPriceSell"
+                            android:text="Cena za kus"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <Spinner
-        android:id="@+id/spinnerCurrencySell"
-        android:text="Předělat do snipperu"
-        android:inputType="datetime"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCurrencySell"
-        style="@style/MyEditTextStyle" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCurrencySell"
+                            android:text="Cena v měně"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/descriptionCryptoFeeSell"
-        android:text="@string/fee"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencySell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoFeeSell"
+                            android:text="Poplatek"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTextFeeSell"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoFeeSell"
-        style="@style/MyEditTextStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoDateSell"
+                            android:text="Datum provedení"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/descriptionCryptoDateSell"
-        android:text="@string/date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFeeSell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoTimeSell"
+                            android:text="Čas provedení"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewDateSell"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateSell"
-        style="@style/MyEditTextStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
+                        <TextView
+                            android:id="@+id/descriptionPhotoSell"
+                            android:text="@string/photo"
+                            style="@style/AddFragmentsTextViewDescription"
+                            android:layout_height="100dp"/>
+                    </LinearLayout>
 
-    <TextView
-        android:id="@+id/descriptionCryptoTimeSell"
-        android:text="@string/time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDateSell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewTimeSell"
-        android:gravity="center_vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionCryptoTimeSell"
-        style="@style/MyEditTextStyle"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="9">
 
-    <TextView
-        android:id="@+id/descriptionPhotoSell"
-        android:text="@string/photo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTimeSell"
-        style="@style/MyTextViewDescriptionStyle"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <Spinner
+                            android:id="@+id/spinnerNameSell"
+                            style="@style/AddFragmentsSpinner"/>
+                    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imgButtonAddPhotoSell"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionPhotoSell"
-        style="@style/MyImageButtonPhoto"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextQuantitySell"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonSaveSell"
-        android:text="Uložit"
-        app:backgroundTint="@null"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgButtonAddPhotoSell"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/MyButton"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextPriceSell"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <Spinner
+                            android:id="@+id/spinnerCurrencySell"
+                            style="@style/AddFragmentsSpinner"/>
+                    </LinearLayout>
 
-</ScrollView>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextFeeSell"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/textViewDateSell"
+                            style="@style/AddFragmentsTextView"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/textViewTimeSell"
+                            style="@style/AddFragmentsTextView"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
+                        <ImageButton
+                            android:id="@+id/imgButtonAddPhotoSell"
+                            style="@style/AddFragmentsImageButtonPhoto"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="4">
+
+                <Button
+                    android:id="@+id/buttonSaveSell"
+                    style="@style/AddFragmentsButton"
+                    android:text="Uložit"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+
+    <!--<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="45dp"
+    android:id="@+id/scrollViewSell">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragmentBackgroundSell"
+        tools:context=".TabSellFragmentAdd"
+        android:orientation="vertical">
+    
+        <TextView
+            android:id="@+id/descriptionCryptoNameSell"
+            android:text="@string/cryptoNameSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <Spinner
+            android:id="@+id/spinnerNameSell"
+            android:text="Předělat do snipperu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoNameSell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionCryptoQuantitySell"
+            android:text="@string/quantitySell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerNameSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <EditText
+            android:id="@+id/editTextQuantitySell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoQuantitySell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionCryptoPriceSell"
+            android:text="@string/price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQuantitySell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <EditText
+            android:id="@+id/editTextPriceSell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoPriceSell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionCurrencySell"
+            android:text="@string/currency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPriceSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <Spinner
+            android:id="@+id/spinnerCurrencySell"
+            android:text="Předělat do snipperu"
+            android:inputType="datetime"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCurrencySell"
+            style="@style/MyEditTextStyle" />
+    
+        <TextView
+            android:id="@+id/descriptionCryptoFeeSell"
+            android:text="@string/fee"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCurrencySell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <EditText
+            android:id="@+id/editTextFeeSell"
+            android:inputType="numberDecimal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoFeeSell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionCryptoDateSell"
+            android:text="@string/date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFeeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <TextView
+            android:id="@+id/textViewDateSell"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoDateSell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionCryptoTimeSell"
+            android:text="@string/time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDateSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <TextView
+            android:id="@+id/textViewTimeSell"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionCryptoTimeSell"
+            style="@style/MyEditTextStyle"/>
+    
+        <TextView
+            android:id="@+id/descriptionPhotoSell"
+            android:text="@string/photo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTimeSell"
+            style="@style/MyTextViewDescriptionStyle"/>
+    
+        <ImageButton
+            android:id="@+id/imgButtonAddPhotoSell"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionPhotoSell"
+            style="@style/MyImageButtonPhoto"/>
+    
+        <Button
+            android:id="@+id/buttonSaveSell"
+            android:text="Uložit"
+            app:backgroundTint="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgButtonAddPhotoSell"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/MyButton"/>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    </ScrollView>-->
