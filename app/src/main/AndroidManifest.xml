@@ -10,8 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KryptoEvidence">
         <activity
+            android:name=".PhotoViewer"
+            android:exported="true" />
+        <!--
+        <activity
             android:name=".RecyclerViewTransactions"
             android:exported="true" />
+        -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

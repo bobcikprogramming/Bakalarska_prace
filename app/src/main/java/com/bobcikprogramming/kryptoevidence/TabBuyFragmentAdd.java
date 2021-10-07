@@ -1,16 +1,26 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,8 +33,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -47,6 +58,7 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
     private TextView tvDate, tvTime;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
+    private ImageView imvBtnShowPhoto;
     /*private ConstraintLayout viewBackgroung;
     private ScrollView scrollView;*/
     private LinearLayout viewBackgroung;
@@ -54,6 +66,7 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
     private View view;
 
     private ArrayList<EditText> mandatoryField;
+    private ArrayList<Uri> photos;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
@@ -81,9 +94,12 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         mandatoryField = new ArrayList<>(Arrays.asList(etQuantity,etPrice,etFee));
+        photos = new ArrayList<>();
 
         return view;
     }
+
+
 
     private void setupUIViews(){
         etQuantity = view.findViewById(R.id.editTextQuantityBuy);
@@ -98,11 +114,14 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         viewBackgroung.setOnClickListener(this);
         //scrollView = view.findViewById(R.id.scrollViewBuy);
 
+        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
+
         btnSave = view.findViewById(R.id.buttonSaveBuy);
         imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
 
         btnSave.setOnClickListener(this);
         imgBtnAddPhoto.setOnClickListener(this);
+        imvBtnShowPhoto.setOnClickListener(this);
     }
 
     @Override
@@ -119,6 +138,12 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
                 break;
             case R.id.fragmentBackgroundBuy:
                 hideKeyBoard();
+                break;
+            case R.id.imgButtonAddPhotoBuy:
+                mGetContent.launch("image/*");
+                break;
+            case R.id.imvButtonShowPhotoBuy:
+                openPhotoViewerActivity();
                 break;
 
         }
@@ -303,6 +328,53 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         }
         return time;
     }
+
+    // https://developer.android.com/training/basics/intents/result
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if(!photos.contains(uri) && uri != null){
+                        photos.add(uri);
+                    }
+                    if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
+                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                        imvBtnShowPhoto.setVisibility(View.VISIBLE);
+                    }
+                    /* Získání bitmapu z URI
+                    try {
+                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        imvBtnShowPhoto.setImageBitmap(mBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            });
+
+    private void openPhotoViewerActivity(){
+        Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
+        photoViewer.putParcelableArrayListExtra("photos",photos);
+        someActivityResultLauncher.launch(photoViewer);
+    }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    photos = data.getParcelableArrayListExtra("photos");
+                    if(photos.size() > 0) {
+                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                    }else{
+                        imvBtnShowPhoto.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);

@@ -1,5 +1,6 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -36,6 +37,11 @@ public class FragmentAdd extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         ((MainActivity)getActivity()).selectBottomMenu(R.id.add); //change value depending on your bottom menu position
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setupUIViews(){

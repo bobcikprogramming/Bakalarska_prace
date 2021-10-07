@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,20 +62,20 @@ public class TabOverviewFragmentTransactions extends Fragment {
 
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(getContext());
-        List<TransactionEntity> dataFromDatabase = db.databaseDao().getAll();
+        List<TransactionWithPhotos> dataFromDatabase = db.databaseDao().getAll();
         sortListByTime(dataFromDatabase);
         sortListByDate(dataFromDatabase);
         adapter.setTransactionData(dataFromDatabase);
     }
 
-    private void sortListByDate(List<TransactionEntity> data){
-        TransactionEntity tmp;
+    private void sortListByDate(List<TransactionWithPhotos> data){
+        TransactionWithPhotos tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
                 SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
                 try{
-                    Date dateFirst = format.parse(data.get(j).date);
-                    Date dateSecond = format.parse(data.get(j+1).date);
+                    Date dateFirst = format.parse(data.get(j).transaction.date);
+                    Date dateSecond = format.parse(data.get(j+1).transaction.date);
                     if(dateFirst.compareTo(dateSecond) < 0){
                         tmp = data.get(j);
                         data.set(j, data.get(j+1));
@@ -87,14 +88,14 @@ public class TabOverviewFragmentTransactions extends Fragment {
         }
     }
 
-    private void sortListByTime(List<TransactionEntity> data){
-        TransactionEntity tmp;
+    private void sortListByTime(List<TransactionWithPhotos> data){
+        TransactionWithPhotos tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
                 SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                 try{
-                    Date timeFirst = format.parse(data.get(j).time);
-                    Date timeSecond = format.parse(data.get(j+1).time);
+                    Date timeFirst = format.parse(data.get(j).transaction.time);
+                    Date timeSecond = format.parse(data.get(j+1).transaction.time);
                     if(timeFirst.compareTo(timeSecond) < 0){
                         tmp = data.get(j);
                         data.set(j, data.get(j+1));

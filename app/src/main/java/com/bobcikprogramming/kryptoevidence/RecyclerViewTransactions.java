@@ -11,12 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
 import java.util.List;
 
-public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>  {
+public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>{
 
-    private List<TransactionEntity> dataList;
+    private List<TransactionWithPhotos> dataList;
     private Context context;
 
     public RecyclerViewTransactions(Context context/*, ArrayList<RecyclerViewRaidingAdvancedData> dataList*/) {
@@ -33,13 +34,14 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TransactionEntity data = this.dataList.get(position);
+        TransactionWithPhotos data = this.dataList.get(position);
+        TransactionEntity transaction = data.transaction;
 
-        holder.textViewOperation.setText(data.transactionType);
-        holder.textViewDate.setText(data.date);
-        holder.textViewTime.setText(data.time);
+        holder.textViewOperation.setText(transaction.transactionType);
+        holder.textViewDate.setText(transaction.date);
+        holder.textViewTime.setText(transaction.time);
 
-        changeItemViewByTransactionType(data.transactionType, holder, data);
+        changeItemViewByTransactionType(transaction.transactionType, holder, data);
     }
 
     @Override
@@ -75,7 +77,8 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         notifyItemInserted(0);
     }*/
 
-    private void changeItemViewByTransactionType(String transactionType, ViewHolder holder, TransactionEntity data){
+    private void changeItemViewByTransactionType(String transactionType, ViewHolder holder, TransactionWithPhotos data){
+        TransactionEntity transaction = data.transaction;
         switch (transactionType){
             case "Nákup":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineBuy));
@@ -87,11 +90,11 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvDescriptionFL.setText("Koupeno:");
                 holder.tvDescriptionSL.setText("Platba:");
 
-                holder.tvNameFL.setText(data.nameBought);
-                holder.tvQuantityFL.setText(String.valueOf(data.quantityBought));
-                holder.tvPriceFL.setText(String.valueOf(data.priceBought + " " + data.currency));
-                holder.tvNameSL.setText(data.currency);
-                holder.tvQuantitySL.setText(String.valueOf(data.quantitySold));
+                holder.tvNameFL.setText(transaction.nameBought);
+                holder.tvQuantityFL.setText(String.valueOf(transaction.quantityBought));
+                holder.tvPriceFL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
+                holder.tvNameSL.setText(transaction.currency);
+                holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
                 break;
             case "Prodej":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineSell));
@@ -103,11 +106,11 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvDescriptionFL.setText("Prodáno:");
                 holder.tvDescriptionSL.setText("Zisk:");
 
-                holder.tvNameFL.setText(data.nameSold);
-                holder.tvQuantityFL.setText(String.valueOf(data.quantitySold));
-                holder.tvPriceFL.setText(String.valueOf(data.priceSold + " " + data.currency));
-                holder.tvNameSL.setText(data.currency);
-                holder.tvQuantitySL.setText(String.valueOf(data.quantityBought));
+                holder.tvNameFL.setText(transaction.nameSold);
+                holder.tvQuantityFL.setText(String.valueOf(transaction.quantitySold));
+                holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvNameSL.setText(transaction.currency);
+                holder.tvQuantitySL.setText(String.valueOf(transaction.quantityBought));
                 break;
             case "Směna":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineChange));
@@ -119,18 +122,18 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvDescriptionFL.setText("Prodáno:");
                 holder.tvDescriptionSL.setText("Zisk:");
 
-                holder.tvNameFL.setText(data.nameSold);
-                holder.tvQuantityFL.setText(String.valueOf(data.quantitySold));
-                holder.tvPriceFL.setText(String.valueOf(data.priceSold + " " + data.currency));
-                holder.tvNameSL.setText(data.nameBought);
-                holder.tvQuantitySL.setText(String.valueOf(data.quantityBought));
-                holder.tvPriceSL.setText(String.valueOf(data.priceBought + " " + data.currency));
+                holder.tvNameFL.setText(transaction.nameSold);
+                holder.tvQuantityFL.setText(String.valueOf(transaction.quantitySold));
+                holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvNameSL.setText(transaction.nameBought);
+                holder.tvQuantitySL.setText(String.valueOf(transaction.quantityBought));
+                holder.tvPriceSL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
                 break;
 
         }
     }
 
-    public void setTransactionData(List<TransactionEntity> transactionData){
+    public void setTransactionData(List<TransactionWithPhotos> transactionData){
         this.dataList = transactionData;
         Toast.makeText(context, String.valueOf(this.dataList.size()), Toast.LENGTH_SHORT).show();
         notifyDataSetChanged();

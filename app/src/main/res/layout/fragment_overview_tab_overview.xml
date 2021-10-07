@@ -19,7 +19,7 @@
 
             <TextView
                 style="@style/MyTextViewDescriptionStyle"
-                android:text="Celkový zisk/ztráta"/>
+                android:text="Reálný zisk/ztráta"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,6 +43,37 @@
                     android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:text="1000"
+                    android:textColor="@color/white"
+                    android:textSize="35dp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/MyTextViewDescriptionStyle"
+                android:text="Celkový obrat"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="bottom"
+                    android:singleLine="true"
+                    android:text="CZK"
+                    android:textColor="@color/white"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="bottom"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:text="5000"
                     android:textColor="@color/white"
                     android:textSize="35dp" />
 

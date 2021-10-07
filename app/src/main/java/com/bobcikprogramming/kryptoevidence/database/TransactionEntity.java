@@ -10,7 +10,8 @@ import java.util.Date;
 public class TransactionEntity {
 
     @PrimaryKey(autoGenerate = true)
-    public int uid;
+    @ColumnInfo(name = "transaction_id")
+    public long uidTransaction;
 
     @ColumnInfo(name = "transaction_type")
     public String transactionType;

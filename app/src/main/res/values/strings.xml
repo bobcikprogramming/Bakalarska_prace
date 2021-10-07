@@ -25,7 +25,7 @@
     <string name="currencySell">Prodáno v měně</string>
     <string name="currency">Cena uvedena v měně</string>
     <string name="photo">Vložit snímek</string>
-    
+
     <string-array name="currency">
         <item>CZK</item>
         <item>EUR</item>

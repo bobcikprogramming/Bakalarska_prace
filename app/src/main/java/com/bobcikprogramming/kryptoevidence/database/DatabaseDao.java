@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type='Směna'")
     List<TransactionEntity> getChange();
 
+    @Transaction
     @Query("SELECT * FROM TransactionEntity")
-    List<TransactionEntity> getAll();
+    List<TransactionWithPhotos> getAll();
 
 
     @Insert

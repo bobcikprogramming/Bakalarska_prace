@@ -192,9 +192,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="2">
-                        <ImageButton
-                        android:id="@+id/imgButtonAddPhotoBuy"
-                        style="@style/AddFragmentsImageButtonPhoto"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:orientation="horizontal">
+                            <ImageButton
+                            android:id="@+id/imgButtonAddPhotoBuy"
+                            style="@style/AddFragmentsImageButtonPhoto"/>
+
+                            <ImageView
+                                android:id="@+id/imvButtonShowPhotoBuy"
+                                style="@style/AddFragmentsImageButtonPhoto"
+                                android:src="@null"
+                                android:visibility="gone"
+                                android:layout_height="70dp"
+                                android:layout_width="70dp"
+                                android:layout_gravity="bottom"/>
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
