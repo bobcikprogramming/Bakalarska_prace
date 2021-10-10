@@ -42,6 +42,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
 import java.text.ParseException;
@@ -151,8 +152,9 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
 
     private void saveToDb() {
         AppDatabase db = AppDatabase.getDbInstance(getContext());
-
         TransactionEntity transactionEntity = new TransactionEntity();
+        //PhotoEntity photoEntity = new PhotoEntity();
+
         transactionEntity.transactionType = "Nákup";
         transactionEntity.nameBought = spinnerName.getSelectedItem().toString();
         transactionEntity.quantityBought = etQuantity.getText().toString();

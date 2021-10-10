@@ -28,6 +28,9 @@ public interface DatabaseDao {
     @Insert
     void insertTransaction(TransactionEntity transaction);
 
+    @Insert
+    void insertPhoto(PhotoEntity photo);
+
     @Delete
     void deleteTransaction(TransactionEntity transaction);
 }
