@@ -24,6 +24,8 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionEntity")
     List<TransactionWithPhotos> getAll();
 
+    @Query("SELECT * FROM PhotoEntity")
+    List<PhotoEntity> getPhoto();
 
     @Insert
     void insertTransaction(TransactionEntity transaction);

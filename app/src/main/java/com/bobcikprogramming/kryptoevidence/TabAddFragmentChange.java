@@ -40,10 +40,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TabChangeFragmentAdd extends Fragment implements View.OnClickListener {
+public class TabAddFragmentChange extends Fragment implements View.OnClickListener {
 
     private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
-    private TextView tvDate, tvTime;
+    private TextView tvDate, tvTime, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesPriceSell, tvDesDate, tvDesTime;;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
     /*private ConstraintLayout viewBackgroung;
@@ -56,7 +56,7 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    public TabChangeFragmentAdd() {
+    public TabAddFragmentChange() {
         // Required empty public constructor
     }
 
@@ -93,6 +93,12 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         spinnerNameBuy = view.findViewById(R.id.spinnerNameChangeBuy);
         spinnerNameSell = view.findViewById(R.id.spinnerNameChangeSell);
         spinnerCurrency = view.findViewById(R.id.spinnerCurrencyChange);
+        tvDesQuantityBuy = view.findViewById(R.id.descriptionQuantityChangeBuy);
+        tvDesQuantitySell = view.findViewById(R.id.descriptionQuantityChangeSell);
+        tvDesPriceBuy = view.findViewById(R.id.descriptionPriceChangeBuy);
+        tvDesPriceSell = view.findViewById(R.id.descriptionPriceChangeSell);
+        tvDesDate = view.findViewById(R.id.descriptionDateChange);
+        tvDesTime = view.findViewById(R.id.descriptionTimeChange);
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundChange);
         viewBackgroung.setOnClickListener(this);
@@ -244,15 +250,15 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
         Date actualDate = getDateFormat(getActualDay());
         Date transactionDate = getDateFormat(tvDate.getText().toString());
         if(actualDate.compareTo(transactionDate) < 0){
-            tvDate.startAnimation(animShake);
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
             return false;
         }else if(actualDate.compareTo(transactionDate) == 0) {
             Date actualTime = getTimeFormat(getActualTime());
             Date transactionTime = getTimeFormat(tvTime.getText().toString());
             if (actualTime.compareTo(transactionTime) < 0) {
-                tvTime.startAnimation(animShake);
-                tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+                tvDesTime.startAnimation(animShake);
+                tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 return false;
             }
         }
@@ -300,30 +306,55 @@ public class TabChangeFragmentAdd extends Fragment implements View.OnClickListen
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         boolean findEmpty = false;
-        for (EditText checking: mandatoryField) {
-            if(checking.getText().toString().isEmpty()){
-                findEmpty = true;
-                checking.startAnimation(animShake);
-                checking.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
-            }
-            else{
-                checking.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
-            }
+
+        if(etQuantityBuy.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesQuantityBuy.startAnimation(animShake);
+            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
+
+        if(etQuantitySell.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesQuantitySell.startAnimation(animShake);
+            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
+        if(etPriceBuy.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesPriceBuy.startAnimation(animShake);
+            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
+        if(etPriceSell.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesPriceSell.startAnimation(animShake);
+            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
         if(tvDate.getText().toString().isEmpty()){
             findEmpty = true;
-            tvDate.startAnimation(animShake);
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
+
         if(tvTime.getText().toString().isEmpty()){
             findEmpty = true;
-            tvTime.startAnimation(animShake);
-            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesTime.startAnimation(animShake);
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
+
         return findEmpty;
     }
 

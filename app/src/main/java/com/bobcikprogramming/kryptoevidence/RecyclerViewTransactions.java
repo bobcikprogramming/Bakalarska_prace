@@ -81,7 +81,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity transaction = data.transaction;
         switch (transactionType){
             case "Nákup":
-                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineBuy));
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.green));
                 holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.GONE);
@@ -97,7 +97,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
                 break;
             case "Prodej":
-                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineSell));
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.red));
                 holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvQuantitySL.setText(String.valueOf(transaction.quantityBought));
                 break;
             case "Směna":
-                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.headlineChange));
+                holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.blue));
                 holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.VISIBLE);

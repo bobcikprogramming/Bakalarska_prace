@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fragmentBackgroundChange"
+            android:id="@+id/fragmentBackgroundSell"
             android:orientation="vertical"
             android:paddingTop="10dp">
 
@@ -37,7 +37,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionNameChangeBuy"
+                        android:id="@+id/descriptionCryptoNameChangeBuy"
                         android:text="Nákup kryptoměny"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -71,7 +71,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionQuantityChangeBuy"
+                        android:id="@+id/descriptionCryptoQuantityChangeBuy"
                         android:text="Koupené množství"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -110,7 +110,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionPriceChangeBuy"
+                        android:id="@+id/descriptionCryptoPriceChangeBuy"
                         android:text="Cena za kus"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -183,7 +183,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionNameChangeSell"
+                        android:id="@+id/descriptionCryptoNameChangeSell"
                         android:text="Prodej kryptoměny"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -217,7 +217,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionQuantityChangeSell"
+                        android:id="@+id/descriptionCryptoQuantityChangeSell"
                         android:text="Prodané množství"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -256,7 +256,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionPriceChangeSell"
+                        android:id="@+id/descriptionCryptoPriceChangeSell"
                         android:text="Cena za kus"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -295,7 +295,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionFeeChange"
+                        android:id="@+id/descriptionCryptoFeeChange"
                         android:text="Poplatek"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -334,7 +334,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionDateChange"
+                        android:id="@+id/descriptionCryptoDateChange"
                         android:text="Datum provedení"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -371,7 +371,7 @@
                     <TextView
                         android:layout_width="150dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/descriptionTimeChange"
+                        android:id="@+id/descriptionCryptoTimeChange"
                         android:text="Čas provedení"
                         android:textSize="15dp"
                         android:textColor="@color/lightGray"
@@ -465,275 +465,275 @@
 
 </LinearLayout>
 
-    <!--<ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:fillViewport="true">
+<!--<ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragmentBackgroundChange"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/fragmentBackgroundChange"
-                android:orientation="vertical"
-                android:paddingTop="10dp">
+                android:orientation="horizontal"
+                android:layout_weight="1">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
+                    android:orientation="vertical"
+                    android:weightSum="12">
 
                     <LinearLayout
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="12">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoNameChangeBuy"
-                                android:text="Koupená kryptoměna"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoQuantityChangeBuy"
-                                android:text="Koupené množství"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoPriceChangeBuy"
-                                android:text="Cena za kus"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCurrencyChange"
-                                android:text="Cena v měně"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoNameChangeSell"
-                                android:text="Prodaná kryptoměna"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoQuantityChangeSell"
-                                android:text="Prodané množství"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoPriceChangeSell"
-                                android:text="Cena za kus"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoFeeChange"
-                                android:text="Poplatek"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoDateChange"
-                                android:text="Datum provedení"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/descriptionCryptoTimeChange"
-                                android:text="Čas provedení"
-                                style="@style/AddFragmentsTextViewDescription"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2">
-                            <TextView
-                                android:id="@+id/descriptionPhotoChange"
-                                android:text="Cena za kus"
-                                style="@style/AddFragmentsTextViewDescription"
-                                android:layout_height="100dp"/>
-                        </LinearLayout>
-
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoNameChangeBuy"
+                            android:text="Koupená kryptoměna"
+                            style="@style/AddFragmentsTextViewDescription"/>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="12">
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoQuantityChangeBuy"
+                            android:text="Koupené množství"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <Spinner
-                            android:id="@+id/spinnerNameChangeBuy"
-                            style="@style/AddFragmentsSpinner"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoPriceChangeBuy"
+                            android:text="Cena za kus"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <EditText
-                                android:id="@+id/editTextQuantityChangeBuy"
-                                style="@style/AddFragmentsEditText"
-                                android:inputType="numberDecimal"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCurrencyChange"
+                            android:text="Cena v měně"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <EditText
-                                android:id="@+id/editTextPriceChangeBuy"
-                                style="@style/AddFragmentsEditText"
-                                android:inputType="numberDecimal"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoNameChangeSell"
+                            android:text="Prodaná kryptoměna"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <Spinner
-                                android:id="@+id/spinnerCurrencyChange"
-                                style="@style/AddFragmentsSpinner"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoQuantityChangeSell"
+                            android:text="Prodané množství"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <Spinner
-                                android:id="@+id/spinnerNameChangeSell"
-                                style="@style/AddFragmentsSpinner"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoPriceChangeSell"
+                            android:text="Cena za kus"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <EditText
-                                android:id="@+id/editTextQuantityChangeSell"
-                                style="@style/AddFragmentsEditText"
-                                android:inputType="numberDecimal"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoFeeChange"
+                            android:text="Poplatek"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <EditText
-                                android:id="@+id/editTextPriceChangeSell"
-                                style="@style/AddFragmentsEditText"
-                                android:inputType="numberDecimal"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoDateChange"
+                            android:text="Datum provedení"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <EditText
-                                android:id="@+id/editTextFeeChange"
-                                style="@style/AddFragmentsEditText"
-                                android:inputType="numberDecimal"/>
-                        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/descriptionCryptoTimeChange"
+                            android:text="Čas provedení"
+                            style="@style/AddFragmentsTextViewDescription"/>
+                    </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/textViewDateChange"
-                                style="@style/AddFragmentsTextView"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1">
-                            <TextView
-                                android:id="@+id/textViewTimeChange"
-                                style="@style/AddFragmentsTextView"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="2">
-                            <ImageButton
-                                android:id="@+id/imgButtonAddPhotoChange"
-                                style="@style/AddFragmentsImageButtonPhoto"/>
-                        </LinearLayout>
-
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
+                        <TextView
+                            android:id="@+id/descriptionPhotoChange"
+                            android:text="Cena za kus"
+                            style="@style/AddFragmentsTextViewDescription"
+                            android:layout_height="100dp"/>
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:layout_weight="6"
-                    android:minHeight="100dp">
+                    android:orientation="vertical"
+                    android:weightSum="12">
 
-                    <Button
-                        android:id="@+id/buttonSaveChange"
-                        style="@style/AddFragmentsButton"
-                        android:text="Uložit"
-                        app:backgroundTint="@null"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <Spinner
+                        android:id="@+id/spinnerNameChangeBuy"
+                        style="@style/AddFragmentsSpinner"/>
+                    </LinearLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextQuantityChangeBuy"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextPriceChangeBuy"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <Spinner
+                            android:id="@+id/spinnerCurrencyChange"
+                            style="@style/AddFragmentsSpinner"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <Spinner
+                            android:id="@+id/spinnerNameChangeSell"
+                            style="@style/AddFragmentsSpinner"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextQuantityChangeSell"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextPriceChangeSell"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <EditText
+                            android:id="@+id/editTextFeeChange"
+                            style="@style/AddFragmentsEditText"
+                            android:inputType="numberDecimal"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/textViewDateChange"
+                            style="@style/AddFragmentsTextView"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:id="@+id/textViewTimeChange"
+                            style="@style/AddFragmentsTextView"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2">
+                        <ImageButton
+                            android:id="@+id/imgButtonAddPhotoChange"
+                            style="@style/AddFragmentsImageButtonPhoto"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </ScrollView>-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="6"
+                android:minHeight="100dp">
+
+                <Button
+                    android:id="@+id/buttonSaveChange"
+                    style="@style/AddFragmentsButton"
+                    android:text="Uložit"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>-->

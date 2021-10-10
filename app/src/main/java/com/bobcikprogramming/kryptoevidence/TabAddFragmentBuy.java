@@ -1,0 +1,531 @@
+package com.bobcikprogramming.kryptoevidence;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.ContextWrapper;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Bundle;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+
+public class TabAddFragmentBuy extends Fragment implements View.OnClickListener {
+
+    private EditText etQuantity, etPrice, etFee;
+    private TextView tvDate, tvTime, tvDesQuantity, tvDesPrice, tvDesDate, tvDesTime;
+    private Button btnSave;
+    private ImageButton imgBtnAddPhoto;
+    private ImageView imvBtnShowPhoto;
+    /*private ConstraintLayout viewBackgroung;
+    private ScrollView scrollView;*/
+    private LinearLayout viewBackgroung;
+    private Spinner spinnerCurrency, spinnerName;
+    private View view;
+
+    private ArrayList<Uri> photos;
+    private ArrayList<String> photosPath;
+
+    private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TimePickerDialog.OnTimeSetListener timeSetListener;
+
+    public TabAddFragmentBuy() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_add_tab_buy, container, false);
+        setupUIViews();
+        hideKeyBoardOnSpinnerTouch();
+        openCalendar();
+        openClock();
+
+        spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        photos = new ArrayList<>();
+        photosPath = new ArrayList<>();
+
+        return view;
+    }
+
+
+
+    private void setupUIViews(){
+        etQuantity = view.findViewById(R.id.editTextQuantityBuy);
+        etPrice = view.findViewById(R.id.editTextPriceBuy);
+        etFee = view.findViewById(R.id.editTextFeeBuy);
+        tvDate = view.findViewById(R.id.textViewDateBuy);
+        tvTime = view.findViewById(R.id.textViewTimeBuy);
+        spinnerName = view.findViewById(R.id.spinnerNameBuy);
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrencyBuy);
+        tvDesQuantity = view.findViewById(R.id.descriptionQuantityBuy);
+        tvDesPrice = view.findViewById(R.id.descriptionPriceBuy);
+        tvDesDate = view.findViewById(R.id.descriptionDateBuy);
+        tvDesTime = view.findViewById(R.id.descriptionTimeBuy);
+
+        viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
+        viewBackgroung.setOnClickListener(this);
+        //scrollView = view.findViewById(R.id.scrollViewBuy);
+
+        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
+
+        btnSave = view.findViewById(R.id.buttonSaveBuy);
+        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
+
+        btnSave.setOnClickListener(this);
+        imgBtnAddPhoto.setOnClickListener(this);
+        imvBtnShowPhoto.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.buttonSaveBuy:
+                hideKeyBoard();
+                if(!shakeEmpty() && checkDateAndTime()){
+                    boolean imgSaveSuccess = true;
+                    if(!photos.isEmpty()){
+                        imgSaveSuccess = saveImage();
+                    }
+                    if(imgSaveSuccess) {
+                        saveToDb();
+                        clearEditText();
+                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena." + String.valueOf(photosPath.size()), Toast.LENGTH_SHORT).show();
+                        photos.clear();
+                        photosPath.clear();
+                    }else {
+                        Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
+                        photosPath.clear();
+                    }
+                    //scrollView.setScrollY(0);
+                }
+                break;
+            case R.id.fragmentBackgroundBuy:
+                hideKeyBoard();
+                break;
+            case R.id.imgButtonAddPhotoBuy:
+                mGetContent.launch("image/*");
+                break;
+            case R.id.imvButtonShowPhotoBuy:
+                openPhotoViewerActivity();
+                break;
+
+        }
+    }
+
+    private void saveToDb() {
+        AppDatabase db = AppDatabase.getDbInstance(getContext());
+        TransactionEntity transactionEntity = new TransactionEntity();
+        PhotoEntity photoEntity = new PhotoEntity();
+
+        transactionEntity.transactionType = "Nákup";
+        transactionEntity.nameBought = spinnerName.getSelectedItem().toString();
+        transactionEntity.quantityBought = etQuantity.getText().toString();
+        transactionEntity.priceBought = etPrice.getText().toString();
+        transactionEntity.fee = etFee.getText().toString();
+        transactionEntity.date = tvDate.getText().toString();
+        transactionEntity.time = tvTime.getText().toString();
+        transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
+        transactionEntity.quantitySold = getPrice(etQuantity, etPrice, etFee);
+
+        db.databaseDao().insertTransaction(transactionEntity);
+
+        for(String path : photosPath){
+            photoEntity.dest = path;
+            photoEntity.transactionId = transactionEntity.uidTransaction;
+            db.databaseDao().insertPhoto(photoEntity);
+        }
+
+    }
+
+    // https://stackoverflow.com/a/17674787
+    private boolean saveImage(){
+        ContextWrapper cw = new ContextWrapper(getContext().getApplicationContext());
+        File dir = cw.getDir("Images", getContext().MODE_PRIVATE);
+
+
+        for(Uri photo : photos){
+            Bitmap bitmap;
+            FileOutputStream fos = null;
+
+            File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
+            if(myPath.exists()){
+                System.err.println("chyba 0");
+            }
+
+            try {
+                // https://stackoverflow.com/a/4717740
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photo);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("chyba 1");
+                return false;
+            }
+
+            try {
+                fos = new FileOutputStream(myPath);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("chyba 2");
+                return false;
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    System.err.println("chyba 3");
+                    return false;
+                }
+            }
+            photosPath.add(String.valueOf(myPath));
+
+        }
+
+        return true;
+    }
+
+    private void clearEditText(){
+        etQuantity.setText("");
+        etPrice.setText("");
+        etFee.setText("");
+        tvDate.setText("");
+    }
+
+    private String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
+        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
+        double result = (double)Math.round(toRound * 100d) / 100d;
+        return String.valueOf(result);
+    }
+
+    private Double editTextToDouble(EditText toParse){
+        return Double.parseDouble(toParse.getText().toString());
+    }
+
+    public void openCalendar(){
+        tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateDialogWindow();
+            }
+        });
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                setDateToTextView(year, month, day);
+            }
+        };
+    }
+
+    private void openDateDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
+        DatePickerDialog dialog = new DatePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setDateToTextView(int year, int month, int day){
+        month = month + 1; // bere se od 0
+        String date = day + "." + month + "." + year;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("dd.MM.yyyy");
+        try{
+            Date dateFormatToShow = dateFormat.parse(date);
+            tvDate.setText(dateFormatSecond.format(dateFormatToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování data: "+e);
+        }
+    }
+
+    public void openClock(){
+        tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimeDialogWindow();
+            }
+        });
+
+        timeSetListener = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                setTimeToTextView(hour, minute);
+            }
+        };
+    }
+
+    private void openTimeDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        TimePickerDialog dialog = new TimePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setTimeToTextView(int hour, int minute){
+        String time = hour + ":" + minute;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:m");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("HH:mm");
+        try{
+            Date timeToShow = dateFormat.parse(time);
+            tvTime.setText(dateFormatSecond.format(timeToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
+        }
+    }
+
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
+    private boolean checkDateAndTime(){
+        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        Date actualDate = getDateFormat(getActualDay());
+        Date transactionDate = getDateFormat(tvDate.getText().toString());
+        if(actualDate.compareTo(transactionDate) < 0){
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+            return false;
+        }else if(actualDate.compareTo(transactionDate) == 0) {
+            Date actualTime = getTimeFormat(getActualTime());
+            Date transactionTime = getTimeFormat(tvTime.getText().toString());
+            if (actualTime.compareTo(transactionTime) < 0) {
+                tvDesTime.startAnimation(animShake);
+                tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String getActualDay(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("dd.MM.yyyy");
+        String actualDay = dateFormatCompare.format(calendarDate.getTime());
+        return actualDay;
+    }
+
+    private String getActualTime(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("HH:mm");
+        String actualTime = dateFormatCompare.format(calendarDate.getTime());
+        return actualTime;
+    }
+
+    // TODO formátování data globalizovat
+    private Date getDateFormat(String dateInString){
+        Date date = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        try {
+            date = dateFormat.parse(String.valueOf(dateInString));
+        }catch (ParseException e) {
+            System.err.println("Chyba při parsování data: "+e);
+        }
+        return date;
+    }
+
+    private Date getTimeFormat(String timeInString){
+        Date time = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try{
+            time = dateFormat.parse(String.valueOf(timeInString));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
+        }
+        return time;
+    }
+
+    // https://developer.android.com/training/basics/intents/result
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if(!photos.contains(uri) && uri != null){
+                        photos.add(uri);
+                    }
+                    if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
+                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                        imvBtnShowPhoto.setVisibility(View.VISIBLE);
+                    }
+                    /* Získání bitmapu z URI
+                    try {
+                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        imvBtnShowPhoto.setImageBitmap(mBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            });
+
+    private void openPhotoViewerActivity(){
+        Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
+        photoViewer.putParcelableArrayListExtra("photos",photos);
+        someActivityResultLauncher.launch(photoViewer);
+    }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // There are no request codes
+                    Intent data = result.getData();
+                    photos = data.getParcelableArrayListExtra("photos");
+                    if(photos.size() > 0) {
+                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                    }else{
+                        imvBtnShowPhoto.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+    private boolean shakeEmpty(){
+        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        boolean findEmpty = false;
+
+        if(etQuantity.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesQuantity.startAnimation(animShake);
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
+        if(etPrice.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesPrice.startAnimation(animShake);
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
+        if(tvDate.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
+        if(tvTime.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesTime.startAnimation(animShake);
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+        /*if(spinnerCurrency.getSelectedItem() == null){
+            findEmpty = true;
+            spinnerCurrency.startAnimation(animShake);
+            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+        }else{
+            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+        }*/
+        return findEmpty;
+    }
+
+    private void hideKeyBoardOnSpinnerTouch(){
+        spinnerName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
+
+        spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyBoard();
+                return false;
+            }
+        });
+    }
+
+    private void hideKeyBoard(){
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if(getActivity().getCurrentFocus() != null) {
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+}

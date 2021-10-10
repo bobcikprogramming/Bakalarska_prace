@@ -17,89 +17,153 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                style="@style/MyTextViewDescriptionStyle"
-                android:text="Reálný zisk/ztráta"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingLeft="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="bottom"
-                    android:singleLine="true"
-                    android:text="CZK"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="bottom"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:text="1000"
-                    android:textColor="@color/white"
-                    android:textSize="35dp" />
-
-            </LinearLayout>
-
-            <TextView
-                style="@style/MyTextViewDescriptionStyle"
-                android:text="Celkový obrat"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingLeft="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:gravity="bottom"
-                    android:singleLine="true"
-                    android:text="CZK"
-                    android:textColor="@color/white"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="bottom"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:text="5000"
-                    android:textColor="@color/white"
-                    android:textSize="35dp" />
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/MyTextViewDescriptionStyle"
-                    android:text="Vlastněné kryptoměny"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginBottom="15dp"/>
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rounded_overview_layout_crypto"
+                android:baselineAligned="false"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="right">
+                    android:orientation="vertical">
+
                     <TextView
-                        style="@style/MyTextViewDescriptionStyleRight"
-                        android:text="Počet"
-                        android:layout_marginTop="50dp"
-                        android:layout_marginBottom="15dp"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom"
+                        android:paddingStart="10dp"
+                        android:text="Reálný zisk"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="bottom"
+                            android:paddingStart="10dp"
+                            android:paddingBottom="5dp"
+                            android:singleLine="true"
+                            android:text="CZK"
+                            android:textColor="@color/white"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="bottom"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:text="700"
+                            android:textColor="@color/green"
+                            android:textSize="35sp" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="145dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:paddingStart="10dp"
+                        android:paddingBottom="2dp"
+                        android:text="Celkový obrat v CZK"
+                        android:textColor="@color/descripton"
+                        android:textSize="15dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="bottom|right"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:singleLine="true"
+                            android:text="5000"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="145dp"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:paddingStart="10dp"
+                        android:paddingBottom="2dp"
+                        android:text="Daňové období"
+                        android:textColor="@color/descripton"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="bottom|right"
+                        android:paddingEnd="10dp"
+                        android:singleLine="true"
+                        android:text="2020"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:paddingStart="35dp"
+                    android:paddingBottom="5dp"
+                    android:text="Vlastněné kryptoměny"
+                    android:textColor="@color/descripton" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="bottom|right"
+                    android:paddingEnd="35dp"
+                    android:paddingBottom="5dp"
+                    android:text="Množství"
+                    android:textColor="@color/descripton" />
 
 
             </LinearLayout>
@@ -116,10 +180,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/rounded_overview_layout"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="-15dp">
+            android:background="@drawable/rounded_overview_layout_crypto"
+            android:layout_marginBottom="-25dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -1,26 +1,16 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,16 +23,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
 import java.text.ParseException;
@@ -52,30 +40,25 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-
-public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener {
+public class TabAddFragmentSell extends Fragment implements View.OnClickListener {
 
     private EditText etQuantity, etPrice, etFee;
-    private TextView tvDate, tvTime;
+    private TextView tvDate, tvTime, tvDesQuantity, tvDesPrice, tvDesDate, tvDesTime;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
-    private ImageView imvBtnShowPhoto;
-    /*private ConstraintLayout viewBackgroung;
-    private ScrollView scrollView;*/
+    //private ScrollView scrollView;
+    private Spinner spinnerName, spinnerCurrency;
+    //private ConstraintLayout viewBackgroung;
     private LinearLayout viewBackgroung;
-    private Spinner spinnerCurrency, spinnerName;
     private View view;
-
     private ArrayList<EditText> mandatoryField;
-    private ArrayList<Uri> photos;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    public TabBuyFragmentAdd() {
+    public TabAddFragmentSell() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,49 +69,46 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_tab_buy, container, false);
+        view = inflater.inflate(R.layout.fragment_add_tab_sell, container, false);
         setupUIViews();
-        hideKeyBoardOnSpinnerTouch();
         openCalendar();
         openClock();
+        hideKeyBoardOnSpinnerTouch();
 
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         mandatoryField = new ArrayList<>(Arrays.asList(etQuantity,etPrice,etFee));
-        photos = new ArrayList<>();
-
         return view;
     }
 
-
-
     private void setupUIViews(){
-        etQuantity = view.findViewById(R.id.editTextQuantityBuy);
-        etPrice = view.findViewById(R.id.editTextPriceBuy);
-        etFee = view.findViewById(R.id.editTextFeeBuy);
-        tvDate = view.findViewById(R.id.textViewDateBuy);
-        tvTime = view.findViewById(R.id.textViewTimeBuy);
-        spinnerName = view.findViewById(R.id.spinnerNameBuy);
-        spinnerCurrency = view.findViewById(R.id.spinnerCurrencyBuy);
+        etQuantity = view.findViewById(R.id.editTextQuantitySell);
+        etPrice = view.findViewById(R.id.editTextPriceSell);
+        etFee = view.findViewById(R.id.editTextFeeSell);
+        tvDate = view.findViewById(R.id.textViewDateSell);
+        tvTime = view.findViewById(R.id.textViewTimeSell);
+        spinnerName = view.findViewById(R.id.spinnerNameSell);
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrencySell);
+        tvDesQuantity = view.findViewById(R.id.descriptionQuantitySell);
+        tvDesPrice = view.findViewById(R.id.descriptionPriceSell);
+        tvDesDate = view.findViewById(R.id.descriptionDateSell);
+        tvDesTime = view.findViewById(R.id.descriptionTimeSell);
 
-        viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
+        viewBackgroung = view.findViewById(R.id.fragmentBackgroundSell);
         viewBackgroung.setOnClickListener(this);
-        //scrollView = view.findViewById(R.id.scrollViewBuy);
 
-        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
+        //scrollView = view.findViewById(R.id.scrollViewSell);
 
-        btnSave = view.findViewById(R.id.buttonSaveBuy);
-        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
-
+        btnSave = view.findViewById(R.id.buttonSaveSell);
         btnSave.setOnClickListener(this);
+        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoSell);
         imgBtnAddPhoto.setOnClickListener(this);
-        imvBtnShowPhoto.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.buttonSaveBuy:
+            case R.id.buttonSaveSell:
                 hideKeyBoard();
                 if(!shakeEmpty() && checkDateAndTime()){
                     saveToDb();
@@ -137,33 +117,24 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
                     Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.fragmentBackgroundBuy:
+            case R.id.fragmentBackgroundSell:
                 hideKeyBoard();
-                break;
-            case R.id.imgButtonAddPhotoBuy:
-                mGetContent.launch("image/*");
-                break;
-            case R.id.imvButtonShowPhotoBuy:
-                openPhotoViewerActivity();
-                break;
-
         }
     }
 
     private void saveToDb() {
         AppDatabase db = AppDatabase.getDbInstance(getContext());
-        TransactionEntity transactionEntity = new TransactionEntity();
-        //PhotoEntity photoEntity = new PhotoEntity();
 
-        transactionEntity.transactionType = "Nákup";
-        transactionEntity.nameBought = spinnerName.getSelectedItem().toString();
-        transactionEntity.quantityBought = etQuantity.getText().toString();
-        transactionEntity.priceBought = etPrice.getText().toString();
+        TransactionEntity transactionEntity = new TransactionEntity();
+        transactionEntity.transactionType = "Prodej";
+        transactionEntity.nameSold = spinnerName.getSelectedItem().toString();
+        transactionEntity.quantitySold = etQuantity.getText().toString();
+        transactionEntity.priceSold = etPrice.getText().toString();
         transactionEntity.fee = etFee.getText().toString();
         transactionEntity.date = tvDate.getText().toString();
         transactionEntity.time = tvTime.getText().toString();
         transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
-        transactionEntity.quantitySold = getPrice(etQuantity, etPrice, etFee);
+        transactionEntity.quantityBought = getProfit(etQuantity, etPrice, etFee);
 
         db.databaseDao().insertTransaction(transactionEntity);
     }
@@ -175,14 +146,32 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         tvDate.setText("");
     }
 
-    private String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
-        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
+    private String getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
+        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) - editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
         return String.valueOf(result);
     }
 
     private Double editTextToDouble(EditText toParse){
         return Double.parseDouble(toParse.getText().toString());
+    }
+
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
+    private void openDateDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
+        DatePickerDialog dialog = new DatePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     public void openCalendar(){
@@ -199,18 +188,6 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
                 setDateToTextView(year, month, day);
             }
         };
-    }
-
-    private void openDateDialogWindow(){
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
-        DatePickerDialog dialog = new DatePickerDialog(
-                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
-        );
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
     }
 
     private void setDateToTextView(int year, int month, int day){
@@ -267,26 +244,20 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         }
     }
 
-    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
-        spinnerAdapter.setDropDownViewResource(dropDownId);
-        return spinnerAdapter;
-    }
-
     private boolean checkDateAndTime(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         Date actualDate = getDateFormat(getActualDay());
         Date transactionDate = getDateFormat(tvDate.getText().toString());
         if(actualDate.compareTo(transactionDate) < 0){
-            tvDate.startAnimation(animShake);
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
             return false;
         }else if(actualDate.compareTo(transactionDate) == 0) {
             Date actualTime = getTimeFormat(getActualTime());
             Date transactionTime = getTimeFormat(tvTime.getText().toString());
             if (actualTime.compareTo(transactionTime) < 0) {
-                tvTime.startAnimation(animShake);
-                tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+                tvDesTime.startAnimation(animShake);
+                tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
                 return false;
             }
         }
@@ -307,7 +278,6 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         return actualTime;
     }
 
-    // TODO formátování data globalizovat
     private Date getDateFormat(String dateInString){
         Date date = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -331,87 +301,42 @@ public class TabBuyFragmentAdd extends Fragment implements View.OnClickListener 
         return time;
     }
 
-    // https://developer.android.com/training/basics/intents/result
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(
-            new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                    if(!photos.contains(uri) && uri != null){
-                        photos.add(uri);
-                    }
-                    if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
-                        imvBtnShowPhoto.setImageURI(photos.get(0));
-                        imvBtnShowPhoto.setVisibility(View.VISIBLE);
-                    }
-                    /* Získání bitmapu z URI
-                    try {
-                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                        imvBtnShowPhoto.setImageBitmap(mBitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-                }
-            });
-
-    private void openPhotoViewerActivity(){
-        Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
-        photoViewer.putParcelableArrayListExtra("photos",photos);
-        someActivityResultLauncher.launch(photoViewer);
-    }
-
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    // There are no request codes
-                    Intent data = result.getData();
-                    photos = data.getParcelableArrayListExtra("photos");
-                    if(photos.size() > 0) {
-                        imvBtnShowPhoto.setImageURI(photos.get(0));
-                    }else{
-                        imvBtnShowPhoto.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
-
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         boolean findEmpty = false;
-        for (EditText checking: mandatoryField) {
-            if(checking.getText().toString().isEmpty()){
-                findEmpty = true;
-                checking.startAnimation(animShake);
-                checking.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
-            }
-            else{
-                checking.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
-            }
+
+        if(etQuantity.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesQuantity.startAnimation(animShake);
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
+
+        if(etPrice.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesPrice.startAnimation(animShake);
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
         if(tvDate.getText().toString().isEmpty()){
             findEmpty = true;
-            tvDate.startAnimation(animShake);
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDate.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
+
         if(tvTime.getText().toString().isEmpty()){
             findEmpty = true;
-            tvTime.startAnimation(animShake);
-            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
+            tvDesTime.startAnimation(animShake);
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvTime.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
-        /*if(spinnerCurrency.getSelectedItem() == null){
-            findEmpty = true;
-            spinnerCurrency.startAnimation(animShake);
-            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
-        }else{
-            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
-        }*/
+
         return findEmpty;
     }
 

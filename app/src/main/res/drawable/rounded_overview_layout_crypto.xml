@@ -3,12 +3,13 @@
     <item>
         <shape>
             <solid
-                android:color="@color/navBarBachground"/>
+                android:color="@color/overviewLayoutCryptoBackground"/>
             <stroke
-                android:color="@color/button"
-                android:width="2dp"/>
+                android:color="@color/white"
+                android:width="1dp"
+                />
             <corners
-                android:radius="15dp" />
+                android:radius="25dp" />
             <padding
                 android:bottom="10dp"
                 android:left="10dp"

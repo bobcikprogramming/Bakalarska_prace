@@ -3,12 +3,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dirtyWhite">#D0D0D0</color>
+    <color name="lightGray">#D3D3D3</color>
+    <color name="green">#1CB753</color>
+    <color name="red">#D33A3A</color>
+    <color name="blue">#6973F3</color>
 
     <color name="navBarSelect">#F9B720</color>
     <color name="navBarIconVariant">#E7B647</color>
     <color name="mainBackground">#212121</color>
     <color name="navBarBachground">#191919</color>
-    <color name="overviewLayoutBackground">#161616</color>
+    <color name="overviewLayoutCryptoBackground">#161616</color>
+    <color name="overviewLayoutResultBackground">#363636</color>
     <color name="editTextBachground">#303030</color>
     <color name="editTextIsEmptyBachground">#EE8C78</color>
     <color name="editTextBorder">#505050</color>
@@ -17,7 +22,4 @@
     <color name="colorAccent">#F9B720</color>
     <color name="button">#EBB742</color>
     <color name="recyclerViewItemUnderline">#E7B647</color>
-    <color name="headlineBuy">#1CB753</color>
-    <color name="headlineSell">#D33A3A</color>
-    <color name="headlineChange">#6973F3</color>
 </resources>

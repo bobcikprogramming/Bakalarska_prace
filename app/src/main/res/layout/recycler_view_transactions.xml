@@ -5,7 +5,10 @@ xmlns:tools="http://schemas.android.com/tools"
 tools:context=".RecyclerViewTransactions"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-android:background="@color/mainBackground"
+android:background="@drawable/rounded_overview_layout_crypto"
+android:layout_marginStart="10dp"
+android:layout_marginEnd="10dp"
+android:layout_marginBottom="5dp"
 android:orientation="vertical"
 android:id="@+id/layoutTransactions"
 android:padding="5dp">
@@ -20,7 +23,7 @@ android:padding="5dp">
             android:layout_weight="1"
             android:id="@+id/textViewOperation"
             android:text="Nákup"
-            android:textColor="@color/headlineBuy"
+            android:textColor="@color/green"
             android:textSize="20dp"
             android:textStyle="bold"
             android:gravity="center_vertical"
@@ -159,11 +162,11 @@ android:padding="5dp">
 
     </LinearLayout>
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="5dp"
-        android:background="@color/recyclerViewItemUnderline"/>
+        android:background="@color/recyclerViewItemUnderline"/>-->
 </LinearLayout>
