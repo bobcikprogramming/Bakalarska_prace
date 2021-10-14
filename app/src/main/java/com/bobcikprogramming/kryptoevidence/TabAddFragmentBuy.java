@@ -41,6 +41,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -72,8 +73,8 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
     private ImageView imvBtnShowPhoto;
-    /*private ConstraintLayout viewBackgroung;
-    private ScrollView scrollView;*/
+    //private ConstraintLayout viewBackgroung;
+    private ScrollView scrollView;
     private LinearLayout viewBackgroung;
     private Spinner spinnerCurrency, spinnerName;
     private View view;
@@ -106,6 +107,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
 
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+
         photos = new ArrayList<>();
         photosPath = new ArrayList<>();
 
@@ -129,7 +131,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
         viewBackgroung.setOnClickListener(this);
-        //scrollView = view.findViewById(R.id.scrollViewBuy);
+        scrollView = view.findViewById(R.id.scrollViewBuy);
 
         imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
 
@@ -154,14 +156,15 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                     if(imgSaveSuccess) {
                         saveToDb();
                         clearEditText();
-                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena." + String.valueOf(photosPath.size()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         photos.clear();
                         photosPath.clear();
+                        imvBtnShowPhoto.setVisibility(View.GONE);
+                        scrollView.setScrollY(0);
                     }else {
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                         photosPath.clear();
                     }
-                    //scrollView.setScrollY(0);
                 }
                 break;
             case R.id.fragmentBackgroundBuy:
@@ -173,7 +176,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
             case R.id.imvButtonShowPhotoBuy:
                 openPhotoViewerActivity();
                 break;
-
         }
     }
 
@@ -181,25 +183,25 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         AppDatabase db = AppDatabase.getDbInstance(getContext());
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
+        String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
         transactionEntity.transactionType = "Nákup";
         transactionEntity.nameBought = spinnerName.getSelectedItem().toString();
         transactionEntity.quantityBought = etQuantity.getText().toString();
         transactionEntity.priceBought = etPrice.getText().toString();
-        transactionEntity.fee = etFee.getText().toString();
+        transactionEntity.fee = transactionFee;
         transactionEntity.date = tvDate.getText().toString();
         transactionEntity.time = tvTime.getText().toString();
         transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
         transactionEntity.quantitySold = getPrice(etQuantity, etPrice, etFee);
 
-        db.databaseDao().insertTransaction(transactionEntity);
+        long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
         for(String path : photosPath){
             photoEntity.dest = path;
-            photoEntity.transactionId = transactionEntity.uidTransaction;
+            photoEntity.transactionId = uidTransaction;
             db.databaseDao().insertPhoto(photoEntity);
         }
-
     }
 
     // https://stackoverflow.com/a/17674787
@@ -213,16 +215,12 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
             FileOutputStream fos = null;
 
             File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
-            if(myPath.exists()){
-                System.err.println("chyba 0");
-            }
 
             try {
                 // https://stackoverflow.com/a/4717740
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photo);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("chyba 1");
                 return false;
             }
 
@@ -231,14 +229,12 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             } catch (Exception e) {
                 e.printStackTrace();
-                System.err.println("chyba 2");
                 return false;
             } finally {
                 try {
                     fos.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.err.println("chyba 3");
                     return false;
                 }
             }
@@ -254,6 +250,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         etPrice.setText("");
         etFee.setText("");
         tvDate.setText("");
+        tvTime.setText("");
     }
 
     private String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
@@ -263,7 +260,8 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     }
 
     private Double editTextToDouble(EditText toParse){
-        return Double.parseDouble(toParse.getText().toString());
+        String inString = toParse.getText().toString();
+        return inString.isEmpty() ? 0.0 : Double.parseDouble(inString);
     }
 
     public void openCalendar(){
@@ -388,7 +386,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         return actualTime;
     }
 
-    // TODO formátování data globalizovat
     private Date getDateFormat(String dateInString){
         Date date = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -425,13 +422,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                         imvBtnShowPhoto.setImageURI(photos.get(0));
                         imvBtnShowPhoto.setVisibility(View.VISIBLE);
                     }
-                    /* Získání bitmapu z URI
-                    try {
-                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
-                        imvBtnShowPhoto.setImageBitmap(mBitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
                 }
             });
 

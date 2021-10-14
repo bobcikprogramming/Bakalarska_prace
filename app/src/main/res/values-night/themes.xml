@@ -4,8 +4,8 @@
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="colorPrimary">@color/navBarSelect</item>
-        <item name="colorPrimaryVariant">@color/navBarBachground</item>
-        <item name="colorOnPrimary">@color/navBarBachground</item>
+        <item name="colorPrimaryVariant">@color/navBarBackground</item>
+        <item name="colorOnPrimary">@color/navBarBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -24,15 +25,22 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionEntity")
     List<TransactionWithPhotos> getAll();
 
+    @Transaction
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_id = :transactionID")
+    TransactionWithPhotos getByTransactionID(String transactionID);
+
     @Query("SELECT * FROM PhotoEntity")
     List<PhotoEntity> getPhoto();
 
     @Insert
-    void insertTransaction(TransactionEntity transaction);
+    long insertTransaction(TransactionEntity transaction);
 
     @Insert
     void insertPhoto(PhotoEntity photo);
 
     @Delete
     void deleteTransaction(TransactionEntity transaction);
+
+    @Update
+    void updateTransaction(TransactionEntity transaction);
 }

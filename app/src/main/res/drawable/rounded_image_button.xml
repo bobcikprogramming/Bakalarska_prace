@@ -3,7 +3,7 @@
     <item>
         <shape>
             <solid
-                android:color="@color/navBarBachground"/>
+                android:color="@color/navBarBackground"/>
             <stroke
                 android:color="@color/button"
                 android:width="2dp"/>

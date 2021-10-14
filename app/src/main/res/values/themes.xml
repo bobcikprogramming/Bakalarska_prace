@@ -1,12 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:spinnerDropDownItemStyle">@style/mySpinnerItemStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/MySpinnerItemStyle</item>
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="colorPrimary">@color/navBarSelect</item>
-        <item name="colorPrimaryVariant">@color/navBarBachground</item>
-        <item name="colorOnPrimary">@color/navBarBachground</item>
+        <item name="colorPrimaryVariant">@color/navBarBackground</item>
+        <item name="colorOnPrimary">@color/navBarBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -31,7 +31,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/descripton</item>
+        <item name="android:textColor">@color/description</item>
         <item name="android:layout_marginStart">30dp</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
@@ -40,7 +40,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/descripton</item>
+        <item name="android:textColor">@color/description</item>
         <item name="android:layout_marginEnd">35dp</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
@@ -120,7 +120,7 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center_vertical|end</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/descripton</item>
+        <item name="android:textColor">@color/description</item>
     </style>
 
     <style name="AddFragmentsTextView">
@@ -184,8 +184,22 @@
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+    <style name="MySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <!-- https://stackoverflow.com/a/42373688 -->
+    <style name="MyDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@color/navBarBackground</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyDialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyDialogButtonStyle</item>
+    </style>
+
+    <style name="MyDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/description</item>
+    </style>
+
 
 </resources>

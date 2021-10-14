@@ -12,6 +12,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:id="@+id/scrollViewChange"
         android:fillViewport="true">
 
         <LinearLayout
@@ -29,8 +30,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -56,15 +56,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -95,15 +94,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -134,15 +132,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -168,15 +165,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -202,15 +198,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -241,15 +236,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -280,15 +274,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -319,15 +312,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -356,15 +348,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="60dp"
                     android:minHeight="50dp"
                     android:orientation="horizontal">
 
@@ -393,15 +384,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/descripton"
+                    android:layout_height="0.5dp"
+                    android:background="@color/description"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_height="110dp"
                     android:minHeight="100dp"
                     android:orientation="horizontal">
 

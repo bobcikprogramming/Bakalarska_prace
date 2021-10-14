@@ -1,51 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context=".RecyclerViewTransactions"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:background="@drawable/rounded_overview_layout_crypto"
-android:layout_marginStart="10dp"
-android:layout_marginEnd="10dp"
-android:layout_marginBottom="5dp"
-android:orientation="vertical"
-android:id="@+id/layoutTransactions"
-android:padding="5dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RecyclerViewTransactions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mainBackground"
+    android:orientation="vertical"
+    android:id="@+id/layoutTransactions"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:id="@+id/textViewOperation"
             android:text="Nákup"
             android:textColor="@color/green"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"/>
+            android:gravity="center_vertical"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/textViewDate"
             android:text="1.1.2021"
-            android:textColor="@color/descripton"
+            android:textColor="@color/lightGray"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            android:paddingRight="5dp"/>
+            android:gravity="center_vertical|right"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/textViewTime"
             android:text="11:59"
-            android:textColor="@color/descripton"
+            android:textColor="@color/description"
             android:textSize="15dp"
             android:textStyle="bold"
             android:gravity="bottom"
@@ -63,65 +59,65 @@ android:padding="5dp">
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/MyTextViewRecyclerViewHeadline"
-                        android:id="@+id/textViewDescriptionFirstLine"
-                        android:text="Koupeno:"
-                        android:textColor="@color/dirtyWhite"/>
-
-                    <TextView
-                        style="@style/MyTextViewRecyclerViewName"
-                        android:id="@+id/textViewNameFirstLine"
-                        android:text="BTC" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDescriptionFirstLine"
+                android:textSize="15sp"
+                android:text="Koupeno:"
+                android:textColor="@color/lightGray"
+                android:layout_marginTop="5dp"/>
 
             <TextView
-                style="@style/MyTextViewRecyclerViewPriceDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:maxWidth="160dp"
+                android:id="@+id/textViewNameFirstLine"
+                android:text="BTC"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="10dp"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/textViewDescriptionPriceBuy"
-                android:text="Cena/ks" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/MyTextViewRecyclerViewHeadline"
-                        android:id="@+id/textViewDescriptionSecondLine"
-                        android:text="Platba:"
-                        android:textColor="@color/dirtyWhite"/>
-
-                    <TextView
-                        style="@style/MyTextViewRecyclerViewName"
-                        android:id="@+id/textViewNameSecondLine"
-                        android:text="EUR"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:text="Cena/ks"
+                android:textColor="@color/dirtyWhite"
+                android:textSize="15sp"
+                android:paddingStart="10dp" />
 
             <TextView
-                style="@style/MyTextViewRecyclerViewPriceDescription"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDescriptionSecondLine"
+                android:text="Platba:"
+                android:textSize="15sp"
+                android:textColor="@color/lightGray"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:maxWidth="160dp"
+                android:id="@+id/textViewNameSecondLine"
+                android:text="EUR"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="10dp"/>
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/textViewDescriptionPriceSell"
-                android:text="Cena/ks"/>
+                android:text="Cena/ks"
+                android:textColor="@color/dirtyWhite"
+                android:textSize="15sp"
+                android:paddingStart="10dp" />
 
         </LinearLayout>
 
@@ -130,43 +126,67 @@ android:padding="5dp">
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="80dp"
+                android:layout_height="25dp"/>
+
             <TextView
-                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:maxWidth="160dp"
                 android:id="@+id/textViewQuantityFirstLine"
                 android:text="0.0514700"
-                android:textSize="20dp"/>
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="10dp"
+                android:gravity="right"/>
 
             <TextView
-                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
-                android:layout_height="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/textViewPriceFirst"
                 android:text="30000.0"
-                android:textSize="15dp"/>
+                android:textColor="@color/dirtyWhite"
+                android:textSize="15sp"
+                android:paddingStart="10dp"
+                android:gravity="right"/>
+
+            <View
+                android:layout_width="80dp"
+                android:layout_height="30dp"/>
 
             <TextView
-                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minWidth="80dp"
+                android:maxWidth="160dp"
                 android:id="@+id/textViewQuantitySecondLine"
                 android:text="100.0"
-                android:textSize="20dp"/>
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:paddingStart="10dp"
+                android:gravity="right"/>
 
             <TextView
-                style="@style/MyTextViewRecyclerViewQuantityAndPrice"
-                android:layout_height="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/textViewPriceSecondLine"
                 android:text="30000.0"
-                android:textSize="15dp"/>
+                android:textColor="@color/dirtyWhite"
+                android:textSize="15sp"
+                android:paddingStart="10dp"
+                android:gravity="right"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <!--<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_height="0.5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/recyclerViewItemUnderline"/>-->
+        android:background="@color/recyclerViewItemUnderline"/>
 </LinearLayout>

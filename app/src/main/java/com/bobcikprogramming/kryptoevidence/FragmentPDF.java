@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
 import java.io.File;
@@ -47,8 +48,12 @@ public class FragmentPDF extends Fragment {
         List<TransactionWithPhotos> dataFromDatabase = db.databaseDao().getAll();
         ArrayList<Uri> images = new ArrayList<>();
         List<PhotoEntity> dataFromDatabasePhoto = db.databaseDao().getPhoto();
+        List<TransactionEntity> dataFromDatabaseTransaction = db.databaseDao().getBuy();
         System.out.println("Jsem zde");
         for(PhotoEntity photo : dataFromDatabasePhoto){
+            if(photo.transactionId != dataFromDatabaseTransaction.get(dataFromDatabaseTransaction.size()-1).uidTransaction){
+                continue;
+            }
             System.out.println("hledám foto");
             File imgFile = new  File(photo.dest);
             if(imgFile.exists()){

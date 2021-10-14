@@ -3,14 +3,23 @@ package com.bobcikprogramming.kryptoevidence;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContextWrapper;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +32,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -31,8 +41,12 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,12 +60,15 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
     private TextView tvDate, tvTime, tvDesQuantity, tvDesPrice, tvDesDate, tvDesTime;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
-    //private ScrollView scrollView;
+    private ImageView imvBtnShowPhoto;
+    private ScrollView scrollView;
     private Spinner spinnerName, spinnerCurrency;
     //private ConstraintLayout viewBackgroung;
     private LinearLayout viewBackgroung;
     private View view;
-    private ArrayList<EditText> mandatoryField;
+
+    private ArrayList<Uri> photos;
+    private ArrayList<String> photosPath;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
@@ -77,7 +94,10 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
 
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-        mandatoryField = new ArrayList<>(Arrays.asList(etQuantity,etPrice,etFee));
+
+        photos = new ArrayList<>();
+        photosPath = new ArrayList<>();
+
         return view;
     }
 
@@ -96,13 +116,16 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundSell);
         viewBackgroung.setOnClickListener(this);
+        scrollView = view.findViewById(R.id.scrollViewSell);
 
-        //scrollView = view.findViewById(R.id.scrollViewSell);
+        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoSell);
 
         btnSave = view.findViewById(R.id.buttonSaveSell);
-        btnSave.setOnClickListener(this);
         imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoSell);
+
+        btnSave.setOnClickListener(this);
         imgBtnAddPhoto.setOnClickListener(this);
+        imvBtnShowPhoto.setOnClickListener(this);
     }
 
     @Override
@@ -111,32 +134,100 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
             case R.id.buttonSaveSell:
                 hideKeyBoard();
                 if(!shakeEmpty() && checkDateAndTime()){
-                    saveToDb();
-                    clearEditText();
-                    //scrollView.setScrollY(0);
-                    Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
+                    boolean imgSaveSuccess = true;
+                    if(!photos.isEmpty()){
+                        imgSaveSuccess = saveImage();
+                    }
+                    if(imgSaveSuccess) {
+                        saveToDb();
+                        clearEditText();
+                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
+                        photos.clear();
+                        photosPath.clear();
+                        imvBtnShowPhoto.setVisibility(View.GONE);
+                        scrollView.setScrollY(0);
+                    }else {
+                        Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
+                        photosPath.clear();
+                    }
                 }
                 break;
             case R.id.fragmentBackgroundSell:
                 hideKeyBoard();
+                break;
+            case R.id.imgButtonAddPhotoSell:
+                mGetContent.launch("image/*");
+                break;
+            case R.id.imvButtonShowPhotoSell:
+                openPhotoViewerActivity();
+                break;
         }
     }
 
     private void saveToDb() {
         AppDatabase db = AppDatabase.getDbInstance(getContext());
-
         TransactionEntity transactionEntity = new TransactionEntity();
+        PhotoEntity photoEntity = new PhotoEntity();
+        String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
+
         transactionEntity.transactionType = "Prodej";
         transactionEntity.nameSold = spinnerName.getSelectedItem().toString();
         transactionEntity.quantitySold = etQuantity.getText().toString();
         transactionEntity.priceSold = etPrice.getText().toString();
-        transactionEntity.fee = etFee.getText().toString();
+        transactionEntity.fee = transactionFee;
         transactionEntity.date = tvDate.getText().toString();
         transactionEntity.time = tvTime.getText().toString();
         transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
         transactionEntity.quantityBought = getProfit(etQuantity, etPrice, etFee);
 
-        db.databaseDao().insertTransaction(transactionEntity);
+        long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
+
+        for(String path : photosPath){
+            photoEntity.dest = path;
+            photoEntity.transactionId = uidTransaction;
+            db.databaseDao().insertPhoto(photoEntity);
+        }
+    }
+
+    // https://stackoverflow.com/a/17674787
+    private boolean saveImage(){
+        ContextWrapper cw = new ContextWrapper(getContext().getApplicationContext());
+        File dir = cw.getDir("Images", getContext().MODE_PRIVATE);
+
+
+        for(Uri photo : photos){
+            Bitmap bitmap;
+            FileOutputStream fos = null;
+
+            File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
+
+            try {
+                // https://stackoverflow.com/a/4717740
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photo);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            try {
+                fos = new FileOutputStream(myPath);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+            photosPath.add(String.valueOf(myPath));
+
+        }
+
+        return true;
     }
 
     private void clearEditText(){
@@ -144,6 +235,7 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
         etPrice.setText("");
         etFee.setText("");
         tvDate.setText("");
+        tvTime.setText("");
     }
 
     private String getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
@@ -153,7 +245,8 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
     }
 
     private Double editTextToDouble(EditText toParse){
-        return Double.parseDouble(toParse.getText().toString());
+        String inString = toParse.getText().toString();
+        return inString.isEmpty() ? 0.0 : Double.parseDouble(inString);
     }
 
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
@@ -300,6 +393,52 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
         }
         return time;
     }
+
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    if(!photos.contains(uri) && uri != null){
+                        photos.add(uri);
+                    }
+                    if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
+                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                        imvBtnShowPhoto.setVisibility(View.VISIBLE);
+                    }
+                    /* Získání bitmapu z URI
+                    try {
+                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        imvBtnShowPhoto.setImageBitmap(mBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                }
+            });
+
+    private void openPhotoViewerActivity(){
+        Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
+        photoViewer.putParcelableArrayListExtra("photos",photos);
+        someActivityResultLauncher.launch(photoViewer);
+    }
+
+    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        photos = data.getParcelableArrayListExtra("photos");
+                        if(photos.size() > 0) {
+                            imvBtnShowPhoto.setImageURI(photos.get(0));
+                        }else{
+                            imvBtnShowPhoto.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            });
 
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);

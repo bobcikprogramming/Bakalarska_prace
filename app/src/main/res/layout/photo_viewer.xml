@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
-        android:background="@color/navBarBachground">
+        android:background="@color/navBarBackground">
 
         <ImageButton
             android:layout_width="65dp"

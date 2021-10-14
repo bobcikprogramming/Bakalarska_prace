@@ -85,7 +85,7 @@
                         android:paddingStart="10dp"
                         android:paddingBottom="2dp"
                         android:text="Celkový obrat v CZK"
-                        android:textColor="@color/descripton"
+                        android:textColor="@color/description"
                         android:textSize="15dp" />
 
                     <LinearLayout
@@ -120,7 +120,7 @@
                         android:paddingStart="10dp"
                         android:paddingBottom="2dp"
                         android:text="Daňové období"
-                        android:textColor="@color/descripton"
+                        android:textColor="@color/description"
                         android:textSize="15dp" />
 
                     <TextView
@@ -153,7 +153,7 @@
                     android:paddingStart="35dp"
                     android:paddingBottom="5dp"
                     android:text="Vlastněné kryptoměny"
-                    android:textColor="@color/descripton" />
+                    android:textColor="@color/description" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -163,7 +163,7 @@
                     android:paddingEnd="35dp"
                     android:paddingBottom="5dp"
                     android:text="Množství"
-                    android:textColor="@color/descripton" />
+                    android:textColor="@color/description" />
 
 
             </LinearLayout>
