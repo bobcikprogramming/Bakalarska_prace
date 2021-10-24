@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:id="@+id/layoutCryptoSelection"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/cryptoLongName"
+        android:text="Bitcoin"
+        android:textColor="@color/white"
+        android:textSize="23sp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/cryptoShortName"
+        android:text="BTC"
+        android:textColor="@color/lightGray"
+        android:textSize="17dp"
+        android:gravity="center_vertical"
+        android:paddingTop="6dp"
+        android:paddingStart="5dp"/>
+
+</LinearLayout>

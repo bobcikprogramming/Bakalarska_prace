@@ -165,11 +165,12 @@
     </style>
 
     <style name="AddFragmentsImageButtonPhoto">
-        <item name="android:layout_width">90dp</item>
-        <item name="android:layout_height">90dp</item>
+        <item name="android:layout_width">65dp</item>
+        <item name="android:layout_height">65dp</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:padding">15dp</item>
         <item name="android:background">@drawable/rounded_image_button</item>
         <item name="android:src">@drawable/ic_photo_50</item>
     </style>
@@ -200,6 +201,5 @@
     <style name="MyDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/description</item>
     </style>
-
 
 </resources>

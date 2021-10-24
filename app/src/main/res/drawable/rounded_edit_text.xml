@@ -4,9 +4,6 @@
     android:padding="10dp">
 
     <solid android:color="@color/editTextBackground" />
-    <stroke
-        android:color="@color/editTextBorder"
-        android:width="2dp"/>
     <corners
         android:bottomRightRadius="15dp"
         android:bottomLeftRadius="15dp"

@@ -168,7 +168,4 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         dataList.remove(position);
         notifyDataSetChanged();
     }
-
-    public interface PositionClickListener {
-        void itemClicked(int position); }
 }

@@ -1,8 +1,5 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -10,7 +7,6 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +17,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,10 +30,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,20 +41,15 @@ import android.widget.Toast;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 
 public class TabAddFragmentBuy extends Fragment implements View.OnClickListener {
@@ -71,9 +57,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     private EditText etQuantity, etPrice, etFee;
     private TextView tvDate, tvTime, tvDesQuantity, tvDesPrice, tvDesDate, tvDesTime;
     private Button btnSave;
-    private ImageButton imgBtnAddPhoto;
-    private ImageView imvBtnShowPhoto;
-    //private ConstraintLayout viewBackgroung;
+    private ImageView imvBtnShowPhoto, imgBtnAddPhoto;
     private ScrollView scrollView;
     private LinearLayout viewBackgroung;
     private Spinner spinnerCurrency, spinnerName;
@@ -133,10 +117,9 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         viewBackgroung.setOnClickListener(this);
         scrollView = view.findViewById(R.id.scrollViewBuy);
 
-        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
-
         btnSave = view.findViewById(R.id.buttonSaveBuy);
         imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
+        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
 
         btnSave.setOnClickListener(this);
         imgBtnAddPhoto.setOnClickListener(this);

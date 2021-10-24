@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavBar);
 
         FragmentOverView fragmentOverView = new FragmentOverView();
-        FragmentAdd fragmentOverAdd = new FragmentAdd();
-        FragmentPDF fragmentOverPDF = new FragmentPDF();
+        FragmentAdd fragmentAdd = new FragmentAdd();
+        FragmentTransactions fragmentTransactions = new FragmentTransactions();
+        FragmentPDF fragmentPDF = new FragmentPDF();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentOverView()).commit();
         selectBottomMenu(R.id.overview);
@@ -41,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.overview:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentOverView).commit();
                         return true;
-                    case R.id.add:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentOverAdd).commit();
+                    case R.id.transactions:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentTransactions).commit();
                         return true;
                     case R.id.pdf:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentOverPDF).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentPDF).commit();
                         return true;
                 }
                 return false;

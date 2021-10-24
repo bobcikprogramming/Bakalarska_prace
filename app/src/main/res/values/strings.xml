@@ -2,6 +2,7 @@
     <string name="app_name">Krypto Evidence</string>
     <!-- Popis spodní lišty -->
     <string name="btmNBAdd">Vytvořit</string>
+    <string name="btmNBTransactions">Transakce</string>
     <string name="btmNBOverView">Přehled</string>
     <string name="btmNBPDF">PDF archiv</string>
     <!-- Popis horní lišty - sekce vytvořit -->
@@ -38,4 +39,6 @@
         <item>ADA</item>
         <item>ETH</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

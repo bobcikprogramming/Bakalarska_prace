@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="45dp"
     android:orientation="vertical"
     tools:context=".TabAddFragmentBuy">
 
@@ -30,9 +29,9 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
-                    android:orientation="horizontal">
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="150dp"
@@ -56,15 +55,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -94,15 +85,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -132,15 +122,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -165,15 +154,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -198,15 +186,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -236,15 +223,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -274,15 +260,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -312,15 +297,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -348,15 +332,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:minHeight="50dp"
+                    android:layout_height="50dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -384,14 +367,14 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/description"
+                    android:layout_height="0.01dp"
+                    android:background="@color/lightGrayTransparent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp" />
+                    android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="80dp"
                     android:minHeight="100dp"
                     android:orientation="horizontal">
 
@@ -416,8 +399,8 @@
                             style="@style/AddFragmentsImageButtonPhoto"
                             android:src="@null"
                             android:visibility="gone"
-                            android:layout_height="70dp"
-                            android:layout_width="70dp" />
+                            android:layout_height="50dp"
+                            android:layout_width="55dp" />
 
                         <ImageButton
                             android:id="@+id/imgButtonAddPhotoChange"
@@ -440,7 +423,7 @@
                 <Button
                     android:id="@+id/buttonSaveChange"
                     style="@style/AddFragmentsButton"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="24dp"
                     android:text="Uložit"
                     app:backgroundTint="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
