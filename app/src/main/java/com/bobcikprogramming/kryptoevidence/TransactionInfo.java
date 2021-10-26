@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
@@ -190,7 +189,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
             case "Nákup":
                 setupGUISameForBuyAndSell(transaction);
                 descSecondL.setText("Koupené množství");
-                etFirstL.setText(transaction.nameBought);
+                etFirstL.setText(transaction.shortNameBought);
                 etSecondL.setText(transaction.quantityBought);
                 etThirdL.setText(transaction.priceBought);
 
@@ -198,7 +197,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
             case "Prodej":
                 setupGUISameForBuyAndSell(transaction);
                 descSecondL.setText("Prodané množství");
-                etFirstL.setText(transaction.nameSold);
+                etFirstL.setText(transaction.shortNameSold);
                 etSecondL.setText(transaction.quantitySold);
                 etThirdL.setText(transaction.priceSold);
                 break;
@@ -215,11 +214,11 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
                 descNinthL.setText("Datum provedení");
                 descTenL.setText("Čas provedení");
                 tvTransactionT.setText(transaction.transactionType);
-                etFirstL.setText(transaction.nameBought);
+                etFirstL.setText(transaction.shortNameBought);
                 etSecondL.setText(transaction.quantityBought);
                 etThirdL.setText(transaction.priceBought);
                 etFourthL.setText(transaction.currency);
-                etFifthL.setText(transaction.nameSold);
+                etFifthL.setText(transaction.shortNameSold);
                 etSixthL.setText(transaction.quantitySold);
                 etSeventhL.setText(transaction.priceSold);
                 etEighthL.setText(transaction.fee);
@@ -252,10 +251,10 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
         setNavBarVisibility(editMode);
         switch(transaction.transactionType){
             case "Nákup":
-                setupGUIForEditSameForBuyAndSell(editMode, transaction.nameBought, transaction.currency);
+                setupGUIForEditSameForBuyAndSell(editMode, transaction.shortNameBought, transaction.currency);
                 break;
             case "Prodej":
-                setupGUIForEditSameForBuyAndSell(editMode, transaction.nameSold, transaction.currency);
+                setupGUIForEditSameForBuyAndSell(editMode, transaction.shortNameSold, transaction.currency);
                 break;
             case "Směna":
                 for(EditText editable : editTextsChange){
@@ -277,11 +276,11 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
                     openClock(etTenthL);
 
                     spinnerFirstL.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-                    spinnerFirstL.setSelection(((ArrayAdapter) spinnerFirstL.getAdapter()).getPosition(transaction.nameBought)); // <-- https://stackoverflow.com/a/11072595
+                    spinnerFirstL.setSelection(((ArrayAdapter) spinnerFirstL.getAdapter()).getPosition(transaction.shortNameBought)); // <-- https://stackoverflow.com/a/11072595
                     spinnerFourthL.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
                     spinnerFourthL.setSelection(((ArrayAdapter) spinnerFourthL.getAdapter()).getPosition(transaction.currency)); // <-- https://stackoverflow.com/a/11072595
                     spinnerFifthL.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-                    spinnerFifthL.setSelection(((ArrayAdapter) spinnerFifthL.getAdapter()).getPosition(transaction.nameSold)); // <-- https://stackoverflow.com/a/11072595
+                    spinnerFifthL.setSelection(((ArrayAdapter) spinnerFifthL.getAdapter()).getPosition(transaction.shortNameSold)); // <-- https://stackoverflow.com/a/11072595
                 }else{
                     etFirstL.setVisibility(View.VISIBLE);
                     spinnerFirstL.setVisibility(View.GONE);
@@ -355,12 +354,12 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
         update.transactionType = transaction.transactionType;
         if(transaction.transactionType.equals("Nákup") || transaction.transactionType.equals("Prodej")) {
             if (transaction.transactionType.equals("Nákup")) {
-                update.nameBought = spinnerFirstL.getSelectedItem().toString();
+                update.shortNameBought = spinnerFirstL.getSelectedItem().toString();
                 update.quantityBought = getString(etSecondL);
                 update.priceBought = getString(etThirdL);
                 update.quantitySold = getPrice(etSecondL, etThirdL, etFifthL);
             }else {
-                update.nameSold = spinnerFirstL.getSelectedItem().toString();
+                update.shortNameSold = spinnerFirstL.getSelectedItem().toString();
                 update.quantitySold = getString(etSecondL);
                 update.priceSold = getString(etThirdL);
                 update.quantityBought = getProfit(etSecondL, etThirdL, etFifthL);
@@ -374,11 +373,11 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
             update.time = getString(etSeventhL);
             isEmpty = shakeEmptyBuySell() || !checkDateAndTime(descSixthL, descSeventhL, etSixthL, etSeventhL);
         }else if(transaction.transactionType.equals("Směna")){
-            update.nameBought = spinnerFirstL.getSelectedItem().toString();
+            update.shortNameBought = spinnerFirstL.getSelectedItem().toString();
             update.quantityBought = getString(etSecondL);
             update.priceBought = getString(etThirdL);
             update.currency = getString(etFourthL);
-            update.nameSold = getString(etFifthL);
+            update.shortNameSold = getString(etFifthL);
             update.quantitySold = getString(etSixthL);
             update.priceSold = getString(etSeventhL);
 

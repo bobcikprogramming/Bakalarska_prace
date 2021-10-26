@@ -56,7 +56,7 @@ public class FragmentTransactions extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(getContext(), CryptoSelection.class);
-                startActivity(myIntent);
+                infoActivityResultLauncher.launch(myIntent);
             }
         });
 

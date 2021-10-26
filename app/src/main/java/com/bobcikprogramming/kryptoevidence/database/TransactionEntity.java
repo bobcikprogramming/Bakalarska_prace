@@ -17,11 +17,17 @@ public class TransactionEntity {
     @ColumnInfo(name = "transaction_type")
     public String transactionType;
 
-    @ColumnInfo(name = "name_bought")
-    public String nameBought;
+    @ColumnInfo(name = "short_name_bought")
+    public String shortNameBought;
 
-    @ColumnInfo(name = "name_sold")
-    public String nameSold;
+    @ColumnInfo(name = "long_name_bought")
+    public String longNameBought;
+
+    @ColumnInfo(name = "short_name_sold")
+    public String shortNameSold;
+
+    @ColumnInfo(name = "long_name_sold")
+    public String longNameSold;
 
     @ColumnInfo(name = "currency")
     public String currency;

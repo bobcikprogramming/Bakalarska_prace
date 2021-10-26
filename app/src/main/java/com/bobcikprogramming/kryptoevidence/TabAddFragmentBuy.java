@@ -1,5 +1,7 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -69,8 +71,11 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    public TabAddFragmentBuy() {
-        // Required empty public constructor
+    private String shortName, longName;
+
+    public TabAddFragmentBuy(String shortName, String longName) {
+        this.shortName = shortName;
+        this.longName = longName;
     }
 
 
@@ -139,11 +144,16 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                     if(imgSaveSuccess) {
                         saveToDb();
                         clearEditText();
-                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         photos.clear();
                         photosPath.clear();
                         imvBtnShowPhoto.setVisibility(View.GONE);
                         scrollView.setScrollY(0);
+                        Intent intent = new Intent();
+                        intent.putExtra("close", true);
+                        intent.putExtra("changed", true);
+                        getActivity().setResult(RESULT_OK, intent );
+                        getActivity().finish();
                     }else {
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                         photosPath.clear();
@@ -169,7 +179,8 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
         transactionEntity.transactionType = "Nákup";
-        transactionEntity.nameBought = spinnerName.getSelectedItem().toString();
+        transactionEntity.shortNameBought = this.shortName;
+        transactionEntity.longNameBought = this.longName;
         transactionEntity.quantityBought = etQuantity.getText().toString();
         transactionEntity.priceBought = etPrice.getText().toString();
         transactionEntity.fee = transactionFee;
@@ -419,7 +430,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == Activity.RESULT_OK) {
+                if (result.getResultCode() == RESULT_OK) {
                     // There are no request codes
                     Intent data = result.getData();
                     photos = data.getParcelableArrayListExtra("photos");

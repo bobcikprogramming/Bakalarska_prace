@@ -1,5 +1,7 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,7 +17,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -50,7 +51,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -73,8 +73,11 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    public TabAddFragmentSell() {
-        // Required empty public constructor
+    private String shortName, longName;
+
+    public TabAddFragmentSell(String shortName, String longName) {
+        this.shortName = shortName;
+        this.longName = longName;
     }
 
     @Override
@@ -141,11 +144,16 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
                     if(imgSaveSuccess) {
                         saveToDb();
                         clearEditText();
-                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         photos.clear();
                         photosPath.clear();
                         imvBtnShowPhoto.setVisibility(View.GONE);
                         scrollView.setScrollY(0);
+                        Intent intent = new Intent();
+                        intent.putExtra("close", true);
+                        intent.putExtra("changed", true);
+                        getActivity().setResult(RESULT_OK, intent );
+                        getActivity().finish();
                     }else {
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                         photosPath.clear();
@@ -171,7 +179,7 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
         String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
         transactionEntity.transactionType = "Prodej";
-        transactionEntity.nameSold = spinnerName.getSelectedItem().toString();
+        transactionEntity.shortNameSold = spinnerName.getSelectedItem().toString();
         transactionEntity.quantitySold = etQuantity.getText().toString();
         transactionEntity.priceSold = etPrice.getText().toString();
         transactionEntity.fee = transactionFee;

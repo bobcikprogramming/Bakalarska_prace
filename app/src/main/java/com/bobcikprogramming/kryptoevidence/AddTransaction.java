@@ -13,17 +13,26 @@ import android.widget.TextView;
 public class AddTransaction extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout btnBuy, btnSell, btnChange;
-    private TextView txBuy, txSell, txChange;
+    private TextView tvBuy, tvSell, tvChange, tvCryptoName;
     private ImageView btnClose;
+
+    private String longName, shortName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_transaction);
 
+        Bundle extras = getIntent().getExtras();
+        this.longName = extras.getString("longName");
+        this.shortName = extras.getString("shortName");
+
         setupUIViews();
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy()).commit();
-        txBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy(shortName, longName)).commit();
+        tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+
+        tvCryptoName.setText(longName);
+
     }
 
     @Override
@@ -35,9 +44,11 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         btnBuy = findViewById(R.id.tabButtonBuy);
         btnSell = findViewById(R.id.tabButtonSell);
         btnChange = findViewById(R.id.tabButtonChange);
-        txBuy = findViewById(R.id.tabTextViewBuy);
-        txSell = findViewById(R.id.tabTextViewSell);
-        txChange = findViewById(R.id.tabTextViewChange);
+        tvBuy = findViewById(R.id.tabTextViewBuy);
+        tvSell = findViewById(R.id.tabTextViewSell);
+        tvChange = findViewById(R.id.tabTextViewChange);
+
+        tvCryptoName = findViewById(R.id.tvCryptoName);
         btnClose = findViewById(R.id.btnCloseAdd);
 
         btnBuy.setOnClickListener(this);
@@ -50,29 +61,42 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tabButtonBuy:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy(shortName, longName)).commit();
                 resetColor();
-                txBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+                tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonSell:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentSell()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentSell(shortName, longName)).commit();
                 resetColor();
-                txSell.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+                tvSell.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentChange()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentChange(shortName, longName)).commit();
                 resetColor();
-                txChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+                tvChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.btnCloseAdd:
+                Intent intent = new Intent();
+                intent.putExtra("close", true);
+                intent.putExtra("change", false);
+                setResult(RESULT_OK, intent );
                 finish();
                 break;
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("close", false);
+        intent.putExtra("change", false);
+        setResult(RESULT_OK, intent );
+        finish();
+    }
+
     private void resetColor(){
-        txBuy.setTextColor(ContextCompat.getColor(this, R.color.white));
-        txSell.setTextColor(ContextCompat.getColor(this, R.color.white));
-        txChange.setTextColor(ContextCompat.getColor(this, R.color.white));
+        tvBuy.setTextColor(ContextCompat.getColor(this, R.color.white));
+        tvSell.setTextColor(ContextCompat.getColor(this, R.color.white));
+        tvChange.setTextColor(ContextCompat.getColor(this, R.color.white));
     }
 }

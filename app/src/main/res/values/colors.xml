@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dirtyWhite">#D0D0D0</color>
+    <color name="dirtyWhiteTransparent">#80D0D0D0</color>
+    <color name="gray">#A0A0A0</color>
     <color name="lightGray">#D3D3D3</color>
     <color name="lightGrayTransparent">#20D3D3D3</color>
     <color name="green">#1CB753</color>
@@ -12,7 +14,7 @@
     <color name="navBarSelect">#F9B720</color>
     <color name="navBarIconVariant">#E7B647</color>
     <color name="mainBackground">#212121</color>
-    <color name="navBarBackground">#161616</color>
+    <color name="navBarBackground">#131313</color>
     <color name="overviewLayoutCryptoBackground">#161616</color>
     <color name="overviewLayoutResultBackground">#363636</color>
     <color name="editTextBackground">#303030</color>

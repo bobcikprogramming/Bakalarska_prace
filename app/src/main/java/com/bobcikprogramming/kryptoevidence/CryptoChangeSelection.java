@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-public class CryptoSelection extends AppCompatActivity implements View.OnClickListener {
+public class CryptoChangeSelection extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private EditText etSearch;
@@ -87,7 +87,8 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.imgBtnCloseCryptoSelection:
                 Intent intent = new Intent();
-                intent.putExtra("changed", false);
+                intent.putExtra("longName", "");
+                intent.putExtra("shortName", "");
                 setResult(RESULT_OK, intent );
                 finish();
         }
@@ -96,7 +97,8 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         Intent intent = new Intent();
-        intent.putExtra("changed", false);
+        intent.putExtra("longName", "");
+        intent.putExtra("shortName", "");
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -108,29 +110,13 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            Intent addActivity = new Intent(CryptoSelection.this, AddTransaction.class);
-            addActivity.putExtra("longName", cryptoList.get(position).longName);
-            addActivity.putExtra("shortName", cryptoList.get(position).shortName);
-            addActivityResultLauncher.launch(addActivity);
+            Intent intent = new Intent();
+            intent.putExtra("longName", cryptoList.get(position).longName);
+            intent.putExtra("shortName", cryptoList.get(position).shortName);
+            setResult(RESULT_OK, intent );
+            finish();
         }
     };
-
-    ActivityResultLauncher<Intent> addActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Intent data = result.getData();
-                    boolean close = data.getBooleanExtra("close", false);
-                    boolean changed = data.getBooleanExtra("changed", false);
-                    if(close){
-                        Intent intent = new Intent();
-                        intent.putExtra("changed", changed);
-                        setResult(RESULT_OK, intent );
-                        finish();
-                    }
-                }
-            });
 
     private void hideKeyBoard(){
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);

@@ -28,7 +28,7 @@ public class FragmentAdd extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add, container, false);
         setupUIViews();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy("", "")).commit();
         txBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
 
         return view;
@@ -61,17 +61,17 @@ public class FragmentAdd extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tabButtonBuy:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy("", "")).commit();
                 resetColor();
                 txBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;
             case R.id.tabButtonSell:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentSell()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentSell("", "")).commit();
                 resetColor();
                 txSell.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentChange()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentChange("", "")).commit();
                 resetColor();
                 txChange.setTextColor(ContextCompat.getColor(getContext(), R.color.navBarSelect));
                 break;

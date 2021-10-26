@@ -1,17 +1,9 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +14,6 @@ import android.widget.Toast;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>{
@@ -88,7 +79,6 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
             tvDescriptionSL = itemView.findViewById(R.id.textViewDescriptionSecondLine);
 
             item = itemView.findViewById(R.id.layoutTransactions);
-
             itemView.setOnClickListener(myClickListener);
         }
     }
@@ -134,23 +124,23 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity transaction = data.transaction;
         switch (transactionType){
             case "Nákup":
-                holder.tvNameFL.setText(transaction.nameBought);
+                holder.tvNameFL.setText(transaction.shortNameBought);
                 holder.tvQuantityFL.setText(String.valueOf(transaction.quantityBought));
                 holder.tvPriceFL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
                 holder.tvNameSL.setText(transaction.currency);
                 holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
                 break;
-            case "Prodej":holder.tvNameFL.setText(transaction.nameSold);
+            case "Prodej":holder.tvNameFL.setText(transaction.shortNameSold);
                 holder.tvQuantityFL.setText(String.valueOf(transaction.quantitySold));
                 holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
                 holder.tvNameSL.setText(transaction.currency);
                 holder.tvQuantitySL.setText(String.valueOf(transaction.quantityBought));
                 break;
             case "Směna":
-                holder.tvNameFL.setText(transaction.nameBought);
+                holder.tvNameFL.setText(transaction.shortNameBought);
                 holder.tvQuantityFL.setText(String.valueOf(transaction.quantityBought));
                 holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
-                holder.tvNameSL.setText(transaction.nameSold);
+                holder.tvNameSL.setText(transaction.shortNameSold);
                 holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
                 holder.tvPriceSL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
                 break;

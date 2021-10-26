@@ -1,5 +1,7 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,7 +17,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -50,14 +51,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TabAddFragmentChange extends Fragment implements View.OnClickListener {
 
     private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
-    private TextView tvDate, tvTime, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesPriceSell, tvDesDate, tvDesTime;;
+    private TextView tvDate, tvTime, tvNameSell, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesPriceSell, tvDesDate, tvDesTime, tvDesNameSell;
     private Button btnSave;
     private ImageButton imgBtnAddPhoto;
     private ImageView imvBtnShowPhoto;
@@ -73,8 +73,11 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    public TabAddFragmentChange() {
-        // Required empty public constructor
+    private String shortNameCryptoBuy, longNameCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
+
+    public TabAddFragmentChange(String shortName, String longName) {
+        this.shortNameCryptoBuy = shortName;
+        this.longNameCryptoBuy = longName;
     }
 
     @Override
@@ -93,7 +96,7 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         hideKeyBoardOnSpinnerTouch();
 
         spinnerNameBuy.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-        spinnerNameSell.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+        //spinnerNameSell.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
 
         photos = new ArrayList<>();
@@ -106,12 +109,13 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         etQuantityBuy = view.findViewById(R.id.editTextQuantityChangeBuy);
         etQuantitySell = view.findViewById(R.id.editTextQuantityChangeSell);
         etPriceBuy = view.findViewById(R.id.editTextPriceChangeBuy);
+        tvNameSell = view.findViewById(R.id.textViewNameChangeSell);
         etPriceSell = view.findViewById(R.id.editTextPriceChangeSell);
         etFee = view.findViewById(R.id.editTextFeeChange);
         tvDate = view.findViewById(R.id.textViewDateChange);
         tvTime = view.findViewById(R.id.textViewTimeChange);
         spinnerNameBuy = view.findViewById(R.id.spinnerNameChangeBuy);
-        spinnerNameSell = view.findViewById(R.id.spinnerNameChangeSell);
+        //spinnerNameSell = view.findViewById(R.id.spinnerNameChangeSell);
         spinnerCurrency = view.findViewById(R.id.spinnerCurrencyChange);
         tvDesQuantityBuy = view.findViewById(R.id.descriptionQuantityChangeBuy);
         tvDesQuantitySell = view.findViewById(R.id.descriptionQuantityChangeSell);
@@ -119,6 +123,7 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         tvDesPriceSell = view.findViewById(R.id.descriptionPriceChangeSell);
         tvDesDate = view.findViewById(R.id.descriptionDateChange);
         tvDesTime = view.findViewById(R.id.descriptionTimeChange);
+        tvDesNameSell = view.findViewById(R.id.descriptionNameChangeSell);
 
         viewBackgroung = view.findViewById(R.id.fragmentBackgroundChange);
         viewBackgroung.setOnClickListener(this);
@@ -132,6 +137,7 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         btnSave.setOnClickListener(this);
         imgBtnAddPhoto.setOnClickListener(this);
         imvBtnShowPhoto.setOnClickListener(this);
+        tvNameSell.setOnClickListener(this);
     }
 
     @Override
@@ -147,11 +153,16 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
                     if(imgSaveSuccess) {
                         saveToDb();
                         clearEditText();
-                        Toast.makeText(getContext(), "Transakce úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         photos.clear();
                         photosPath.clear();
                         imvBtnShowPhoto.setVisibility(View.GONE);
                         scrollView.setScrollY(0);
+                        Intent intent = new Intent();
+                        intent.putExtra("close", true);
+                        intent.putExtra("changed", true);
+                        getActivity().setResult(RESULT_OK, intent );
+                        getActivity().finish();
                     }else {
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                         photosPath.clear();
@@ -167,6 +178,9 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
             case R.id.imvButtonShowPhotoChange:
                 openPhotoViewerActivity();
                 break;
+            case R.id.textViewNameChangeSell:
+                Intent intent = new Intent(getContext(), CryptoChangeSelection.class);
+                selectActivityResultLauncher.launch(intent);
         }
     }
 
@@ -177,14 +191,16 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
         transactionEntity.transactionType = "Směna";
-        transactionEntity.nameBought = spinnerNameBuy.getSelectedItem().toString();
+        transactionEntity.shortNameBought = shortNameCryptoBuy;
+        transactionEntity.longNameBought = longNameCryptoBuy;
         transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
         transactionEntity.quantityBought = etQuantityBuy.getText().toString();
         transactionEntity.priceBought = etPriceBuy.getText().toString();
         transactionEntity.fee = transactionFee;
         transactionEntity.date = tvDate.getText().toString();
         transactionEntity.time = tvTime.getText().toString();
-        transactionEntity.nameSold = spinnerNameSell.getSelectedItem().toString();
+        transactionEntity.shortNameSold = shortNameCryptoSell;
+        transactionEntity.longNameSold = longNameCryptoSell;
         transactionEntity.quantitySold = etQuantitySell.getText().toString();
         transactionEntity.priceSold = etPriceSell.getText().toString();
 
@@ -453,6 +469,14 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
             tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
 
+        if(tvNameSell.getText().toString().isEmpty()){
+            findEmpty = true;
+            tvDesNameSell.startAnimation(animShake);
+            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+        }else{
+            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
+
         if(etQuantitySell.getText().toString().isEmpty()){
             findEmpty = true;
             tvDesQuantitySell.startAnimation(animShake);
@@ -505,14 +529,30 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
             }
         });
 
-        spinnerNameSell.setOnTouchListener(new View.OnTouchListener() {
+        /*spinnerNameSell.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 hideKeyBoard();
                 return false;
             }
-        });
+        });*/
     }
+
+    ActivityResultLauncher<Intent> selectActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent data = result.getData();
+                    String onReturnShort = data.getStringExtra("shortName");
+                    String onReturnLong = data.getStringExtra("longName");
+                    if(!onReturnShort.isEmpty()) {
+                        shortNameCryptoSell = onReturnShort;
+                        longNameCryptoSell = onReturnLong;
+                        tvNameSell.setText(shortNameCryptoSell);
+                    }
+                }
+            });
 
     private void hideKeyBoard(){
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
