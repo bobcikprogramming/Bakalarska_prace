@@ -180,6 +180,7 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
                 break;
             case R.id.textViewNameChangeSell:
                 Intent intent = new Intent(getContext(), CryptoChangeSelection.class);
+                intent.putExtra("shortName", shortNameCryptoBuy);
                 selectActivityResultLauncher.launch(intent);
         }
     }
@@ -436,10 +437,10 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
         photoViewer.putParcelableArrayListExtra("photos",photos);
-        someActivityResultLauncher.launch(photoViewer);
+        photoViewActivityResultLauncher.launch(photoViewer);
     }
 
-    ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
+    ActivityResultLauncher<Intent> photoViewActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
@@ -453,6 +454,22 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
                         }else{
                             imvBtnShowPhoto.setVisibility(View.GONE);
                         }
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> selectActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent data = result.getData();
+                    String onReturnShort = data.getStringExtra("shortName");
+                    String onReturnLong = data.getStringExtra("longName");
+                    if(!onReturnShort.isEmpty()) {
+                        shortNameCryptoSell = onReturnShort;
+                        longNameCryptoSell = onReturnLong;
+                        tvNameSell.setText(longNameCryptoSell);
                     }
                 }
             });
@@ -537,22 +554,6 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
             }
         });*/
     }
-
-    ActivityResultLauncher<Intent> selectActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Intent data = result.getData();
-                    String onReturnShort = data.getStringExtra("shortName");
-                    String onReturnLong = data.getStringExtra("longName");
-                    if(!onReturnShort.isEmpty()) {
-                        shortNameCryptoSell = onReturnShort;
-                        longNameCryptoSell = onReturnLong;
-                        tvNameSell.setText(shortNameCryptoSell);
-                    }
-                }
-            });
 
     private void hideKeyBoard(){
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);

@@ -354,7 +354,8 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
         update.transactionType = transaction.transactionType;
         if(transaction.transactionType.equals("Nákup") || transaction.transactionType.equals("Prodej")) {
             if (transaction.transactionType.equals("Nákup")) {
-                update.shortNameBought = spinnerFirstL.getSelectedItem().toString();
+                update.shortNameBought = transaction.shortNameBought;
+                update.longNameBought = transaction.longNameBought;
                 update.quantityBought = getString(etSecondL);
                 update.priceBought = getString(etThirdL);
                 update.quantitySold = getPrice(etSecondL, etThirdL, etFifthL);

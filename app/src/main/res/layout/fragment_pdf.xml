@@ -73,7 +73,7 @@
                                     android:layout_weight="1"
                                     android:gravity="bottom"
                                     android:paddingEnd="10dp"
-                                    android:text="7000000"
+                                    android:text="7 000 000"
                                     android:textColor="@color/green"
                                     android:textSize="35sp"
                                     android:singleLine="true"/>
@@ -107,6 +107,12 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.8"
                         android:layout_marginBottom="5dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -136,19 +142,9 @@
                                     android:paddingStart="5dp"
                                     android:paddingEnd="5dp"
                                     android:singleLine="true"
-                                    android:text="50000000"
+                                    android:text="50 000 000"
                                     android:textColor="@color/white"
                                     android:textSize="22sp" />
-
-                                <TextView
-                                    android:layout_width="35dp"
-                                    android:layout_height="match_parent"
-                                    android:gravity="bottom"
-                                    android:paddingBottom="1.5dp"
-                                    android:singleLine="true"
-                                    android:text="CZK"
-                                    android:textColor="@color/dirtyWhite"
-                                    android:textSize="15dp" />
 
                             </LinearLayout>
 
@@ -174,7 +170,7 @@
                                 android:gravity="right">
 
                                 <TextView
-                                    android:layout_width="35dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:gravity="bottom|right"
                                     android:paddingBottom="1.5dp"
@@ -194,17 +190,38 @@
                                     android:textColor="@color/white"
                                     android:textSize="22sp" />
 
-                                <TextView
-                                    android:layout_width="35dp"
-                                    android:layout_height="match_parent"
-                                    android:gravity="bottom|left"
-                                    android:paddingBottom="1.5dp"
-                                    android:singleLine="true"
-                                    android:text="2021"
-                                    android:textColor="@color/gray"
-                                    android:textSize="15dp" />
-
                             </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="bottom"
+                                android:paddingBottom="1.5dp"
+                                android:singleLine="true"
+                                android:text="CZK"
+                                android:textColor="@color/dirtyWhite"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="bottom|left"
+                                android:paddingBottom="1.5dp"
+                                android:singleLine="true"
+                                android:text="2021"
+                                android:textColor="@color/gray"
+                                android:textSize="15dp" />
 
                         </LinearLayout>
 

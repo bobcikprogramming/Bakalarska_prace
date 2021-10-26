@@ -179,7 +179,8 @@ public class TabAddFragmentSell extends Fragment implements View.OnClickListener
         String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
         transactionEntity.transactionType = "Prodej";
-        transactionEntity.shortNameSold = spinnerName.getSelectedItem().toString();
+        transactionEntity.shortNameSold = shortName;
+        transactionEntity.longNameSold = longName;
         transactionEntity.quantitySold = etQuantity.getText().toString();
         transactionEntity.priceSold = etPrice.getText().toString();
         transactionEntity.fee = transactionFee;

@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -30,14 +33,31 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
     private RecyclerViewSelection adapter;
 
     private ArrayList<RecyclerViewSelectionList> cryptoList;
+    private ArrayList<RecyclerViewSelectionList> cryptoListToShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto_selection);
         cryptoList = new ArrayList<>();
+        Bundle extras = getIntent().getExtras();
         tmpAddCryptoToList();
+        int objPosToRemove = -1;
+        for(RecyclerViewSelectionList toRemove : cryptoList){
+            if(toRemove.shortName.equals(extras.getString("shortName"))){
+                objPosToRemove = cryptoList.indexOf(toRemove);
+            }
+        }
+        if(objPosToRemove > -1) {
+            cryptoList.remove(objPosToRemove);
+        }
+        cryptoListToShow = cryptoList;
+
         setupUIViews();
+        searchOnChange();
+
+        adapter = new RecyclerViewSelection(this, cryptoListToShow, myClickListener);
+        recyclerView.setAdapter(adapter);
 
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -46,9 +66,6 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
                 return true;
             }
         });
-
-        adapter = new RecyclerViewSelection(this, cryptoList, myClickListener);
-        recyclerView.setAdapter(adapter);
     }
 
     private void setupUIViews(){
@@ -91,6 +108,8 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
                 intent.putExtra("shortName", "");
                 setResult(RESULT_OK, intent );
                 finish();
+            case R.id.imgBtnDelete:
+                etSearch.setText("");
         }
     }
 
@@ -101,6 +120,37 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         intent.putExtra("shortName", "");
         setResult(RESULT_OK, intent );
         finish();
+    }
+
+    private void searchOnChange(){
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String searching = charSequence.toString();
+                if(searching.length() == 0){
+                    cryptoListToShow = cryptoList;
+                }else {
+                    cryptoListToShow = new ArrayList<>();
+                    for (RecyclerViewSelectionList toShow : cryptoList) {
+                        if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
+                            cryptoListToShow.add(toShow);
+                        }
+                    }
+                }
+                adapter = new RecyclerViewSelection(CryptoChangeSelection.this, cryptoListToShow, myClickListener);
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     // https://stackoverflow.com/a/45711180

@@ -42,7 +42,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
         holder.textViewOperation.setText(transaction.transactionType);
         holder.textViewDate.setText(transaction.date);
-        holder.textViewTime.setText(transaction.time);
+        //holder.textViewTime.setText(transaction.time);
 
         changeItemViewByTransactionType(transaction.transactionType, holder);
         loadDataToItems(transaction.transactionType, holder, data);
@@ -58,7 +58,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewOperation, textViewDate, textViewTime, tvNameFL, tvNameSL, tvQuantityFL, tvQuantitySL, tvDesPriceFL, tvDesPriceSL, tvPriceFL, tvPriceSL, tvDescriptionFL, tvDescriptionSL;
+        private TextView textViewOperation, textViewDate, textViewTime, tvNameFC, tvNameSC, tvQuantityFC, tvQuantitySC, tvDesPriceFL, tvDesPriceSL, tvPriceFL, tvPriceSL, tvDescriptionFC, tvDescriptionSC;
         private LinearLayout item;
 
         public ViewHolder(View itemView) {
@@ -66,17 +66,17 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
             textViewOperation = itemView.findViewById(R.id.textViewOperation);
             textViewDate = itemView.findViewById(R.id.textViewDate);
-            textViewTime = itemView.findViewById(R.id.textViewTime);
-            tvNameFL = itemView.findViewById(R.id.textViewNameFirstLine);
-            tvNameSL = itemView.findViewById(R.id.textViewNameSecondLine);
-            tvQuantityFL = itemView.findViewById(R.id.textViewQuantityFirstLine);
-            tvQuantitySL = itemView.findViewById(R.id.textViewQuantitySecondLine);
-            tvDesPriceFL = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
+            //textViewTime = itemView.findViewById(R.id.textViewTime);
+            tvNameFC = itemView.findViewById(R.id.textViewNameFirstColumn);
+            tvNameSC = itemView.findViewById(R.id.textViewNameSecondColumn);
+            tvQuantityFC = itemView.findViewById(R.id.textViewQuantityFirstColumn);
+            tvQuantitySC = itemView.findViewById(R.id.textViewQuantitySecondColumn);
+            /*tvDesPriceFL = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
             tvDesPriceSL = itemView.findViewById(R.id.textViewDescriptionPriceSell);
             tvPriceFL = itemView.findViewById(R.id.textViewPriceFirst);
-            tvPriceSL = itemView.findViewById(R.id.textViewPriceSecondLine);
-            tvDescriptionFL = itemView.findViewById(R.id.textViewDescriptionFirstLine);
-            tvDescriptionSL = itemView.findViewById(R.id.textViewDescriptionSecondLine);
+            tvPriceSL = itemView.findViewById(R.id.textViewPriceSecondLine);*/
+            tvDescriptionFC = itemView.findViewById(R.id.textViewDescriptionFirstColumn);
+            tvDescriptionSC = itemView.findViewById(R.id.textViewDescriptionSecondColumn);
 
             item = itemView.findViewById(R.id.layoutTransactions);
             itemView.setOnClickListener(myClickListener);
@@ -92,30 +92,30 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         switch (transactionType) {
             case "Nákup":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.green));
-                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.GONE);
-                holder.tvPriceSL.setVisibility(View.GONE);
-                holder.tvDescriptionFL.setText("Koupeno:");
-                holder.tvDescriptionSL.setText("Platba:");
+                holder.tvPriceSL.setVisibility(View.GONE);*/
+                holder.tvDescriptionFC.setText("Koupeno");
+                holder.tvDescriptionSC.setText("Platba");
                 break;
             case "Prodej":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.red));
-                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.GONE);
-                holder.tvPriceSL.setVisibility(View.GONE);
-                holder.tvDescriptionFL.setText("Prodáno:");
-                holder.tvDescriptionSL.setText("Zisk:");
+                holder.tvPriceSL.setVisibility(View.GONE);*/
+                holder.tvDescriptionFC.setText("Prodáno");
+                holder.tvDescriptionSC.setText("Zisk");
                 break;
             case "Směna":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.blue));
-                holder.tvDesPriceFL.setVisibility(View.VISIBLE);
+                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
                 holder.tvPriceFL.setVisibility(View.VISIBLE);
                 holder.tvDesPriceSL.setVisibility(View.VISIBLE);
-                holder.tvPriceSL.setVisibility(View.VISIBLE);
-                holder.tvDescriptionFL.setText("Koupeno:");
-                holder.tvDescriptionSL.setText("Prodáno:");
+                holder.tvPriceSL.setVisibility(View.VISIBLE);*/
+                holder.tvDescriptionFC.setText("Koupeno");
+                holder.tvDescriptionSC.setText("Prodáno");
                 break;
         }
     }
@@ -124,25 +124,26 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity transaction = data.transaction;
         switch (transactionType){
             case "Nákup":
-                holder.tvNameFL.setText(transaction.shortNameBought);
-                holder.tvQuantityFL.setText(String.valueOf(transaction.quantityBought));
-                holder.tvPriceFL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
-                holder.tvNameSL.setText(transaction.currency);
-                holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
+                holder.tvNameFC.setText(transaction.longNameBought);
+                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantityBought));
+                //holder.tvPriceFL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
+                holder.tvNameSC.setText(transaction.currency);
+                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantitySold));
                 break;
-            case "Prodej":holder.tvNameFL.setText(transaction.shortNameSold);
-                holder.tvQuantityFL.setText(String.valueOf(transaction.quantitySold));
-                holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
-                holder.tvNameSL.setText(transaction.currency);
-                holder.tvQuantitySL.setText(String.valueOf(transaction.quantityBought));
+            case "Prodej":
+                holder.tvNameFC.setText(transaction.longNameSold);
+                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantitySold));
+                //holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvNameSC.setText(transaction.currency);
+                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantityBought));
                 break;
             case "Směna":
-                holder.tvNameFL.setText(transaction.shortNameBought);
-                holder.tvQuantityFL.setText(String.valueOf(transaction.quantityBought));
-                holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
-                holder.tvNameSL.setText(transaction.shortNameSold);
-                holder.tvQuantitySL.setText(String.valueOf(transaction.quantitySold));
-                holder.tvPriceSL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
+                holder.tvNameFC.setText(transaction.longNameBought);
+                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantityBought));
+                //holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvNameSC.setText(transaction.shortNameSold);
+                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantitySold));
+                //holder.tvPriceSL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
                 break;
 
         }
@@ -157,5 +158,24 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
     public void removeFromArray(int position){
         dataList.remove(position);
         notifyDataSetChanged();
+    }
+
+    private String editNumberForTextView(String number){
+        Double quantityBought = Double.parseDouble(number);
+        if(quantityBought > 999999.0){
+            number = "999 999+";
+        }else if(number.contains(".")){
+            if(number.length() > 7) {
+                int lenOfInteger = number.split("\\.")[0].length();
+                int toCut = 6 - lenOfInteger;
+                double round = Math.pow(10, toCut);
+                quantityBought = (double) Math.round(quantityBought * round) / round;
+                number = "~" + quantityBought;
+            }
+        }else{
+            // https://stackoverflow.com/a/11149356
+            number = number.replaceAll("...(?!$)", "$0 ");
+        }
+        return number;
     }
 }
