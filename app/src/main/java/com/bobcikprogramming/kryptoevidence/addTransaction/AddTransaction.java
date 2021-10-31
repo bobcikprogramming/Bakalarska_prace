@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.addTransaction;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bobcikprogramming.kryptoevidence.R;
 
 public class AddTransaction extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,7 +30,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         this.shortName = extras.getString("shortName");
 
         setupUIViews();
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy(shortName, longName)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
         tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
 
         tvCryptoName.setText(longName);
@@ -61,17 +63,17 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tabButtonBuy:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentBuy(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
                 resetColor();
                 tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonSell:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentSell(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabSell(shortName, longName)).commit();
                 resetColor();
                 tvSell.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new TabAddFragmentChange(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabChange(shortName, longName)).commit();
                 resetColor();
                 tvChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;

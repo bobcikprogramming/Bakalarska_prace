@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bobcikprogramming.kryptoevidence.addTransaction.AddTransaction;
+
 import java.util.ArrayList;
 
 public class CryptoSelection extends AppCompatActivity implements View.OnClickListener {

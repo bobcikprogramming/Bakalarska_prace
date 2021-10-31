@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="dirtyWhite">#D0D0D0</color>
     <color name="dirtyWhiteTransparent">#60D0D0D0</color>
     <color name="gray">#A0A0A0</color>
@@ -26,4 +26,36 @@
     <color name="button">#EBB742</color>
     <color name="recyclerViewItemUnderline">#E7B647</color>
     <color name="searchText">#808080</color>
+
+
+
+
+    <color name="tvDescription">#D3D3D3</color>
+
+    <color name="etAddTransaction">#FFFFFF</color>
+    <color name="addTransactionHeadline">#FFFFFF</color>
+
+    <color name="underline">#20D3D3D3</color>
+
+    <color name="selectTransactionHeadline">#FFFFFF</color>
+
+    <color name="searchHintColor">#808080</color>
+    <color name="searchTextColor">#FFFFFF</color>
+
+    <color name="overviewNormalText">#FFFFFF</color>
+    <color name="overviewDescription">#D0D0D0</color>
+    <color name="overviewNextPrevYear">#A0A0A0</color>
+    <color name="overviewListDescription">#A0A0A0</color>
+
+    <color name="selectionCryptoLongNameText">#FFFFFF</color>
+    <color name="selectionCryptoShortNameText">#A0A0A0</color>
+
+    <color name="recyclerItemOfTransactionDescriptionSide">#D3D3D3</color>
+    <color name="recyclerItemOfTransactionDescriptionTop">#F9B720</color>
+    <color name="recyclerItemOfTransactionTextView">#FFFFFF</color>
+
+    <color name="spinnerItem">#FFFFFF</color>
+
+    <color name="tabbarTextView">#FFFFFF</color>
+    <color name="tabbarLine">#D3D3D3</color>
 </resources>

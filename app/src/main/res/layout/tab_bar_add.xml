@@ -9,73 +9,39 @@
     android:layout_marginEnd="20dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tabButtonBuy"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        style="@style/TabbarLayout"
+        android:id="@+id/tabButtonBuy">
 
         <TextView
+            style="@style/TabbarTextView"
             android:id="@+id/tabTextViewBuy"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/tabAddBuy"
-            android:textSize="15dp"
-            />
+            android:text="@string/tabAddBuy" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0.5dp"
-        android:layout_height="match_parent"
-        android:background="@color/lightGray"/>
+        style="@style/TabbarLine"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tabButtonSell"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        style="@style/TabbarLayout"
+        android:id="@+id/tabButtonSell">
 
         <TextView
+            style="@style/TabbarTextView"
             android:id="@+id/tabTextViewSell"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/tabAddSell"
-            android:textSize="15dp"
-            />
+            android:text="@string/tabAddSell"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0.5dp"
-        android:layout_height="match_parent"
-        android:background="@color/lightGray"/>
+        style="@style/TabbarLine"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/tabButtonChange"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        style="@style/TabbarLayout"
+        android:id="@+id/tabButtonChange">
 
         <TextView
+            style="@style/TabbarTextView"
             android:id="@+id/tabTextViewChange"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/tabAddChange"
-            android:textSize="15dp"
-            />
+            android:text="@string/tabAddChange"/>
     </LinearLayout>
 
 </LinearLayout>

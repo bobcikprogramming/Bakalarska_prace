@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".addTransaction.AddTransactionTabBuy">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/scrollViewSell"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragmentBackgroundSell"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionQuantitySell"
+                        android:text="Prodané množství"/>
+
+                    <EditText
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextQuantitySell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionPriceSell"
+                        android:text="Cena za kus"/>
+
+                    <EditText
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextPriceSell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionCurrencySell"
+                        android:text="Cena v měně"/>
+
+                    <Spinner
+                        style="@style/AddTransactionEntryFields"
+                        android:id="@+id/spinnerCurrencySell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionFeeSell"
+                        android:text="Poplatek"/>
+
+                    <EditText
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextFeeSell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionDateSell"
+                        android:text="Datum provedení"/>
+
+                    <TextView
+                        style="@style/AddTransactionItemTextView"
+                        android:id="@+id/textViewDateSell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionTimeSell"
+                        android:text="Čas provedení"/>
+
+                    <TextView
+                        style="@style/AddTransactionItemTextView"
+                        android:id="@+id/textViewTimeSell"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayoutForImageView">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionPhotoSell"
+                        android:text="@string/photo"/>
+
+                    <LinearLayout
+                        style="@style/AddTransactionEntryFields">
+                        <ImageView
+                            style="@style/AddTransactionImageViewPhotoSelected"
+                            android:id="@+id/imvButtonShowPhotoSell"/>
+
+                        <ImageView
+                            style="@style/AddTransactionImageViewPhoto"
+                            android:id="@+id/imgButtonAddPhotoSell"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="4"
+                android:minHeight="100dp">
+
+                <Button
+                    android:id="@+id/buttonSaveSell"
+                    style="@style/AddFragmentsButton"
+                    android:layout_marginBottom="24dp"
+                    android:text="Uložit"
+                    app:backgroundTint="@null"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

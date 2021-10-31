@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentAdd"
+    tools:context=".addTransaction.AddTransaction"
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
@@ -16,12 +16,12 @@
         android:layout_marginBottom="5dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:id="@+id/tvCryptoName"
             android:text="Bitcoin"
-            android:textColor="@color/white"
+            android:textColor="@color/addTransactionHeadline"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"

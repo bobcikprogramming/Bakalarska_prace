@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.mainFragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.CryptoSelection;
+import com.bobcikprogramming.kryptoevidence.MainActivity;
+import com.bobcikprogramming.kryptoevidence.R;
+import com.bobcikprogramming.kryptoevidence.RecyclerViewTransactions;
+import com.bobcikprogramming.kryptoevidence.TransactionInfo;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 

@@ -202,4 +202,212 @@
         <item name="android:textColor">@color/description</item>
     </style>
 
+
+
+
+
+    <style name="MyUnderline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.01dp</item>
+        <item name="android:background">@color/underline</item>
+    </style>
+
+    <!-- Okna vytvoření transakce -->
+
+    <style name="AddTransactionItemLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="AddTransactionItemLinearLayoutForImageView" parent="AddTransactionItemLinearLayout">
+        <item name="android:layout_height">80dp</item>
+    </style>
+
+    <style name="AddTransactionItemDescriptionTextView">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/tvDescription</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="AddTransactionEntryFields">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="AddTransactionItemEditText" parent="AddTransactionEntryFields">
+        <item name="android:background">@null</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:textColor">@color/etAddTransaction</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AddTransactionItemTextView"  parent="AddTransactionEntryFields">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/etAddTransaction</item>
+    </style>
+
+    <style name="AddTransactionUnderline" parent="MyUnderline">
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+    </style>
+
+    <style name="AddTransactionImageViewPhotoParent">
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:background">@drawable/rounded_image_button</item>
+    </style>
+
+    <style name="AddTransactionImageViewPhoto" parent="AddTransactionImageViewPhotoParent">
+        <item name="android:layout_width">65dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:padding">15dp</item>
+        <item name="android:src">@drawable/ic_photo_50</item>
+    </style>
+
+    <style name="AddTransactionImageViewPhotoSelected" parent="AddTransactionImageViewPhotoParent">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:src">@null</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- Okna vytvoření transakce -->
+
+
+    <!-- Edit text pro vyhledávání -->
+
+    <style name="SearchTopLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="SearchInsideLinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+    </style>
+
+    <style name="SearchEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:hint">@string/searchCrypto</item>
+        <item name="android:textColorHint">@color/searchHintColor</item>
+        <item name="android:textColor">@color/searchTextColor</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:background">@null</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="SearchImageView">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="SearchImageViewLeft" parent="SearchImageView">
+        <item name="android:src">@drawable/ic_search_40</item>
+    </style>
+
+    <style name="SearchImageViewRight" parent="SearchImageView">
+        <item name="android:src">@drawable/ic_delete_40</item>
+    </style>
+
+    <!-- Edit text pro vyhledávání -->
+
+
+    <!-- Okno přehledu -->
+    <style name="OverviewUnderline" parent="MyUnderline">
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+    
+    <style name="OverviewAdditionalInfoTopLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextViewDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">@color/overviewDescription</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoInsideLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom|right</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:textColor">@color/overviewNormalText</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextViewNextPrevYear">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">1.5dp</item>
+        <item name="android:textColor">@color/overviewNextPrevYear</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- Okno přehledu -->
+
+
+    <!-- Tabbar -->
+    <style name="TabbarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TabbarTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/tabbarTextView</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TabbarLine">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/tabbarLine</item>
+    </style>
+
+    <!-- Tabbar -->
+
 </resources>

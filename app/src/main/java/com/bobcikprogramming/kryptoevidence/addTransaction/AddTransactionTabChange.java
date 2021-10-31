@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.addTransaction;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,6 +41,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.CryptoChangeSelection;
+import com.bobcikprogramming.kryptoevidence.PhotoViewer;
+import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
@@ -54,17 +57,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TabAddFragmentChange extends Fragment implements View.OnClickListener {
+public class AddTransactionTabChange extends Fragment implements View.OnClickListener {
 
     private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
     private TextView tvDate, tvTime, tvNameSell, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesPriceSell, tvDesDate, tvDesTime, tvDesNameSell;
     private Button btnSave;
-    private ImageButton imgBtnAddPhoto;
-    private ImageView imvBtnShowPhoto;
+    private ImageView imvBtnShowPhoto, imgBtnAddPhoto;
     //private ConstraintLayout viewBackgroung;
     private ScrollView scrollView;
     private LinearLayout viewBackgroung;
-    private Spinner spinnerNameBuy, spinnerNameSell, spinnerCurrency;
+    private Spinner spinnerCurrency;
     private View view;
 
     private ArrayList<Uri> photos;
@@ -75,7 +77,7 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
 
     private String shortNameCryptoBuy, longNameCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
 
-    public TabAddFragmentChange(String shortName, String longName) {
+    public AddTransactionTabChange(String shortName, String longName) {
         this.shortNameCryptoBuy = shortName;
         this.longNameCryptoBuy = longName;
     }
@@ -89,14 +91,11 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_tab_change, container, false);
+        view = inflater.inflate(R.layout.activity_add_transaction_tab_change, container, false);
         setupUIViews();
         openCalendar();
         openClock();
-        hideKeyBoardOnSpinnerTouch();
 
-        spinnerNameBuy.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-        //spinnerNameSell.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
 
         photos = new ArrayList<>();
@@ -114,8 +113,6 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         etFee = view.findViewById(R.id.editTextFeeChange);
         tvDate = view.findViewById(R.id.textViewDateChange);
         tvTime = view.findViewById(R.id.textViewTimeChange);
-        spinnerNameBuy = view.findViewById(R.id.spinnerNameChangeBuy);
-        //spinnerNameSell = view.findViewById(R.id.spinnerNameChangeSell);
         spinnerCurrency = view.findViewById(R.id.spinnerCurrencyChange);
         tvDesQuantityBuy = view.findViewById(R.id.descriptionQuantityChangeBuy);
         tvDesQuantitySell = view.findViewById(R.id.descriptionQuantityChangeSell);
@@ -535,24 +532,6 @@ public class TabAddFragmentChange extends Fragment implements View.OnClickListen
         }
 
         return findEmpty;
-    }
-
-    private void hideKeyBoardOnSpinnerTouch(){
-        spinnerNameBuy.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyBoard();
-                return false;
-            }
-        });
-
-        /*spinnerNameSell.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyBoard();
-                return false;
-            }
-        });*/
     }
 
     private void hideKeyBoard(){

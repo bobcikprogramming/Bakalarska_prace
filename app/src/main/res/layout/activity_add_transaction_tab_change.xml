@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TabAddFragmentBuy">
+    tools:context=".addTransaction.AddTransactionTabBuy">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -28,393 +28,175 @@
                 android:layout_weight="1">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/descriptionNameChangeBuy"
-                        android:text="Nákup kryptoměny"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
-
-                    <Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/spinnerNameChangeBuy"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionQuantityChangeBuy"
-                        android:text="Koupené množství"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Koupené množství"/>
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/editTextQuantityChangeBuy"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"
-                        android:inputType="numberDecimal"
-                        android:background="@null"/>
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextQuantityChangeBuy"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPriceChangeBuy"
-                        android:text="Cena za kus"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Cena za kus"/>
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/editTextPriceChangeBuy"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"
-                        android:inputType="numberDecimal"
-                        android:background="@null"/>
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextPriceChangeBuy"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionCurrencyChange"
-                        android:text="Cena v měně"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Cena v měně" />
 
                     <Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/spinnerCurrencyChange"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>
+                        style="@style/AddTransactionEntryFields"
+                        android:id="@+id/spinnerCurrencyChange"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionNameChangeSell"
-                        android:text="Prodej kryptoměny"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Prodej kryptoměny" />
 
-                    <!--<Spinner
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/spinnerNameChangeSell"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>-->
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/textViewNameChangeSell"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>
+                        style="@style/AddTransactionItemTextView"
+                        android:id="@+id/textViewNameChangeSell"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionQuantityChangeSell"
-                        android:text="Prodané množství"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Prodané množství"/>
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/editTextQuantityChangeSell"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"
-                        android:inputType="numberDecimal"
-                        android:background="@null"/>
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextQuantityChangeSell"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPriceChangeSell"
-                        android:text="Cena za kus"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Cena za kus"/>
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/editTextPriceChangeSell"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"
-                        android:inputType="numberDecimal"
-                        android:background="@null"/>
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextPriceChangeSell"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionFeeChange"
-                        android:text="Poplatek"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Poplatek"/>
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/editTextFeeChange"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"
-                        android:inputType="numberDecimal"
-                        android:background="@null"/>
+                        style="@style/AddTransactionItemEditText"
+                        android:id="@+id/editTextFeeChange"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionDateChange"
-                        android:text="Datum provedení"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Datum provedení" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/textViewDateChange"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>
+                        style="@style/AddTransactionItemTextView"
+                        android:id="@+id/textViewDateChange"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayout">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionTimeChange"
-                        android:text="Čas provedení"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="Čas provedení"/>
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/textViewTimeChange"
-                        android:textSize="20dp"
-                        android:textColor="@color/white"
-                        android:textCursorDrawable="@drawable/cursor"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="20dp"
-                        android:gravity="center_vertical|right"/>
+                        style="@style/AddTransactionItemTextView"
+                        android:id="@+id/textViewTimeChange"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0.01dp"
-                    android:background="@color/lightGrayTransparent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"/>
+                    style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:minHeight="100dp"
-                    android:orientation="horizontal">
+                    style="@style/AddTransactionItemLinearLayoutForImageView">
 
                     <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="match_parent"
+                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPhotoChange"
-                        android:text="@string/photo"
-                        android:textSize="15dp"
-                        android:textColor="@color/lightGray"
-                        android:paddingStart="20dp"
-                        android:gravity="center_vertical" />
+                        android:text="@string/photo"/>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="right|center_vertical"
-                        android:paddingEnd="20dp"
-                        android:paddingStart="10dp">
+                        style="@style/AddTransactionEntryFields">
                         <ImageView
-                            android:id="@+id/imvButtonShowPhotoChange"
-                            style="@style/AddFragmentsImageButtonPhoto"
-                            android:src="@null"
-                            android:visibility="gone"
-                            android:layout_height="50dp"
-                            android:layout_width="55dp" />
+                            style="@style/AddTransactionImageViewPhotoSelected"
+                            android:id="@+id/imvButtonShowPhotoChange"/>
 
-                        <ImageButton
-                            android:id="@+id/imgButtonAddPhotoChange"
-                            style="@style/AddFragmentsImageButtonPhoto"/>
+                        <ImageView
+                            style="@style/AddTransactionImageViewPhoto"
+                            android:id="@+id/imgButtonAddPhotoChange"/>
                     </LinearLayout>
 
                 </LinearLayout>

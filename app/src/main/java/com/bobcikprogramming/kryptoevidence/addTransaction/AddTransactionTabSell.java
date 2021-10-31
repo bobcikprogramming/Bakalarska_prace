@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.addTransaction;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -40,6 +41,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.PhotoViewer;
+import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
@@ -53,16 +56,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-
-public class TabAddFragmentBuy extends Fragment implements View.OnClickListener {
+public class AddTransactionTabSell extends Fragment implements View.OnClickListener {
 
     private EditText etQuantity, etPrice, etFee;
     private TextView tvDate, tvTime, tvDesQuantity, tvDesPrice, tvDesDate, tvDesTime;
     private Button btnSave;
     private ImageView imvBtnShowPhoto, imgBtnAddPhoto;
     private ScrollView scrollView;
+    private Spinner spinnerCurrency;
     private LinearLayout viewBackgroung;
-    private Spinner spinnerCurrency, spinnerName;
     private View view;
 
     private ArrayList<Uri> photos;
@@ -73,11 +75,10 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
 
     private String shortName, longName;
 
-    public TabAddFragmentBuy(String shortName, String longName) {
+    public AddTransactionTabSell(String shortName, String longName) {
         this.shortName = shortName;
         this.longName = longName;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,14 +89,13 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_add_tab_buy, container, false);
+        view = inflater.inflate(R.layout.activity_add_transaction_tab_sell, container, false);
         setupUIViews();
-        hideKeyBoardOnSpinnerTouch();
         openCalendar();
         openClock();
+        hideKeyBoardOnSpinnerTouch();
 
         spinnerCurrency.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-        spinnerName.setAdapter(getSpinnerAdapter(R.array.test, R.layout.spinner_item, R.layout.spinner_dropdown_item));
 
         photos = new ArrayList<>();
         photosPath = new ArrayList<>();
@@ -103,28 +103,26 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         return view;
     }
 
-
-
     private void setupUIViews(){
-        etQuantity = view.findViewById(R.id.editTextQuantityBuy);
-        etPrice = view.findViewById(R.id.editTextPriceBuy);
-        etFee = view.findViewById(R.id.editTextFeeBuy);
-        tvDate = view.findViewById(R.id.textViewDateBuy);
-        tvTime = view.findViewById(R.id.textViewTimeBuy);
-        spinnerName = view.findViewById(R.id.spinnerNameBuy);
-        spinnerCurrency = view.findViewById(R.id.spinnerCurrencyBuy);
-        tvDesQuantity = view.findViewById(R.id.descriptionQuantityBuy);
-        tvDesPrice = view.findViewById(R.id.descriptionPriceBuy);
-        tvDesDate = view.findViewById(R.id.descriptionDateBuy);
-        tvDesTime = view.findViewById(R.id.descriptionTimeBuy);
+        etQuantity = view.findViewById(R.id.editTextQuantitySell);
+        etPrice = view.findViewById(R.id.editTextPriceSell);
+        etFee = view.findViewById(R.id.editTextFeeSell);
+        tvDate = view.findViewById(R.id.textViewDateSell);
+        tvTime = view.findViewById(R.id.textViewTimeSell);
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrencySell);
+        tvDesQuantity = view.findViewById(R.id.descriptionQuantitySell);
+        tvDesPrice = view.findViewById(R.id.descriptionPriceSell);
+        tvDesDate = view.findViewById(R.id.descriptionDateSell);
+        tvDesTime = view.findViewById(R.id.descriptionTimeSell);
 
-        viewBackgroung = view.findViewById(R.id.fragmentBackgroundBuy);
+        viewBackgroung = view.findViewById(R.id.fragmentBackgroundSell);
         viewBackgroung.setOnClickListener(this);
-        scrollView = view.findViewById(R.id.scrollViewBuy);
+        scrollView = view.findViewById(R.id.scrollViewSell);
 
-        btnSave = view.findViewById(R.id.buttonSaveBuy);
-        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoBuy);
-        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoBuy);
+        imvBtnShowPhoto = view.findViewById(R.id.imvButtonShowPhotoSell);
+
+        btnSave = view.findViewById(R.id.buttonSaveSell);
+        imgBtnAddPhoto = view.findViewById(R.id.imgButtonAddPhotoSell);
 
         btnSave.setOnClickListener(this);
         imgBtnAddPhoto.setOnClickListener(this);
@@ -134,7 +132,7 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.buttonSaveBuy:
+            case R.id.buttonSaveSell:
                 hideKeyBoard();
                 if(!shakeEmpty() && checkDateAndTime()){
                     boolean imgSaveSuccess = true;
@@ -160,13 +158,13 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                     }
                 }
                 break;
-            case R.id.fragmentBackgroundBuy:
+            case R.id.fragmentBackgroundSell:
                 hideKeyBoard();
                 break;
-            case R.id.imgButtonAddPhotoBuy:
+            case R.id.imgButtonAddPhotoSell:
                 mGetContent.launch("image/*");
                 break;
-            case R.id.imvButtonShowPhotoBuy:
+            case R.id.imvButtonShowPhotoSell:
                 openPhotoViewerActivity();
                 break;
         }
@@ -178,16 +176,16 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         PhotoEntity photoEntity = new PhotoEntity();
         String transactionFee = etFee.getText().toString().isEmpty() ? "0.0" :  etFee.getText().toString();
 
-        transactionEntity.transactionType = "Nákup";
-        transactionEntity.shortNameBought = this.shortName;
-        transactionEntity.longNameBought = this.longName;
-        transactionEntity.quantityBought = etQuantity.getText().toString();
-        transactionEntity.priceBought = etPrice.getText().toString();
+        transactionEntity.transactionType = "Prodej";
+        transactionEntity.shortNameSold = shortName;
+        transactionEntity.longNameSold = longName;
+        transactionEntity.quantitySold = etQuantity.getText().toString();
+        transactionEntity.priceSold = etPrice.getText().toString();
         transactionEntity.fee = transactionFee;
         transactionEntity.date = tvDate.getText().toString();
         transactionEntity.time = tvTime.getText().toString();
         transactionEntity.currency = spinnerCurrency.getSelectedItem().toString();
-        transactionEntity.quantitySold = getPrice(etQuantity, etPrice, etFee);
+        transactionEntity.quantityBought = getProfit(etQuantity, etPrice, etFee);
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -247,8 +245,8 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         tvTime.setText("");
     }
 
-    private String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
-        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
+    private String getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
+        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) - editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
         return String.valueOf(result);
     }
@@ -256,6 +254,24 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     private Double editTextToDouble(EditText toParse){
         String inString = toParse.getText().toString();
         return inString.isEmpty() ? 0.0 : Double.parseDouble(inString);
+    }
+
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
+    private void openDateDialogWindow(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
+        DatePickerDialog dialog = new DatePickerDialog(
+                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
     }
 
     public void openCalendar(){
@@ -272,18 +288,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                 setDateToTextView(year, month, day);
             }
         };
-    }
-
-    private void openDateDialogWindow(){
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
-        DatePickerDialog dialog = new DatePickerDialog(
-                getActivity(), android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
-        );
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
     }
 
     private void setDateToTextView(int year, int month, int day){
@@ -338,12 +342,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         catch (Exception e){
             System.err.println("Chyba při parsování času: "+e);
         }
-    }
-
-    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
-        spinnerAdapter.setDropDownViewResource(dropDownId);
-        return spinnerAdapter;
     }
 
     private boolean checkDateAndTime(){
@@ -403,7 +401,6 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         return time;
     }
 
-    // https://developer.android.com/training/basics/intents/result
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -416,6 +413,13 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
                         imvBtnShowPhoto.setImageURI(photos.get(0));
                         imvBtnShowPhoto.setVisibility(View.VISIBLE);
                     }
+                    /* Získání bitmapu z URI
+                    try {
+                        Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+                        imvBtnShowPhoto.setImageBitmap(mBitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
                 }
             });
 
@@ -426,22 +430,22 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-        new ActivityResultContracts.StartActivityForResult(),
-        new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode() == RESULT_OK) {
-                    // There are no request codes
-                    Intent data = result.getData();
-                    photos = data.getParcelableArrayListExtra("photos");
-                    if(photos.size() > 0) {
-                        imvBtnShowPhoto.setImageURI(photos.get(0));
-                    }else{
-                        imvBtnShowPhoto.setVisibility(View.GONE);
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        photos = data.getParcelableArrayListExtra("photos");
+                        if(photos.size() > 0) {
+                            imvBtnShowPhoto.setImageURI(photos.get(0));
+                        }else{
+                            imvBtnShowPhoto.setVisibility(View.GONE);
+                        }
                     }
                 }
-            }
-        });
+            });
 
     private boolean shakeEmpty(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
@@ -478,25 +482,11 @@ public class TabAddFragmentBuy extends Fragment implements View.OnClickListener 
         }else{
             tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
-        /*if(spinnerCurrency.getSelectedItem() == null){
-            findEmpty = true;
-            spinnerCurrency.startAnimation(animShake);
-            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text_empty));
-        }else{
-            spinnerCurrency.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_edit_text));
-        }*/
+
         return findEmpty;
     }
 
     private void hideKeyBoardOnSpinnerTouch(){
-        spinnerName.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyBoard();
-                return false;
-            }
-        });
-
         spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
