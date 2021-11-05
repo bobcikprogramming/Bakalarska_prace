@@ -11,51 +11,78 @@
     <color name="red">#D33A3A</color>
     <color name="blue">#6973F3</color>
 
-    <color name="navBarSelect">#F9B720</color>
+    <color name="navBarSelect">#d9e650</color>
     <color name="navBarIconVariant">#E7B647</color>
-    <color name="mainBackground">#212121</color>
-    <color name="navBarBackground">#131313</color>
+
+    <color name="mainBackground">#FFFFFF</color>
+    <color name="navBarBackground">#008000</color>
+
     <color name="overviewLayoutCryptoBackground">#161616</color>
     <color name="overviewLayoutResultBackground">#363636</color>
     <color name="editTextBackground">#303030</color>
     <color name="editTextIsEmptyBachground">#EE8C78</color>
     <color name="editTextBorder">#505050</color>
     <color name="description">#F9B720</color>
-    <color name="cursor">#E7B647</color>
+    <color name="cursor">#008000</color>
     <color name="colorAccent">#F9B720</color>
-    <color name="button">#EBB742</color>
+
+    <color name="button">#d9e650</color>
+
     <color name="recyclerViewItemUnderline">#E7B647</color>
     <color name="searchText">#808080</color>
 
 
 
+    <color name="navbarTitle">#FFFFFF</color>
 
-    <color name="tvDescription">#D3D3D3</color>
+    <color name="tvDescription">#4F4F4F</color>
+    <color name="etAddTransaction">#000000</color>
+    <color name="addTransactionHeadline">#000000</color>
 
-    <color name="etAddTransaction">#FFFFFF</color>
-    <color name="addTransactionHeadline">#FFFFFF</color>
-
-    <color name="underline">#20D3D3D3</color>
+    <color name="underline">#90c9dc87</color>
 
     <color name="selectTransactionHeadline">#FFFFFF</color>
+    <color name="selectTransactionCloseButton">#FFFFFF</color>
 
-    <color name="searchHintColor">#808080</color>
-    <color name="searchTextColor">#FFFFFF</color>
+    <color name="AddTransactionCloseButton">#000000</color>
 
+    <color name="searchBackground">#c9dc87</color>
+    <color name="searchHintColor">#4F4F4F</color>
+    <color name="searchTextColor">#000000</color>
+    <color name="searchDeleteButtonColor">#008000</color>
+
+    <color name="overviewProfit">#FFFFFF</color>
     <color name="overviewNormalText">#FFFFFF</color>
-    <color name="overviewDescription">#D0D0D0</color>
-    <color name="overviewNextPrevYear">#A0A0A0</color>
-    <color name="overviewListDescription">#A0A0A0</color>
+    <color name="overviewDescription">#ecebbd</color>
+    <color name="overviewNextPrevYear">#d8e4bc</color>
+    <color name="overviewListDescription">#4F4F4F</color>
+    <color name="overviewShortName">#000000</color>
+    <color name="overviewLongName">#3F3F3F</color>
+    <color name="overviewCryptoAmount">#000000</color>
+    <color name="overviewSelectedMode">#FFFFFF</color>
+    <color name="overviewUnselectedMode">#4F4F4F</color>
 
-    <color name="selectionCryptoLongNameText">#FFFFFF</color>
-    <color name="selectionCryptoShortNameText">#A0A0A0</color>
+    <color name="recyclerItemOfTransactionDescriptionSide">#4F4F4F</color>
+    <color name="recyclerItemOfTransactionDescriptionTop">#008000</color>
+    <color name="recyclerItemOfTransactionTextView">#000000</color>
 
-    <color name="recyclerItemOfTransactionDescriptionSide">#D3D3D3</color>
-    <color name="recyclerItemOfTransactionDescriptionTop">#F9B720</color>
-    <color name="recyclerItemOfTransactionTextView">#FFFFFF</color>
+    <color name="recyclerItemOfSelectionCryptoLongName">#000000</color>
+    <color name="recyclerItemOfSelectionCryptoShortName">#3F3F3F</color>
 
-    <color name="spinnerItem">#FFFFFF</color>
+    <color name="spinnerItem">#000000</color>
 
     <color name="tabbarTextView">#FFFFFF</color>
     <color name="tabbarLine">#D3D3D3</color>
+
+    <color name="headlineBackground">#008000</color>
+
+    <color name="spinnerItemBackground">#FFFFFF</color>
+    <color name="spinnerItemText">#000000</color>
+
+    <color name="roundedImageStroke">#008000</color>
+    <color name="roundedImageButtonSolid">#008000</color>
+    <color name="roundedImageViewSolid">#FFFFFF</color>
+
+    <color name="InfoDescription">#808080</color>
+    <color name="InfoValue">#000000</color>
 </resources>

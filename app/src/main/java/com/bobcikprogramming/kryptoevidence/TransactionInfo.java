@@ -63,7 +63,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
         long transactionIDLong = (long) getIntent().getSerializableExtra("transactionID");
         String transactionID = String.valueOf(transactionIDLong);
 
-        setupUIViews();
+        /*setupUIViews();
         extraLayout = new ArrayList<>(Arrays.asList(layoutEighthLine, layoutNinthLine, layoutTenthLine, underlineSeventhLinem, underlineEighthLine, underlineNinthLine, underlineTenthLine));
         editTextsBuyAndSell = new ArrayList<>(Arrays.asList(etSecondL, etThirdL, etFifthL));
         editTextsChange = new ArrayList<>(Arrays.asList(etSecondL, etThirdL, etSixthL, etSeventhL, etEighthL));
@@ -73,7 +73,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
         change = false;
 
         setNavBarVisibility(false);
-        setupGUIByTransactionType();
+        setupGUIByTransactionType();*/
     }
 
     @Override
@@ -106,76 +106,11 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        switch (view.getId()){
-            case R.id.infoFirstLineSpinner:
-            case R.id.infoFourthLineSpinner:
-            case R.id.infoFifthLineSpinner:
-                hideKeyBoard();
-                break;
-        }
+
         return false;
     }
 
     private void setupUIViews(){
-        descTransactionT = findViewById(R.id.infoDesTransactionType);
-        tvTransactionT = findViewById(R.id.infoTransactionType);
-        descFirstL = findViewById(R.id.infoDesFirstLine);
-        descSecondL = findViewById(R.id.infoDesSecondLine);
-        descThirdL = findViewById(R.id.infoDesThirdLine);
-        descFourthL = findViewById(R.id.infoDesFourthLine);
-        descFifthL = findViewById(R.id.infoDesFifthLine);
-        descSixthL = findViewById(R.id.infoDesSixthLine);
-        descSeventhL = findViewById(R.id.infoDesSeventhLine);
-        descEighthL = findViewById(R.id.infoDesEighthLine);
-        descNinthL = findViewById(R.id.infoDesNinthLine);
-        descTenL = findViewById(R.id.infoDesTenthLine);
-
-        etFirstL = findViewById(R.id.infoFirstLine);
-        etSecondL = findViewById(R.id.infoSecondLine);
-        etThirdL = findViewById(R.id.infoThirdLine);
-        etFourthL = findViewById(R.id.infoFourthLine);
-        etFifthL = findViewById(R.id.infoFifthLine);
-        etSixthL = findViewById(R.id.infoSixthLine);
-        etSeventhL = findViewById(R.id.infoSeventhLine);
-        etEighthL = findViewById(R.id.infoEighthLine);
-        etNinthL = findViewById(R.id.infoNinthLine);
-        etTenthL = findViewById(R.id.infoTenthLine);
-
-        spinnerFirstL = findViewById(R.id.infoFirstLineSpinner);
-        spinnerFourthL = findViewById(R.id.infoFourthLineSpinner);
-        spinnerFifthL = findViewById(R.id.infoFifthLineSpinner);
-
-        layoutEighthLine = findViewById(R.id.infoEighthLineLayout);
-        layoutNinthLine = findViewById(R.id.infoNinthLineLayout);
-        layoutTenthLine = findViewById(R.id.infoTenthLineLayout);
-        underlineSeventhLinem = findViewById(R.id.infoSeventhLineUnderLine);
-        underlineEighthLine = findViewById(R.id.infoEighthLineUnderLine);
-        underlineNinthLine = findViewById(R.id.infoNinthLineUnderLine);
-        underlineTenthLine = findViewById(R.id.infoTenthLineUnderLine);
-
-        headline = findViewById(R.id.infoHeadline);
-
-        btnBack = findViewById(R.id.btnBack);
-        btnEdit = findViewById(R.id.btnEdit);
-        btnCancel = findViewById(R.id.btnCancel);
-        btnSave = findViewById(R.id.btnSave);
-        btnDelete = findViewById(R.id.btnDelete);
-
-        btnBack.setOnClickListener(this);
-        btnEdit.setOnClickListener(this);
-        btnCancel.setOnClickListener(this);
-        btnSave.setOnClickListener(this);
-        btnDelete.setOnClickListener(this);
-
-        activityBackGround = findViewById(R.id.activityInfoBackground);
-        topBar = findViewById(R.id.infoTopBar);
-
-        activityBackGround.setOnClickListener(this);
-        topBar.setOnClickListener(this);
-
-        spinnerFirstL.setOnTouchListener(this);
-        spinnerFourthL.setOnTouchListener(this);
-        spinnerFifthL.setOnTouchListener(this);
     }
 
     private TransactionWithPhotos loadDataFromDB(String transactionID){
@@ -333,7 +268,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
             btnCancel.setVisibility(View.GONE);
             btnSave.setVisibility(View.GONE);
             btnDelete.setVisibility(View.GONE);
-            headline.setText("Výpis");
+            headline.setText(transactionWithPhotos.transaction.transactionType);
         }else{
             btnBack.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);

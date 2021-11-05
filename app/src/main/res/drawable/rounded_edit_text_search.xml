@@ -3,10 +3,7 @@
     android:shape="rectangle"
     android:padding="10dp">
 
-    <solid android:color="@color/editTextIsEmptyBachground" />
-    <stroke
-        android:color="@color/editTextBorder"
-        android:width="2dp"/>
+    <solid android:color="@color/searchBackground" />
     <corners
         android:bottomRightRadius="15dp"
         android:bottomLeftRadius="15dp"

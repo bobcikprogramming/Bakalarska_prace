@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dirtyWhite">#D0D0D0</color>
+    <color name="dirtyWhiteTransparent">#60D0D0D0</color>
+    <color name="gray">#A0A0A0</color>
+    <color name="lightGray">#D3D3D3</color>
+    <color name="lightGrayTransparent">#20D3D3D3</color>
+    <color name="green">#1CB753</color>
+    <color name="red">#D33A3A</color>
+    <color name="blue">#6973F3</color>
+
+    <color name="navBarSelect">#F9B720</color>
+    <color name="navBarIconVariant">#E7B647</color>
+    <color name="mainBackground">#212121</color>
+    <color name="navBarBackground">#131313</color>
+    <color name="overviewLayoutCryptoBackground">#161616</color>
+    <color name="overviewLayoutResultBackground">#363636</color>
+    <color name="editTextBackground">#303030</color>
+    <color name="editTextIsEmptyBachground">#EE8C78</color>
+    <color name="editTextBorder">#505050</color>
+    <color name="description">#F9B720</color>
+    <color name="cursor">#E7B647</color>
+    <color name="colorAccent">#F9B720</color>
+
+    <color name="button">#EBB742</color>
+
+    <color name="recyclerViewItemUnderline">#E7B647</color>
+    <color name="searchText">#808080</color>
+
+
+
+
+    <color name="navbarTitle">#FFFFFF</color>
+
+    <color name="tvDescription">#D3D3D3</color>
+
+    <color name="etAddTransaction">#FFFFFF</color>
+    <color name="addTransactionHeadline">#FFFFFF</color>
+
+    <color name="underline">#20D3D3D3</color>
+
+    <color name="selectTransactionHeadline">#FFFFFF</color>
+    <color name="selectTransactionCloseButton">#FFFFFF</color>
+
+    <color name="AddTransactionCloseButton">#FFFFFF</color>
+
+    <color name="searchBackground">#303030</color>
+    <color name="searchHintColor">#808080</color>
+    <color name="searchTextColor">#FFFFFF</color>
+    <color name="searchDeleteButtonColor">#FFFFFF</color>
+
+    <color name="overviewProfit">#1CB753</color>
+    <color name="overviewNormalText">#FFFFFF</color>
+    <color name="overviewDescription">#D0D0D0</color>
+    <color name="overviewNextPrevYear">#A0A0A0</color>
+    <color name="overviewListDescription">#A0A0A0</color>
+    <color name="overviewShortName">#FFFFFF</color>
+    <color name="overviewLongName">#A0A0A0</color>
+    <color name="overviewCryptoAmount">#FFFFFF</color>
+    <color name="overviewSelectedMode">#FFFFFF</color>
+    <color name="overviewUnselectedMode">#000000</color>
+
+    <color name="recyclerItemOfTransactionDescriptionSide">#D3D3D3</color>
+    <color name="recyclerItemOfTransactionDescriptionTop">#F9B720</color>
+    <color name="recyclerItemOfTransactionTextView">#FFFFFF</color>
+
+    <color name="recyclerItemOfSelectionCryptoLongName">#FFFFFF</color>
+    <color name="recyclerItemOfSelectionCryptoShortName">#A0A0A0</color>
+
+    <color name="spinnerItem">#FFFFFF</color>
+
+    <color name="tabbarTextView">#FFFFFF</color>
+    <color name="tabbarLine">#D3D3D3</color>
+
+    <color name="headlineBackground">#131313</color>
+
+    <color name="spinnerItemBackground">#212121</color>
+    <color name="spinnerItemText">#FFFFFF</color>
+
+    <color name="roundedImageStroke">#EBB742</color>
+    <color name="roundedImageButtonSolid">#131313</color>
+    <color name="roundedImageViewSolid">#131313</color>
+
+    <color name="InfoDescription">#A3A3A3</color>
+    <color name="InfoValue">#FFFFFF</color>
+</resources>

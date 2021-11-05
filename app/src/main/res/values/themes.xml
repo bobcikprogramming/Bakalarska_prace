@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:spinnerDropDownItemStyle">@style/MySpinnerItemStyle</item>
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
@@ -12,177 +12,6 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="colorButtonNormal">@color/colorAccent</item>
-    </style>
-
-    <style name="MyEditTextStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/rounded_edit_text</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginEnd">15dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:textCursorDrawable">@drawable/cursor</item>
-    </style>
-
-    <style name="MyTextViewDescriptionStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/description</item>
-        <item name="android:layout_marginStart">30dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-    </style>
-
-    <style name="MyTextViewDescriptionStyleRight">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/description</item>
-        <item name="android:layout_marginEnd">35dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-    </style>
-
-    <!--<style name="MyImageButtonCalendar">
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:layout_marginEnd">5dp</item>
-        <item name="android:src">@drawable/ic_calendar_24</item>
-    </style>-->
-
-    <style name="MyImageButtonPhoto">
-        <item name="android:layout_width">100dp</item>
-        <item name="android:layout_height">100dp</item>
-        <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:background">@drawable/rounded_image_button</item>
-        <item name="android:src">@drawable/ic_photo_50</item>
-    </style>
-
-    <style name="MyButton">
-        <item name="android:layout_width">150dp</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:layout_marginBottom">15dp</item>
-        <item name="android:layout_marginTop">25dp</item>
-        <item name="android:background">@drawable/rounded_button</item>
-        <item name="android:textColor">@color/mainBackground</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="MyTextViewRecyclerViewHeadline">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:gravity">bottom|right</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
-    </style>
-
-    <style name="MyTextViewRecyclerViewName">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:minWidth">70dp</item>
-        <item name="android:maxWidth">150dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:gravity">bottom|right</item>
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="MyTextViewRecyclerViewPriceDescription">
-        <item name="android:layout_width">80dp</item>
-        <item name="android:layout_height">20dp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:gravity">center|right</item>
-        <item name="android:layout_gravity">right</item>
-        <item name="android:paddingRight">5dp</item>
-    </style>
-
-    <style name="MyTextViewRecyclerViewQuantityAndPrice">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:gravity">bottom|left</item>
-        <item name="android:paddingLeft">5dp</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="AddFragmentsTextViewDescription">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:gravity">center_vertical|end</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/description</item>
-    </style>
-
-    <style name="AddFragmentsTextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/rounded_edit_text</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingStart">15dp</item>
-        <item name="android:paddingEnd">15dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">15dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:gravity">center_vertical</item>
-    </style>
-
-    <style name="AddFragmentsEditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/rounded_edit_text</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingStart">15dp</item>
-        <item name="android:paddingEnd">15dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">15dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:textCursorDrawable">@drawable/cursor</item>
-    </style>
-
-    <style name="AddFragmentsSpinner">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">@drawable/rounded_edit_text</item>
-        <item name="android:paddingStart">15dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginEnd">15dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
-    </style>
-
-    <style name="AddFragmentsImageButtonPhoto">
-        <item name="android:layout_width">65dp</item>
-        <item name="android:layout_height">65dp</item>
-        <item name="android:layout_marginStart">10dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:padding">15dp</item>
-        <item name="android:background">@drawable/rounded_image_button</item>
-        <item name="android:src">@drawable/ic_photo_50</item>
-    </style>
-
-    <style name="AddFragmentsButton">
-        <item name="android:layout_width">150dp</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:background">@drawable/rounded_button</item>
-        <item name="android:textColor">@color/mainBackground</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="MySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
@@ -202,10 +31,6 @@
         <item name="android:textColor">@color/description</item>
     </style>
 
-
-
-
-
     <style name="MyUnderline">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.01dp</item>
@@ -213,6 +38,16 @@
     </style>
 
     <!-- Okna vytvoření transakce -->
+
+    <style name="AddTransactionButton">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:textColor">@color/mainBackground</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
     <style name="AddTransactionItemLinearLayout">
         <item name="android:layout_width">match_parent</item>
@@ -241,6 +76,10 @@
         <item name="android:paddingEnd">20dp</item>
     </style>
 
+    <style name="AddTransactionItemSpinner" parent="AddTransactionEntryFields">
+        <item name="android:background">@null</item>
+    </style>
+
     <style name="AddTransactionItemEditText" parent="AddTransactionEntryFields">
         <item name="android:background">@null</item>
         <item name="android:inputType">numberDecimal</item>
@@ -263,14 +102,14 @@
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
-        <item name="android:background">@drawable/rounded_image_button</item>
     </style>
 
     <style name="AddTransactionImageViewPhoto" parent="AddTransactionImageViewPhotoParent">
         <item name="android:layout_width">65dp</item>
         <item name="android:layout_height">65dp</item>
         <item name="android:padding">15dp</item>
-        <item name="android:src">@drawable/ic_photo_50</item>
+        <item name="android:src">@drawable/ic_photo</item>
+        <item name="android:background">@drawable/rounded_image_button</item>
     </style>
 
     <style name="AddTransactionImageViewPhotoSelected" parent="AddTransactionImageViewPhotoParent">
@@ -279,6 +118,7 @@
         <item name="android:src">@null</item>
         <item name="android:padding">10dp</item>
         <item name="android:visibility">gone</item>
+        <item name="android:background">@drawable/rounded_image_view</item>
     </style>
 
     <!-- Okna vytvoření transakce -->
@@ -297,7 +137,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:background">@drawable/rounded_edit_text</item>
+        <item name="android:background">@drawable/rounded_edit_text_search</item>
         <item name="android:paddingStart">5dp</item>
         <item name="android:paddingEnd">5dp</item>
     </style>
@@ -323,11 +163,11 @@
     </style>
 
     <style name="SearchImageViewLeft" parent="SearchImageView">
-        <item name="android:src">@drawable/ic_search_40</item>
+        <item name="android:src">@drawable/ic_search</item>
     </style>
 
     <style name="SearchImageViewRight" parent="SearchImageView">
-        <item name="android:src">@drawable/ic_delete_40</item>
+        <item name="android:src">@drawable/ic_delete_search</item>
     </style>
 
     <!-- Edit text pro vyhledávání -->
@@ -409,5 +249,30 @@
     </style>
 
     <!-- Tabbar -->
+
+    <!-- Nadpis -->
+
+    <style name="HeadlineLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/headlineBackground</item>
+    </style>
+
+    <style name="HeadlineTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/selectTransactionHeadline</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <!-- Nadpis -->
 
 </resources>

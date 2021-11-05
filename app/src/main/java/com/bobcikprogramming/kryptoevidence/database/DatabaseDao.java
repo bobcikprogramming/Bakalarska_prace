@@ -26,6 +26,10 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> getAll();
 
     @Transaction
+    @Query("SELECT * FROM ModeEntity")
+    List<ModeEntity> getType();
+
+    @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE transaction_id = :transactionID")
     TransactionWithPhotos getByTransactionID(String transactionID);
 
@@ -37,6 +41,9 @@ public interface DatabaseDao {
 
     @Insert
     void insertPhoto(PhotoEntity photo);
+
+    @Insert
+    long changeMode(ModeEntity mode);
 
     @Delete
     void deleteTransaction(TransactionEntity transaction);

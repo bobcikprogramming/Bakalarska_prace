@@ -19,7 +19,7 @@
             android:layout_width="65dp"
             android:layout_height="match_parent"
             android:id="@+id/imgPhotoViewerBack"
-            android:src="@drawable/ic_back_30"
+            android:src="@drawable/ic_back"
             android:background="@null"
             android:padding="5dp"
             android:paddingStart="5dp"/>
@@ -33,7 +33,7 @@
             android:layout_width="65dp"
             android:layout_height="match_parent"
             android:id="@+id/imgPhotoViewerDelete"
-            android:src="@drawable/ic_delete_30"
+            android:src="@drawable/ic_delete"
             android:background="@null"
             android:paddingEnd="5dp"/>
 

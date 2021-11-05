@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.KryptoEvidence" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:spinnerDropDownItemStyle">@style/MySpinnerItemStyle</item>
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
         <item name="colorPrimary">@color/navBarSelect</item>
@@ -12,4 +13,5 @@
         <!-- Customize your theme here. -->
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
+
 </resources>

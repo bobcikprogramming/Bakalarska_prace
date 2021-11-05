@@ -70,7 +70,7 @@
                         android:text="Cena v měně"/>
 
                     <Spinner
-                        style="@style/AddTransactionEntryFields"
+                        style="@style/AddTransactionItemSpinner"
                         android:id="@+id/spinnerCurrencyBuy"/>
 
                 </LinearLayout>
@@ -161,7 +161,7 @@
 
                 <Button
                     android:id="@+id/buttonSaveBuy"
-                    style="@style/AddFragmentsButton"
+                    style="@style/AddTransactionButton"
                     android:layout_marginBottom="24dp"
                     android:text="Uložit"
                     app:backgroundTint="@null"

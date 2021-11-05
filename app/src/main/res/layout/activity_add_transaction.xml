@@ -31,7 +31,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:id="@+id/btnCloseAdd"
-            android:src="@drawable/ic_close_40"
+            android:src="@drawable/ic_close_add_transaction"
             android:padding="5dp"/>
 
     </LinearLayout>

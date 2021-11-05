@@ -3,9 +3,9 @@
     <item>
         <shape>
             <solid
-                android:color="@color/navBarBackground"/>
+                android:color="@color/roundedImageButtonSolid"/>
             <stroke
-                android:color="@color/button"
+                android:color="@color/roundedImageStroke"
                 android:width="2dp"/>
             <corners
                 android:radius="15dp" />
