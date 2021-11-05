@@ -20,9 +20,11 @@ import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.CryptoSelection;
 import com.bobcikprogramming.kryptoevidence.MainActivity;
+import com.bobcikprogramming.kryptoevidence.PhotoViewer;
 import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.RecyclerViewTransactions;
 import com.bobcikprogramming.kryptoevidence.TransactionInfo;
+import com.bobcikprogramming.kryptoevidence.TransactionViewer;
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
@@ -84,9 +86,11 @@ public class FragmentTransactions extends Fragment {
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            Intent infoActivity = new Intent(getContext(), TransactionInfo.class);
+            /*Intent infoActivity = new Intent(getContext(), TransactionInfo.class);
             infoActivity.putExtra("transactionID", dataFromDatabase.get(position).transaction.uidTransaction);
-            infoActivityResultLauncher.launch(infoActivity);
+            infoActivityResultLauncher.launch(infoActivity);*/
+            Intent infoActivity = new Intent(getContext(), TransactionViewer.class);
+            startActivity(infoActivity);
         }
     };
 

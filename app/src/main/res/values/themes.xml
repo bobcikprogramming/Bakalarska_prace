@@ -275,4 +275,62 @@
 
     <!-- Nadpis -->
 
+    <!-- Výpis transakce -->
+
+    <style name="TransactionInfoItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="TransactionInfoItemLayoutLeft">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewDescParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/InfoDescription</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewValueParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/InfoValue</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewDescLeft" parent="TransactionInfoItemTextViewDescParent">
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewValueLeft" parent="TransactionInfoItemTextViewValueParent">
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TransactionInfoItemLayoutRight">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewDescRight" parent="TransactionInfoItemTextViewDescParent">
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <style name="TransactionInfoItemTextViewValueRight" parent="TransactionInfoItemTextViewValueParent">
+        <item name="android:gravity">center_vertical|end</item>
+    </style>
+
+    <!-- Výpis transakce -->
+
 </resources>

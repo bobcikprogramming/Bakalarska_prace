@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/layoutTransactionsInfo">
+
+    <LinearLayout
+        style="@style/TransactionInfoItemLayout">
+        <LinearLayout
+            style="@style/TransactionInfoItemLayoutLeft">
+
+            <TextView
+                style="@style/TransactionInfoItemTextViewDescLeft"
+                android:id="@+id/infoDesLeft"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionInfoItemTextViewValueLeft"
+                android:id="@+id/infoValueLeft"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/TransactionInfoItemLayoutRight"
+            android:id="@+id/infoLayoutRight">
+
+            <TextView
+                style="@style/TransactionInfoItemTextViewDescRight"
+                android:id="@+id/infoDesRight"
+                android:text="Měna"/>
+
+            <TextView
+                style="@style/TransactionInfoItemTextViewValueRight"
+                android:id="@+id/infoValueRight"
+                android:text="LINK"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MyUnderline"/>
+
+</LinearLayout>

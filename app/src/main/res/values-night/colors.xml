@@ -85,4 +85,5 @@
 
     <color name="InfoDescription">#A3A3A3</color>
     <color name="InfoValue">#FFFFFF</color>
+    <color name="InfoHeadline">#FFFFFF</color>
 </resources>

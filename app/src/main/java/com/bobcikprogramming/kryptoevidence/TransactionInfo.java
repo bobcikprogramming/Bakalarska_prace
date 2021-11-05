@@ -88,7 +88,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
             case R.id.btnEdit:
                 setupGUIForEditByTransactionType(true);
                 break;
-            case R.id.btnCancel:
+            /*case R.id.btnCancel:
                 setupGUIForEditByTransactionType(false);
                 setupGUIByTransactionType();
                 resetColors();
@@ -96,8 +96,8 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.btnSave:
                 hideKeyBoard();
-                confirmDialog();
-            case R.id.activityInfoBackground:
+                confirmDialog();*/
+            //case R.id.activityInfoBackground:
             case R.id.infoTopBar:
                 hideKeyBoard();
                 break;
