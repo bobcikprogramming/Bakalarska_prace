@@ -86,11 +86,11 @@ public class FragmentTransactions extends Fragment {
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            /*Intent infoActivity = new Intent(getContext(), TransactionInfo.class);
-            infoActivity.putExtra("transactionID", dataFromDatabase.get(position).transaction.uidTransaction);
-            infoActivityResultLauncher.launch(infoActivity);*/
             Intent infoActivity = new Intent(getContext(), TransactionViewer.class);
-            startActivity(infoActivity);
+            infoActivity.putExtra("position", position);
+            infoActivityResultLauncher.launch(infoActivity);
+            /*Intent infoActivity = new Intent(getContext(), TransactionViewer.class);
+            startActivity(infoActivity);*/
         }
     };
 

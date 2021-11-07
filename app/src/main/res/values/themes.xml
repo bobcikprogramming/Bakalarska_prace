@@ -37,6 +37,14 @@
         <item name="android:background">@color/underline</item>
     </style>
 
+    <style name="MyStrongUnderline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/underline</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+    </style>
+
     <!-- Okna vytvoření transakce -->
 
     <style name="AddTransactionButton">
@@ -303,6 +311,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/InfoValue</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="TransactionInfoItemTextViewDescLeft" parent="TransactionInfoItemTextViewDescParent">
@@ -332,5 +341,43 @@
     </style>
 
     <!-- Výpis transakce -->
+
+    <!-- Historie transakce -->
+
+    <style name="TransactionHistoryItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">60dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="TransactionHistoryItemLayoutInside">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TransactionHistoryItemTextViewDesc">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/InfoDescription</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="TransactionHistoryItemTextViewValue">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/InfoValue</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- Historie transakce -->
 
 </resources>

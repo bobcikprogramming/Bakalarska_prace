@@ -41,6 +41,8 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/MyUnderline"/>
+        style="@style/MyUnderline"
+        android:id="@+id/underline"
+        android:orientation="vertical"/>
 
 </LinearLayout>

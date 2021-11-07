@@ -1,52 +1,96 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
+import com.bobcikprogramming.kryptoevidence.database.TransactionWithHistory;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class TransactionViewer extends AppCompatActivity {
 
-    private TextView btnBack;
+    private TextView btnBack, btnEdit;
     private ViewPager transactionViewer;
 
     private ViewPagerAdapterTransaction viewPagerAdapter;
     private TransactionWithPhotos transactionWithPhotos;
 
+    List<TransactionWithPhotos> dataFromDatabase;
+    List<TransactionHistoryEntity> dataFromDatabaseHistory;
+
+    private boolean changed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transaction_viewer);
+        int position = (int) getIntent().getSerializableExtra("position");
+
+        changed = false;
 
         transactionViewer = findViewById(R.id.viewPagerTransaction);
 
-        List<TransactionWithPhotos> dataFromDatabase;
-        AppDatabase db = AppDatabase.getDbInstance(this);
-        dataFromDatabase = db.databaseDao().getAll();
-        sortListByTime(dataFromDatabase);
-        sortListByDate(dataFromDatabase);
+        loadDataFromDb();
 
-        viewPagerAdapter = new ViewPagerAdapterTransaction(TransactionViewer.this, dataFromDatabase);
+        viewPagerAdapter = new ViewPagerAdapterTransaction(TransactionViewer.this, dataFromDatabase, dataFromDatabaseHistory);
         transactionViewer.setAdapter(viewPagerAdapter);
-        transactionViewer.setCurrentItem(0);
+        transactionViewer.setCurrentItem(position);
 
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.putExtra("changed", changed);
+                setResult(RESULT_OK, intent );
                 finish();
             }
         });
+
+        btnEdit = findViewById(R.id.btnEdit);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("------------------------------"+transactionViewer.getCurrentItem());
+                Intent infoActivity = new Intent(TransactionViewer.this, TransactionEdit.class);
+                infoActivity.putExtra("transactionID", dataFromDatabase.get(transactionViewer.getCurrentItem()).transaction.uidTransaction);
+                infoActivityTransactionEditLauncher.launch(infoActivity);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("change", changed);
+        setResult(RESULT_OK, intent );
+        finish();
+    }
+
+    private void loadDataFromDb(){
+        AppDatabase db = AppDatabase.getDbInstance(this);
+        dataFromDatabase = db.databaseDao().getAll();
+        sortListByTime(dataFromDatabase);
+        sortListByDate(dataFromDatabase);
+
+        dataFromDatabaseHistory = db.databaseDao().getHistory();
     }
 
     private void sortListByDate(List<TransactionWithPhotos> data){
@@ -88,4 +132,26 @@ public class TransactionViewer extends AppCompatActivity {
             }
         }
     }
+
+    ActivityResultLauncher<Intent> infoActivityTransactionEditLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent data = result.getData();
+                    changed = data.getBooleanExtra("changed", false);
+                    boolean deleted = data.getBooleanExtra("deleted", false);
+                    if(changed){
+                        loadDataFromDb();
+                        if(deleted){
+                            Intent intent = new Intent();
+                            intent.putExtra("changed", changed);
+                            setResult(RESULT_OK, intent );
+                            finish();
+                        }else {
+                            viewPagerAdapter.updateDatalists(dataFromDatabase, dataFromDatabaseHistory, transactionViewer.getCurrentItem());
+                        }
+                    }
+                }
+            });
 }

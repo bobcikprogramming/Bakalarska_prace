@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/layoutTransactionsInfoHistory"
+    android:layout_marginTop="10dp">
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout">
+
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:text="Datum a čas změny"
+                android:textColor="@color/InfoHeadlineHistory"
+                android:textStyle="bold"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueDateTimeOfChange"
+                android:text="Nákup"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MyUnderline"
+        android:orientation="vertical"/>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutFirstRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescFirstRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueFirstRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineFirstRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutSecondRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescSecondRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueSecondRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineSecondRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutThirdRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescThirdRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueThirdRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineThirdRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutFourthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescFourthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueFourthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineFourthRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutFifthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescFifthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueFifthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineFifthRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutSixthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescSixthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueSixthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineSixthRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutSeventhRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescSeventhRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueSeventhRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineSeventhRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutEighthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescEighthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueEighthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineEighthRow"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutNinthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescNinthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueNinthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/MyUnderline"
+            android:id="@+id/underlineNinthRow"
+            android:orientation="vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/TransactionHistoryItemLayout"
+        android:id="@+id/layoutTenthRow">
+        <LinearLayout
+            style="@style/TransactionHistoryItemLayoutInside">
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewDesc"
+                android:id="@+id/histDescTenthRow"
+                android:text="Typ transakce"/>
+
+            <TextView
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:id="@+id/histValueTenthRow"
+                android:text="Nákup"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/MyStrongUnderline"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:id="@+id/lastUnderline"
+        android:orientation="vertical"/>
+
+</LinearLayout>
