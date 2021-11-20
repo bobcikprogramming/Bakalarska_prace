@@ -28,7 +28,7 @@ import java.util.Objects;
 public class ViewPagerAdapterTransaction extends PagerAdapter{
 
     private RecyclerView recyclerViewTransactionInfo, recyclerViewTransactionInfoHistory;
-    private LinearLayout historyUnderline;
+    private LinearLayout historyUnderline, historyLayout;
     private TextView historyHeadline;
     private View itemView;
 
@@ -110,6 +110,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
 
         historyHeadline = itemView.findViewById(R.id.historyHeadline);
         historyUnderline = itemView.findViewById(R.id.historyUnderline);
+        historyLayout = itemView.findViewById(R.id.historyLayout);
     }
 
     public void updateDatalists(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory, int position){
@@ -117,9 +118,6 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
         this.dataListHistory = dataListHistory;
 
         this.position = position;
-
-        System.out.println("..................." + getTransactionForBuyOrSell(position).get(1).getLeftValue());
-        System.out.println("-------------------" + dataList.get(position).transaction.transactionType);
 
         adapter.updateDataList(dataList.get(position).transaction.transactionType.equals("Směna") ? getTransactionForChange(position) : getTransactionForBuyOrSell(position));
         adapter.notifyDataSetChanged();
@@ -353,6 +351,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
         }else{
             historyUnderline.setVisibility(View.GONE);
             historyHeadline.setVisibility(View.GONE);
+            historyLayout.setVisibility(View.GONE);
 
         }
 

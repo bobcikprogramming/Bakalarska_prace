@@ -79,7 +79,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btnBack:
+            /*case R.id.btnBack:
                 Intent intent = new Intent();
                 intent.putExtra("changed", change);
                 setResult(RESULT_OK, intent );

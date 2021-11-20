@@ -33,47 +33,70 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@drawable/rounded_layout_mode">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/layoutShowMore"
+                        android:layout_weight="1"
+                        android:visibility="invisible">
 
-                        <ImageView
-                            android:layout_width="30dp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="30dp"
-                            android:id="@+id/imgBtnModeBySystem"
-                            android:src="@drawable/ic_system_unselected"
-                            android:padding="5dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            android:background="@drawable/rounded_layout_mode">
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:id="@+id/imgBtnModeLight"
-                            android:src="@drawable/ic_light_mode_unselected"
-                            android:padding="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/imgBtnModeBySystem"
+                                android:src="@drawable/ic_system_unselected"
+                                android:padding="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"/>
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:id="@+id/imgBtnModeDark"
-                            android:src="@drawable/ic_dark_mode_unselected"
-                            android:padding="5dp"
-                            android:layout_marginEnd="5dp"/>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/imgBtnModeLight"
+                                android:src="@drawable/ic_light_mode_unselected"
+                                android:padding="5dp"
+                                android:layout_marginEnd="5dp"/>
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/imgBtnModeDark"
+                                android:src="@drawable/ic_dark_mode_unselected"
+                                android:padding="5dp"
+                                android:layout_marginEnd="5dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="right">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/ic_pdf"
+                                android:layout_marginEnd="10dp"
+                                android:layout_gravity="right"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="end|center_vertical">
 
                         <ImageView
                             android:layout_width="30dp"
                             android:layout_height="30dp"
-                            android:src="@drawable/ic_pdf"
-                            android:layout_marginEnd="10dp"/>
+                            android:id="@+id/imgBtnShowMore"
+                            android:src="@drawable/ic_show_more_anim"/>
 
                     </LinearLayout>
 

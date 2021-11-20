@@ -39,7 +39,7 @@
 
     <style name="MyStrongUnderline">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
+        <item name="android:layout_height">4dp</item>
         <item name="android:background">@color/underline</item>
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginEnd">20dp</item>

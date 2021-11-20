@@ -1,5 +1,6 @@
 package com.bobcikprogramming.kryptoevidence.mainFragments;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,10 +26,12 @@ import java.io.FileWriter;
 
 public class FragmentOverView extends Fragment implements View.OnClickListener {
 
-    private LinearLayout btnOverview, btnTransactions;
+    private LinearLayout btnOverview, btnTransactions, layoutShowMore;
     private TextView txOverview, txTransactions;
-    private ImageView imgBtnModeDark, imgBtnModeLight, imgBtnModeBySystem;
+    private ImageView imgBtnModeDark, imgBtnModeLight, imgBtnModeBySystem, imgBtnShowMore;
     private View view;
+
+    private boolean showMoreOpen;
 
     public FragmentOverView() {
         // Required empty public constructor
@@ -37,6 +42,9 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_over_view, container, false);
+
+        this.showMoreOpen = false;
+
         setupUIViews();
         setModeofGUI();
         return view;
@@ -46,10 +54,14 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         imgBtnModeLight = view.findViewById(R.id.imgBtnModeLight);
         imgBtnModeDark = view.findViewById(R.id.imgBtnModeDark);
         imgBtnModeBySystem = view.findViewById(R.id.imgBtnModeBySystem);
+        imgBtnShowMore = view.findViewById(R.id.imgBtnShowMore);
+
+        layoutShowMore = view.findViewById(R.id.layoutShowMore);
 
         imgBtnModeLight.setOnClickListener(this);
         imgBtnModeDark.setOnClickListener(this);
         imgBtnModeBySystem.setOnClickListener(this);
+        imgBtnShowMore.setOnClickListener(this);
     }
 
     @Override
@@ -76,6 +88,31 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_selected);
                 break;
+            case R.id.imgBtnShowMore:
+                if(!showMoreOpen) {
+                    imgBtnShowMore.setImageResource(R.drawable.ic_show_more_anim);
+                    AnimatedVectorDrawable animatedVectorDrawable =
+                            (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
+                    animatedVectorDrawable.start();
+
+                    Animation layoutShow = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right);
+                    layoutShowMore.startAnimation(layoutShow);
+                    layoutShowMore.setVisibility(View.VISIBLE);
+
+                    showMoreOpen = true;
+                }else{
+                    imgBtnShowMore.setImageResource(R.drawable.ic_show_more_anim_reverse);
+                    AnimatedVectorDrawable animatedVectorDrawable =
+                            (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
+                    animatedVectorDrawable.start();
+
+                    Animation layoutHide = AnimationUtils.loadAnimation(getContext(), R.anim.slide_left);
+                    layoutShowMore.startAnimation(layoutHide);
+                    layoutShowMore.setVisibility(View.INVISIBLE);
+
+                    showMoreOpen = false;
+                }
+                break;
         }
     }
 
@@ -94,6 +131,8 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
             imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_selected);
             imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
             imgBtnModeBySystem.setImageResource(R.drawable.ic_system_unselected);
+
+
         }else{
             AppCompatDelegate.setDefaultNightMode(
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);

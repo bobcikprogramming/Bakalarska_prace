@@ -15,15 +15,13 @@
         android:background="@color/navBarBackground"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="70dp"
+        <ImageView
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:id="@+id/btnBack"
-            android:text="Zpět"
-            android:textColor="@color/button"
-            android:textSize="15sp"
-            android:gravity="center_vertical"
-            android:paddingStart="20dp"/>
+            android:paddingStart="12dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_back"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -34,15 +32,13 @@
             android:textSize="20sp"
             android:textColor="@color/InfoHeadline"/>
 
-        <TextView
-            android:layout_width="70dp"
+        <ImageView
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:id="@+id/btnEdit"
-            android:text="Upravit"
-            android:textColor="@color/button"
-            android:textSize="15sp"
-            android:gravity="center_vertical|right"
-            android:paddingEnd="20dp"/>
+            android:paddingEnd="12dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit"/>
 
     </LinearLayout>
 

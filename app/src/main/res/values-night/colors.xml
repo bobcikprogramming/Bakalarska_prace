@@ -87,4 +87,5 @@
     <color name="InfoValue">#FFFFFF</color>
     <color name="InfoHeadline">#FFFFFF</color>
     <color name="InfoHeadlineHistory">#F9B720</color>
+    <color name="InfoHistoryBackground">#303030</color>
 </resources>

@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class TransactionViewer extends AppCompatActivity {
 
-    private TextView btnBack, btnEdit;
+    private ImageView btnBack, btnEdit;
     private ViewPager transactionViewer;
 
     private ViewPagerAdapterTransaction viewPagerAdapter;

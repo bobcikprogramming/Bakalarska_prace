@@ -61,28 +61,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTransactionInfo"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"/>
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"/>
 
             <LinearLayout
                 style="@style/MyStrongUnderline"
                 android:id="@+id/historyUnderline"
                 android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"/>
+                android:layout_marginEnd="0dp"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/historyLayout"
                 android:orientation="vertical"
-                android:layout_marginTop="30dp">
+                android:paddingTop="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:background="@color/InfoHistoryBackground">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -90,6 +96,7 @@
                     android:id="@+id/historyHeadline"
                     android:text="Historie úprav"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     android:textColor="@color/InfoHeadlineHistory"/>
 
                 <androidx.recyclerview.widget.RecyclerView

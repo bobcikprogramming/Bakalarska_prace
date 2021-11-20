@@ -15,15 +15,13 @@
         android:background="@color/navBarBackground"
         android:orientation="horizontal">
 
-        <TextView
+        <ImageView
             android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingStart="20dp"
-            android:text="Zahodit"
-            android:textColor="@color/button"
-            android:textSize="15sp" />
+            android:paddingStart="12dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_close"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -34,24 +32,20 @@
             android:textColor="@color/InfoHeadline"
             android:textSize="20sp" />
 
-        <TextView
+        <ImageView
             android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|right"
-            android:text="Smazat"
-            android:textColor="@color/button"
-            android:textSize="15sp" />
+            android:src="@drawable/ic_delete"
+            android:padding="8dp"/>
 
-        <TextView
+        <ImageView
             android:id="@+id/btnSave"
-            android:layout_width="75dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|right"
-            android:paddingEnd="20dp"
-            android:text="Uložit"
-            android:textColor="@color/button"
-            android:textSize="15sp" />
+            android:paddingEnd="12dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_save"/>
 
     </LinearLayout>
 

@@ -11,6 +11,7 @@ import android.os.Parcelable;
 import android.service.autofill.OnClickAction;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 public class PhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager photoViewer;
-    private ImageButton imgBack, imgDelete;
+    private ImageView imgBack, imgDelete;
 
     private ViewPagerAdapter viewPagerAdapter;
 

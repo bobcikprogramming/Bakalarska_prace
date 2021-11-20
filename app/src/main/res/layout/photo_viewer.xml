@@ -9,34 +9,33 @@
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="45dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:background="@color/navBarBackground">
 
-        <ImageButton
-            android:layout_width="65dp"
+        <ImageView
+            android:layout_width="60dp"
             android:layout_height="match_parent"
             android:id="@+id/imgPhotoViewerBack"
             android:src="@drawable/ic_back"
-            android:background="@null"
-            android:padding="5dp"
-            android:paddingStart="5dp"/>
+            android:padding="8dp"
+            android:paddingStart="12dp"/>
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <ImageButton
-            android:layout_width="65dp"
-            android:layout_height="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
             android:id="@+id/imgPhotoViewerDelete"
             android:src="@drawable/ic_delete"
-            android:background="@null"
-            android:paddingEnd="5dp"/>
+            android:padding="8dp"
+            android:paddingEnd="12dp"/>
 
     </LinearLayout>
 
@@ -44,7 +43,7 @@
         android:id="@+id/viewPagerPhoto"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -39,7 +39,7 @@ import java.util.List;
 
 public class TransactionEdit extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView btnCancel, btnDelete, btnSave;
+    private ImageView btnCancel, btnDelete, btnSave;
     private TextView descRowFirst, descRowSecond, descRowThird, descRowFourth, descRowFifth, descRowSixth, descDate, descTime;
     private EditText valueRowFirst, valueRowSecond, valueRowFifth, valueRowSixth, valueFee, valueNote;
     private TextView valueDate, valueTime, valueRowFourth;
