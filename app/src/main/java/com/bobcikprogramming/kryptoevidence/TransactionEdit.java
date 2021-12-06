@@ -438,7 +438,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowFirst.startAnimation(animShake);
             descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.white));
+            descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
         }
 
         if(valueRowSecond.getText().toString().isEmpty()){
@@ -446,7 +446,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowSecond.startAnimation(animShake);
             descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.white));
+            descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
         }
 
         return findEmpty;
@@ -463,7 +463,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowFifth.startAnimation(animShake);
             descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.white));
+            descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
         }
 
         if(valueRowSixth.getText().toString().isEmpty()){
@@ -471,7 +471,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowSixth.startAnimation(animShake);
             descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.white));
+            descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
         }
 
         return findEmpty;
@@ -481,11 +481,11 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         String type = transactionWithPhotos.transaction.transactionType;
         if(type.equals("Nákup") || type.equals("Prodej")) {
             for(TextView description : descBuyAndSell) {
-                description.setTextColor(ContextCompat.getColor(this, R.color.white));
+                description.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
             }
         }else if(type.equals("Směna")){
             for(TextView description : descChange) {
-                description.setTextColor(ContextCompat.getColor(this, R.color.white));
+                description.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
             }
         }
     }
@@ -511,7 +511,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
         String[] dateSplit = date.split("\\.");
         int day = Integer.parseInt(dateSplit[0]);
-        int month = Integer.parseInt(dateSplit[1]);
+        int month = Integer.parseInt(dateSplit[1]) - 1;
         int year = Integer.parseInt(dateSplit[2]);
 
         DatePickerDialog dialog = new DatePickerDialog(

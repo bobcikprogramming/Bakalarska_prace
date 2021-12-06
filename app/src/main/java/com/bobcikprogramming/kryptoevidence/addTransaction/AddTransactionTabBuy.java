@@ -452,7 +452,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesQuantity.startAnimation(animShake);
             tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(etPrice.getText().toString().isEmpty()){
@@ -460,7 +460,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesPrice.startAnimation(animShake);
             tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(tvDate.getText().toString().isEmpty()){
@@ -468,7 +468,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesDate.startAnimation(animShake);
             tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(tvTime.getText().toString().isEmpty()){
@@ -476,7 +476,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesTime.startAnimation(animShake);
             tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
         /*if(spinnerCurrency.getSelectedItem() == null){
             findEmpty = true;

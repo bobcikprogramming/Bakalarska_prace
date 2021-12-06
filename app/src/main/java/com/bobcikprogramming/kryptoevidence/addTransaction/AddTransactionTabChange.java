@@ -480,7 +480,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesQuantityBuy.startAnimation(animShake);
             tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(tvNameSell.getText().toString().isEmpty()){
@@ -488,7 +488,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesNameSell.startAnimation(animShake);
             tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(etQuantitySell.getText().toString().isEmpty()){
@@ -496,7 +496,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesQuantitySell.startAnimation(animShake);
             tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(etPriceBuy.getText().toString().isEmpty()){
@@ -504,7 +504,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesPriceBuy.startAnimation(animShake);
             tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(etPriceSell.getText().toString().isEmpty()){
@@ -512,7 +512,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesPriceSell.startAnimation(animShake);
             tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(tvDate.getText().toString().isEmpty()){
@@ -520,7 +520,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesDate.startAnimation(animShake);
             tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         if(tvTime.getText().toString().isEmpty()){
@@ -528,7 +528,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesTime.startAnimation(animShake);
             tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
         }
 
         return findEmpty;

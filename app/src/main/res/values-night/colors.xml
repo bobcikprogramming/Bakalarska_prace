@@ -11,6 +11,8 @@
     <color name="red">#D33A3A</color>
     <color name="blue">#6973F3</color>
 
+    <color name="defaultText">#FFFFFF</color>
+
     <color name="navBarSelect">#F9B720</color>
     <color name="navBarIconVariant">#E7B647</color>
     <color name="mainBackground">#212121</color>
