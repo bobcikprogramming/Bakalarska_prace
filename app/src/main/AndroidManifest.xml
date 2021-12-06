@@ -15,25 +15,32 @@
         android:theme="@style/Theme.KryptoEvidence">
         <activity
             android:name=".TransactionEdit"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TransactionViewer"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CryptoChangeSelection"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".addTransaction.AddTransaction"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".CryptoSelection"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TransactionInfo"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PhotoViewer"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <!--
         <activity
             android:name=".RecyclerViewTransactions"
