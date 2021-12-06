@@ -7,8 +7,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.bobcikprogramming.kryptoevidence.TransactionHistoryList;
-
 import java.util.List;
 
 @Dao

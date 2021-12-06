@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentPDF fragmentPDF = new FragmentPDF();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentOverView()).commit();
-        selectBottomMenu(R.id.overview);
+        selectBottomMenu(R.id.overview); // TODO <--- asi smazat, toto opět zavolá to horní (nebo smazat řádek nad tím), prostě se to volá 2x
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
