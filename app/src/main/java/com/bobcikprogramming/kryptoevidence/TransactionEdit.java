@@ -5,8 +5,12 @@ import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +18,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
@@ -51,6 +57,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     TransactionWithPhotos transactionWithPhotos;
     TransactionWithHistory transactionWithHistory;
 
+    private DatePickerDialog.OnDateSetListener dateSetListener;
+    private TimePickerDialog.OnTimeSetListener timeSetListener;
+
     private String transactionID;
 
     private ArrayList<TextView> descBuyAndSell;
@@ -68,6 +77,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         setupUIViews();
         setUIByTransactionType();
         setDataByTransactionType();
+        openCalendar(transactionWithPhotos.transaction.date);
+        openClock(transactionWithPhotos.transaction.time);
 
         descBuyAndSell = new ArrayList<>(Arrays.asList(descRowFirst, descRowSecond, descDate, descTime));
         descChange = new ArrayList<>(Arrays.asList(descRowFirst, descRowSecond, descRowFifth, descRowSixth, descDate, descTime));
@@ -476,6 +487,93 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             for(TextView description : descChange) {
                 description.setTextColor(ContextCompat.getColor(this, R.color.white));
             }
+        }
+    }
+
+    public void openCalendar(String date){
+        valueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDateDialogWindow(date);
+            }
+        });
+
+        dateSetListener = new DatePickerDialog.OnDateSetListener(){
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                setDateToTextView(year, month, day);
+            }
+        };
+    }
+
+    private void openDateDialogWindow(String date){
+        Calendar calendar = Calendar.getInstance();
+
+        String[] dateSplit = date.split("\\.");
+        int day = Integer.parseInt(dateSplit[0]);
+        int month = Integer.parseInt(dateSplit[1]);
+        int year = Integer.parseInt(dateSplit[2]);
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setDateToTextView(int year, int month, int day){
+        month = month + 1; // bere se od 0
+        String date = day + "." + month + "." + year;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("dd.MM.yyyy");
+        try{
+            Date dateFormatToShow = dateFormat.parse(date);
+            valueDate.setText(dateFormatSecond.format(dateFormatToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování data: "+e);
+        }
+    }
+
+    public void openClock(String time){
+        valueTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openTimeDialogWindow(time);
+            }
+        });
+
+        timeSetListener = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                setTimeToTextView(hour, minute);
+            }
+        };
+    }
+
+    private void openTimeDialogWindow(String time){
+        Calendar calendar = Calendar.getInstance();
+
+        String[] timeSplit = time.split(":");
+        int hour = Integer.parseInt(timeSplit[0]);
+        int minute = Integer.parseInt(timeSplit[1]);
+        TimePickerDialog dialog = new TimePickerDialog(
+                this, android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true
+        );
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void setTimeToTextView(int hour, int minute){
+        String time = hour + ":" + minute;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("H:m");
+        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("HH:mm");
+        try{
+            Date timeToShow = dateFormat.parse(time);
+            valueTime.setText(dateFormatSecond.format(timeToShow));
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování času: "+e);
         }
     }
 

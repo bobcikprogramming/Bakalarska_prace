@@ -258,6 +258,12 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         return inString.isEmpty() ? 0.0 : Double.parseDouble(inString);
     }
 
+    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
+        spinnerAdapter.setDropDownViewResource(dropDownId);
+        return spinnerAdapter;
+    }
+
     public void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,12 +344,6 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         catch (Exception e){
             System.err.println("Chyba při parsování času: "+e);
         }
-    }
-
-    private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
-        spinnerAdapter.setDropDownViewResource(dropDownId);
-        return spinnerAdapter;
     }
 
     private boolean checkDateAndTime(){
