@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/ic_show_more_anim_reverse.xml" value="0.21354166666666666" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_indicator_default.xml" value="0.21851851851851853" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_indicator_selected.xml" value="0.21851851851851853" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_selector.xml" value="0.21851851851851853" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/avd_anim.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/circle_button.xml" value="0.2833333333333333" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/cursor.xml" value="0.37083333333333335" />

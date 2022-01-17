@@ -579,9 +579,40 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
     private boolean checkDateAndTime(TextView tvDesDate, TextView tvDesTime, TextView etDate, TextView etTime){
         Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try{
+            Date actualDate = dateFormat.parse(getActualDay());
+            Date transactionDate = dateFormat.parse(etDate.getText().toString());
+            // https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java
+            if(actualDate.before(transactionDate)){
+                tvDesDate.startAnimation(animShake);
+                tvDesDate.setTextColor(ContextCompat.getColor(this, R.color.red));
+                return false;
+            }else if(!actualDate.after(transactionDate)) {
+                Date actualTime = getTimeFormat(getActualTime());
+                Date transactionTime = getTimeFormat(etTime.getText().toString());
+                if (actualTime.compareTo(transactionTime) < 0) {
+                    tvDesTime.startAnimation(animShake);
+                    tvDesTime.setTextColor(ContextCompat.getColor(this, R.color.red));
+                    return false;
+                }
+            }
+            return true;
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování data: "+e);
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(this, R.color.red));
+            return false;
+        }
+    }
+
+    /*private boolean checkDateAndTime(TextView tvDesDate, TextView tvDesTime, TextView etDate, TextView etTime){
+        Animation animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
         Date actualDate = getDateFormat(getActualDay());
         Date transactionDate = getDateFormat(etDate.getText().toString());
         if(actualDate.compareTo(transactionDate) < 0){
+            System.out.println("----------Actual date: "+ String.valueOf(actualDate) + " | date: " + String.valueOf(transactionDate));
             tvDesDate.startAnimation(animShake);
             tvDesDate.setTextColor(ContextCompat.getColor(this, R.color.red));
             return false;
@@ -595,7 +626,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             }
         }
         return true;
-    }
+    }*/
 
     private String getActualDay(){
         Calendar calendarDate = Calendar.getInstance();

@@ -14,12 +14,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 
 public class PhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager photoViewer;
     private ImageView imgBack, imgDelete;
+    TabLayout tabLayout;
 
     private ViewPagerAdapter viewPagerAdapter;
 
@@ -33,10 +36,14 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         photos = getIntent().getParcelableArrayListExtra("photos");
         setupUIViews();
         setViewPagerAdapter();
+
+        tabLayout.setupWithViewPager(photoViewer, true);
     }
 
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
+
+        tabLayout = findViewById(R.id.tabDots);
 
         imgBack = findViewById(R.id.imgPhotoViewerBack);
         imgDelete = findViewById(R.id.imgPhotoViewerDelete);

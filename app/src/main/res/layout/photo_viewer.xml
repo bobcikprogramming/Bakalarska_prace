@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/mainBackground">
+    android:background="@color/mainBackground"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:orientation="horizontal"
         android:background="@color/navBarBackground">
 
@@ -31,7 +29,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="45dp"
             android:id="@+id/imgPhotoViewerDelete"
             android:src="@drawable/ic_delete"
             android:padding="8dp"
@@ -42,11 +40,20 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerPhoto"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="45dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topLayout"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabDots"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:background="@color/mainBackground"/>
+
+</LinearLayout>

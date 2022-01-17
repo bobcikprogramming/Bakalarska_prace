@@ -352,6 +352,36 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
 
     private boolean checkDateAndTime(){
         Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try{
+            Date actualDate = dateFormat.parse(getActualDay());
+            Date transactionDate = dateFormat.parse(tvDate.getText().toString());
+            // https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java
+            if(actualDate.before(transactionDate)){
+                tvDesDate.startAnimation(animShake);
+                tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                return false;
+            }else if(!actualDate.after(transactionDate)) {
+                Date actualTime = getTimeFormat(getActualTime());
+                Date transactionTime = getTimeFormat(tvTime.getText().toString());
+                if (actualTime.compareTo(transactionTime) < 0) {
+                    tvDesTime.startAnimation(animShake);
+                    tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+                    return false;
+                }
+            }
+            return true;
+        }
+        catch (Exception e){
+            System.err.println("Chyba při parsování data: "+e);
+            tvDesDate.startAnimation(animShake);
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+            return false;
+        }
+    }
+
+    /*private boolean checkDateAndTime(){
+        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         Date actualDate = getDateFormat(getActualDay());
         Date transactionDate = getDateFormat(tvDate.getText().toString());
         if(actualDate.compareTo(transactionDate) < 0){
@@ -368,7 +398,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             }
         }
         return true;
-    }
+    }*/
 
     private String getActualDay(){
         Calendar calendarDate = Calendar.getInstance();
