@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Barvy -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="dirtyWhite">#D0D0D0</color>
@@ -11,83 +12,67 @@
     <color name="red">#D33A3A</color>
     <color name="blue">#6973F3</color>
 
-    <color name="defaultText">#000000</color>
 
-    <color name="navBarSelect">#d9e650</color>
-    <color name="navBarIconVariant">#E7B647</color>
+    <!-- Text -->
+    <color name="buttonTextColor">@color/mainBackground</color>
+    <color name="textViewDescriptionTextColor">#4F4F4F</color>
+    <color name="editTextAddTransactionTextColor">@color/black</color>
+    <color name="searchHintTextColor">#4F4F4F</color>                               <!-- Barva hintu pro pole vyhledávání -->
+    <color name="searchTextColor">@color/black</color>                                   <!-- Barva textu pro pole vyhledávání -->
+    <color name="headlineTextColor">@color/white</color>
+    <color name="dataPickerHeadlineTextColor">#008000</color>                       <!-- Barva textu pro pole dnů (po - ne) pro datepicker -->
+    <color name="dataPickerTextColor">@color/black</color>                          <!-- Barva textu pro jednotlivé dny pro datepicker -->
+    <color name="overviewDescriptionTextColor">#ecebbd</color>                      <!-- Barva textu pro popis na úvodním okně -->
+    <color name="overviewNormalTextColor">@color/white</color>
+    <color name="overviewNextPrevYearButtonTextColor">#d8e4bc</color>
+    <color name="transactionHistoryDescriptionTextColor">#808080</color>
+    <color name="transactionHistoryValueTextColor">@color/black</color>
+    <color name="recyclerItemOfTransactionDescriptionSideTextColor">#4F4F4F</color> <!-- Barva textu pro postraní popis položky recyclerview -->
+    <color name="recyclerItemOfTransactionDescriptionTopTextColor">#008000</color>  <!-- Barva textu pro nadpis hodnoty položky recyclerview -->
+    <color name="recyclerItemOfTransactionTextViewTextColor">@color/black</color>        <!-- Barva textu pro hodnotu položky recyclerview -->
+    <color name="tabbarTextViewTextColor">@color/white</color>
+    <color name="dialogButtonTextColor">@color/button</color>
+    <color name="spinnerItemTextColor">@color/black</color>
+    <color name="addTransactionHeadlineTextColor">@color/black</color>
+    <color name="overviewProfitTextColor">@color/white</color>
+    <color name="overviewListDescriptionTextColor">#4F4F4F</color>
+    <color name="overviewListShortNameTextColor">@color/black</color>
+    <color name="overviewListLongNameTextColor">#3F3F3F</color>
+    <color name="overviewListCryptoAmountTextColor">@color/black</color>
+    <color name="recyclerItemOfCryptoSelectionLongNameTextColor">@color/black</color>
+    <color name="recyclerItemOfCryptoSelectionShortNameTextColor">#3F3F3F</color>
+    <color name="historyHeadlineTextColor">#008000</color>
 
-    <color name="mainBackground">#FFFFFF</color>
+
+    <!-- Pozadí -->
+    <color name="mainBackground">@color/white</color>
     <color name="navBarBackground">#008000</color>
-
-    <color name="overviewLayoutCryptoBackground">#161616</color>
-    <color name="overviewLayoutResultBackground">#363636</color>
-    <color name="editTextBackground">#303030</color>
-    <color name="editTextIsEmptyBachground">#EE8C78</color>
-    <color name="editTextBorder">#505050</color>
-    <color name="description">#F9B720</color>
-    <color name="cursor">#008000</color>
-    <color name="colorAccent">#F9B720</color>
-
-    <color name="button">#d9e650</color>
-
-    <color name="recyclerViewItemUnderline">#E7B647</color>
-    <color name="searchText">#808080</color>
-
-
-
-    <color name="navbarTitle">#FFFFFF</color>
-
-    <color name="tvDescription">#4F4F4F</color>
-    <color name="etAddTransaction">#000000</color>
-    <color name="addTransactionHeadline">#000000</color>
-
-    <color name="underline">#90c9dc87</color>
-
-    <color name="selectTransactionHeadline">#FFFFFF</color>
-    <color name="selectTransactionCloseButton">#FFFFFF</color>
-
-    <color name="AddTransactionCloseButton">#000000</color>
-
-    <color name="searchBackground">#c9dc87</color>
-    <color name="searchHintColor">#4F4F4F</color>
-    <color name="searchTextColor">#000000</color>
-    <color name="searchDeleteButtonColor">#008000</color>
-
-    <color name="overviewProfit">#FFFFFF</color>
-    <color name="overviewNormalText">#FFFFFF</color>
-    <color name="overviewDescription">#ecebbd</color>
-    <color name="overviewNextPrevYear">#d8e4bc</color>
-    <color name="overviewListDescription">#4F4F4F</color>
-    <color name="overviewShortName">#000000</color>
-    <color name="overviewLongName">#3F3F3F</color>
-    <color name="overviewCryptoAmount">#000000</color>
-    <color name="overviewSelectedMode">#FFFFFF</color>
-    <color name="overviewUnselectedMode">#4F4F4F</color>
-
-    <color name="recyclerItemOfTransactionDescriptionSide">#4F4F4F</color>
-    <color name="recyclerItemOfTransactionDescriptionTop">#008000</color>
-    <color name="recyclerItemOfTransactionTextView">#000000</color>
-
-    <color name="recyclerItemOfSelectionCryptoLongName">#000000</color>
-    <color name="recyclerItemOfSelectionCryptoShortName">#3F3F3F</color>
-
-    <color name="spinnerItem">#000000</color>
-
-    <color name="tabbarTextView">#FFFFFF</color>
-    <color name="tabbarLine">#D3D3D3</color>
-
+    <color name="dataPickerBackground">@color/mainBackground</color>
+    <color name="myDialogBackground">@color/navBarBackground</color>
+    <color name="tabbarLine">#D3D3D3</color>                                        <!-- Vertikální čára oddělující položky tabbaru -->
+    <color name="underline">#90c9dc87</color>                                       <!-- Horizontální čára sloužící jako podtržení -->
     <color name="headlineBackground">#008000</color>
+    <color name="spinnerItemBackground">@color/white</color>
+    <color name="button">#d9e650</color>
+    <color name="searchBackground">#c9dc87</color>
+    <color name="historyBackground">#EFEFEF</color>
 
-    <color name="spinnerItemBackground">#FFFFFF</color>
-    <color name="spinnerItemText">#000000</color>
 
+    <!-- Drawable -->
     <color name="roundedImageStroke">#008000</color>
     <color name="roundedImageButtonSolid">#008000</color>
-    <color name="roundedImageViewSolid">#FFFFFF</color>
+    <color name="roundedImageViewSolid">@color/white</color>
 
-    <color name="InfoDescription">#808080</color>
-    <color name="InfoValue">#000000</color>
-    <color name="InfoHeadline">#FFFFFF</color>
-    <color name="InfoHeadlineHistory">#008000</color>
-    <color name="InfoHistoryBackground">#EFEFEF</color>
+
+    <!-- Ostatní -->
+    <color name="navBarSelect">#d9e650</color>                                      <!-- Barva vybraného políčka bottom/nav baru -->
+    <color name="cursor">#008000</color>                                            <!-- Barva kurzoru edittextu -->
+    <color name="colorAccent">#d9e650</color>
+    <color name="AddTransactionCloseButtonTextColor">@color/black</color>
+    <color name="searchDeleteButtonColor">#008000</color>
+    <color name="overviewSelectedMode">@color/white</color>                              <!-- Barva tlačítka vybraného módu (Light/Dark/System) aplikace -->
+    <color name="overviewUnselectedMode">#4F4F4F</color>                            <!-- Barva tlačítka nevybraného módu (Light/Dark/System) aplikace -->
+    <color name="dataPickerSelected">@color/navBarBackground</color>                <!-- Zvýraznění vybraného dne v kalendáři -->
+    <color name="dataPickerSelecting">@color/button</color>                         <!-- Zvýraznění vybíraného dne v kalendáři -->
+
 </resources>

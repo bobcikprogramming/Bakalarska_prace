@@ -462,7 +462,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesQuantity.startAnimation(animShake);
             tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesQuantity.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(etPrice.getText().toString().isEmpty()){
@@ -470,7 +470,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesPrice.startAnimation(animShake);
             tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesPrice.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(tvDate.getText().toString().isEmpty()){
@@ -478,7 +478,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesDate.startAnimation(animShake);
             tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(tvTime.getText().toString().isEmpty()){
@@ -486,7 +486,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             tvDesTime.startAnimation(animShake);
             tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
         /*if(spinnerCurrency.getSelectedItem() == null){
             findEmpty = true;

@@ -1,5 +1,9 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -11,7 +15,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -25,23 +28,19 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithHistory;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class TransactionEdit extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,6 +52,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private ImageView imvButtonShowPhoto, imgButtonAddPhoto;
     private LinearLayout layoutRowFourth, layoutRowFifth, layoutRowSixth;
     private LinearLayout underlineRowFourth, underlineRowFifth, underlineRowSixth;
+    private LinearLayout fragmentBackgroundEdit;
 
     TransactionWithPhotos transactionWithPhotos;
     TransactionWithHistory transactionWithHistory;
@@ -61,6 +61,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     private String transactionID;
+
+    private String shortNameCryptoSell, longNameCryptoSell;
 
     private ArrayList<TextView> descBuyAndSell;
     private ArrayList<TextView> descChange;
@@ -100,6 +102,14 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             case R.id.btnDelete:
                 hideKeyBoard();
                 confirmDialogDelete();
+                break;
+            case R.id.fragmentBackgroundEdit:
+                hideKeyBoard();
+                break;
+            case R.id.valueRowFourth:
+                Intent intentSell = new Intent(this, CryptoChangeSelection.class);
+                intentSell.putExtra("shortName", transactionWithHistory.transaction.shortNameBought);
+                selectActivityResultLauncher.launch(intentSell);
                 break;
         }
     }
@@ -141,6 +151,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         valueTime = findViewById(R.id.valueTime);
         valueNote = findViewById(R.id.valueNote);
 
+        valueRowFourth.setOnClickListener(this);
+
         imvButtonShowPhoto = findViewById(R.id.imvButtonShowPhoto);
         imgButtonAddPhoto = findViewById(R.id.imgButtonAddPhoto);
 
@@ -151,6 +163,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         underlineRowFourth = findViewById(R.id.underlineRowFourth);
         underlineRowFifth = findViewById(R.id.underlineRowFifth);
         underlineRowSixth = findViewById(R.id.underlineRowSixth);
+
+        fragmentBackgroundEdit = findViewById(R.id.fragmentBackgroundEdit);
+        fragmentBackgroundEdit.setOnClickListener(this);
 
     }
 
@@ -188,6 +203,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 descRowFirst.setText("Koupené množství");
                 descRowSecond.setText("Cena za kus");
                 descRowThird.setText("Cena v měně");
+
+                shortNameCryptoSell = transactionWithHistory.transaction.shortNameSold;
+                longNameCryptoSell = transactionWithHistory.transaction.longNameSold;
                 break;
         }
     }
@@ -235,7 +253,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         return spinnerAdapter;
     }
 
-    private boolean updateDatabase(){
+    private int updateDatabase(){
         AppDatabase db = AppDatabase.getDbInstance(this);
         TransactionEntity transaction = transactionWithPhotos.transaction;
         TransactionEntity newTransaction = new TransactionEntity();
@@ -323,8 +341,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             newTransaction.quantityBought = getString(valueRowFirst);
             newTransaction.priceBought = getString(valueRowSecond);
             newTransaction.currency = getString(spinnerRowThird);
-            newTransaction.shortNameSold = getString(valueRowFourth); //TODO z navrácení
-            newTransaction.longNameSold = getString(valueRowFourth);
+            newTransaction.shortNameSold = shortNameCryptoSell;
+            newTransaction.longNameSold = longNameCryptoSell;
             newTransaction.quantitySold = getString(valueRowFifth);
             newTransaction.priceSold = getString(valueRowSixth);
             String transactionFee = getString(valueFee).isEmpty() ? "0.0" : getString(valueFee);
@@ -390,9 +408,13 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             db.databaseDao().updateTransaction(newTransaction);
             transactionWithPhotos.transaction = newTransaction;
 
-            return true;
+            return 0;
         }
-        return false;
+
+        if(changed && isEmpty){
+            return 2;
+        }
+        return 1;
     }
 
     private String getString(EditText toString){
@@ -438,7 +460,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowFirst.startAnimation(animShake);
             descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+            descRowFirst.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
         }
 
         if(valueRowSecond.getText().toString().isEmpty()){
@@ -446,7 +468,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowSecond.startAnimation(animShake);
             descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+            descRowSecond.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
         }
 
         return findEmpty;
@@ -463,7 +485,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowFifth.startAnimation(animShake);
             descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+            descRowFifth.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
         }
 
         if(valueRowSixth.getText().toString().isEmpty()){
@@ -471,7 +493,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             descRowSixth.startAnimation(animShake);
             descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.red));
         }else{
-            descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+            descRowSixth.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
         }
 
         return findEmpty;
@@ -481,11 +503,11 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         String type = transactionWithPhotos.transaction.transactionType;
         if(type.equals("Nákup") || type.equals("Prodej")) {
             for(TextView description : descBuyAndSell) {
-                description.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+                description.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
             }
         }else if(type.equals("Směna")){
             for(TextView description : descChange) {
-                description.setTextColor(ContextCompat.getColor(this, R.color.tvDescription));
+                description.setTextColor(ContextCompat.getColor(this, R.color.textViewDescriptionTextColor));
             }
         }
     }
@@ -515,9 +537,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         int year = Integer.parseInt(dateSplit[2]);
 
         DatePickerDialog dialog = new DatePickerDialog(
-                this, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day
+                this, R.style.DataPicker, dateSetListener, year, month, day
         );
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
@@ -558,7 +580,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         int hour = Integer.parseInt(timeSplit[0]);
         int minute = Integer.parseInt(timeSplit[1]);
         TimePickerDialog dialog = new TimePickerDialog(
-                this, android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true
+                this, R.style.TimePicker, timeSetListener, hour, minute, true
         );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
@@ -674,9 +696,15 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(updateDatabase()) {
+                        int success = updateDatabase();
+                        if(success == 0) {
                             Intent intent = new Intent();
                             intent.putExtra("changed", true);
+                            setResult(RESULT_OK, intent );
+                            finish();
+                        }else if(success == 1){
+                            Intent intent = new Intent();
+                            intent.putExtra("changed", false);
                             setResult(RESULT_OK, intent );
                             finish();
                         }
@@ -724,6 +752,22 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    ActivityResultLauncher<Intent> selectActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent data = result.getData();
+                    String onReturnShort = data.getStringExtra("shortName");
+                    String onReturnLong = data.getStringExtra("longName");
+                    if(!onReturnShort.isEmpty()) {
+                        shortNameCryptoSell = onReturnShort;
+                        longNameCryptoSell = onReturnLong;
+                        valueRowFourth.setText(longNameCryptoSell);
+                    }
+                }
+            });
 
     private void hideKeyBoard(){
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);

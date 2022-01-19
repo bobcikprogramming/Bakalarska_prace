@@ -9,35 +9,23 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
         android:id="@+id/infoTopBar"
-        android:background="@color/navBarBackground"
-        android:orientation="horizontal">
+        style="@style/NavBarLayout">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
             android:id="@+id/btnBack"
+            style="@style/NavBarIcon"
             android:paddingStart="12dp"
-            android:padding="8dp"
             android:src="@drawable/ic_back"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Výpis transakce"
-            android:textSize="20sp"
-            android:textColor="@color/InfoHeadline"/>
+            style="@style/NavBarHeadline"
+            android:text="@string/transactionInfo"/>
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
             android:id="@+id/btnEdit"
+            style="@style/NavBarIcon"
             android:paddingEnd="12dp"
-            android:padding="8dp"
             android:src="@drawable/ic_edit"/>
 
     </LinearLayout>

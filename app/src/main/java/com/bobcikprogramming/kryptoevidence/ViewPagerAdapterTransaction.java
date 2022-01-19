@@ -311,7 +311,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
                         transaction.setPriceBoughtDesc("Cena za kus");
                         transaction.setPriceBoughtValue(transactionHistory.priceBought);
                     }
-                    if(transactionHistory.longNameBought != null){
+                    if(transactionHistory.longNameSold != null){
                         transaction.setLongNameSoldDesc("Prodaná měna");
                         transaction.setLongNameSoldValue(transactionHistory.longNameSold);
                     }

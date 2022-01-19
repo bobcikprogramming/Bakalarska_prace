@@ -25,6 +25,7 @@
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_save.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_show_more.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_show_more_anim.xml" value="0.21354166666666666" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/ic_show_more_anim_reverse.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/recycler_view_item_underline.xml" value="0.287962962962963" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_button.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_edit_text.xml" value="0.37083333333333335" />
@@ -63,7 +64,7 @@
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/photo_item.xml" value="0.3546875" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/photo_viewer.xml" value="0.25" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/recycler_view_crypto_selection.xml" value="0.33" />
-        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/recycler_view_transaction_info.xml" value="0.3546875" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/recycler_view_transaction_info.xml" value="0.22" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/recycler_view_transaction_info_history.xml" value="0.25" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/recycler_view_transactions.xml" value="0.25" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.3546875" />

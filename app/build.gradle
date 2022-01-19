@@ -13,6 +13,7 @@ android {
         versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true // https://stackoverflow.com/a/64237822
     }
 
     buildTypes {

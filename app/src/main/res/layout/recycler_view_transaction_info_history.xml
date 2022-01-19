@@ -16,7 +16,7 @@
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
                 android:text="Datum a čas změny"
-                android:textColor="@color/InfoHeadlineHistory"
+                android:textColor="@color/historyHeadlineTextColor"
                 android:textStyle="bold"/>
 
             <TextView
@@ -30,8 +30,7 @@
     </LinearLayout>
 
     <LinearLayout
-        style="@style/MyUnderline"
-        android:orientation="vertical"/>
+        style="@style/MyUnderline"/>
 
     <LinearLayout
         style="@style/TransactionHistoryItemLayout"
@@ -53,8 +52,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineFirstRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineFirstRow"/>
 
     </LinearLayout>
 
@@ -78,8 +76,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineSecondRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineSecondRow"/>
 
     </LinearLayout>
 
@@ -103,8 +100,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineThirdRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineThirdRow"/>
 
     </LinearLayout>
 
@@ -128,8 +124,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineFourthRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineFourthRow"/>
 
     </LinearLayout>
 
@@ -153,8 +148,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineFifthRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineFifthRow"/>
 
     </LinearLayout>
 
@@ -180,8 +174,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineSixthRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineSixthRow"/>
 
     </LinearLayout>
 
@@ -205,8 +198,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineSeventhRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineSeventhRow"/>
 
     </LinearLayout>
 
@@ -230,8 +222,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineEighthRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineEighthRow"/>
     </LinearLayout>
 
     <LinearLayout
@@ -254,8 +245,7 @@
 
         <LinearLayout
             style="@style/MyUnderline"
-            android:id="@+id/underlineNinthRow"
-            android:orientation="vertical"/>
+            android:id="@+id/underlineNinthRow"/>
 
     </LinearLayout>
 
@@ -282,7 +272,6 @@
         style="@style/MyStrongUnderline"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:id="@+id/lastUnderline"
-        android:orientation="vertical"/>
+        android:id="@+id/lastUnderline"/>
 
 </LinearLayout>

@@ -7,4 +7,4 @@
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:ellipsize="marquee"
     android:background="@color/spinnerItemBackground"
-    android:textColor="@color/spinnerItemText" />
+    android:textColor="@color/spinnerItemTextColor" />

@@ -1,6 +1,6 @@
 <vector
     android:height="40dp"
-    android:tint="@color/searchHintColor"
+    android:tint="@color/searchHintTextColor"
     android:viewportHeight="24"
     android:viewportWidth="24"
     android:width="40dp"

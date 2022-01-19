@@ -1,10 +1,12 @@
 package com.bobcikprogramming.kryptoevidence.mainFragments;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,10 +92,17 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                 break;
             case R.id.imgBtnShowMore:
                 if(!showMoreOpen) {
+                    // https://stackoverflow.com/a/3940823
                     imgBtnShowMore.setImageResource(R.drawable.ic_show_more_anim);
-                    AnimatedVectorDrawable animatedVectorDrawable =
-                            (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
-                    animatedVectorDrawable.start();
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                        AnimatedVectorDrawable animatedVectorDrawable =
+                                (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
+                        animatedVectorDrawable.start();
+                    } else{
+                        AnimatedVectorDrawableCompat animatedVectorDrawable =
+                                (AnimatedVectorDrawableCompat) imgBtnShowMore.getDrawable();
+                        animatedVectorDrawable.start();
+                    }
 
                     Animation layoutShow = AnimationUtils.loadAnimation(getContext(), R.anim.slide_right);
                     layoutShowMore.startAnimation(layoutShow);
@@ -102,9 +111,15 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                     showMoreOpen = true;
                 }else{
                     imgBtnShowMore.setImageResource(R.drawable.ic_show_more_anim_reverse);
-                    AnimatedVectorDrawable animatedVectorDrawable =
-                            (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
-                    animatedVectorDrawable.start();
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+                        AnimatedVectorDrawable animatedVectorDrawable =
+                                (AnimatedVectorDrawable) imgBtnShowMore.getDrawable();
+                        animatedVectorDrawable.start();
+                    } else{
+                        AnimatedVectorDrawableCompat animatedVectorDrawable =
+                                (AnimatedVectorDrawableCompat) imgBtnShowMore.getDrawable();
+                        animatedVectorDrawable.start();
+                    }
 
                     Animation layoutHide = AnimationUtils.loadAnimation(getContext(), R.anim.slide_left);
                     layoutShowMore.startAnimation(layoutHide);

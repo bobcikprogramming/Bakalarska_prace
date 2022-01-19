@@ -11,48 +11,17 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/button</item>
     </style>
 
-    <style name="MySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <!-- https://stackoverflow.com/a/42373688 -->
-    <style name="MyDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="android:background">@color/navBarBackground</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="buttonBarPositiveButtonStyle">@style/MyDialogButtonStyle</item>
-        <item name="buttonBarNegativeButtonStyle">@style/MyDialogButtonStyle</item>
-    </style>
-
-    <style name="MyDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/description</item>
-    </style>
-
-    <style name="MyUnderline">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0.01dp</item>
-        <item name="android:background">@color/underline</item>
-    </style>
-
-    <style name="MyStrongUnderline">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
-        <item name="android:background">@color/underline</item>
-        <item name="android:layout_marginStart">20dp</item>
-        <item name="android:layout_marginEnd">20dp</item>
-    </style>
-
-    <!-- Okna vytvoření transakce -->
+    <!-- Začátek: Styl pro okna vytvoření transakce -->
 
     <style name="AddTransactionButton">
         <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:background">@drawable/rounded_button</item>
-        <item name="android:textColor">@color/mainBackground</item>
+        <item name="android:textColor">@color/buttonTextColor</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">15sp</item>
     </style>
@@ -71,7 +40,7 @@
         <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/tvDescription</item>
+        <item name="android:textColor">@color/textViewDescriptionTextColor</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -91,19 +60,20 @@
     <style name="AddTransactionItemEditText" parent="AddTransactionEntryFields">
         <item name="android:background">@null</item>
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:textColor">@color/etAddTransaction</item>
+        <item name="android:textColor">@color/editTextAddTransactionTextColor</item>
         <item name="android:textCursorDrawable">@drawable/cursor</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="AddTransactionItemTextView"  parent="AddTransactionEntryFields">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/etAddTransaction</item>
+        <item name="android:textColor">@color/editTextAddTransactionTextColor</item>
     </style>
 
     <style name="AddTransactionUnderline" parent="MyUnderline">
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
     <style name="AddTransactionImageViewPhotoParent">
@@ -129,10 +99,11 @@
         <item name="android:background">@drawable/rounded_image_view</item>
     </style>
 
-    <!-- Okna vytvoření transakce -->
+    <!-- __________ Konec: Styl pro okna vytvoření transakce __________ -->
 
 
-    <!-- Edit text pro vyhledávání -->
+
+    <!-- Začátek: Styl edittextu pro vyhledávání -->
 
     <style name="SearchTopLinearLayout">
         <item name="android:layout_width">match_parent</item>
@@ -155,7 +126,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:hint">@string/searchCrypto</item>
-        <item name="android:textColorHint">@color/searchHintColor</item>
+        <item name="android:textColorHint">@color/searchHintTextColor</item>
         <item name="android:textColor">@color/searchTextColor</item>
         <item name="android:textSize">17sp</item>
         <item name="android:background">@null</item>
@@ -178,87 +149,32 @@
         <item name="android:src">@drawable/ic_delete_search</item>
     </style>
 
-    <!-- Edit text pro vyhledávání -->
+    <!-- __________ Konec: Styl edittextu pro vyhledávání __________ -->
 
 
-    <!-- Okno přehledu -->
-    <style name="OverviewUnderline" parent="MyUnderline">
-        <item name="android:layout_marginTop">5dp</item>
-    </style>
-    
-    <style name="OverviewAdditionalInfoTopLayout">
-        <item name="android:layout_width">match_parent</item>
+    <!-- Začátek: Styly pro navbar -->
+
+    <style name="NavBarIcon">
+        <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="NavBarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">45dp</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/navBarBackground</item>
     </style>
 
-    <style name="OverviewAdditionalInfoTextViewDescription">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:paddingBottom">2dp</item>
-        <item name="android:textColor">@color/overviewDescription</item>
-        <item name="android:textSize">19sp</item>
-    </style>
-
-    <style name="OverviewAdditionalInfoInsideLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">right</item>
-    </style>
-
-    <style name="OverviewAdditionalInfoTextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">bottom|right</item>
-        <item name="android:paddingStart">5dp</item>
-        <item name="android:paddingEnd">5dp</item>
-        <item name="android:textColor">@color/overviewNormalText</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="OverviewAdditionalInfoTextViewNextPrevYear">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">bottom</item>
-        <item name="android:paddingBottom">1.5dp</item>
-        <item name="android:textColor">@color/overviewNextPrevYear</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:singleLine">true</item>
-    </style>
-
-    <!-- Okno přehledu -->
-
-
-    <!-- Tabbar -->
-    <style name="TabbarLayout">
+    <style name="NavBarHeadline">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:orientation">vertical</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/headlineTextColor</item>
     </style>
-
-    <style name="TabbarTextView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/tabbarTextView</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="TabbarLine">
-        <item name="android:layout_width">0.5dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/tabbarLine</item>
-    </style>
-
-    <!-- Tabbar -->
-
-    <!-- Nadpis -->
 
     <style name="HeadlineLayout">
         <item name="android:layout_width">match_parent</item>
@@ -275,15 +191,110 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/selectTransactionHeadline</item>
+        <item name="android:textColor">@color/headlineTextColor</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 
-    <!-- Nadpis -->
+    <!-- __________ Konec: Styly pro navbar __________ -->
 
-    <!-- Výpis transakce -->
+
+    <!-- Začátek: Styly pro podtržení -->
+
+    <style name="MyUnderline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.01dp</item>
+        <item name="android:background">@color/underline</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="MyStrongUnderline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:background">@color/underline</item>
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- __________ Konec: Styly pro podtržení __________ -->
+
+
+    <!-- Začátek: Styly Date/Time picker -->
+
+    <!-- https://stackoverflow.com/a/56963465 -->
+    <style name="DataPicker" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="colorAccent">@color/dataPickerHeadlineTextColor</item>                          <!--header background-->
+        <item name="android:windowBackground">@color/dataPickerBackground</item>                    <!--calendar background-->
+        <item name="android:colorControlActivated">@color/dataPickerSelected</item>                       <!--selected day-->
+        <item name="android:colorControlHighlight">@color/dataPickerSelecting</item>                <!--selecting day-->
+        <item name="android:textColorPrimary">@color/dataPickerTextColor</item>                     <!--days of the month-->
+        <item name="android:textColorSecondary">@color/dataPickerHeadlineTextColor</item>           <!--days of the week-->
+        <item name="android:buttonBarPositiveButtonStyle">@style/DataPickerButton</item>            <!--button positive-->
+        <item name="android:buttonBarNegativeButtonStyle">@style/DataPickerButton</item>            <!--button negative-->
+    </style>
+
+    <style name="DataPickerButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/dataPickerTextColor</item>
+    </style>
+
+    <style name="TimePicker" parent="@android:style/Theme.Holo.Light.Dialog.MinWidth"/>
+
+    <!-- __________ Konec: Styly Date/Time picker __________ -->
+
+
+    <!-- Začátek: Styly pro okno přehledu -->
+    <style name="OverviewUnderline" parent="MyUnderline">
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTopLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextViewDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textColor">@color/overviewDescriptionTextColor</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoInsideLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom|right</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:textColor">@color/overviewNormalTextColor</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="OverviewAdditionalInfoTextViewNextPrevYear">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:paddingBottom">1.5dp</item>
+        <item name="android:textColor">@color/overviewNextPrevYearButtonTextColor</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- __________ Konec: Styly pro okno přehledu __________ -->
+
+
+    <!-- Začátek: Styl pro recycleview výpisu transakce -->
 
     <style name="TransactionInfoItemLayout">
         <item name="android:layout_width">match_parent</item>
@@ -303,14 +314,14 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">20dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/InfoDescription</item>
+        <item name="android:textColor">@color/transactionHistoryDescriptionTextColor</item>
     </style>
 
     <style name="TransactionInfoItemTextViewValueParent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/InfoValue</item>
+        <item name="android:textColor">@color/transactionHistoryValueTextColor</item>
         <item name="android:singleLine">true</item>
     </style>
 
@@ -340,9 +351,10 @@
         <item name="android:gravity">center_vertical|end</item>
     </style>
 
-    <!-- Výpis transakce -->
+    <!-- __________ Konec: Styl pro recycleview výpisu transakce __________ -->
 
-    <!-- Historie transakce -->
+
+    <!-- Začátek: Styl pro historii transakce -->
 
     <style name="TransactionHistoryItemLayout">
         <item name="android:layout_width">match_parent</item>
@@ -363,7 +375,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">20dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/InfoDescription</item>
+        <item name="android:textColor">@color/transactionHistoryDescriptionTextColor</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
@@ -372,12 +384,107 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/InfoValue</item>
+        <item name="android:textColor">@color/transactionHistoryValueTextColor</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <!-- Historie transakce -->
+    <!-- __________ Konec: Styl pro historii transakce __________ -->
+
+
+    <!-- Začátek: Styl pro recyclerview transakcí -->
+
+    <style name="TransactionTextViewDescription">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/recyclerItemOfTransactionDescriptionSideTextColor</item>
+    </style>
+
+    <style name="TransactionLinearLayoutItems">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TransactionTextViewItemHeadline">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/recyclerItemOfTransactionDescriptionTopTextColor</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TransactionTextViewItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:textSize">19sp</item>
+        <item name="android:textColor">@color/recyclerItemOfTransactionTextViewTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+    </style>
+
+    <!-- __________ Konec: Styl pro recyclerview transakcí __________ -->
+
+
+    <!-- Začátek: Styl tabbaru pro výběr typu transakce -->
+
+    <style name="TabbarLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="TabbarTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/tabbarTextViewTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TabbarLine">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/tabbarLine</item>
+    </style>
+
+    <!-- __________ Konex: Styl tabbaru pro výběr typu transakce __________ -->
+
+
+    <!-- Začátek: Styp spinneru -->
+
+    <style name="MySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <!-- __________ Konec: Styp spinneru __________ -->
+
+
+    <!-- Začátek: Styl dialogového okna pro uložení změny -->
+
+    <!-- https://stackoverflow.com/a/42373688 -->
+    <style name="MyDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:background">@color/myDialogBackground</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyDialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyDialogButtonStyle</item>
+    </style>
+
+    <style name="MyDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/button</item>
+    </style>
+
+    <!-- __________ Konex: Styl dialogového okna pro uložení změny __________ -->
 
 </resources>

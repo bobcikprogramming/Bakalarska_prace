@@ -42,7 +42,6 @@
 
     <LinearLayout
         style="@style/MyUnderline"
-        android:id="@+id/underline"
-        android:orientation="vertical"/>
+        android:id="@+id/underline"/>
 
 </LinearLayout>

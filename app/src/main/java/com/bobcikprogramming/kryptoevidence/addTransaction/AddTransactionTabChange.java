@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -32,7 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -510,7 +508,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesQuantityBuy.startAnimation(animShake);
             tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesQuantityBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(tvNameSell.getText().toString().isEmpty()){
@@ -518,7 +516,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesNameSell.startAnimation(animShake);
             tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesNameSell.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(etQuantitySell.getText().toString().isEmpty()){
@@ -526,7 +524,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesQuantitySell.startAnimation(animShake);
             tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesQuantitySell.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(etPriceBuy.getText().toString().isEmpty()){
@@ -534,7 +532,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesPriceBuy.startAnimation(animShake);
             tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesPriceBuy.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(etPriceSell.getText().toString().isEmpty()){
@@ -542,7 +540,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesPriceSell.startAnimation(animShake);
             tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesPriceSell.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(tvDate.getText().toString().isEmpty()){
@@ -550,7 +548,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesDate.startAnimation(animShake);
             tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesDate.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         if(tvTime.getText().toString().isEmpty()){
@@ -558,7 +556,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             tvDesTime.startAnimation(animShake);
             tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
         }else{
-            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.tvDescription));
+            tvDesTime.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
         }
 
         return findEmpty;

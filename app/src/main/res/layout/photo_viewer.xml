@@ -9,17 +9,12 @@
 
     <LinearLayout
         android:id="@+id/topLayout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:orientation="horizontal"
-        android:background="@color/navBarBackground">
+        style="@style/NavBarLayout">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
             android:id="@+id/imgPhotoViewerBack"
+            style="@style/NavBarIcon"
             android:src="@drawable/ic_back"
-            android:padding="8dp"
             android:paddingStart="12dp"/>
 
         <View
@@ -28,11 +23,9 @@
             android:layout_weight="1" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
             android:id="@+id/imgPhotoViewerDelete"
+            style="@style/NavBarIcon"
             android:src="@drawable/ic_delete"
-            android:padding="8dp"
             android:paddingEnd="12dp"/>
 
     </LinearLayout>

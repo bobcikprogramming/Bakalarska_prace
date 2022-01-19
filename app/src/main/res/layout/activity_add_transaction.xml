@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:id="@+id/tvCryptoName"
             android:text="Bitcoin"
-            android:textColor="@color/addTransactionHeadline"
+            android:textColor="@color/addTransactionHeadlineTextColor"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"

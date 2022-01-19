@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:id="@+id/cryptoLongName"
             android:text="Bitcoin"
-            android:textColor="@color/recyclerItemOfSelectionCryptoLongName"
+            android:textColor="@color/recyclerItemOfCryptoSelectionLongNameTextColor"
             android:textSize="23sp"
             android:gravity="center_vertical" />
 
@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:id="@+id/cryptoShortName"
             android:text="BTC"
-            android:textColor="@color/recyclerItemOfSelectionCryptoShortName"
+            android:textColor="@color/recyclerItemOfCryptoSelectionShortNameTextColor"
             android:textSize="17dp"
             android:gravity="center_vertical"
             android:paddingTop="6dp"

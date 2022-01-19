@@ -44,4 +44,7 @@
 
 
     <string name="searchCrypto">Vyhledat kryptoměnu</string>
+
+    <string name="transactionInfo">Výpis transakce</string>
+    <string name="transactionEdit">Úprava</string>
 </resources>
