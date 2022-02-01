@@ -13,6 +13,13 @@
             style="@style/HeadlineTextView"
             android:text="Přehled transakcí"/>
 
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/btnFilter"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_filter"/>
+
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
