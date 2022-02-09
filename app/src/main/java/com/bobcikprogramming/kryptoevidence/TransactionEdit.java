@@ -212,8 +212,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
     private void loadDataFromDB(String transactionID){
         AppDatabase db = AppDatabase.getDbInstance(this);
-        transactionWithPhotos = db.databaseDao().getByTransactionID(transactionID);
-        transactionWithHistory = db.databaseDao().getByTransactionHistoryID(transactionID);
+        transactionWithPhotos = db.databaseDao().getTransactionByTransactionID(transactionID);
+        transactionWithHistory = db.databaseDao().getTransactionByTransactionHistoryID(transactionID);
     }
 
     private void setDataByTransactionType(){
@@ -537,9 +537,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         int year = Integer.parseInt(dateSplit[2]);
 
         DatePickerDialog dialog = new DatePickerDialog(
-                this, R.style.DataPicker, dateSetListener, year, month, day
+                this, R.style.TimeDatePicker, dateSetListener, year, month, day
         );
-        //dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
 
@@ -580,7 +580,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         int hour = Integer.parseInt(timeSplit[0]);
         int minute = Integer.parseInt(timeSplit[1]);
         TimePickerDialog dialog = new TimePickerDialog(
-                this, R.style.TimePicker, timeSetListener, hour, minute, true
+                this, R.style.TimeDatePicker, timeSetListener, hour, minute, true
         );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();

@@ -25,7 +25,8 @@
     <string name="currencyBuy">Platba v měně</string>
     <string name="currencySell">Prodáno v měně</string>
     <string name="currency">Cena uvedena v měně</string>
-    <string name="photo">Vložit snímek</string>
+    <string name="newPhoto">Vložit snímek</string>
+    <string name="photos">Galerie snímků</string>
 
     <string-array name="currency">
         <item>CZK</item>
@@ -38,6 +39,13 @@
         <item>LINK</item>
         <item>ADA</item>
         <item>ETH</item>
+    </string-array>
+
+    <string-array name="transaction">
+        <item>Vše</item>
+        <item>Nákup</item>
+        <item>Prodej</item>
+        <item>Směna</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

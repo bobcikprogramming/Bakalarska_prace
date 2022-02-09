@@ -23,6 +23,12 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/imgPhotoViewerAdd"
+            style="@style/NavBarIcon"
+            android:src="@drawable/ic_add"
+            android:visibility="gone"/>
+
+        <ImageView
             android:id="@+id/imgPhotoViewerDelete"
             style="@style/NavBarIcon"
             android:src="@drawable/ic_delete"

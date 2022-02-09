@@ -73,6 +73,37 @@
                 android:paddingEnd="20dp"/>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutPhotos"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    style="@style/MyUnderline"
+                    android:id="@+id/underline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayoutForImageView"
+                    android:layout_height="60dp">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:text="@string/photos" />
+
+                    <LinearLayout
+                        style="@style/AddTransactionEntryFields">
+                        <ImageView
+                            style="@style/AddTransactionImageViewPhotoSelected"
+                            android:id="@+id/imvButtonShowPhotos"
+                            android:visibility="visible"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 style="@style/MyStrongUnderline"
                 android:id="@+id/historyUnderline"
                 android:layout_marginStart="0dp"

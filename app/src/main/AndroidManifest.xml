@@ -41,6 +41,10 @@
             android:name=".PhotoViewer"
             android:exported="true"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".TransactionPhotoViewer"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <!--
         <activity
             android:name=".RecyclerViewTransactions"

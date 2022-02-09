@@ -1,18 +1,29 @@
 package com.bobcikprogramming.kryptoevidence;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.SymbolTable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
@@ -20,16 +31,18 @@ import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 // https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
-public class ViewPagerAdapterTransaction extends PagerAdapter{
+public class ViewPagerAdapterTransaction extends PagerAdapter {
 
     private RecyclerView recyclerViewTransactionInfo, recyclerViewTransactionInfoHistory;
-    private LinearLayout historyUnderline, historyLayout;
+    private LinearLayout historyUnderline, historyLayout, layoutPhotos;
     private TextView historyHeadline;
+    private ImageView imvButtonShowPhotos;
     private View itemView;
 
     private LayoutInflater layoutInflater;
@@ -67,6 +80,9 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
         this.position = position;
 
         TransactionEntity transaction = dataList.get(position).transaction;
+
+        openGalery(position);
+        showPhotosIfNotEmpty(position);
 
         adapter = new RecyclerViewTransactionsInfo(itemView.getContext(), transaction.transactionType.equals("Směna") ? getTransactionForChange(position) : getTransactionForBuyOrSell(position)); //TODO framgent by viewpager prostudovat
         recyclerViewTransactionInfo.setAdapter(adapter);
@@ -111,6 +127,10 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
         historyHeadline = itemView.findViewById(R.id.historyHeadline);
         historyUnderline = itemView.findViewById(R.id.historyUnderline);
         historyLayout = itemView.findViewById(R.id.historyLayout);
+
+        layoutPhotos = itemView.findViewById(R.id.layoutPhotos);
+
+        imvButtonShowPhotos = itemView.findViewById(R.id.imvButtonShowPhotos);
     }
 
     public void updateDatalists(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory, int position){
@@ -125,6 +145,34 @@ public class ViewPagerAdapterTransaction extends PagerAdapter{
         adapterHistory.updateDataList(getHistoryList(position));
         adapterHistory.notifyDataSetChanged();
         notifyDataSetChanged();
+    }
+
+    private void openGalery(int postion){
+        imvButtonShowPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photoViewer = new Intent(itemView.getContext(), TransactionPhotoViewer.class);
+                photoViewer.putExtra("transactionID", String.valueOf(dataList.get(postion).transaction.uidTransaction));
+                itemView.getContext().startActivity(photoViewer);
+            }
+        });
+    }
+
+    private void showPhotosIfNotEmpty(int position){
+        AppDatabase db = AppDatabase.getDbInstance(itemView.getContext());
+        List<TransactionWithPhotos> transactionaa = db.databaseDao().getAll();
+        List<PhotoEntity> photos = dataList.get(position).photos;
+        int i = 0;
+        while(transactionaa.get(i).transaction.uidTransaction != dataList.get(position).transaction.uidTransaction){
+            i++;
+        }
+        List<PhotoEntity> photosa =  transactionaa.get(i).photos; //transactionWithPhotos.photos;
+        System.out.println("+++++++++++++++++++++SIZE photos: "+ photos.size() + " ----------------");
+        if(!photos.isEmpty()){
+            System.out.println("+++++++++++++++++++++id: "+ dataList.get(position).transaction.uidTransaction + " ----------------");
+            layoutPhotos.setVisibility(View.VISIBLE);
+            imvButtonShowPhotos.setImageURI(Uri.parse(photos.get(0).dest));
+        }
     }
 
     private ArrayList<TransactionInfoList> getTransactionForBuyOrSell(int position){

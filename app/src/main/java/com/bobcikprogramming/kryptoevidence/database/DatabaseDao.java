@@ -31,14 +31,17 @@ public interface DatabaseDao {
 
     @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE transaction_id = :transactionID")
-    TransactionWithPhotos getByTransactionID(String transactionID);
+    TransactionWithPhotos getTransactionByTransactionID(String transactionID);
 
     @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE transaction_id = :transactionID")
-    TransactionWithHistory getByTransactionHistoryID(String transactionID);
+    TransactionWithHistory getTransactionByTransactionHistoryID(String transactionID);
 
     @Query("SELECT * FROM PhotoEntity")
     List<PhotoEntity> getPhoto();
+
+    @Query("SELECT * FROM PhotoEntity WHERE parent_id = :transactionID")
+    List<PhotoEntity> getPhotoByTransactionID(String transactionID);
 
     @Query("SELECT * FROM TransactionHistoryEntity")
     List<TransactionHistoryEntity> getHistory();

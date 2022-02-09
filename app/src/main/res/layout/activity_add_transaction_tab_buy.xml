@@ -135,7 +135,7 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPhotoBuy"
-                        android:text="@string/photo" />
+                        android:text="@string/newPhoto" />
 
                     <LinearLayout
                         style="@style/AddTransactionEntryFields">

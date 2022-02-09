@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -115,7 +113,7 @@ public class TransactionInfo extends AppCompatActivity implements View.OnClickLi
 
     private TransactionWithPhotos loadDataFromDB(String transactionID){
         AppDatabase db = AppDatabase.getDbInstance(this);
-        return db.databaseDao().getByTransactionID(transactionID);
+        return db.databaseDao().getTransactionByTransactionID(transactionID);
     }
 
     private void setupGUIByTransactionType() {

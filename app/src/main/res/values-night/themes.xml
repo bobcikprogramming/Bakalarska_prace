@@ -14,6 +14,6 @@
         <item name="colorButtonNormal">@color/button</item>
     </style>
 
-    <style name="TimePicker" parent="@android:style/Theme.Holo.Dialog.MinWidth"/>
+    <style name="TimeDatePicker" parent="@android:style/Theme.Holo.Dialog.MinWidth"/>
 
 </resources>

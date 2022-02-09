@@ -258,6 +258,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         return inString.isEmpty() ? 0.0 : Double.parseDouble(inString);
     }
 
+    /** https://stackoverflow.com/a/9768996*/
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
