@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -29,6 +33,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
 
     private TransactionWithPhotos transactionWithPhotos;
     private List<TransactionWithPhotos> transaction;
+    private List<PhotoEntity> photos;
 
     String transactionID;
 
@@ -45,6 +50,8 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         setupUIViews();
         setViewPagerAdapter();
 
+        imgDelete.setVisibility(View.GONE);
+
         tabLayout.setupWithViewPager(photoViewer, true);
     }
 
@@ -57,22 +64,15 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         imgDelete = findViewById(R.id.imgPhotoViewerDelete);
 
         imgBack.setOnClickListener(this);
-        imgDelete.setOnClickListener(this);
     }
 
     private ArrayList<Uri> getPhotosUri(){
         ArrayList<Uri> photosUri = new ArrayList<>();
-        int i = 0;
-        while(transaction.get(i).transaction.uidTransaction != Long.parseLong(transactionID)){
-            i++;
-        }
-        List<PhotoEntity> photos =  transaction.get(i).photos; //transactionWithPhotos.photos;
-        System.out.println("----------------------SIZE photos: "+ photos.size() + " ----------------");
-        System.out.println("----------------------SIZE transactionWithPhotos: "+ transactionWithPhotos.photos.size() + " ----------------");
+        AppDatabase db = AppDatabase.getDbInstance(this);
+        photos =  db.databaseDao().getPhotoByTransactionID(transactionID); //transaction.get(i).photos; //transactionWithPhotos.photos;
         for(PhotoEntity photo : photos){
             photosUri.add(Uri.parse(photo.dest));
         }
-        System.out.println("----------------------SIZE: "+photosUri.size() + " ----------------");
         return photosUri;
     }
 
@@ -87,49 +87,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
             case R.id.imgPhotoViewerBack:
                 closeActivity();
                 break;
-            case R.id.imgPhotoViewerDelete:
-                deletePhoto();
-                break;
         }
-    }
-
-    private void deletePhoto(){
-        int position = photoViewer.getCurrentItem();
-        confirmDialogDelete(position);
-        photoViewer.setAdapter(viewPagerAdapter);
-        if(transactionWithPhotos.photos.isEmpty()){
-            closeActivity();
-        }
-    }
-
-    private void confirmDialogDelete(int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialog);
-        builder.setCancelable(true);
-        builder.setTitle("Smazat snímek");
-        builder.setMessage("Opravdu chcete smazat snímek?");
-        builder.setPositiveButton("Smazat",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        AppDatabase db = AppDatabase.getDbInstance(TransactionPhotoViewer.this);
-                        //db.databaseDao().deletePhoto(photos.get(position));
-
-                        Intent intent = new Intent();
-                        /*intent.putExtra("changed", true);
-                        intent.putExtra("deleted", true);*/
-                        setResult(RESULT_OK, intent );
-                        finish();
-                    }
-                });
-        builder.setNegativeButton("Zrušit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void closeActivity(){
@@ -138,4 +96,5 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         setResult(RESULT_OK, intent );
         finish();
     }
+
 }

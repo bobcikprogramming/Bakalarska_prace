@@ -10,15 +10,17 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 // https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
-public class ViewPagerAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
 
     private ArrayList<Uri> photos;
     private LayoutInflater layoutInflater;
+    private ImageView imageView;
 
     public ViewPagerAdapter(Context context, ArrayList<Uri> photos) {
         this.photos = photos;
@@ -39,7 +41,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         View itemView = layoutInflater.inflate(R.layout.photo_item, container, false);
-        ImageView imageView = itemView.findViewById(R.id.imageView);
+        imageView = itemView.findViewById(R.id.imageView);
         imageView.setImageURI(photos.get(position));
         Objects.requireNonNull(container).addView(itemView);
         return itemView;
@@ -48,6 +50,39 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((LinearLayout) object);
+    }
+
+    public void removeItem(int position){
+        photos.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void updateDatalist(ArrayList<Uri> datalist){
+        photos = datalist;
+        imageView.setImageURI(null);
+        imageView.setImageURI(photos.get(0));
+        notifyDataSetChanged();
+    }
+
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    // https://stackoverflow.com/a/48081760
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
     }
 }
 

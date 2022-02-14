@@ -11,11 +11,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,19 +32,25 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithHistory;
 import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class TransactionEdit extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +59,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private EditText valueRowFirst, valueRowSecond, valueRowFifth, valueRowSixth, valueFee, valueNote;
     private TextView valueDate, valueTime, valueRowFourth;
     private Spinner spinnerRowThird;
-    private ImageView imvButtonShowPhoto, imgButtonAddPhoto;
+    private ImageView imgButtonAddPhoto;
     private LinearLayout layoutRowFourth, layoutRowFifth, layoutRowSixth;
     private LinearLayout underlineRowFourth, underlineRowFifth, underlineRowSixth;
     private LinearLayout fragmentBackgroundEdit;
@@ -67,10 +77,14 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private ArrayList<TextView> descBuyAndSell;
     private ArrayList<TextView> descChange;
 
+    private boolean photoChange;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_edit);
+
+        photoChange = false;
 
         long transactionIDLong = (long) getIntent().getSerializableExtra("transactionID");
         this.transactionID = String.valueOf(transactionIDLong);
@@ -92,6 +106,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             case R.id.btnCancel:
                 Intent intent = new Intent();
                 intent.putExtra("changed", false);
+                intent.putExtra("photoChange", photoChange);
                 setResult(RESULT_OK, intent );
                 finish();
                 break;
@@ -111,6 +126,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 intentSell.putExtra("shortName", transactionWithHistory.transaction.shortNameBought);
                 selectActivityResultLauncher.launch(intentSell);
                 break;
+            case R.id.imgButtonAddPhoto:
+                openGallery();
+                break;
         }
     }
 
@@ -118,6 +136,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     public void onBackPressed() {
         Intent intent = new Intent();
         intent.putExtra("change", false);
+        intent.putExtra("photoChange", photoChange);
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -153,8 +172,8 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
         valueRowFourth.setOnClickListener(this);
 
-        imvButtonShowPhoto = findViewById(R.id.imvButtonShowPhoto);
         imgButtonAddPhoto = findViewById(R.id.imgButtonAddPhoto);
+        imgButtonAddPhoto.setOnClickListener(this);
 
         layoutRowFourth = findViewById(R.id.layoutRowFourth);
         layoutRowFifth = findViewById(R.id.layoutRowFifth);
@@ -700,11 +719,13 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                         if(success == 0) {
                             Intent intent = new Intent();
                             intent.putExtra("changed", true);
+                            intent.putExtra("photoChange", photoChange);
                             setResult(RESULT_OK, intent );
                             finish();
                         }else if(success == 1){
                             Intent intent = new Intent();
                             intent.putExtra("changed", false);
+                            intent.putExtra("photoChange", photoChange);
                             setResult(RESULT_OK, intent );
                             finish();
                         }
@@ -731,6 +752,12 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         AppDatabase db = AppDatabase.getDbInstance(TransactionEdit.this);
+                        List<PhotoEntity> photos = db.databaseDao().getPhotoByTransactionID(transactionID);
+
+                        for(PhotoEntity photo : photos) {
+                            deleteImage(photo.dest);
+                        }
+
                         db.databaseDao().deleteHistory(transactionID);
                         db.databaseDao().deletePhotos(transactionID);
                         db.databaseDao().deleteTransactionTable(transactionID);
@@ -738,6 +765,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                         Intent intent = new Intent();
                         intent.putExtra("changed", true);
                         intent.putExtra("deleted", true);
+                        intent.putExtra("photoChange", photoChange);
                         setResult(RESULT_OK, intent );
                         finish();
                     }
@@ -768,6 +796,92 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     }
                 }
             });
+
+    private void openGallery(){
+        AppDatabase db = AppDatabase.getDbInstance(this);
+        List<PhotoEntity> photos = db.databaseDao().getPhotoByTransactionID(transactionID);
+        if(photos.isEmpty()){
+            androidGallery.launch("image/*");
+        }else{
+            Intent gallery = new Intent(TransactionEdit.this, TransactionEditPhotoViewer.class);
+            gallery.putExtra("transactionID",transactionID);
+            appGallery.launch(gallery);
+        }
+    }
+
+    ActivityResultLauncher<String> androidGallery = registerForActivityResult(
+        new ActivityResultContracts.GetContent(),
+        new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri uri) {
+                if (uri != null) {
+                    AppDatabase db = AppDatabase.getDbInstance(TransactionEdit.this);
+                    PhotoEntity photoEntity = new PhotoEntity();
+
+                    String path = saveImage(uri);
+                    if (!path.isEmpty()) {
+                        photoEntity.dest = path;
+                        photoEntity.transactionId = Long.parseLong(transactionID);
+                        db.databaseDao().insertPhoto(photoEntity);
+
+                        photoChange = true;
+                    }
+                }
+            }
+        });
+
+    ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                Intent data = result.getData();
+                photoChange = data.getBooleanExtra("photoChange", false);
+            }
+        });
+
+    // https://stackoverflow.com/a/17674787
+    private String saveImage(Uri photo){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File dir = cw.getDir("Images", MODE_PRIVATE);
+
+        Bitmap bitmap;
+        FileOutputStream fos = null;
+
+        File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
+
+        try {
+            // https://stackoverflow.com/a/4717740
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photo);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        try {
+            fos = new FileOutputStream(myPath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return String.valueOf(myPath);
+    }
+
+    // https://stackoverflow.com/a/10716773
+    private void deleteImage(String path){
+        File toDelete = new File(path);
+        if(toDelete.exists()){
+            toDelete.delete();
+        }
+    }
 
     private void hideKeyBoard(){
         InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);

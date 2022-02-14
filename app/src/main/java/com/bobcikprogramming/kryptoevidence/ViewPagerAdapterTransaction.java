@@ -82,7 +82,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         TransactionEntity transaction = dataList.get(position).transaction;
 
         openGalery(position);
-        showPhotosIfNotEmpty(position);
+        showPhotosIfNotEmpty();
 
         adapter = new RecyclerViewTransactionsInfo(itemView.getContext(), transaction.transactionType.equals("Směna") ? getTransactionForChange(position) : getTransactionForBuyOrSell(position)); //TODO framgent by viewpager prostudovat
         recyclerViewTransactionInfo.setAdapter(adapter);
@@ -158,20 +158,13 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         });
     }
 
-    private void showPhotosIfNotEmpty(int position){
-        AppDatabase db = AppDatabase.getDbInstance(itemView.getContext());
-        List<TransactionWithPhotos> transactionaa = db.databaseDao().getAll();
+    public void showPhotosIfNotEmpty(){
         List<PhotoEntity> photos = dataList.get(position).photos;
-        int i = 0;
-        while(transactionaa.get(i).transaction.uidTransaction != dataList.get(position).transaction.uidTransaction){
-            i++;
-        }
-        List<PhotoEntity> photosa =  transactionaa.get(i).photos; //transactionWithPhotos.photos;
-        System.out.println("+++++++++++++++++++++SIZE photos: "+ photos.size() + " ----------------");
         if(!photos.isEmpty()){
-            System.out.println("+++++++++++++++++++++id: "+ dataList.get(position).transaction.uidTransaction + " ----------------");
             layoutPhotos.setVisibility(View.VISIBLE);
             imvButtonShowPhotos.setImageURI(Uri.parse(photos.get(0).dest));
+        }else{
+            layoutPhotos.setVisibility(View.GONE);
         }
     }
 

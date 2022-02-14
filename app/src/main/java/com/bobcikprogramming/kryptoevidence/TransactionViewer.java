@@ -69,7 +69,6 @@ public class TransactionViewer extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("------------------------------"+transactionViewer.getCurrentItem());
                 Intent infoActivity = new Intent(TransactionViewer.this, TransactionEdit.class);
                 infoActivity.putExtra("transactionID", dataFromDatabase.get(transactionViewer.getCurrentItem()).transaction.uidTransaction);
                 infoActivityTransactionEditLauncher.launch(infoActivity);
@@ -98,7 +97,7 @@ public class TransactionViewer extends AppCompatActivity {
         TransactionWithPhotos tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                 try{
                     Date dateFirst = format.parse(data.get(j).transaction.date);
                     Date dateSecond = format.parse(data.get(j+1).transaction.date);
@@ -142,7 +141,8 @@ public class TransactionViewer extends AppCompatActivity {
                     Intent data = result.getData();
                     changed = data.getBooleanExtra("changed", false);
                     boolean deleted = data.getBooleanExtra("deleted", false);
-                    if(changed){
+                    boolean photoChange = data.getBooleanExtra("photoChange", false);
+                    if(changed || photoChange){
                         loadDataFromDb();
                         if(deleted){
                             Intent intent = new Intent();
@@ -151,6 +151,9 @@ public class TransactionViewer extends AppCompatActivity {
                             finish();
                         }else {
                             viewPagerAdapter.updateDatalists(dataFromDatabase, dataFromDatabaseHistory, transactionViewer.getCurrentItem());
+                            if(photoChange){
+                                viewPagerAdapter.showPhotosIfNotEmpty();
+                            }
                         }
                     }
                 }

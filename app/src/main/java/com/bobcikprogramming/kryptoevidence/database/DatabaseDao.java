@@ -78,4 +78,7 @@ public interface DatabaseDao {
 
     @Query("DELETE FROM TransactionEntity WHERE transaction_id = :transactionID")
     void deleteTransactionTable(String transactionID);
+
+    @Query("DELETE FROM PhotoEntity WHERE photo_id = :photoID")
+    void deletePhotoById(String photoID);
 }

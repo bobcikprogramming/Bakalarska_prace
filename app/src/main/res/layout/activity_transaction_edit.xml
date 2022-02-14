@@ -227,9 +227,6 @@
 
                     <LinearLayout
                         style="@style/AddTransactionEntryFields">
-                        <ImageView
-                            style="@style/AddTransactionImageViewPhotoSelected"
-                            android:id="@+id/imvButtonShowPhoto"/>
 
                         <ImageView
                             style="@style/AddTransactionImageViewPhoto"

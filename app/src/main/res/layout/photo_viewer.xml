@@ -24,7 +24,10 @@
 
         <ImageView
             android:id="@+id/imgPhotoViewerAdd"
-            style="@style/NavBarIcon"
+            android:layout_height="match_parent"
+            android:layout_width="44dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:src="@drawable/ic_add"
             android:visibility="gone"/>
 
@@ -32,7 +35,8 @@
             android:id="@+id/imgPhotoViewerDelete"
             style="@style/NavBarIcon"
             android:src="@drawable/ic_delete"
-            android:paddingEnd="12dp"/>
+            android:paddingEnd="12dp"
+            android:visibility="visible"/>
 
     </LinearLayout>
 
