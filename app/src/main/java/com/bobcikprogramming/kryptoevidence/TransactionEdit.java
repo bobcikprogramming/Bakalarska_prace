@@ -32,14 +32,13 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithHistory;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithHistory;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bobcikprogramming.kryptoevidence.addTransaction.AddTransaction;
+import com.bobcikprogramming.kryptoevidence.View.AddTransaction;
 
 import java.util.ArrayList;
 

@@ -6,17 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSelection.ViewHolder>{
 
@@ -67,10 +60,3 @@ public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSele
     }
 }
 
-class RecyclerViewSelectionList {
-    String longName, shortName;
-    public RecyclerViewSelectionList(String longName, String shortName){
-        this.longName = longName;
-        this.shortName = shortName;
-    }
-}

@@ -18,9 +18,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;

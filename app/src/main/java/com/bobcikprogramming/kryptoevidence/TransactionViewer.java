@@ -11,17 +11,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithHistory;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

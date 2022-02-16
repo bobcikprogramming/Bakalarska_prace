@@ -2,7 +2,6 @@ package com.bobcikprogramming.kryptoevidence;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.view.MenuItem;
 
 import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentOverView;
 import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentPDF;
-import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentTransactions;
+import com.bobcikprogramming.kryptoevidence.View.FragmentTransactions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

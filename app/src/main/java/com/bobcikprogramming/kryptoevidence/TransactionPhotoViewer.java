@@ -1,23 +1,17 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;

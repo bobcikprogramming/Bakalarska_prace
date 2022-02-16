@@ -1,25 +1,21 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import com.bobcikprogramming.kryptoevidence.Controller.CryptoSelectionController;
+import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 
 import java.util.ArrayList;
 
@@ -35,37 +31,44 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
     private ArrayList<RecyclerViewSelectionList> cryptoList;
     private ArrayList<RecyclerViewSelectionList> cryptoListToShow;
 
+    private SharedMethods shared;
+    private CryptoSelectionController controller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto_selection);
+
+        shared = new SharedMethods();
+        controller = new CryptoSelectionController();
         cryptoList = new ArrayList<>();
+
         Bundle extras = getIntent().getExtras();
-        tmpAddCryptoToList();
-        int objPosToRemove = -1;
-        for(RecyclerViewSelectionList toRemove : cryptoList){
-            if(toRemove.shortName.equals(extras.getString("shortName"))){
-                objPosToRemove = cryptoList.indexOf(toRemove);
-            }
-        }
-        if(objPosToRemove > -1) {
-            cryptoList.remove(objPosToRemove);
-        }
-        cryptoListToShow = cryptoList;
 
         setupUIViews();
         searchOnChange();
+        hideKeyBoardOnRecyclerTouch();
 
-        adapter = new RecyclerViewSelection(this, cryptoListToShow, myClickListener);
+        adapter = new RecyclerViewSelection(this, controller.removeSelectedValue(extras.getString("shortName")), myClickListener);
         recyclerView.setAdapter(adapter);
+    }
 
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyBoard();
-                return true;
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.layoutSelection:
+                shared.hideKeyBoard(this);
+                break;
+            case R.id.imgBtnCloseCryptoSelection:
+                closeActivity("","");
+            case R.id.imgBtnDelete:
+                etSearch.setText("");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeActivity("", "");
     }
 
     private void setupUIViews(){
@@ -85,39 +88,10 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         layout.setOnClickListener(this);
     }
 
-    private void tmpAddCryptoToList(){
-        RecyclerViewSelectionList btc = new RecyclerViewSelectionList("Bitcoin", "BTC");
-        cryptoList.add(btc);
-        RecyclerViewSelectionList link = new RecyclerViewSelectionList("Chainlink", "LINK");
-        cryptoList.add(link);
-        RecyclerViewSelectionList ada = new RecyclerViewSelectionList("Cardano", "ADA");
-        cryptoList.add(ada);
-        RecyclerViewSelectionList eth = new RecyclerViewSelectionList("Ethereum", "ETH");
-        cryptoList.add(eth);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.layoutSelection:
-                hideKeyBoard();
-                break;
-            case R.id.imgBtnCloseCryptoSelection:
-                Intent intent = new Intent();
-                intent.putExtra("longName", "");
-                intent.putExtra("shortName", "");
-                setResult(RESULT_OK, intent );
-                finish();
-            case R.id.imgBtnDelete:
-                etSearch.setText("");
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
+    private void closeActivity(String longName, String shortName){
         Intent intent = new Intent();
-        intent.putExtra("longName", "");
-        intent.putExtra("shortName", "");
+        intent.putExtra("longName", longName);
+        intent.putExtra("shortName", shortName);
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -132,17 +106,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String searching = charSequence.toString();
-                if(searching.length() == 0){
-                    cryptoListToShow = cryptoList;
-                }else {
-                    cryptoListToShow = new ArrayList<>();
-                    for (RecyclerViewSelectionList toShow : cryptoList) {
-                        if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
-                            cryptoListToShow.add(toShow);
-                        }
-                    }
-                }
-                adapter = new RecyclerViewSelection(CryptoChangeSelection.this, cryptoListToShow, myClickListener);
+                adapter = new RecyclerViewSelection(CryptoChangeSelection.this, controller.filter(searching), myClickListener);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -160,18 +124,17 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            Intent intent = new Intent();
-            intent.putExtra("longName", cryptoList.get(position).longName);
-            intent.putExtra("shortName", cryptoList.get(position).shortName);
-            setResult(RESULT_OK, intent );
-            finish();
+            closeActivity(cryptoList.get(position).longName, cryptoList.get(position).shortName);
         }
     };
 
-    private void hideKeyBoard(){
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if(this.getCurrentFocus() != null) {
-            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        }
+    private void hideKeyBoardOnRecyclerTouch(){
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                shared.hideKeyBoard(CryptoChangeSelection.this);
+                return true;
+            }
+        });
     }
 }

@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.util.List;
 

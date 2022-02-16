@@ -24,9 +24,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,11 +1,14 @@
-package com.bobcikprogramming.kryptoevidence.database;
+package com.bobcikprogramming.kryptoevidence.Model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.Date;
+
 @Entity
-public class TransactionHistoryEntity {
+public class TransactionEntity {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transaction_id")
@@ -49,16 +52,4 @@ public class TransactionHistoryEntity {
 
     @ColumnInfo(name = "time")
     public String time;
-
-    @ColumnInfo(name = "note")
-    public String note;
-
-    @ColumnInfo(name = "date_of_change")
-    public String dateOfChange;
-
-    @ColumnInfo(name = "time_of_change")
-    public String timeOfChange;
-
-    @ColumnInfo(name = "parent_id")
-    public long parentTransactionId;
 }

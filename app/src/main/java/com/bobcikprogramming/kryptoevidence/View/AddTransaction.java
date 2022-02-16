@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence.addTransaction;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -30,8 +30,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         this.shortName = extras.getString("shortName");
 
         setupUIViews();
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
-        tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
+        setStartItem();
 
         tvCryptoName.setText(longName);
 
@@ -78,27 +77,44 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
                 tvChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.btnCloseAdd:
-                Intent intent = new Intent();
-                intent.putExtra("close", true);
-                intent.putExtra("change", false);
-                setResult(RESULT_OK, intent );
-                finish();
+                closeActivity(true);
                 break;
         }
     }
 
+    /**
+     * Metoda vrátí uživatele zpět na výběr kryptoměny.
+     */
     @Override
     public void onBackPressed() {
+        closeActivity(false);
+    }
+
+    /**
+     * Metoda pro vykonání událostí při uzavření okna
+     * @param close pravdivostní hodnota, zda-li bylo okno uzavřeno pomocí tlačítka close
+     */
+    private void closeActivity(boolean close){
         Intent intent = new Intent();
-        intent.putExtra("close", false);
-        intent.putExtra("change", false);
+        intent.putExtra("close", close);
         setResult(RESULT_OK, intent );
         finish();
     }
 
+    /**
+     * Metoda pro nastavení barev položek navbaru na původní hodnotu.
+     */
     private void resetColor(){
         tvBuy.setTextColor(ContextCompat.getColor(this, R.color.white));
         tvSell.setTextColor(ContextCompat.getColor(this, R.color.white));
         tvChange.setTextColor(ContextCompat.getColor(this, R.color.white));
+    }
+
+    /**
+     * Metoda pro vybrání úvodní položky navbaru při otevření okna.
+     */
+    private void setStartItem(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
+        tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
     }
 }

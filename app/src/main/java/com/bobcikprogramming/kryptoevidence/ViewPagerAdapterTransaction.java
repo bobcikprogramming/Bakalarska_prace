@@ -1,10 +1,7 @@
 package com.bobcikprogramming.kryptoevidence;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.SymbolTable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,25 +10,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bobcikprogramming.kryptoevidence.database.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.database.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionHistoryEntity;
-import com.bobcikprogramming.kryptoevidence.database.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;

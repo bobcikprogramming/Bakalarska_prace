@@ -1,11 +1,11 @@
-package com.bobcikprogramming.kryptoevidence.database;
+package com.bobcikprogramming.kryptoevidence.Model;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
 import java.util.List;
 
-public class TransactionWithPhotos {
+public class TransactionWithHistory {
 
     @Embedded
     public TransactionEntity transaction;
@@ -14,6 +14,6 @@ public class TransactionWithPhotos {
             entityColumn = "parent_id"
     )
 
-    public List<PhotoEntity> photos;
+    public List<TransactionHistoryEntity> history;
 
 }

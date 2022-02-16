@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence.database;
+package com.bobcikprogramming.kryptoevidence.Model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

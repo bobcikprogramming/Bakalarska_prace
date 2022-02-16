@@ -26,7 +26,7 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".addTransaction.AddTransaction"
+            android:name=".View.AddTransaction"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
