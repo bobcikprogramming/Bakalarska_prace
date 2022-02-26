@@ -1,6 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
-
-import java.util.ArrayList;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
 public class TransactionHistoryList {
     String transactionType;

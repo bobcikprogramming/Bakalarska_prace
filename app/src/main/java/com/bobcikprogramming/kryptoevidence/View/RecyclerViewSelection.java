@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bobcikprogramming.kryptoevidence.R;
+import com.bobcikprogramming.kryptoevidence.Controller.RecyclerViewSelectionList;
 
 import java.util.ArrayList;
 
@@ -20,7 +23,7 @@ public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSele
     public RecyclerViewSelection(Context context, ArrayList<RecyclerViewSelectionList> dataList, View.OnClickListener myClickListener) {
         this.context = context;
         this.dataList = dataList;
-        this. myClickListener = myClickListener;
+        this.myClickListener = myClickListener;
     }
 
     @Override
@@ -32,8 +35,8 @@ public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSele
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvLongName.setText(dataList.get(position).longName);
-        holder.tvShortName.setText(dataList.get(position).shortName);
+        holder.tvLongName.setText(dataList.get(position).getLongName());
+        holder.tvShortName.setText(dataList.get(position).getShortName());
 
         holder.itemView.setTag(position);
     }

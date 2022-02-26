@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
-import com.bobcikprogramming.kryptoevidence.RecyclerViewTransactions;
+import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

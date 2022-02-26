@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bobcikprogramming.kryptoevidence.R;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-// https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
+/** https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/ */
 public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
 
     private ArrayList<Uri> photos;
@@ -57,14 +59,6 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
         notifyDataSetChanged();
     }
 
-    public void updateDatalist(ArrayList<Uri> datalist){
-        photos = datalist;
-        imageView.setImageURI(null);
-        imageView.setImageURI(photos.get(0));
-        notifyDataSetChanged();
-    }
-
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -80,7 +74,7 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     }
 
-    // https://stackoverflow.com/a/48081760
+    /** https://stackoverflow.com/a/48081760 */
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }

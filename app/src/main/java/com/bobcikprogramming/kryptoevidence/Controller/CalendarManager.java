@@ -27,11 +27,16 @@ public class CalendarManager {
         shared = new SharedMethods();
     }
 
-    public void openDateDialogWindowForFilter(Activity activity, DatePickerDialog.OnDateSetListener dateSetListener){
+    public void openDateDialogWindow(Activity activity, DatePickerDialog.OnDateSetListener dateSetListener, String date){
+        String[] dateSplit = null;
+        if(date != null){
+            dateSplit = date.split("\\.");
+        }
+
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
+        int year = dateSplit == null ? calendar.get(Calendar.YEAR) : Integer.parseInt(dateSplit[2]);
+        int month = dateSplit == null ? calendar.get(Calendar.MONTH) : Integer.parseInt(dateSplit[1]) - 1;
+        int day = dateSplit == null ? calendar.get(Calendar.DAY_OF_MONTH) : Integer.parseInt(dateSplit[0]); //day of month -> protože měsíce mají různý počet dní
         DatePickerDialog dialog = new DatePickerDialog(
                 activity, R.style.TimeDatePicker, dateSetListener, year, month, day
         );
@@ -57,10 +62,15 @@ public class CalendarManager {
         return result;
     }
 
-    public void openTimeDialogWindow(Activity activity, TimePickerDialog.OnTimeSetListener timeSetListener){
+    public void openTimeDialogWindow(Activity activity, TimePickerDialog.OnTimeSetListener timeSetListener, String time){
+        String[] timeSplit = null;
+        if(time != null){
+            timeSplit = time.split(":");
+        }
+
         Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        int hour = timeSplit == null ? calendar.get(Calendar.HOUR_OF_DAY) : Integer.parseInt(timeSplit[0]);
+        int minute = timeSplit == null ? calendar.get(Calendar.MINUTE) : Integer.parseInt(timeSplit[1]);
         TimePickerDialog dialog = new TimePickerDialog(
                 activity, R.style.TimeDatePicker, timeSetListener, hour, minute, true
         );
@@ -181,20 +191,5 @@ public class CalendarManager {
         long maxDate = isDateFrom ? calendarDateTo.getTimeInMillis() : System.currentTimeMillis(); /** https://stackoverflow.com/a/11430439 */
         dialog.getDatePicker().setMaxDate(maxDate); /** https://stackoverflow.com/a/20971151 */
         dialog.show();
-    }
-
-    public void setDateToTextView(int year, int month, int day, TextView textViewId, Context context){
-        month = month + 1; // bere se od 0
-        String date = day + "." + month + "." + year;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d.MM.yyyy");
-        SimpleDateFormat dateFormatSecond = new SimpleDateFormat("dd.MM.yyyy");
-        try{
-            Date dateFormatToShow = dateFormat.parse(date);
-            textViewId.setText(dateFormatSecond.format(dateFormatToShow));
-            textViewId.setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
-        catch (Exception e){
-            System.err.println("Chyba při parsování data: "+e);
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -8,21 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.bobcikprogramming.kryptoevidence.View.AddTransaction;
-
-import java.util.ArrayList;
+import com.bobcikprogramming.kryptoevidence.Controller.CryptoSelectionController;
+import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
+import com.bobcikprogramming.kryptoevidence.R;
 
 public class CryptoSelection extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,29 +31,41 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
 
     private RecyclerViewSelection adapter;
 
-    private ArrayList<RecyclerViewSelectionList> cryptoList;
-    private ArrayList<RecyclerViewSelectionList> cryptoListToShow;
+    private SharedMethods shared;
+    private CryptoSelectionController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto_selection);
-        cryptoList = new ArrayList<>();
-        tmpAddCryptoToList();
-        cryptoListToShow = cryptoList;
+
+        shared = new SharedMethods();
+        controller = new CryptoSelectionController();
+
         setupUIViews();
         searchOnChange();
+        hideKeyBoardOnRecyclerTouch();
 
-        adapter = new RecyclerViewSelection(CryptoSelection.this, cryptoListToShow, myClickListener);
+        adapter = new RecyclerViewSelection(CryptoSelection.this, controller.getCryptoList(), myClickListener);
         recyclerView.setAdapter(adapter);
+    }
 
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                hideKeyBoard();
-                return true;
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.layoutSelection:
+                shared.hideKeyBoard(this);
+                break;
+            case R.id.imgBtnCloseCryptoSelection:
+                closeActivity(false);
+            case R.id.imgBtnDelete:
+                etSearch.setText("");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeActivity(false);
     }
 
     private void setupUIViews(){
@@ -75,37 +85,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         layout.setOnClickListener(this);
     }
 
-    private void tmpAddCryptoToList(){
-        RecyclerViewSelectionList btc = new RecyclerViewSelectionList("Bitcoin", "BTC");
-        cryptoList.add(btc);
-        RecyclerViewSelectionList link = new RecyclerViewSelectionList("Chainlink", "LINK");
-        cryptoList.add(link);
-        RecyclerViewSelectionList ada = new RecyclerViewSelectionList("Cardano", "ADA");
-        cryptoList.add(ada);
-        RecyclerViewSelectionList eth = new RecyclerViewSelectionList("Ethereum", "ETH");
-        cryptoList.add(eth);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.layoutSelection:
-                hideKeyBoard();
-                break;
-            case R.id.imgBtnCloseCryptoSelection:
-                Intent intent = new Intent();
-                intent.putExtra("changed", false);
-                setResult(RESULT_OK, intent );
-                finish();
-            case R.id.imgBtnDelete:
-                etSearch.setText("");
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
+    private void closeActivity(boolean changed){
         Intent intent = new Intent();
-        intent.putExtra("changed", false);
+        intent.putExtra("changed", changed);
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -120,17 +102,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String searching = charSequence.toString();
-                if(searching.length() == 0){
-                    cryptoListToShow = cryptoList;
-                }else {
-                    cryptoListToShow = new ArrayList<>();
-                    for (RecyclerViewSelectionList toShow : cryptoList) {
-                        if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
-                                cryptoListToShow.add(toShow);
-                        }
-                    }
-                }
-                adapter = new RecyclerViewSelection(CryptoSelection.this, cryptoListToShow, myClickListener);
+                adapter = new RecyclerViewSelection(CryptoSelection.this, controller.filter(searching), myClickListener);
                 recyclerView.setAdapter(adapter);
             }
 
@@ -149,8 +121,8 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         {
             int position = (int) view.getTag();
             Intent addActivity = new Intent(CryptoSelection.this, AddTransaction.class);
-            addActivity.putExtra("longName", cryptoList.get(position).longName);
-            addActivity.putExtra("shortName", cryptoList.get(position).shortName);
+            addActivity.putExtra("longName", controller.getCryptoList().get(position).getLongName());
+            addActivity.putExtra("shortName", controller.getCryptoList().get(position).getShortName());
             addActivityResultLauncher.launch(addActivity);
         }
     };
@@ -164,18 +136,18 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
                     boolean close = data.getBooleanExtra("close", false);
                     boolean changed = data.getBooleanExtra("changed", false);
                     if(close){
-                        Intent intent = new Intent();
-                        intent.putExtra("changed", changed);
-                        setResult(RESULT_OK, intent );
-                        finish();
+                        closeActivity(changed);
                     }
                 }
             });
 
-    private void hideKeyBoard(){
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if(this.getCurrentFocus() != null) {
-            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        }
+    private void hideKeyBoardOnRecyclerTouch(){
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                shared.hideKeyBoard(CryptoSelection.this);
+                return true;
+            }
+        });
     }
 }

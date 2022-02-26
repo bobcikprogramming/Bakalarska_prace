@@ -1,10 +1,9 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
 public class TransactionInfoList {
 
     private String leftDesc, leftValue, rightDesc, rightValue;
     public TransactionInfoList(){
-
     }
 
     public String getLeftDesc() {

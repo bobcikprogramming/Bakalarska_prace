@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 
+import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentOverView;
-import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentPDF;
+import com.bobcikprogramming.kryptoevidence.View.FragmentPDF;
 import com.bobcikprogramming.kryptoevidence.View.FragmentTransactions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -22,19 +23,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);*/
-
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavBar);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentOverView()).commit();
+        selectBottomMenu(R.id.overview); // TODO <--- asi smazat, toto opět zavolá to horní (nebo smazat řádek nad tím), prostě se to volá 2x
+
+        selectFragment();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void selectFragment(){
         FragmentOverView fragmentOverView = new FragmentOverView();
         FragmentTransactions fragmentTransactions = new FragmentTransactions();
         FragmentPDF fragmentPDF = new FragmentPDF();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentOverView()).commit();
-        selectBottomMenu(R.id.overview); // TODO <--- asi smazat, toto opět zavolá to horní (nebo smazat řádek nad tím), prostě se to volá 2x
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -54,11 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void selectBottomMenu(final int position) {

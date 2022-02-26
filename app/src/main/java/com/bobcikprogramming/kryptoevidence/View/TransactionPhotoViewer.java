@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,9 +9,11 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionPhotoViewerController;
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -21,30 +23,20 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
 
     private ViewPager photoViewer;
     private ImageView imgBack, imgDelete;
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
 
-    private ViewPagerAdapter viewPagerAdapter;
-
-    private TransactionWithPhotos transactionWithPhotos;
-    private List<TransactionWithPhotos> transaction;
-    private List<PhotoEntity> photos;
-
-    String transactionID;
+    private TransactionPhotoViewerController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer);
 
-        transactionID = getIntent().getStringExtra("transactionID");
-        AppDatabase db = AppDatabase.getDbInstance(this);
-        transactionWithPhotos = db.databaseDao().getTransactionByTransactionID(transactionID);
-        transaction = db.databaseDao().getAll();
+        String transactionID = getIntent().getStringExtra("transactionID");
+        controller = new TransactionPhotoViewerController(this, photoViewer, transactionID);
 
         setupUIViews();
-        setViewPagerAdapter();
-
-        imgDelete.setVisibility(View.GONE);
+        controller.setViewPagerAdapter();
 
         tabLayout.setupWithViewPager(photoViewer, true);
     }
@@ -58,21 +50,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         imgDelete = findViewById(R.id.imgPhotoViewerDelete);
 
         imgBack.setOnClickListener(this);
-    }
-
-    private ArrayList<Uri> getPhotosUri(){
-        ArrayList<Uri> photosUri = new ArrayList<>();
-        AppDatabase db = AppDatabase.getDbInstance(this);
-        photos =  db.databaseDao().getPhotoByTransactionID(transactionID); //transaction.get(i).photos; //transactionWithPhotos.photos;
-        for(PhotoEntity photo : photos){
-            photosUri.add(Uri.parse(photo.dest));
-        }
-        return photosUri;
-    }
-
-    private void setViewPagerAdapter(){
-        viewPagerAdapter = new ViewPagerAdapter(TransactionPhotoViewer.this, getPhotosUri());
-        photoViewer.setAdapter(viewPagerAdapter);
+        imgDelete.setVisibility(View.GONE);
     }
 
     @Override
@@ -86,7 +64,6 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
 
     private void closeActivity(){
         Intent intent = new Intent();
-        //intent.putParcelableArrayListExtra("photos",photos);
         setResult(RESULT_OK, intent );
         finish();
     }

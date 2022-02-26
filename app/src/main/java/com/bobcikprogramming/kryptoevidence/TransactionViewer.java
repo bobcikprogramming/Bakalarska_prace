@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.View.TransactionEdit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

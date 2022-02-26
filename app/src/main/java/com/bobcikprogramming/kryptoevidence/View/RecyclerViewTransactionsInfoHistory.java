@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bobcikprogramming.kryptoevidence.R;
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionHistoryList;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,6 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
     public RecyclerViewTransactionsInfoHistory(Context context, ArrayList<TransactionHistoryList> dataList) {
         this.context = context;
         this.dataList = dataList;
-
     }
 
     @Override
@@ -31,49 +33,48 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         TransactionHistoryList history = dataList.get(position);
 
-        holder.histValueDateTimeOfChange.setText(history.changeValueDate + " v " + history.changeValueTime);
+        holder.histValueDateTimeOfChange.setText(history.getChangeValueDate() + " v " + history.getChangeValueTime());
 
-        switch(history.transactionType){
+        switch(history.getTransactionType()){
             case "Nákup":
-                setupUI(history.quantityBoughtValue != null, holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.quantityBoughtDesc, history.quantityBoughtValue);
-                setupUI(history.priceBoughtValue != null, holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.priceBoughtDesc, history.priceBoughtValue);
-                setupUI(history.currencyValue != null, holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.currencyDesc, history.currencyValue);
-                setupUI(history.feeValue != null, holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.feeDesc, history.feeValue);
-                setupUI(history.dateValue != null, holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.dateDesc, history.dateValue);
-                setupUI(history.timeValue != null, holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.timeDesc, history.timeValue);
-                setupUI(history.noteValue != null, holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.noteDesc, history.noteValue);
+                setupUI(holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.getQuantityBoughtDesc(), history.getQuantityBoughtValue());
+                setupUI(holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.getPriceBoughtDesc(), history.getPriceBoughtValue());
+                setupUI(holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.getCurrencyDesc(), history.getCurrencyValue());
+                setupUI(holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.getFeeDesc(), history.getFeeValue());
+                setupUI(holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.getDateDesc(), history.getDateValue());
+                setupUI(holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.getTimeDesc(), history.getTimeValue());
+                setupUI(holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.getNoteDesc(), history.getNoteValue());
                 holder.histValueSeventhRow.setSingleLine(false);
-                setupUI(false, holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, "", "");
-                setupUI(false, holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, "", "");
-                setupUI(false, holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, "", "");
+                setupUI(holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, "", "");
+                setupUI(holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, "", "");
+                setupUI(holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, "", "");
                 break;
             case "Prodej":
-                setupUI(history.quantitySoldValue != null, holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.quantitySoldDesc, history.quantitySoldValue);
-                setupUI(history.priceSoldValue != null, holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.priceSoldDesc, history.priceSoldValue);
-                setupUI(history.currencyValue != null, holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.currencyDesc, history.currencyValue);
-                setupUI(history.feeValue != null, holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.feeDesc, history.feeValue);
-                setupUI(history.dateValue != null, holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.dateDesc, history.dateValue);
-                setupUI(history.timeValue != null, holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.timeDesc, history.timeValue);
-                setupUI(history.noteValue != null, holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.noteDesc, history.noteValue);
+                setupUI(holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.getQuantitySoldDesc(), history.getQuantitySoldValue());
+                setupUI(holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.getPriceSoldDesc(), history.getPriceSoldValue());
+                setupUI(holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.getCurrencyDesc(), history.getCurrencyValue());
+                setupUI(holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.getFeeDesc(), history.getFeeValue());
+                setupUI(holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.getDateDesc(), history.getDateValue());
+                setupUI(holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.getTimeDesc(), history.getTimeValue());
+                setupUI(holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.getNoteDesc(), history.getNoteValue());
                 holder.histValueSeventhRow.setSingleLine(false);
-                setupUI(false, holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, "", "");
-                setupUI(false, holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, "", "");
-                setupUI(false, holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, "", "");
+                setupUI(holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, "", "");
+                setupUI(holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, "", "");
+                setupUI(holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, "", "");
                 break;
             case "Směna":
-                setupUI(history.quantityBoughtValue != null, holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.quantityBoughtDesc, history.quantityBoughtValue);
-                setupUI(history.priceBoughtValue != null, holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.priceBoughtDesc, history.priceBoughtValue);
-                setupUI(history.currencyValue != null, holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.currencyDesc, history.currencyValue);
-                setupUI(history.longNameSoldValue != null, holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.longNameSoldDesc, history.longNameSoldValue);
-                setupUI(history.quantitySoldValue != null, holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.quantitySoldDesc, history.quantitySoldValue);
-                setupUI(history.priceSoldValue != null, holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.priceSoldDesc, history.priceSoldValue);
-                setupUI(history.feeValue != null, holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.feeDesc, history.feeValue);
-                setupUI(history.dateValue != null, holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, history.dateDesc, history.dateValue);
-                setupUI(history.timeValue != null, holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, history.timeDesc, history.timeValue);
-                setupUI(history.noteValue != null, holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, history.noteDesc, history.noteValue);
+                setupUI(holder.histDescFirstRow, holder.histValueFirstRow, holder.layoutFirstRow, history.getQuantityBoughtDesc(), history.getQuantityBoughtValue());
+                setupUI(holder.histDescSecondRow, holder.histValueSecondRow, holder.layoutSecondRow, history.getPriceBoughtDesc(), history.getPriceBoughtValue());
+                setupUI(holder.histDescThirdRow, holder.histValueThirdRow, holder.layoutThirdRow, history.getCurrencyDesc(), history.getCurrencyValue());
+                setupUI(holder.histDescFourthRow, holder.histValueFourthRow, holder.layoutFourthRow, history.getLongNameSoldDesc(), history.getLongNameSoldValue());
+                setupUI(holder.histDescFifthRow, holder.histValueFifthRow, holder.layoutFifthRow, history.getQuantitySoldDesc(), history.getQuantitySoldValue());
+                setupUI(holder.histDescSixthRow, holder.histValueSixthRow, holder.layoutSixthRow, history.getPriceSoldDesc(), history.getPriceSoldValue());
+                setupUI(holder.histDescSeventhRow, holder.histValueSeventhRow, holder.layoutSeventhRow, history.getFeeDesc(), history.getFeeValue());
+                setupUI(holder.histDescEighthRow, holder.histValueEighthRow, holder.layoutEighthRow, history.getDateDesc(), history.getDateValue());
+                setupUI(holder.histDescNinthRow, holder.histValueNinthRow, holder.layoutNinthRow, history.getTimeDesc(), history.getTimeValue());
+                setupUI(holder.histDescTenthRow, holder.histValueTenthRow, holder.layoutTenthRow, history.getNoteDesc(), history.getNoteValue());
                 holder.histValueTenthRow.setSingleLine(false);
                 break;
         }
@@ -88,8 +89,8 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
         return dataList.size();
     }
 
-    private void setupUI(boolean visible, TextView tvDescription, TextView tvValue, LinearLayout layout, String description, String value){
-        if(visible) {
+    private void setupUI(TextView tvDescription, TextView tvValue, LinearLayout layout, String description, String value){
+        if(value != null || !value.equals("")) {
             layout.setVisibility(View.VISIBLE);
             tvDescription.setText(description);
             tvValue.setText(value);
@@ -107,10 +108,9 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
 
         private TextView histDescFirstRow, histDescSecondRow, histDescThirdRow, histDescFourthRow, histDescFifthRow, histDescSixthRow, histDescSeventhRow, histDescEighthRow, histDescNinthRow, histDescTenthRow;
         private TextView histValueDateTimeOfChange, histValueFirstRow, histValueSecondRow, histValueThirdRow, histValueFourthRow, histValueFifthRow, histValueSixthRow, histValueSeventhRow, histValueEighthRow, histValueNinthRow, histValueTenthRow;
-
-        private LinearLayout item;
         private LinearLayout layoutFirstRow, layoutSecondRow, layoutThirdRow, layoutFourthRow, layoutFifthRow, layoutSixthRow, layoutSeventhRow, layoutEighthRow, layoutNinthRow, layoutTenthRow;
         private LinearLayout lastUnderline;
+        private LinearLayout item;
 
         public ViewHolder(View itemView) {
             super(itemView);

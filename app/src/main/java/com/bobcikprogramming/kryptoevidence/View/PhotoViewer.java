@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.Controller.PhotoViewerController;
+import com.bobcikprogramming.kryptoevidence.R;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -22,20 +24,19 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
 
     private ViewPager photoViewer;
     private ImageView imgBack, imgDelete;
-    TabLayout tabLayout;
+    private TabLayout tabLayout;
 
-    private ViewPagerAdapter viewPagerAdapter;
-
-    private ArrayList<Uri> photos = new ArrayList<>();
+    private PhotoViewerController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer);
 
-        photos = getIntent().getParcelableArrayListExtra("photos");
+        controller = new PhotoViewerController(getIntent().getParcelableArrayListExtra("photos"), photoViewer, this);
+
         setupUIViews();
-        setViewPagerAdapter();
+        controller.setViewPagerAdapter();
 
         tabLayout.setupWithViewPager(photoViewer, true);
     }
@@ -52,11 +53,6 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         imgDelete.setOnClickListener(this);
     }
 
-    private void setViewPagerAdapter(){
-        viewPagerAdapter = new ViewPagerAdapter(PhotoViewer.this, photos);
-        photoViewer.setAdapter(viewPagerAdapter);
-    }
-
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -64,23 +60,17 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
                 closeActivity();
                 break;
             case R.id.imgPhotoViewerDelete:
-                deletePhoto();
+                controller.deletePhoto();
+                if(controller.isEmpty()){
+                    closeActivity();
+                }
                 break;
-        }
-    }
-
-    private void deletePhoto(){
-        int position = photoViewer.getCurrentItem();
-        photos.remove(position);
-        photoViewer.setAdapter(viewPagerAdapter);
-        if(photos.isEmpty()){
-            closeActivity();
         }
     }
 
     private void closeActivity(){
         Intent intent = new Intent();
-        intent.putParcelableArrayListExtra("photos",photos);
+        intent.putParcelableArrayListExtra("photos", controller.getPhotos());
         setResult(RESULT_OK, intent );
         finish();
     }

@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bobcikprogramming.kryptoevidence.Controller.ViewPagerAdapter;
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
@@ -84,10 +85,8 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     private void getPhotosUri(){
         photosUri = new ArrayList<>();
         AppDatabase db = AppDatabase.getDbInstance(this);
-        photos = db.databaseDao().getPhotoByTransactionID(transactionID); //transaction.get(i).photos; //transactionWithPhotos.photos;
-        System.out.println("---------------------size:"+photos.size());
+        photos = db.databaseDao().getPhotoByTransactionID(transactionID);
         for(PhotoEntity photo : photos){
-            System.out.println("---------------------"+photo.uidPhoto+", "+photo.dest);
             photosUri.add(Uri.parse(photo.dest));
         }
     }

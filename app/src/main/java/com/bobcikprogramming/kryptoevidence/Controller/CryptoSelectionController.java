@@ -1,7 +1,5 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
-import com.bobcikprogramming.kryptoevidence.RecyclerViewSelectionList;
-
 import java.util.ArrayList;
 
 public class CryptoSelectionController {
@@ -54,5 +52,9 @@ public class CryptoSelectionController {
         }
 
         return cryptoListToShow;
+    }
+
+    public ArrayList<RecyclerViewSelectionList> getCryptoList() {
+        return cryptoList;
     }
 }

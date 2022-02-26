@@ -13,14 +13,11 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -35,9 +32,7 @@ import android.widget.Toast;
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
-import com.bobcikprogramming.kryptoevidence.CryptoChangeSelection;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionOperations;
-import com.bobcikprogramming.kryptoevidence.PhotoViewer;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.ArrayList;
@@ -188,7 +183,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindowForFilter(getActivity(), dateSetListener);
+                calendar.openDateDialogWindow(getActivity(), dateSetListener, null);
             }
         });
 
@@ -204,7 +199,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openTimeDialogWindow(getActivity(), timeSetListener);
+                calendar.openTimeDialogWindow(getActivity(), timeSetListener, null);
             }
         });
 
@@ -280,40 +275,14 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     private boolean shakeEmpty(){
         boolean findEmpty = false;
 
-        findEmpty = checkIfEmptyAndShake(etQuantityBuy, tvDesQuantityBuy, findEmpty);
-        findEmpty = checkIfEmptyAndShake(tvNameSell, tvDesNameSell, findEmpty);
-        findEmpty = checkIfEmptyAndShake(etQuantitySell, tvDesQuantitySell, findEmpty);
-        findEmpty = checkIfEmptyAndShake(etPriceBuy, tvDesPriceBuy, findEmpty);
-        findEmpty = checkIfEmptyAndShake(etPriceSell, tvDesPriceSell, findEmpty);
-        findEmpty = checkIfEmptyAndShake(tvDate, tvDesDate, findEmpty);
-        findEmpty = checkIfEmptyAndShake(tvTime, tvDesTime, findEmpty);
+        findEmpty = shared.checkIfEmptyAndShake(etQuantityBuy, tvDesQuantityBuy, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(tvNameSell, tvDesNameSell, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(etQuantitySell, tvDesQuantitySell, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(etPriceBuy, tvDesPriceBuy, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(etPriceSell, tvDesPriceSell, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(tvDate, tvDesDate, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(tvTime, tvDesTime, findEmpty, getContext());
 
         return findEmpty;
-    }
-
-    private boolean checkIfEmptyAndShake(TextView toCheck, TextView description, boolean prevValue){
-        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-
-        if(shared.getString(toCheck).isEmpty()){
-            description.startAnimation(animShake);
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-            return true;
-        }else{
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
-            return prevValue;
-        }
-    }
-
-    private boolean checkIfEmptyAndShake(EditText toCheck, TextView description, boolean prevValue){
-        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-
-        if(shared.getString(toCheck).isEmpty()){
-            description.startAnimation(animShake);
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-            return true;
-        }else{
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
-            return prevValue;
-        }
     }
 }

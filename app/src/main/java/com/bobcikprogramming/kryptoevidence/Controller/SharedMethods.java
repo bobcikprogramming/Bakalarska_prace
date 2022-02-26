@@ -1,10 +1,17 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.app.Activity;
+import android.content.Context;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+import com.bobcikprogramming.kryptoevidence.R;
 
 public class SharedMethods {
 
@@ -50,4 +57,48 @@ public class SharedMethods {
         }
     }
 
+    public boolean checkIfEmptyAndShake(TextView toCheck, TextView description, boolean prevValue, Context context){
+        Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+
+        if(getString(toCheck).isEmpty()){
+            description.startAnimation(animShake);
+            description.setTextColor(ContextCompat.getColor(context, R.color.red));
+            return true;
+        }else{
+            description.setTextColor(ContextCompat.getColor(context, R.color.textViewDescriptionTextColor));
+            return prevValue;
+        }
+    }
+
+    public boolean checkIfEmptyAndShake(EditText toCheck, TextView description, boolean prevValue, Context context){
+        Animation animShake = AnimationUtils.loadAnimation(context, R.anim.shake);
+
+        if(getString(toCheck).isEmpty()){
+            description.startAnimation(animShake);
+            description.setTextColor(ContextCompat.getColor(context, R.color.red));
+            return true;
+        }else{
+            description.setTextColor(ContextCompat.getColor(context, R.color.textViewDescriptionTextColor));
+            return prevValue;
+        }
+    }
+
+    public String editNumberForTextView(String number){
+        Double quantityBought = Double.parseDouble(number);
+        if(quantityBought > 999999.0){
+            number = "999 999+";
+        }else if(number.contains(".")){
+            if(number.length() > 7) {
+                int lenOfInteger = number.split("\\.")[0].length();
+                int toCut = 6 - lenOfInteger;
+                double round = Math.pow(10, toCut);
+                quantityBought = (double) Math.round(quantityBought * round) / round;
+                number = "~" + quantityBought;
+            }
+        }else{
+            /** https://stackoverflow.com/a/11149356 */
+            number = number.replaceAll("...(?!$)", "$0 ");
+        }
+        return number;
+    }
 }

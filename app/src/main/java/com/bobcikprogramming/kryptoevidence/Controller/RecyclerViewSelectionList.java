@@ -1,7 +1,7 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
 public class RecyclerViewSelectionList {
-    /*private*/ String longName, shortName;
+    private String longName, shortName;
 
     public RecyclerViewSelectionList(String longName, String shortName) {
         this.longName = longName;

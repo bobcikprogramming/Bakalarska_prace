@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +16,7 @@ import android.widget.LinearLayout;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CryptoSelectionController;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
-
-import java.util.ArrayList;
+import com.bobcikprogramming.kryptoevidence.R;
 
 public class CryptoChangeSelection extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,9 +26,6 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
     private ImageView imgBtnDelete, imgBtnCloseCryptoSelection;
 
     private RecyclerViewSelection adapter;
-
-    private ArrayList<RecyclerViewSelectionList> cryptoList;
-    private ArrayList<RecyclerViewSelectionList> cryptoListToShow;
 
     private SharedMethods shared;
     private CryptoSelectionController controller;
@@ -41,7 +37,6 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
 
         shared = new SharedMethods();
         controller = new CryptoSelectionController();
-        cryptoList = new ArrayList<>();
 
         Bundle extras = getIntent().getExtras();
 
@@ -124,7 +119,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            closeActivity(cryptoList.get(position).longName, cryptoList.get(position).shortName);
+            closeActivity(controller.getCryptoList().get(position).getLongName(), controller.getCryptoList().get(position).getShortName());
         }
     };
 

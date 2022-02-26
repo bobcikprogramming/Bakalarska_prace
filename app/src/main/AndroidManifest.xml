@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KryptoEvidence">
         <activity
-            android:name=".TransactionEdit"
+            android:name=".View.TransactionEdit"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -22,7 +22,7 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".CryptoChangeSelection"
+            android:name=".View.CryptoChangeSelection"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -30,19 +30,15 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".CryptoSelection"
+            android:name=".View.CryptoSelection"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".TransactionInfo"
+            android:name=".View.PhotoViewer"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".PhotoViewer"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".TransactionPhotoViewer"
+            android:name=".View.TransactionPhotoViewer"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -55,7 +51,7 @@
             android:exported="true" />
         -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Controller.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

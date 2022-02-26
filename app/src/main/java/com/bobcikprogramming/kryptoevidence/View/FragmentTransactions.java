@@ -2,9 +2,7 @@ package com.bobcikprogramming.kryptoevidence.View;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -28,15 +26,11 @@ import android.widget.TextView;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.FragmentTransactionsController;
-import com.bobcikprogramming.kryptoevidence.CryptoSelection;
-import com.bobcikprogramming.kryptoevidence.MainActivity;
+import com.bobcikprogramming.kryptoevidence.Controller.MainActivity;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.RecyclerViewTransactions;
 import com.bobcikprogramming.kryptoevidence.TransactionViewer;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class FragmentTransactions extends Fragment implements View.OnClickListener{
 
@@ -206,7 +200,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         dateSetListenerDateFrom = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                calendar.setDateToTextView(year, month, day, tvDateFrom, getContext());
+                tvDateFrom.setText(calendar.returnDate(year, month, day));
 
                 calendarDateFrom.set(Calendar.YEAR, year);
                 calendarDateFrom.set(Calendar.MONTH, month);
@@ -229,7 +223,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         dateSetListenerDateTo = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                calendar.setDateToTextView(year, month, day, tvDateTo, getContext());
+                tvDateTo.setText(calendar.returnDate(year, month, day));
 
                 calendarDateTo.set(Calendar.YEAR, year);
                 calendarDateTo.set(Calendar.MONTH, month);

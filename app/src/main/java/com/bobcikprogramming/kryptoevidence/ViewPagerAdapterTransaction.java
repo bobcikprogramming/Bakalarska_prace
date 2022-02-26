@@ -15,10 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionHistoryList;
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionInfoList;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfo;
+import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfoHistory;
+import com.bobcikprogramming.kryptoevidence.View.TransactionPhotoViewer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -410,8 +415,8 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
             for(int j = 0; j < data.size() - i - 1; j++){
                 SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
                 try{
-                    Date dateFirst = format.parse(data.get(j).changeValueDate);
-                    Date dateSecond = format.parse(data.get(j+1).changeValueDate);
+                    Date dateFirst = format.parse(data.get(j).getChangeValueDate());
+                    Date dateSecond = format.parse(data.get(j+1).getChangeValueDate());
                     if(dateFirst.compareTo(dateSecond) < 0){
                         tmp = data.get(j);
                         data.set(j, data.get(j+1));
@@ -430,8 +435,8 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
             for(int j = 0; j < data.size() - i - 1; j++){
                 SimpleDateFormat format = new SimpleDateFormat("HH:mm");
                 try{
-                    Date timeFirst = format.parse(data.get(j).changeValueTime);
-                    Date timeSecond = format.parse(data.get(j+1).changeValueTime);
+                    Date timeFirst = format.parse(data.get(j).getChangeValueTime());
+                    Date timeSecond = format.parse(data.get(j+1).getChangeValueTime());
                     if(timeFirst.compareTo(timeSecond) < 0){
                         tmp = data.get(j);
                         data.set(j, data.get(j+1));
@@ -444,4 +449,3 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         }
     }
 }
-

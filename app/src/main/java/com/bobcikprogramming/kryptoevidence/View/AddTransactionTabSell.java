@@ -13,15 +13,12 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -37,7 +34,6 @@ import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionOperations;
-import com.bobcikprogramming.kryptoevidence.PhotoViewer;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.ArrayList;
@@ -181,7 +177,7 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindowForFilter(getActivity(), dateSetListener);
+                calendar.openDateDialogWindow(getActivity(), dateSetListener, null);
             }
         });
 
@@ -197,7 +193,7 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openTimeDialogWindow(getActivity(), timeSetListener);
+                calendar.openTimeDialogWindow(getActivity(), timeSetListener, null);
             }
         });
 
@@ -250,38 +246,12 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
     private boolean shakeEmpty(){
         boolean findEmpty = false;
 
-        findEmpty = checkIfEmptyAndShake(etQuantity, tvDesQuantity, findEmpty);
-        findEmpty = checkIfEmptyAndShake(etPrice, tvDesPrice, findEmpty);
-        findEmpty = checkIfEmptyAndShake(tvDate, tvDesDate, findEmpty);
-        findEmpty = checkIfEmptyAndShake(tvTime, tvDesTime, findEmpty);
+        findEmpty = shared.checkIfEmptyAndShake(etQuantity, tvDesQuantity, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(etPrice, tvDesPrice, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(tvDate, tvDesDate, findEmpty, getContext());
+        findEmpty = shared.checkIfEmptyAndShake(tvTime, tvDesTime, findEmpty, getContext());
 
         return findEmpty;
-    }
-
-    private boolean checkIfEmptyAndShake(TextView toCheck, TextView description, boolean prevValue){
-        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-
-        if(shared.getString(toCheck).isEmpty()){
-            description.startAnimation(animShake);
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-            return true;
-        }else{
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
-            return prevValue;
-        }
-    }
-
-    private boolean checkIfEmptyAndShake(EditText toCheck, TextView description, boolean prevValue){
-        Animation animShake = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
-
-        if(shared.getString(toCheck).isEmpty()){
-            description.startAnimation(animShake);
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
-            return true;
-        }else{
-            description.setTextColor(ContextCompat.getColor(getContext(), R.color.textViewDescriptionTextColor));
-            return prevValue;
-        }
     }
 
     private void hideKeyBoardOnSpinnerTouch(){

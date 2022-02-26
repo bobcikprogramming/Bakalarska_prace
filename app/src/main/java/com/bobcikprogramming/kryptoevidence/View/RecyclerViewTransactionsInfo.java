@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bobcikprogramming.kryptoevidence.R;
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionInfoList;
 
 import java.util.ArrayList;
 
@@ -19,7 +22,6 @@ public class RecyclerViewTransactionsInfo extends RecyclerView.Adapter<RecyclerV
     public RecyclerViewTransactionsInfo(Context context, ArrayList<TransactionInfoList> dataList) {
         this.context = context;
         this.dataList = dataList;
-
     }
 
     @Override
@@ -73,7 +75,6 @@ public class RecyclerViewTransactionsInfo extends RecyclerView.Adapter<RecyclerV
             item = itemView.findViewById(R.id.layoutTransactionsInfo);
             infoLayoutRight = itemView.findViewById(R.id.infoLayoutRight);
             underline = itemView.findViewById(R.id.underline);
-
         }
     }
 }

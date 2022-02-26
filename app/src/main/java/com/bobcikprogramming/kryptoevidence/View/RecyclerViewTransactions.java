@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.List;
 
@@ -22,10 +24,12 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
     private Context context;
     private View.OnClickListener myClickListener;
 
+    private SharedMethods shared;
+
     public RecyclerViewTransactions(Context context, View.OnClickListener myClickListener) {
         this.context = context;
         this. myClickListener = myClickListener;
-
+        shared = new SharedMethods();
     }
 
     @Override
@@ -42,7 +46,6 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
         holder.textViewOperation.setText(transaction.transactionType);
         holder.textViewDate.setText(transaction.date);
-        //holder.textViewTime.setText(transaction.time);
 
         changeItemViewByTransactionType(transaction.transactionType, holder);
         loadDataToItems(transaction.transactionType, holder, data);
@@ -58,7 +61,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewOperation, textViewDate, textViewTime, tvNameFC, tvNameSC, tvQuantityFC, tvQuantitySC, tvDesPriceFL, tvDesPriceSL, tvPriceFL, tvPriceSL, tvDescriptionFC, tvDescriptionSC;
+        private TextView textViewOperation, textViewDate, tvNameFC, tvNameSC, tvQuantityFC, tvQuantitySC, tvDescriptionFC, tvDescriptionSC;
         private LinearLayout item;
 
         public ViewHolder(View itemView) {
@@ -66,15 +69,10 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
             textViewOperation = itemView.findViewById(R.id.textViewOperation);
             textViewDate = itemView.findViewById(R.id.textViewDate);
-            //textViewTime = itemView.findViewById(R.id.textViewTime);
             tvNameFC = itemView.findViewById(R.id.textViewNameFirstColumn);
             tvNameSC = itemView.findViewById(R.id.textViewNameSecondColumn);
             tvQuantityFC = itemView.findViewById(R.id.textViewQuantityFirstColumn);
             tvQuantitySC = itemView.findViewById(R.id.textViewQuantitySecondColumn);
-            /*tvDesPriceFL = itemView.findViewById(R.id.textViewDescriptionPriceBuy);
-            tvDesPriceSL = itemView.findViewById(R.id.textViewDescriptionPriceSell);
-            tvPriceFL = itemView.findViewById(R.id.textViewPriceFirst);
-            tvPriceSL = itemView.findViewById(R.id.textViewPriceSecondLine);*/
             tvDescriptionFC = itemView.findViewById(R.id.textViewDescriptionFirstColumn);
             tvDescriptionSC = itemView.findViewById(R.id.textViewDescriptionSecondColumn);
 
@@ -83,37 +81,20 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         }
     }
 
-    /*public void addToArray(RecyclerViewTransactionsData data){
-        dataList.add(0, data);
-        notifyItemInserted(0);
-    }*/
-
     private void changeItemViewByTransactionType(String transactionType, ViewHolder holder){
         switch (transactionType) {
             case "Nákup":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.green));
-                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
-                holder.tvPriceFL.setVisibility(View.VISIBLE);
-                holder.tvDesPriceSL.setVisibility(View.GONE);
-                holder.tvPriceSL.setVisibility(View.GONE);*/
                 holder.tvDescriptionFC.setText("Koupeno");
                 holder.tvDescriptionSC.setText("Platba");
                 break;
             case "Prodej":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.red));
-                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
-                holder.tvPriceFL.setVisibility(View.VISIBLE);
-                holder.tvDesPriceSL.setVisibility(View.GONE);
-                holder.tvPriceSL.setVisibility(View.GONE);*/
                 holder.tvDescriptionFC.setText("Prodáno");
                 holder.tvDescriptionSC.setText("Zisk");
                 break;
             case "Směna":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.blue));
-                /*holder.tvDesPriceFL.setVisibility(View.VISIBLE);
-                holder.tvPriceFL.setVisibility(View.VISIBLE);
-                holder.tvDesPriceSL.setVisibility(View.VISIBLE);
-                holder.tvPriceSL.setVisibility(View.VISIBLE);*/
                 holder.tvDescriptionFC.setText("Koupeno");
                 holder.tvDescriptionSC.setText("Prodáno");
                 break;
@@ -125,25 +106,21 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         switch (transactionType){
             case "Nákup":
                 holder.tvNameFC.setText(transaction.longNameBought);
-                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantityBought));
-                //holder.tvPriceFL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantityBought));
                 holder.tvNameSC.setText(transaction.currency);
-                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantitySold));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantitySold));
                 break;
             case "Prodej":
                 holder.tvNameFC.setText(transaction.longNameSold);
-                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantitySold));
-                //holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantitySold));
                 holder.tvNameSC.setText(transaction.currency);
-                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantityBought));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantityBought));
                 break;
             case "Směna":
                 holder.tvNameFC.setText(transaction.longNameBought);
-                holder.tvQuantityFC.setText(editNumberForTextView(transaction.quantityBought));
-                //holder.tvPriceFL.setText(String.valueOf(transaction.priceSold + " " + transaction.currency));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantityBought));
                 holder.tvNameSC.setText(transaction.shortNameSold);
-                holder.tvQuantitySC.setText(editNumberForTextView(transaction.quantitySold));
-                //holder.tvPriceSL.setText(String.valueOf(transaction.priceBought + " " + transaction.currency));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantitySold));
                 break;
 
         }
@@ -155,27 +132,5 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         notifyDataSetChanged();
     }
 
-    public void removeFromArray(int position){
-        dataList.remove(position);
-        notifyDataSetChanged();
-    }
 
-    private String editNumberForTextView(String number){
-        Double quantityBought = Double.parseDouble(number);
-        if(quantityBought > 999999.0){
-            number = "999 999+";
-        }else if(number.contains(".")){
-            if(number.length() > 7) {
-                int lenOfInteger = number.split("\\.")[0].length();
-                int toCut = 6 - lenOfInteger;
-                double round = Math.pow(10, toCut);
-                quantityBought = (double) Math.round(quantityBought * round) / round;
-                number = "~" + quantityBought;
-            }
-        }else{
-            // https://stackoverflow.com/a/11149356
-            number = number.replaceAll("...(?!$)", "$0 ");
-        }
-        return number;
-    }
 }
