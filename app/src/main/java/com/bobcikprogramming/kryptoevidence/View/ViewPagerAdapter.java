@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence.Controller;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Context;
 import android.net.Uri;

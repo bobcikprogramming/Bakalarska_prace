@@ -28,7 +28,6 @@ import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionEditController;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.TransactionEditPhotoViewer;
 
 public class TransactionEdit extends AppCompatActivity implements View.OnClickListener {
 

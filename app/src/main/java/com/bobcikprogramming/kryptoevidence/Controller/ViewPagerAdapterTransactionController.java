@@ -1,170 +1,74 @@
-package com.bobcikprogramming.kryptoevidence;
+package com.bobcikprogramming.kryptoevidence.Controller;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-
-import com.bobcikprogramming.kryptoevidence.Controller.TransactionHistoryList;
-import com.bobcikprogramming.kryptoevidence.Controller.TransactionInfoList;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfo;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfoHistory;
-import com.bobcikprogramming.kryptoevidence.View.TransactionPhotoViewer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-// https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
-public class ViewPagerAdapterTransaction extends PagerAdapter {
-
-    private RecyclerView recyclerViewTransactionInfo, recyclerViewTransactionInfoHistory;
-    private LinearLayout historyUnderline, historyLayout, layoutPhotos;
-    private TextView historyHeadline;
-    private ImageView imvButtonShowPhotos;
-    private View itemView;
-
-    private LayoutInflater layoutInflater;
+public class ViewPagerAdapterTransactionController {
 
     private List<TransactionWithPhotos> dataList;
     private List<TransactionHistoryEntity> dataListHistory;
+    private int position;
 
-    private RecyclerViewTransactionsInfo adapter;
-    private RecyclerViewTransactionsInfoHistory adapterHistory;
-
-    int position;
-
-    public ViewPagerAdapterTransaction(Context context, List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory) {
+    public ViewPagerAdapterTransactionController(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory){
         this.dataList = dataList;
         this.dataListHistory = dataListHistory;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    @Override
-    public int getCount() {
-        return dataList.size(); // TODO
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == ((LinearLayout) object);
-    }
-
-    @NonNull
-    @Override
-    public Object instantiateItem(@NonNull ViewGroup container, final int position) {
-        itemView = layoutInflater.inflate(R.layout.activity_transaction_info, container, false);
-        setupUIViews();
-
-        this.position = position;
-
-        TransactionEntity transaction = dataList.get(position).transaction;
-
-        openGalery(position);
-        showPhotosIfNotEmpty();
-
-        adapter = new RecyclerViewTransactionsInfo(itemView.getContext(), transaction.transactionType.equals("Směna") ? getTransactionForChange(position) : getTransactionForBuyOrSell(position)); //TODO framgent by viewpager prostudovat
-        recyclerViewTransactionInfo.setAdapter(adapter);
-
-        adapterHistory = new RecyclerViewTransactionsInfoHistory(itemView.getContext(), getHistoryList(position)); //TODO framgent by viewpager prostudovat
-        recyclerViewTransactionInfoHistory.setAdapter(adapterHistory);
-
-        TextView headline = itemView.findViewById(R.id.infoOperationType);
-        LinearLayout nextItem = itemView.findViewById(R.id.layoutNextItem);
-        if(position == (getCount()-1)){
-            nextItem.setVisibility(View.INVISIBLE);
-        }else{
-            nextItem.setVisibility(View.VISIBLE);
-        }
-        headline.setText(transaction.transactionType);
-        Objects.requireNonNull(container).addView(itemView);
-        return itemView;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((LinearLayout) object);
-    }
-
-    //https://stackoverflow.com/a/7287121
-    @Override
-    public int getItemPosition(@NonNull Object object) {
-        return POSITION_NONE;
-    }
-
-    private void setupUIViews(){
-        recyclerViewTransactionInfo = itemView.findViewById(R.id.recyclerViewTransactionInfo);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
-        recyclerViewTransactionInfo.setLayoutManager(linearLayoutManager);
-        recyclerViewTransactionInfo.setHasFixedSize(true);
-
-        recyclerViewTransactionInfoHistory = itemView.findViewById(R.id.recyclerViewTransactionInfoHistory);
-        LinearLayoutManager linearLayoutManagerHistory = new LinearLayoutManager(itemView.getContext());
-        recyclerViewTransactionInfoHistory.setLayoutManager(linearLayoutManagerHistory);
-        recyclerViewTransactionInfoHistory.setHasFixedSize(false);
-
-        historyHeadline = itemView.findViewById(R.id.historyHeadline);
-        historyUnderline = itemView.findViewById(R.id.historyUnderline);
-        historyLayout = itemView.findViewById(R.id.historyLayout);
-
-        layoutPhotos = itemView.findViewById(R.id.layoutPhotos);
-
-        imvButtonShowPhotos = itemView.findViewById(R.id.imvButtonShowPhotos);
-    }
-
-    public void updateDatalists(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory, int position){
-        this.dataList = dataList;
-        this.dataListHistory = dataListHistory;
-
-        this.position = position;
-
-        adapter.updateDataList(dataList.get(position).transaction.transactionType.equals("Směna") ? getTransactionForChange(position) : getTransactionForBuyOrSell(position));
-        adapter.notifyDataSetChanged();
-
-        adapterHistory.updateDataList(getHistoryList(position));
-        adapterHistory.notifyDataSetChanged();
-        notifyDataSetChanged();
-    }
-
-    private void openGalery(int postion){
-        imvButtonShowPhotos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent photoViewer = new Intent(itemView.getContext(), TransactionPhotoViewer.class);
-                photoViewer.putExtra("transactionID", String.valueOf(dataList.get(postion).transaction.uidTransaction));
-                itemView.getContext().startActivity(photoViewer);
+    public ArrayList<TransactionHistoryList> sortListByDate(ArrayList<TransactionHistoryList> data){
+        TransactionHistoryList tmp;
+        for(int i = 0; i < data.size() - 1; i++){
+            for(int j = 0; j < data.size() - i - 1; j++){
+                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+                try{
+                    Date dateFirst = format.parse(data.get(j).getChangeValueDate());
+                    Date dateSecond = format.parse(data.get(j+1).getChangeValueDate());
+                    if(dateFirst.compareTo(dateSecond) < 0){
+                        tmp = data.get(j);
+                        data.set(j, data.get(j+1));
+                        data.set(j+1, tmp);
+                    }
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
-        });
-    }
-
-    public void showPhotosIfNotEmpty(){
-        List<PhotoEntity> photos = dataList.get(position).photos;
-        if(!photos.isEmpty()){
-            layoutPhotos.setVisibility(View.VISIBLE);
-            imvButtonShowPhotos.setImageURI(Uri.parse(photos.get(0).dest));
-        }else{
-            layoutPhotos.setVisibility(View.GONE);
         }
+        return data;
     }
 
-    private ArrayList<TransactionInfoList> getTransactionForBuyOrSell(int position){
+    public ArrayList<TransactionHistoryList> sortListByTime(ArrayList<TransactionHistoryList> data){
+        TransactionHistoryList tmp;
+        for(int i = 0; i < data.size() - 1; i++){
+            for(int j = 0; j < data.size() - i - 1; j++){
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                try{
+                    Date timeFirst = format.parse(data.get(j).getChangeValueTime());
+                    Date timeSecond = format.parse(data.get(j+1).getChangeValueTime());
+                    if(timeFirst.compareTo(timeSecond) < 0){
+                        tmp = data.get(j);
+                        data.set(j, data.get(j+1));
+                        data.set(j+1, tmp);
+                    }
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return data;
+    }
+
+    public ArrayList<TransactionInfoList> getTransactionForBuyOrSell(){
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
 
         TransactionInfoList firstRow = new TransactionInfoList();
@@ -237,7 +141,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         return transactionInfoList;
     }
 
-    private ArrayList<TransactionInfoList> getTransactionForChange(int position){
+    public ArrayList<TransactionInfoList> getTransactionForChange(){
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
 
         TransactionInfoList firstRow = new TransactionInfoList();
@@ -303,7 +207,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         return transactionInfoList;
     }
 
-    private ArrayList<TransactionHistoryList> getHistoryList(int position){
+    public ArrayList<TransactionHistoryList> getHistoryList(LinearLayout historyUnderline, LinearLayout historyLayout, TextView historyHeadline){
         ArrayList<TransactionHistoryEntity> history = getHistoryForActualTransaction(position);
         ArrayList<TransactionHistoryList> historyOfActualTransaction = new ArrayList<>();
 
@@ -385,16 +289,13 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
 
                 historyOfActualTransaction.add(transaction);
             }
+            historyOfActualTransaction = sortListByTime(historyOfActualTransaction);
+            historyOfActualTransaction = sortListByDate(historyOfActualTransaction);
         }else{
             historyUnderline.setVisibility(View.GONE);
             historyHeadline.setVisibility(View.GONE);
             historyLayout.setVisibility(View.GONE);
-
         }
-
-        sortListByTime(historyOfActualTransaction);
-        sortListByDate(historyOfActualTransaction);
-
         return historyOfActualTransaction;
     }
 
@@ -409,43 +310,31 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         return historyOfActualTransaction;
     }
 
-    private void sortListByDate(List<TransactionHistoryList> data){
-        TransactionHistoryList tmp;
-        for(int i = 0; i < data.size() - 1; i++){
-            for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-                try{
-                    Date dateFirst = format.parse(data.get(j).getChangeValueDate());
-                    Date dateSecond = format.parse(data.get(j+1).getChangeValueDate());
-                    if(dateFirst.compareTo(dateSecond) < 0){
-                        tmp = data.get(j);
-                        data.set(j, data.get(j+1));
-                        data.set(j+1, tmp);
-                    }
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public List<TransactionWithPhotos> getDataList() {
+        return dataList;
     }
 
-    private void sortListByTime(List<TransactionHistoryList> data){
-        TransactionHistoryList tmp;
-        for(int i = 0; i < data.size() - 1; i++){
-            for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                try{
-                    Date timeFirst = format.parse(data.get(j).getChangeValueTime());
-                    Date timeSecond = format.parse(data.get(j+1).getChangeValueTime());
-                    if(timeFirst.compareTo(timeSecond) < 0){
-                        tmp = data.get(j);
-                        data.set(j, data.get(j+1));
-                        data.set(j+1, tmp);
-                    }
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+    public List<TransactionHistoryEntity> getDataListHistory() {
+        return dataListHistory;
+    }
+
+    public void setDataList(List<TransactionWithPhotos> dataList) {
+        this.dataList = dataList;
+    }
+
+    public void setDataListHistory(List<TransactionHistoryEntity> dataListHistory) {
+        this.dataListHistory = dataListHistory;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public List<PhotoEntity> getPhotos(){
+        return dataList.get(position).photos;
     }
 }

@@ -90,12 +90,12 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
     }
 
     private void setupUI(TextView tvDescription, TextView tvValue, LinearLayout layout, String description, String value){
-        if(value != null || !value.equals("")) {
+        if(value == null || value.equals("")) {
+            layout.setVisibility(View.GONE);
+        }else{
             layout.setVisibility(View.VISIBLE);
             tvDescription.setText(description);
             tvValue.setText(value);
-        }else{
-            layout.setVisibility(View.GONE);
         }
     }
 

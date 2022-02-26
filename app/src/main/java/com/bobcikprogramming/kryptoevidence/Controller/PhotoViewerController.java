@@ -5,6 +5,8 @@ import android.net.Uri;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.bobcikprogramming.kryptoevidence.View.ViewPagerAdapter;
+
 import java.util.ArrayList;
 
 public class PhotoViewerController {

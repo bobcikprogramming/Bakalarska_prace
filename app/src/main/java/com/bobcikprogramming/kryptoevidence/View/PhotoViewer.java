@@ -33,9 +33,10 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer);
 
+        setupUIViews();
+
         controller = new PhotoViewerController(getIntent().getParcelableArrayListExtra("photos"), photoViewer, this);
 
-        setupUIViews();
         controller.setViewPagerAdapter();
 
         tabLayout.setupWithViewPager(photoViewer, true);

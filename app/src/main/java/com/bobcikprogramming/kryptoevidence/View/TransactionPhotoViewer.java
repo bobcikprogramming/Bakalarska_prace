@@ -32,10 +32,11 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_viewer);
 
+        setupUIViews();
+
         String transactionID = getIntent().getStringExtra("transactionID");
         controller = new TransactionPhotoViewerController(this, photoViewer, transactionID);
 
-        setupUIViews();
         controller.setViewPagerAdapter();
 
         tabLayout.setupWithViewPager(photoViewer, true);

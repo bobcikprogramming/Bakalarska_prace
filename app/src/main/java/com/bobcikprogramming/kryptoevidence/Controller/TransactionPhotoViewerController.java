@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
+import com.bobcikprogramming.kryptoevidence.View.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

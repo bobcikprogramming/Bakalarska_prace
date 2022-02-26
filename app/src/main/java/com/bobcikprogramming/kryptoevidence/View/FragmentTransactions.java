@@ -28,7 +28,6 @@ import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.FragmentTransactionsController;
 import com.bobcikprogramming.kryptoevidence.Controller.MainActivity;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.TransactionViewer;
 
 import java.util.Calendar;
 
