@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.view.MenuItem;
 
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.mainFragments.FragmentOverView;
+import com.bobcikprogramming.kryptoevidence.View.FragmentOverView;
 import com.bobcikprogramming.kryptoevidence.View.FragmentPDF;
 import com.bobcikprogramming.kryptoevidence.View.FragmentTransactions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,6 +18,9 @@ import com.google.android.material.navigation.NavigationBarView;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private FragmentOverView fragmentOverView;
+    private FragmentTransactions fragmentTransactions;
+    private FragmentPDF fragmentPDF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        fragmentOverView = new FragmentOverView();
+        fragmentTransactions = new FragmentTransactions();
+        fragmentPDF = new FragmentPDF();
+
         bottomNavigationView = findViewById(R.id.bottomNavBar);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new FragmentOverView()).commit();
-        selectBottomMenu(R.id.overview); // TODO <--- asi smazat, toto opět zavolá to horní (nebo smazat řádek nad tím), prostě se to volá 2x
+        selectBottomMenu(R.id.overview);
 
         selectFragment();
     }
@@ -39,26 +46,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectFragment(){
-        FragmentOverView fragmentOverView = new FragmentOverView();
-        FragmentTransactions fragmentTransactions = new FragmentTransactions();
-        FragmentPDF fragmentPDF = new FragmentPDF();
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
                 switch(item.getItemId()){
                     case R.id.overview:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentOverView).commit();
-                        return true;
+                        break;
                     case R.id.transactions:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentTransactions).commit();
-                        return true;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentTransactions, "test").commit();
+                        break;
                     case R.id.pdf:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragmentPDF).commit();
-                        return true;
+                        break;
                 }
-                return false;
+                return true;
             }
         });
     }

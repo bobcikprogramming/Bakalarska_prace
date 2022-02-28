@@ -76,7 +76,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnCancel:
-                closeActivity(false, photoChange);
+                closeActivity(false, photoChange, false);
                 break;
             case R.id.btnSave:
                 shared.hideKeyBoard(this);
@@ -102,13 +102,14 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
-        closeActivity(false, photoChange);
+        closeActivity(false, photoChange, false);
     }
 
-    private void closeActivity(boolean change, boolean photoChange){
+    private void closeActivity(boolean changed, boolean photoChange, boolean deleted){
         Intent intent = new Intent();
-        intent.putExtra("change", change);
+        intent.putExtra("changed", changed);
         intent.putExtra("photoChange", photoChange);
+        intent.putExtra("deleted", deleted);
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -307,9 +308,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                         boolean success = controller.updateDatabase(isEmpty, valueDate, valueTime, descDate, descTime, valueNote);
 
                         if(success) {
-                            closeActivity(true, photoChange);
+                            closeActivity(true, photoChange, false);
                         }else{
-                            closeActivity(false, photoChange);
+                            closeActivity(false, photoChange, false);
                         }
                     }
                 });
@@ -334,7 +335,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         controller.deleteFromDatabase();
-                        closeActivity(true, true);
+                        closeActivity(true, true, true);
                     }
                 });
         builder.setNegativeButton("Zrušit", new DialogInterface.OnClickListener() {

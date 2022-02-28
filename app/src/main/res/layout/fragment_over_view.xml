@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mainFragments.FragmentOverView"
+    tools:context=".View.FragmentOverView"
     android:background="@color/mainBackground">
 
     <LinearLayout
@@ -312,172 +312,17 @@
 
             </LinearLayout>
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:layout_marginTop="5dp">
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:id="@+id/recyclerViewOwnedCrypto"/>
 
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="100dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="LINK"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/overviewListShortNameTextColor"
-                                    android:textSize="22dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="ChainLink"
-                                    android:textColor="@color/overviewListLongNameTextColor"
-                                    android:textSize="17dp"
-                                    android:gravity="bottom"/>
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="123,56"
-                                android:textColor="@color/overviewListCryptoAmountTextColor"
-                                android:textSize="20dp"
-                                android:gravity="center_vertical|right"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            style="@style/OverviewUnderline"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="100dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="BTC"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/overviewListShortNameTextColor"
-                                    android:textSize="22dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="Bitcoin"
-                                    android:textColor="@color/overviewListLongNameTextColor"
-                                    android:textSize="17dp"
-                                    android:gravity="bottom"/>
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="0,47"
-                                android:textColor="@color/overviewListCryptoAmountTextColor"
-                                android:textSize="20dp"
-                                android:gravity="center_vertical|right"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            style="@style/OverviewUnderline"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:orientation="vertical">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
-
-                            <LinearLayout
-                                android:layout_width="100dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="ADA"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/overviewListShortNameTextColor"
-                                    android:textSize="22dp"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:text="Cardano"
-                                    android:textColor="@color/overviewListLongNameTextColor"
-                                    android:textSize="17dp"
-                                    android:gravity="bottom"/>
-
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:text="10"
-                                android:textColor="@color/overviewListCryptoAmountTextColor"
-                                android:textSize="20dp"
-                                android:gravity="center_vertical|right"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            style="@style/OverviewUnderline"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-            </ScrollView>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

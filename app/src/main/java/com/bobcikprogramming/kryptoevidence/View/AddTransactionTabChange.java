@@ -32,7 +32,8 @@ import android.widget.Toast;
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
-import com.bobcikprogramming.kryptoevidence.Model.TransactionOperations;
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionOperationModel;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.ArrayList;
@@ -47,15 +48,11 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     private Spinner spinnerCurrency;
     private View view;
 
-    private ArrayList<Uri> photos;
-    private ArrayList<String> photosPath;
-
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    private TransactionOperations database;
+    private TransactionOperationController controller;
     private SharedMethods shared;
-    private ImageManager imgManager;
     private CalendarManager calendar;
 
     private String shortNameCryptoBuy, longNameCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
@@ -71,12 +68,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.activity_add_transaction_tab_change, container, false);
 
-        database = new TransactionOperations();
+        controller = new TransactionOperationController(getContext());
         shared = new SharedMethods();
-        imgManager = new ImageManager();
         calendar = new CalendarManager();
-        photos = new ArrayList<>();
-        photosPath = new ArrayList<>();
 
         setupUIViews();
         openCalendar();
@@ -93,17 +87,15 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             case R.id.buttonSaveChange:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    if(!photos.isEmpty()){
-                        photosPath = imgManager.saveImage(getContext(), photos);
-                    }
-                    if(photosPath != null) {
-                        database.saveTransactionChangeToDb(getContext(), shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
-                                shared.getString(etQuantityBuy), shared.getString(etPriceBuy), shared.getFeeString(etFee), shared.getString(tvDate), shared.getString(tvTime),
-                                shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell), shared.getString(etPriceSell), photosPath);
+                    boolean saved = controller.saveTransactionChange(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
+                            shared.getString(etQuantityBuy), shared.getString(etPriceBuy), shared.getFeeString(etFee), shared.getString(tvDate), shared.getString(tvTime),
+                            shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell), shared.getString(etPriceSell));
+                    if(saved){
+                        controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(etQuantityBuy), 2, shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell));
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
-                    }else {
+                    }else{
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -223,11 +215,11 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             new ActivityResultCallback<Uri>() {
                 @Override
                 public void onActivityResult(Uri uri) {
-                    if(!photos.contains(uri) && uri != null){
-                        photos.add(uri);
+                    if(!controller.photosContainsUri(uri) && uri != null){
+                        controller.addToPhotos(uri);
                     }
-                    if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
-                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                    if(imvBtnShowPhoto.getVisibility() == View.GONE && controller.photosSize() > 0){
+                        imvBtnShowPhoto.setImageURI(controller.getPhotos().get(0));
                         imvBtnShowPhoto.setVisibility(View.VISIBLE);
                     }
                 }
@@ -240,9 +232,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        photos = data.getParcelableArrayListExtra("photos");
-                        if(photos.size() > 0) {
-                            imvBtnShowPhoto.setImageURI(photos.get(0));
+                        controller.setPhotos(data.getParcelableArrayListExtra("photos"));
+                        if(controller.photosSize() > 0) {
+                            imvBtnShowPhoto.setImageURI(controller.getPhotos().get(0));
                         }else{
                             imvBtnShowPhoto.setVisibility(View.GONE);
                         }
@@ -252,7 +244,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
 
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
-        photoViewer.putParcelableArrayListExtra("photos",photos);
+        photoViewer.putParcelableArrayListExtra("photos", controller.getPhotos());
         appGallery.launch(photoViewer);
     }
 

@@ -31,12 +31,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
-import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
-import com.bobcikprogramming.kryptoevidence.Model.TransactionOperations;
+import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
 import com.bobcikprogramming.kryptoevidence.R;
-
-import java.util.ArrayList;
 
 public class AddTransactionTabSell extends Fragment implements View.OnClickListener {
 
@@ -48,17 +45,13 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
     private LinearLayout viewBackgroung;
     private View view;
 
-    private ArrayList<Uri> photos;
-    private ArrayList<String> photosPath;
-
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     private String shortName, longName;
 
-    private TransactionOperations database;
+    private TransactionOperationController controller;
     private SharedMethods shared;
-    private ImageManager imgManager;
     private CalendarManager calendar;
 
     @Override
@@ -72,12 +65,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.activity_add_transaction_tab_sell, container, false);
 
-        database = new TransactionOperations();
+        controller = new TransactionOperationController(getContext());
         shared = new SharedMethods();
-        imgManager = new ImageManager();
         calendar = new CalendarManager();
-        photos = new ArrayList<>();
-        photosPath = new ArrayList<>();
 
         setupUIViews();
         openCalendar();
@@ -95,16 +85,14 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             case R.id.buttonSaveSell:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    if(!photos.isEmpty()){
-                        photosPath = imgManager.saveImage(getContext(), photos);
-                    }
-                    if(photosPath != null) {
-                        database.saveTransactionSellToDb(getContext(), shortName, longName, shared.getString(etQuantity), shared.getString(etPrice), shared.getFeeString(etFee),
-                                shared.getString(tvDate), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etQuantity, etPrice, etFee), photosPath);
+                    boolean saved = controller.saveTransactionSell(shortName, longName, shared.getString(etQuantity), shared.getString(etPrice), shared.getFeeString(etFee),
+                            shared.getString(tvDate), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etQuantity, etPrice, etFee));
+                    if(saved){
+                        controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getString(etQuantity), 1);
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
-                    }else {
+                    }else{
                         Toast.makeText(getContext(), "Chyba při vytváření transakce.", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -210,11 +198,11 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri uri) {
-                if(!photos.contains(uri) && uri != null){
-                    photos.add(uri);
+                if(!controller.photosContainsUri(uri) && uri != null){
+                    controller.addToPhotos(uri);
                 }
-                if(imvBtnShowPhoto.getVisibility() == View.GONE && photos.size() > 0){
-                    imvBtnShowPhoto.setImageURI(photos.get(0));
+                if(imvBtnShowPhoto.getVisibility() == View.GONE && controller.photosSize() > 0){
+                    imvBtnShowPhoto.setImageURI(controller.getPhotos().get(0));
                     imvBtnShowPhoto.setVisibility(View.VISIBLE);
                 }
             }
@@ -227,9 +215,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
-                    photos = data.getParcelableArrayListExtra("photos");
-                    if(photos.size() > 0) {
-                        imvBtnShowPhoto.setImageURI(photos.get(0));
+                    controller.setPhotos(data.getParcelableArrayListExtra("photos"));
+                    if(controller.photosSize() > 0) {
+                        imvBtnShowPhoto.setImageURI(controller.getPhotos().get(0));
                     }else{
                         imvBtnShowPhoto.setVisibility(View.GONE);
                     }
@@ -239,7 +227,7 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
 
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
-        photoViewer.putParcelableArrayListExtra("photos",photos);
+        photoViewer.putParcelableArrayListExtra("photos",controller.getPhotos());
         appGallery.launch(photoViewer);
     }
 

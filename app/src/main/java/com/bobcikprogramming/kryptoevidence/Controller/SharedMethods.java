@@ -89,10 +89,12 @@ public class SharedMethods {
         }
     }
 
-    public String editNumberForTextView(String number){
+    public String editNumberForTextView(String number) {
         Double quantityBought = Double.parseDouble(number);
-        if(quantityBought > 999999.0){
+        if (quantityBought > 999999.0) {
             number = "999 999+";
+        }else if(quantityBought < -999999.0){
+            number = "-999 999";
         }else if(number.contains(".")){
             if(number.length() > 7) {
                 int lenOfInteger = number.split("\\.")[0].length();
@@ -101,10 +103,10 @@ public class SharedMethods {
                 quantityBought = (double) Math.round(quantityBought * round) / round;
                 number = "~" + quantityBought;
             }
-        }else{
-            /** https://stackoverflow.com/a/11149356 */
-            number = number.replaceAll("...(?!$)", "$0 ");
-        }
+        }//else{
+         //   /** https://stackoverflow.com/a/11149356 */
+         //   number = number.replaceAll("...(?!$)", "$0 ");
+        //}
         return number;
     }
 }

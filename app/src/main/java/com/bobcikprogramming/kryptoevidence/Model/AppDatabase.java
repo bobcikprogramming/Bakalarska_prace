@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 // zdroj https://www.youtube.com/watch?v=ONb_MuPBBlg&list=PL7ir2AVHqRHj8-Flj9fD9O4Gei-x9EUzG&index=5
-@Database(entities = {TransactionEntity.class, TransactionHistoryEntity.class, PhotoEntity.class, ModeEntity.class}, version = 1)
+@Database(entities = {TransactionEntity.class, TransactionHistoryEntity.class, PhotoEntity.class, ModeEntity.class, OwnedCryptoEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DatabaseDao databaseDao();

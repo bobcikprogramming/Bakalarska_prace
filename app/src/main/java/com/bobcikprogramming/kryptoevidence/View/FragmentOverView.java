@@ -1,4 +1,4 @@
-package com.bobcikprogramming.kryptoevidence.mainFragments;
+package com.bobcikprogramming.kryptoevidence.View;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bobcikprogramming.kryptoevidence.Controller.FragmentOverViewController;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.io.BufferedReader;
@@ -32,8 +35,12 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     private TextView txOverview, txTransactions;
     private ImageView imgBtnModeDark, imgBtnModeLight, imgBtnModeBySystem, imgBtnShowMore;
     private View view;
+    private RecyclerView recyclerView;
+
+    private RecyclerViewOwnedCrypto adapter;
 
     private boolean showMoreOpen;
+    private FragmentOverViewController controller;
 
     public FragmentOverView() {
         // Required empty public constructor
@@ -46,9 +53,13 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_over_view, container, false);
 
         this.showMoreOpen = false;
+        controller = new FragmentOverViewController(getContext());
 
         setupUIViews();
         setModeofGUI();
+
+        adapter = new RecyclerViewOwnedCrypto(getContext(), controller.getDataToShow());
+        recyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -64,27 +75,32 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         imgBtnModeDark.setOnClickListener(this);
         imgBtnModeBySystem.setOnClickListener(this);
         imgBtnShowMore.setOnClickListener(this);
+
+        recyclerView = view.findViewById(R.id.recyclerViewOwnedCrypto);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.imgBtnModeLight:
-                writeToFile("light");
+                controller.writeToFile("light");
                 setModeofGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_selected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_unselected);
                 break;
             case R.id.imgBtnModeDark:
-                writeToFile("dark");
+                controller.writeToFile("dark");
                 setModeofGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_selected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_unselected);
                 break;
             case R.id.imgBtnModeBySystem:
-                writeToFile("system");
+                controller.writeToFile("system");
                 setModeofGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
@@ -132,7 +148,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     private void setModeofGUI(){
-        String modeType = readFromFile();
+        String modeType = controller.readFromFile();
 
         if(modeType.equals("dark")){
             AppCompatDelegate.setDefaultNightMode(
@@ -154,48 +170,6 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
             imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
             imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
             imgBtnModeBySystem.setImageResource(R.drawable.ic_system_selected);
-        }
-    }
-
-    //https://stackoverflow.com/a/9306962
-    private String readFromFile(){
-        String modeType = "system";
-
-        try{
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(new
-                    File(getContext().getFilesDir()+"/mode.txt")));
-
-            modeType = bufferedReader.readLine();
-
-            if(modeType.isEmpty()){
-                writeToFile("system");
-            }
-
-            bufferedReader.close();
-        }catch (Exception e){
-            File file = new File(getContext().getFilesDir()+"/mode.txt");
-            if(!file.exists())
-            {
-                try {
-                    file.createNewFile();
-                    writeToFile("system");
-                }catch (Exception createFileErr){
-                    System.err.println(createFileErr);
-                }
-            }
-        }
-
-        return modeType;
-    }
-
-    private void writeToFile(String mode){
-        try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new
-                    File(getContext().getFilesDir() + "/mode.txt")));
-            bufferedWriter.write(mode);
-            bufferedWriter.close();
-        }catch(Exception e){
-            System.err.println(e);
         }
     }
 }

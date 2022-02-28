@@ -4,9 +4,9 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-public class TransactionOperations {
+public class TransactionOperationModel {
 
-    public TransactionOperations(){}
+    public TransactionOperationModel(){}
 
     public void saveTransactionBuyToDb(Context context, String shortName, String longName, String quantityBought, String price, String fee, String date, String time, String currency, String quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -84,6 +84,21 @@ public class TransactionOperations {
             photoEntity.transactionId = uidTransaction;
             db.databaseDao().insertPhoto(photoEntity);
         }
+    }
+
+    public void createOwnedCryptoEntity(Context context, String shortName, String longName, String amount){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        OwnedCryptoEntity ownedCrypto = new OwnedCryptoEntity();
+        ownedCrypto.shortName = shortName;
+        ownedCrypto.longName = longName;
+        ownedCrypto.amount = amount;
+        db.databaseDao().insertOwnedCrypto(ownedCrypto);
+    }
+
+    public void updateOwnedCryptoEntity(Context context, String amount, OwnedCryptoEntity ownedCrypto){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        ownedCrypto.amount = amount;
+        db.databaseDao().updateOwnedCrypto(ownedCrypto);
     }
 
 }

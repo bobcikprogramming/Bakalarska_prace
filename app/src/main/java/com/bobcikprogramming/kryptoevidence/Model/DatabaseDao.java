@@ -46,6 +46,12 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionHistoryEntity")
     List<TransactionHistoryEntity> getHistory();
 
+    @Query("SELECT * FROM OwnedCryptoEntity")
+    List<OwnedCryptoEntity> getAllOwnedCrypto();
+
+    @Query("SELECT * FROM OwnedCryptoEntity WHERE short_name = :shortName")
+    OwnedCryptoEntity getOwnedCryptoByID(String shortName);
+
     @Insert
     long insertTransaction(TransactionEntity transaction);
 
@@ -56,19 +62,13 @@ public interface DatabaseDao {
     void insertPhoto(PhotoEntity photo);
 
     @Insert
-    long changeMode(ModeEntity mode);
-
-    @Delete
-    void deleteTransaction(TransactionEntity transaction);
-
-    @Delete
-    void deletePhoto(PhotoEntity photo);
-
-    @Delete
-    void deleteHistory(TransactionHistoryEntity transaction);
+    void insertOwnedCrypto(OwnedCryptoEntity ownedCrypto);
 
     @Update
     void updateTransaction(TransactionEntity transaction);
+
+    @Update
+    void updateOwnedCrypto(OwnedCryptoEntity ownedCrypto);
 
     @Query("DELETE FROM TransactionHistoryEntity WHERE parent_id = :transactionID")
     void deleteHistory(String transactionID);
