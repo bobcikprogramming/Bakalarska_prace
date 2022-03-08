@@ -85,7 +85,7 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             case R.id.buttonSaveSell:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    boolean saved = controller.saveTransactionSell(shortName, longName, shared.getString(etQuantity), shared.getString(etPrice), shared.getFeeString(etFee),
+                    boolean saved = controller.saveTransactionSell(shortName, longName, shared.getStringByEditDouble(etQuantity), shared.getStringByEditDouble(etPrice), shared.getFeeString(etFee),
                             shared.getString(tvDate), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etQuantity, etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getString(etQuantity), 1);

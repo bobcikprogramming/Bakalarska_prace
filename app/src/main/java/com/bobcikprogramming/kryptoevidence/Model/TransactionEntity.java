@@ -1,5 +1,6 @@
 package com.bobcikprogramming.kryptoevidence.Model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -52,4 +53,13 @@ public class TransactionEntity {
 
     @ColumnInfo(name = "time")
     public String time;
+
+    @ColumnInfo(name = "amount_left")
+    public Double amountLeft;
+
+    @ColumnInfo(name = "used_from_first")
+    public Double usedFromFirst;
+
+    @ColumnInfo(name = "first_taken_from")
+    public long firstTakenFrom;
 }

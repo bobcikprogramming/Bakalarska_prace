@@ -31,21 +31,22 @@ public class TransactionEditController {
     private SharedMethods shared;
     private CalendarManager calendar;
     private ImageManager imgManager;
+    private TransactionOperationController transactionOperation;
 
+    private String shortName, longName, quantityOld, quantityNew, shortNameChange, longNameChange, quantityChangeOld, quantityChangeNew ;
+    private int operationType;
     private boolean changed;
     private Context context;
-    private String shortNameCryptoSell, longNameCryptoSell;
     private String transactionID;
 
-    public TransactionEditController(String transactionId, Context context, String shortNameCryptoSell, String longNameCryptoSell, String transactionID){
+    public TransactionEditController(String transactionId, Context context, String transactionID){
         this.context = context;
-        this.shortNameCryptoSell = shortNameCryptoSell;
-        this.longNameCryptoSell = longNameCryptoSell;
         this.transactionID = transactionID;
 
         shared = new SharedMethods();
         calendar = new CalendarManager();
         imgManager = new ImageManager();
+        transactionOperation = new TransactionOperationController(context);
 
         loadDataFromDB(transactionId);
     }
@@ -56,7 +57,7 @@ public class TransactionEditController {
         transactionWithHistory = db.databaseDao().getTransactionByTransactionHistoryID(transactionID);
     }
 
-    public void getUpdateStatus(EditText valueRowFirst, EditText valueRowSecond, Spinner spinnerRowThird, EditText valueRowFifth, EditText valueRowSixth, EditText valueFee, TextView valueDate, TextView valueTime){
+    public void getUpdateStatus(EditText valueRowFirst, EditText valueRowSecond, Spinner spinnerRowThird, EditText valueRowFifth, EditText valueRowSixth, EditText valueFee, TextView valueDate, TextView valueTime, String shortNameCryptoSell, String longNameCryptoSell){
         TransactionEntity transaction = getTransactionEntity();
         newTransaction = new TransactionEntity();
         transactionHistory = new TransactionHistoryEntity();
@@ -69,9 +70,15 @@ public class TransactionEditController {
             if (transaction.transactionType.equals("Nákup")) {
                 newTransaction.shortNameBought = transaction.shortNameBought;
                 newTransaction.longNameBought = transaction.longNameBought;
-                newTransaction.quantityBought = shared.getString(valueRowFirst);
-                newTransaction.priceBought = shared.getString(valueRowSecond);
+                newTransaction.quantityBought = shared.getStringByEditDouble(valueRowFirst);
+                newTransaction.priceBought = shared.getStringByEditDouble(valueRowSecond);
                 newTransaction.quantitySold = shared.getPrice(valueRowFirst, valueRowSecond, valueFee);
+
+                operationType = 0;
+                shortName = transaction.shortNameBought;
+                longName = transaction.longNameBought;
+                quantityOld = transaction.quantityBought;
+                quantityNew = newTransaction.quantityBought;
 
                 if(!newTransaction.quantityBought.equals(transaction.quantityBought)){
                     transactionHistory.quantityBought = transaction.quantityBought;
@@ -88,9 +95,16 @@ public class TransactionEditController {
             }else {
                 newTransaction.shortNameSold = transaction.shortNameSold;
                 newTransaction.longNameSold = transaction.longNameSold;
-                newTransaction.quantitySold = shared.getString(valueRowFirst);
-                newTransaction.priceSold = shared.getString(valueRowSecond);
+                newTransaction.quantitySold = shared.getStringByEditDouble(valueRowFirst);
+                newTransaction.priceSold = shared.getStringByEditDouble(valueRowSecond);
                 newTransaction.quantityBought = shared.getProfit(valueRowFirst, valueRowSecond, valueFee);
+
+                operationType = 1;
+                shortName = transaction.shortNameSold;
+                longName = transaction.longNameSold;
+                quantityOld = transaction.quantitySold;
+                quantityNew = newTransaction.quantitySold;
+
 
                 if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
                     transactionHistory.quantitySold = transaction.quantitySold;
@@ -133,17 +147,28 @@ public class TransactionEditController {
             newTransaction.transactionType = transaction.transactionType;
             newTransaction.shortNameBought = transaction.shortNameBought;
             newTransaction.longNameBought = transaction.longNameBought;
-            newTransaction.quantityBought = shared.getString(valueRowFirst);
-            newTransaction.priceBought =  shared.getString(valueRowSecond);
+            newTransaction.quantityBought = shared.getStringByEditDouble(valueRowFirst);
+            newTransaction.priceBought =  shared.getStringByEditDouble(valueRowSecond);
             newTransaction.currency =  shared.getString(spinnerRowThird);
-            newTransaction.shortNameSold = shortNameCryptoSell;
-            newTransaction.longNameSold = longNameCryptoSell;
-            newTransaction.quantitySold = shared.getString(valueRowFifth);
-            newTransaction.priceSold = shared.getString(valueRowSixth);
+            newTransaction.shortNameSold = shortNameCryptoSell == null ? transaction.shortNameSold : shortNameCryptoSell;
+            newTransaction.longNameSold = longNameCryptoSell == null ? transaction.longNameSold : longNameCryptoSell;
+            newTransaction.quantitySold = shared.getStringByEditDouble(valueRowFifth);
+            newTransaction.priceSold = shared.getStringByEditDouble(valueRowSixth);
             String transactionFee = shared.getFeeString(valueFee);
             newTransaction.fee = transactionFee;
             newTransaction.date = shared.getString(valueDate);
             newTransaction.time = shared.getString(valueTime);
+
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> měl bych být tu");
+            operationType = 2;
+            shortName = transaction.shortNameBought;
+            longName = transaction.longNameBought;
+            quantityOld = transaction.quantityBought;
+            quantityNew = newTransaction.quantityBought;
+            shortNameChange = transaction.shortNameSold;
+            longNameChange = transaction.longNameSold;
+            quantityChangeOld = transaction.quantitySold;
+            quantityChangeNew = newTransaction.quantitySold;
 
             transactionHistory.transactionType = transaction.transactionType;
             if(!newTransaction.quantityBought.equals(transaction.quantityBought)) {
@@ -200,6 +225,8 @@ public class TransactionEditController {
                 transactionHistory.note = shared.getString(valueNote);
             }
 
+            editOwnedCrypto();
+
             transactionHistory.parentTransactionId = newTransaction.uidTransaction;
             db.databaseDao().insertOldTransaction(transactionHistory);
             db.databaseDao().updateTransaction(newTransaction);
@@ -210,6 +237,48 @@ public class TransactionEditController {
         return false;
     }
 
+    private void editOwnedCrypto(){
+        if(operationType != 2){
+            if(!quantityOld.equals(quantityNew)){
+                String quantity;
+                if(operationType == 0) {
+                    quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
+                }else {
+                    quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
+                }
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, operationType);
+            }
+        }else{
+            if(!quantityOld.equals(quantityNew)){
+                String quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, 0);
+            }
+            if(!quantityChangeOld.equals(quantityChangeNew)){
+                String quantity = String.valueOf(Double.parseDouble(quantityChangeNew) - Double.parseDouble(quantityChangeOld));
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortNameChange, longNameChange, quantity, 1);
+            }
+        }
+    }
+
+    private void deleteFromOwnedCrypto(){
+        if(operationType == 0) {
+            String quantity = getNegativeQuantity(getTransactionEntity().quantityBought);
+            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameBought, getTransactionEntity().longNameBought, quantity, 0);
+        }else if(operationType == 1) {
+            String quantity = getNegativeQuantity(getTransactionEntity().quantitySold);
+            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold, quantity, 1);
+        }else {
+            String quantityBought = getNegativeQuantity(getTransactionEntity().quantityBought);
+            String quantitySold = getNegativeQuantity(getTransactionEntity().quantitySold);
+            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameBought, getTransactionEntity().longNameBought, quantityBought, 2,
+                    getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold, quantitySold);
+        }
+    }
+
+    private String getNegativeQuantity(String quantity){
+        return "-" + quantity;
+    }
+
     public void deleteFromDatabase(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -218,6 +287,8 @@ public class TransactionEditController {
         for(PhotoEntity photo : photos) {
             deleteImage(photo.dest);
         }
+
+        deleteFromOwnedCrypto();
 
         db.databaseDao().deleteHistory(transactionID);
         db.databaseDao().deletePhotos(transactionID);

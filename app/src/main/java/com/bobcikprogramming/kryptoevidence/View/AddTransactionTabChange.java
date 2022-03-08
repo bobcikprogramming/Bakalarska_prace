@@ -88,8 +88,8 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
                     boolean saved = controller.saveTransactionChange(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
-                            shared.getString(etQuantityBuy), shared.getString(etPriceBuy), shared.getFeeString(etFee), shared.getString(tvDate), shared.getString(tvTime),
-                            shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell), shared.getString(etPriceSell));
+                            shared.getStringByEditDouble(etQuantityBuy), shared.getStringByEditDouble(etPriceBuy), shared.getFeeString(etFee), shared.getString(tvDate), shared.getString(tvTime),
+                            shortNameCryptoSell, longNameCryptoSell, shared.getStringByEditDouble(etQuantitySell), shared.getStringByEditDouble(etPriceSell));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(etQuantityBuy), 2, shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell));
                         clearEditText();

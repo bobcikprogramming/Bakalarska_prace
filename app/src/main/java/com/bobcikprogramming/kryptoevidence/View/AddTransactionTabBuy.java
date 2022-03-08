@@ -84,7 +84,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             case R.id.buttonSaveBuy:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    boolean saved = controller.saveTransactionBuy(shortName, longName, shared.getString(etQuantity), shared.getString(etPrice), shared.getFeeString(etFee),
+                    boolean saved = controller.saveTransactionBuy(shortName, longName, shared.getStringByEditDouble(etQuantity), shared.getStringByEditDouble(etPrice), shared.getFeeString(etFee),
                             shared.getString(tvDate), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPrice(etQuantity, etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getString(etQuantity), 0);

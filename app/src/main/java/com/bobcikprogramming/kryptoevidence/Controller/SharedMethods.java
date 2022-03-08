@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat;
 
 import com.bobcikprogramming.kryptoevidence.R;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +38,21 @@ public class SharedMethods {
     }
 
     public String getFeeString(EditText etFee){
-        return getString(etFee).isEmpty() ? "0.0" :  getString(etFee);
+        return getString(etFee).isEmpty() ? "0.0" :  getStringByEditDouble(etFee);
+    }
+
+    public String getStringByEditDouble(EditText stringFrom){
+        String toEdit = stringFrom.getText().toString();
+        do {
+            if(toEdit.charAt(0) == '0'){
+                toEdit = toEdit.substring(1);
+            }
+        }while(toEdit.charAt(0) == '0');
+
+        if(toEdit.charAt(0) == '.'){
+            toEdit = "0" + toEdit;
+        }
+        return toEdit;
     }
 
     public String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {

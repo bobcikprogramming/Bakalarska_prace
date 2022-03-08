@@ -52,6 +52,18 @@ public interface DatabaseDao {
     @Query("SELECT * FROM OwnedCryptoEntity WHERE short_name = :shortName")
     OwnedCryptoEntity getOwnedCryptoByID(String shortName);
 
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND short_name_sold = :shortName AND date >= :date AND amount_left > 0.0 ORDER BY date, time")
+    List<TransactionWithPhotos> getSellNotEmptyAfterDate(String date, String shortName);
+
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND date >= :date AND amount_left != quantity_bought ORDER BY date, time")
+    List<TransactionWithPhotos> getUsedBuyAfterNewBuy(String date, String shortName);
+
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND date >= :date ORDER BY date, time")
+    List<TransactionWithPhotos> getBuyAfterNewBuy(String date, String shortName);
+
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND short_name_sold = :shortName AND date >= :date AND amount_left != quantity_sold ORDER BY date, time")
+    List<TransactionWithPhotos> getUsedSellAfterNewBuy(String date, String shortName);
+
     @Insert
     long insertTransaction(TransactionEntity transaction);
 
@@ -69,6 +81,12 @@ public interface DatabaseDao {
 
     @Update
     void updateOwnedCrypto(OwnedCryptoEntity ownedCrypto);
+
+    @Query("UPDATE TransactionEntity SET amount_left = :amountLeft, used_from_first = :usedFromFirst, first_taken_from = :firstTakenFrom WHERE transaction_id = :transactionID")
+    void updateFifoCalc(String transactionID, String amountLeft, String usedFromFirst, String firstTakenFrom);
+
+    @Query("UPDATE TransactionEntity SET amount_left = :amountLeft WHERE transaction_id = :transactionID")
+    void updateAmoutLeft(String transactionID, String amountLeft);
 
     @Query("DELETE FROM TransactionHistoryEntity WHERE parent_id = :transactionID")
     void deleteHistory(String transactionID);

@@ -63,7 +63,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
         shared = new SharedMethods();
         calendar = new CalendarManager();
-        controller = new TransactionEditController(transactionID, this, shortNameCryptoSell, longNameCryptoSell, transactionID);
+        controller = new TransactionEditController(transactionID, this, transactionID);
 
         setupUIViews();
         setUIByTransactionType();
@@ -298,7 +298,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //int success = updateDatabase();
-                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, valueFee, valueDate, valueTime);
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
                         boolean isEmpty = false;
                         if(controller.getTransactionType().equals("Směna")){
                             isEmpty = shakeEmptyChange();
@@ -334,6 +334,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
                         controller.deleteFromDatabase();
                         closeActivity(true, true, true);
                     }
