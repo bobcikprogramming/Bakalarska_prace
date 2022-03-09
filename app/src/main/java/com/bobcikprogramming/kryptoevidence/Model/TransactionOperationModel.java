@@ -24,6 +24,7 @@ public class TransactionOperationModel {
         transactionEntity.time = time;
         transactionEntity.currency = currency;
         transactionEntity.quantitySold = String.valueOf(quantitySold);
+        transactionEntity.firstTakenFrom = 0;
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 

@@ -139,60 +139,33 @@ public class TransactionOperationController {
      */
     private void calcFifoOnBuy(long transactionID, String date, BigDecimal quantity, String shortName, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        List<TransactionWithPhotos> listOfUsedBuy = db.databaseDao().getUsedBuyAfterNewBuy(date, shortName);
-        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfterNewBuy(date, shortName);
-
         BigDecimal amountLeft = quantity;
 
-        /**
-         * TODO popřemýšlet jestli to neudělat jako SQL query
-         */
-        for(TransactionWithPhotos buyToReset : listOfUsedBuy){
-            if(calendar.getDateFormat(buyToReset.transaction.date).equals(calendar.getDateFormat(date)) && !calendar.getTimeFormat(buyToReset.transaction.time).after(calendar.getTimeFormat(time))){
-                continue;
-            }
-            db.databaseDao().updateAmoutLeft(String.valueOf(buyToReset.transaction.uidTransaction), String.valueOf(buyToReset.transaction.quantityBought));
-        }
+        db.databaseDao().resetAmoutLeftUsedBuy(date, time);
+        resetTransactionSellAfterNewBuy(String.valueOf(transactionID), shortName, date, time);
 
-        for(TransactionWithPhotos sellToReset : listOfUsedSell){
-            if(calendar.getDateFormat(sellToReset.transaction.date).equals(calendar.getDateFormat(date)) && !calendar.getTimeFormat(sellToReset.transaction.time).after(calendar.getTimeFormat(time))){
-                continue;
-            }
-            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), null, "-1");
-        }
-
-        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, shortName);
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, time, shortName);
 
         for(TransactionWithPhotos sell : listOfIncompleteSales){
-            if(calendar.getDateFormat(sell.transaction.date).equals(calendar.getDateFormat(date)) && calendar.getTimeFormat(sell.transaction.time).before(calendar.getTimeFormat(time))){
-                continue;
-            }
-            if(amountLeft.compareTo(shared.getBigDecimal("0.0")) < 1) {
-                break;
-            }
-
-            BigDecimal usedFromFirst = shared.getBigDecimal(sell.transaction.usedFromFirst);
+            BigDecimal usedFromFirst = sell.transaction.usedFromFirst == null ? null : shared.getBigDecimal(sell.transaction.usedFromFirst);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
-            BigDecimal inSellLeft;
+            BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : shared.getBigDecimal("0.0");
 
-            inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : shared.getBigDecimal("0.0");
-            amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal("0.0") : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
-            if(usedFromFirst == null){
-                firstTakenFrom = transactionID;
-                usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
+            if(amountLeft.compareTo(shared.getBigDecimal("0.0")) == 1) {
+                amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal("0.0") : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
+                if (usedFromFirst == null) {
+                    firstTakenFrom = transactionID;
+                    usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
+                }
+
+                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
             }
-
-            db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
 
             if (inSellLeft.compareTo(shared.getBigDecimal("0.0")) == 1) {
-                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyAfterNewBuy(date, shortName);
+                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyNotEmptyAfterNewBuy(date, time, shortName);
 
                 for (TransactionWithPhotos nextBuy : listOfNextBuy) {
                     BigDecimal amountOfNextBuy = shared.getBigDecimal(nextBuy.transaction.amountLeft);
-
-                    if (transactionID == nextBuy.transaction.uidTransaction || amountOfNextBuy.compareTo(shared.getBigDecimal("0.0")) < 1 || inSellLeft.compareTo(shared.getBigDecimal("0.0")) < 1) {
-                        continue;
-                    }
 
                     if(inSellLeft.compareTo(amountOfNextBuy) < 1){
                         amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
@@ -202,13 +175,49 @@ public class TransactionOperationController {
                         amountOfNextBuy = shared.getBigDecimal("0.0");
                     }
 
+                    if (usedFromFirst == null) {
+                        firstTakenFrom = nextBuy.transaction.uidTransaction;
+                        usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
+                    }
+
                     db.databaseDao().updateAmoutLeft(String.valueOf(nextBuy.transaction.uidTransaction), String.valueOf(amountOfNextBuy));
                 }
-                db.databaseDao().updateAmoutLeft(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft));
+
+                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
             }
         }
 
         db.databaseDao().updateAmoutLeft(String.valueOf(transactionID), String.valueOf(amountLeft));
+    }
+
+    private void resetTransactionSellAfterNewBuy(String transactionID, String shortName, String date, String time){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfterNewBuy(date, time, shortName);
+
+        for(TransactionWithPhotos sellToReset : listOfUsedSell){
+            String dateFrom = db.databaseDao().getTransactionByTransactionID(String.valueOf(sellToReset.transaction.firstTakenFrom)).transaction.date;
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetween(String.valueOf(transactionID), dateFrom, date, shortName);
+            BigDecimal usedAmount = shared.getBigDecimal("0.0");
+
+            for(TransactionWithPhotos used : listOfUsedBuyBetween){
+                usedAmount = usedAmount.add((shared.getBigDecimal(used.transaction.quantityBought)).subtract(shared.getBigDecimal(used.transaction.amountLeft)));
+            }
+
+            BigDecimal toRemove = shared.getBigDecimal(sellToReset.transaction.quantitySold).subtract(usedAmount);
+            String usedFromFirst = null;
+            String firstTakenFrom = "-1";
+
+            if(usedAmount.compareTo(shared.getBigDecimal("0.0")) != 0){
+                usedFromFirst = sellToReset.transaction.usedFromFirst;
+                firstTakenFrom = String.valueOf(sellToReset.transaction.firstTakenFrom);
+            }
+
+            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(toRemove), usedFromFirst, firstTakenFrom);
+        }
+    }
+
+    private void calcFifoSell(){
+        AppDatabase db = AppDatabase.getDbInstance(context);
     }
 
     public ArrayList<Uri> getPhotos() {
