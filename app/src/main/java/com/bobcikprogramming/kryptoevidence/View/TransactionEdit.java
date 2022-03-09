@@ -227,7 +227,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 valueRowSixth.setText(transaction.priceSold);
                 break;
         }
-        valueFee.setText(transaction.fee);
+        valueFee.setText(String.valueOf(transaction.fee));
         valueDate.setText(transaction.date);
         valueTime.setText(transaction.time);
     }

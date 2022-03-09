@@ -9,6 +9,7 @@ import com.bobcikprogramming.kryptoevidence.Model.OwnedCryptoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionOperationModel;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class TransactionOperationController {
     private ImageManager imgManager;
     private TransactionOperationModel database;
     private CalendarManager calendar;
+    private SharedMethods shared;
 
     public TransactionOperationController(Context context){
         this.context = context;
@@ -30,9 +32,10 @@ public class TransactionOperationController {
         imgManager = new ImageManager();
         database = new TransactionOperationModel();
         calendar = new CalendarManager();
+        shared = new SharedMethods();
     }
 
-    public boolean saveTransactionBuy(String shortName, String longName, String quantityBought, String price, String fee, String date, String time, String currency, String quantitySold){
+    public boolean saveTransactionBuy(String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -45,7 +48,7 @@ public class TransactionOperationController {
         }
     }
 
-    public boolean saveTransactionSell(String shortName, String longName, String quantitySold, String price, String fee, String date, String time, String currency, String quantityBought){
+    public boolean saveTransactionSell(String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantityBought){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -57,7 +60,7 @@ public class TransactionOperationController {
         }
     }
 
-    public boolean saveTransactionChange(String shortNameBought, String longNameBought, String currency, String quantityBought, String priceBought, String fee, String date, String time, String shortNameSold, String longNameSold, String quantitySold, String priceSold){
+    public boolean saveTransactionChange(String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, BigDecimal priceSold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -76,13 +79,13 @@ public class TransactionOperationController {
      * @param quantity
      * @param operationType typ prováděné operace (0 = nákup, 1 = prodej, 2 = směna)
      */
-    public void changeAmountOfOwnedCrypto(String shortName, String longName, String quantity, int operationType, String... change){
+    public void changeAmountOfOwnedCrypto(String shortName, String longName, BigDecimal quantity, int operationType, BigDecimal quantityChange, String... change){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCrypto = db.databaseDao().getOwnedCryptoByID(shortName);
-        saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, operationType, change);
+        saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, operationType, change, quantityChange);
     }
 
-    public void changeAmountOfOwnedCryptoOnEdit(String shortName, String longName, String quantity, int operationType, String... change){
+    public void changeAmountOfOwnedCryptoOnEdit(String shortName, String longName, BigDecimal quantity, int operationType, BigDecimal quantityChange, String... change){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCrypto = db.databaseDao().getOwnedCryptoByID(shortName);
         if(ownedCrypto == null){
@@ -90,41 +93,41 @@ public class TransactionOperationController {
         }
 
         if(operationType == 2){
-            saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, 0, null);
-            saveAmountOfOwnedCrypto(ownedCrypto, change[0], change[1], change[2], 1, null);
+            saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, 0, null, null);
+            saveAmountOfOwnedCrypto(ownedCrypto, change[0], change[1], quantityChange, 1, null, null);
         }else {
-            saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, operationType, null);
+            saveAmountOfOwnedCrypto(ownedCrypto, shortName, longName, quantity, operationType, null, null);
         }
     }
 
-    public void saveAmountOfOwnedCrypto(OwnedCryptoEntity ownedCrypto, String shortName, String longName, String quantity, int operationType, String[] change){
+    public void saveAmountOfOwnedCrypto(OwnedCryptoEntity ownedCrypto, String shortName, String longName, BigDecimal quantity, int operationType, String[] change, BigDecimal quantityChange){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCryptoChange = null;
-        double amount = ownedCrypto == null ? 0.0 : Double.parseDouble(ownedCrypto.amount);
-        double amountChange = 0.0;
+        BigDecimal amount = ownedCrypto == null ? shared.getBigDecimal("0.0") : shared.getBigDecimal(ownedCrypto.amount);
+        BigDecimal amountChange = shared.getBigDecimal("0.0");
 
         if(operationType == 0){
-            amount += Double.parseDouble(quantity);
+            amount = amount.add(quantity);
         }else if(operationType == 1) {
-            amount -= Double.parseDouble(quantity);
+            amount = amount.subtract(quantity);
         }else{
-            amount += Double.parseDouble(quantity);
+            amount = amount.add(quantity);
             ownedCryptoChange = db.databaseDao().getOwnedCryptoByID(change[0]);
-            amountChange = ownedCryptoChange == null ? 0.0 : Double.parseDouble(ownedCryptoChange.amount);
-            amountChange -= Double.parseDouble(change[2]);
+            amountChange = ownedCryptoChange == null ? shared.getBigDecimal("0.0") : shared.getBigDecimal(ownedCryptoChange.amount);
+            amountChange = amountChange.subtract(quantityChange);
         }
 
         if(ownedCrypto == null){
-            database.createOwnedCryptoEntity(context, shortName, longName, String.valueOf(amount));
+            database.createOwnedCryptoEntity(context, shortName, longName, amount);
         }else{
-            database.updateOwnedCryptoEntity(context, String.valueOf(amount), ownedCrypto);
+            database.updateOwnedCryptoEntity(context, amount, ownedCrypto);
         }
 
         if(operationType == 2){
             if(ownedCryptoChange == null){
-                database.createOwnedCryptoEntity(context, change[0], change[1], String.valueOf(amountChange));
+                database.createOwnedCryptoEntity(context, change[0], change[1], amountChange);
             }else{
-                database.updateOwnedCryptoEntity(context, String.valueOf(amountChange), ownedCryptoChange);
+                database.updateOwnedCryptoEntity(context, amountChange, ownedCryptoChange);
             }
         }
     }
@@ -134,34 +137,28 @@ public class TransactionOperationController {
      * @param date
      * @param quantity
      */
-    private void calcFifoOnBuy(long transactionID, String date, String quantity, String shortName, String time){
+    private void calcFifoOnBuy(long transactionID, String date, BigDecimal quantity, String shortName, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedBuy = db.databaseDao().getUsedBuyAfterNewBuy(date, shortName);
         List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfterNewBuy(date, shortName);
 
-        Double amountLeft = Double.parseDouble(quantity);
+        BigDecimal amountLeft = quantity;
 
         /**
          * TODO popřemýšlet jestli to neudělat jako SQL query
          */
         for(TransactionWithPhotos buyToReset : listOfUsedBuy){
             if(calendar.getDateFormat(buyToReset.transaction.date).equals(calendar.getDateFormat(date)) && !calendar.getTimeFormat(buyToReset.transaction.time).after(calendar.getTimeFormat(time))){
-                System.out.println(">>>>>>>>>>Su tady?!");
                 continue;
             }
-            db.databaseDao().updateAmoutLeft(String.valueOf(buyToReset.transaction.uidTransaction), buyToReset.transaction.quantityBought);
-            System.out.println(">>>>>>>>>> Obnovuju množství u nákupu na: "+buyToReset.transaction.quantityBought);
-        }
-
-        if(listOfUsedBuy.isEmpty()){
-            System.out.println(">>>>>>>>>>>>proč?!");
+            db.databaseDao().updateAmoutLeft(String.valueOf(buyToReset.transaction.uidTransaction), String.valueOf(buyToReset.transaction.quantityBought));
         }
 
         for(TransactionWithPhotos sellToReset : listOfUsedSell){
             if(calendar.getDateFormat(sellToReset.transaction.date).equals(calendar.getDateFormat(date)) && !calendar.getTimeFormat(sellToReset.transaction.time).after(calendar.getTimeFormat(time))){
                 continue;
             }
-            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), sellToReset.transaction.quantitySold, null, "-1");
+            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), null, "-1");
         }
 
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, shortName);
@@ -170,39 +167,39 @@ public class TransactionOperationController {
             if(calendar.getDateFormat(sell.transaction.date).equals(calendar.getDateFormat(date)) && calendar.getTimeFormat(sell.transaction.time).before(calendar.getTimeFormat(time))){
                 continue;
             }
-            if(amountLeft <= 0.0) {
+            if(amountLeft.compareTo(shared.getBigDecimal("0.0")) < 1) {
                 break;
             }
 
-            Double usedFromFirst = sell.transaction.usedFromFirst;
+            BigDecimal usedFromFirst = shared.getBigDecimal(sell.transaction.usedFromFirst);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
-            Double inSellLeft;
+            BigDecimal inSellLeft;
 
-            inSellLeft = amountLeft <= sell.transaction.amountLeft ? sell.transaction.amountLeft - amountLeft : 0.0;
-            amountLeft = amountLeft <= sell.transaction.amountLeft ? 0.0 : amountLeft - sell.transaction.amountLeft;
+            inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : shared.getBigDecimal("0.0");
+            amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal("0.0") : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
             if(usedFromFirst == null){
                 firstTakenFrom = transactionID;
-                usedFromFirst = sell.transaction.amountLeft - inSellLeft;
+                usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
             }
 
             db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
 
-            if (inSellLeft > 0.0) {
+            if (inSellLeft.compareTo(shared.getBigDecimal("0.0")) == 1) {
                 List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyAfterNewBuy(date, shortName);
 
                 for (TransactionWithPhotos nextBuy : listOfNextBuy) {
-                    Double amountOfNextBuy = nextBuy.transaction.amountLeft;
+                    BigDecimal amountOfNextBuy = shared.getBigDecimal(nextBuy.transaction.amountLeft);
 
-                    if (transactionID == nextBuy.transaction.uidTransaction || amountOfNextBuy <= 0.0 || inSellLeft <= 0.0) {
+                    if (transactionID == nextBuy.transaction.uidTransaction || amountOfNextBuy.compareTo(shared.getBigDecimal("0.0")) < 1 || inSellLeft.compareTo(shared.getBigDecimal("0.0")) < 1) {
                         continue;
                     }
 
-                    if(inSellLeft <= amountOfNextBuy){
-                        amountOfNextBuy -= inSellLeft;
-                        inSellLeft = 0.0;
+                    if(inSellLeft.compareTo(amountOfNextBuy) < 1){
+                        amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
+                        inSellLeft = shared.getBigDecimal("0.0");
                     }else{
-                        inSellLeft -= amountOfNextBuy;
-                        amountOfNextBuy = 0.0;
+                        inSellLeft = inSellLeft.subtract(amountOfNextBuy);
+                        amountOfNextBuy = shared.getBigDecimal("0.0");
                     }
 
                     db.databaseDao().updateAmoutLeft(String.valueOf(nextBuy.transaction.uidTransaction), String.valueOf(amountOfNextBuy));

@@ -12,17 +12,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentOverViewController {
 
     private Context context;
-
     private List<OwnedCryptoEntity> ownedCryptos;
+    private SharedMethods shared;
 
     public FragmentOverViewController(Context context) {
         this.context = context;
+        shared = new SharedMethods();
 
         loadDataFromDb();
     }
@@ -77,7 +79,7 @@ public class FragmentOverViewController {
     public ArrayList<OwnedCryptoEntity> getDataToShow(){
         ArrayList<OwnedCryptoEntity> dataToShow = new ArrayList<>();
         for(OwnedCryptoEntity ownedCrypto : ownedCryptos){
-            if(Double.parseDouble(ownedCrypto.amount) > 0.0){
+            if(shared.getBigDecimal(ownedCrypto.amount).compareTo(shared.getBigDecimal("0.0")) == 1){
                 dataToShow.add(ownedCrypto);
             }
         }

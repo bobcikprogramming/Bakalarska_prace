@@ -88,10 +88,10 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
                     boolean saved = controller.saveTransactionChange(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
-                            shared.getStringByEditDouble(etQuantityBuy), shared.getStringByEditDouble(etPriceBuy), shared.getFeeString(etFee), shared.getString(tvDate), shared.getString(tvTime),
-                            shortNameCryptoSell, longNameCryptoSell, shared.getStringByEditDouble(etQuantitySell), shared.getStringByEditDouble(etPriceSell));
+                            shared.getBigDecimal(etQuantityBuy), shared.getBigDecimal(etPriceBuy), shared.getFee(etFee), shared.getString(tvDate), shared.getString(tvTime),
+                            shortNameCryptoSell, longNameCryptoSell, shared.getBigDecimal(etQuantitySell), shared.getBigDecimal(etPriceSell));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(etQuantityBuy), 2, shortNameCryptoSell, longNameCryptoSell, shared.getString(etQuantitySell));
+                        controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, shared.getBigDecimal(etQuantitySell), shortNameCryptoSell, longNameCryptoSell);
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();

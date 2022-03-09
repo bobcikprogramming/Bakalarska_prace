@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.bobcikprogramming.kryptoevidence.R;
 
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -37,8 +38,24 @@ public class SharedMethods {
         return stringFrom.getSelectedItem().toString();
     }
 
-    public String getFeeString(EditText etFee){
-        return getString(etFee).isEmpty() ? "0.0" :  getStringByEditDouble(etFee);
+    public String getStringFromBigDecimal(EditText stringFrom){
+        return String.valueOf(getBigDecimal(stringFrom.getText().toString()));
+    }
+
+    public String getStringFromBigDecimal(TextView stringFrom){
+        return String.valueOf(getBigDecimal(stringFrom.getText().toString()));
+    }
+
+    public Double getFee(EditText etFee){
+        return getString(etFee).isEmpty() ? 0.0 :  Double.parseDouble(getString(etFee));
+    }
+
+    public BigDecimal getBigDecimal(EditText stringFrom) {
+        return new BigDecimal(getString(stringFrom));
+    }
+
+    public BigDecimal getBigDecimal(String stringFrom) {
+        return new BigDecimal(stringFrom);
     }
 
     public String getStringByEditDouble(EditText stringFrom){
@@ -55,16 +72,16 @@ public class SharedMethods {
         return toEdit;
     }
 
-    public String getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
+    public BigDecimal getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
         double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
-        return String.valueOf(result);
+        return BigDecimal.valueOf(result);
     }
 
-    public String getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
+    public BigDecimal getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
         double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) - editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
-        return String.valueOf(result);
+        return BigDecimal.valueOf(result);
     }
 
     public Double editTextToDouble(EditText toParse){

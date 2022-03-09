@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -46,7 +47,7 @@ public class TransactionEntity {
     public String priceSold;
 
     @ColumnInfo(name = "fee")
-    public String fee;
+    public Double fee;
 
     @ColumnInfo(name = "date")
     public String date;
@@ -55,10 +56,10 @@ public class TransactionEntity {
     public String time;
 
     @ColumnInfo(name = "amount_left")
-    public Double amountLeft;
+    public String amountLeft;
 
     @ColumnInfo(name = "used_from_first")
-    public Double usedFromFirst;
+    public String usedFromFirst;
 
     @ColumnInfo(name = "first_taken_from")
     public long firstTakenFrom;

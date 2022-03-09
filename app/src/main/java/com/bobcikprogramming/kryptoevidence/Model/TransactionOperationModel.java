@@ -2,13 +2,14 @@ package com.bobcikprogramming.kryptoevidence.Model;
 
 import android.content.Context;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class TransactionOperationModel {
 
     public TransactionOperationModel(){}
 
-    public long saveTransactionBuyToDb(Context context, String shortName, String longName, String quantityBought, String price, String fee, String date, String time, String currency, String quantitySold, ArrayList<String> photosPath) {
+    public long saveTransactionBuyToDb(Context context, String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -16,13 +17,13 @@ public class TransactionOperationModel {
         transactionEntity.transactionType = "Nákup";
         transactionEntity.shortNameBought = shortName;
         transactionEntity.longNameBought = longName;
-        transactionEntity.quantityBought = quantityBought;
-        transactionEntity.priceBought = price;
+        transactionEntity.quantityBought = String.valueOf(quantityBought);
+        transactionEntity.priceBought = String.valueOf(price);
         transactionEntity.fee = fee;
         transactionEntity.date = date;
         transactionEntity.time = time;
         transactionEntity.currency = currency;
-        transactionEntity.quantitySold = quantitySold;
+        transactionEntity.quantitySold = String.valueOf(quantitySold);
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -35,7 +36,7 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
-    public void saveTransactionSellToDb(Context context, String shortName, String longName, String quantitySold, String price, String fee, String date, String time, String currency, String quantityBought, ArrayList<String> photosPath) {
+    public void saveTransactionSellToDb(Context context, String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantityBought, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -43,15 +44,15 @@ public class TransactionOperationModel {
         transactionEntity.transactionType = "Prodej";
         transactionEntity.shortNameSold = shortName;
         transactionEntity.longNameSold = longName;
-        transactionEntity.quantitySold = quantitySold;
-        transactionEntity.priceSold = price;
+        transactionEntity.quantitySold = String.valueOf(quantitySold);
+        transactionEntity.priceSold = String.valueOf(price);
         transactionEntity.fee = fee;
         transactionEntity.date = date;
         transactionEntity.time = time;
         transactionEntity.currency = currency;
-        transactionEntity.quantityBought = quantityBought;
+        transactionEntity.quantityBought = String.valueOf(quantityBought);
 
-        transactionEntity.amountLeft = Double.valueOf(quantitySold);
+        transactionEntity.amountLeft = String.valueOf(quantitySold);
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -62,7 +63,7 @@ public class TransactionOperationModel {
         }
     }
 
-    public void saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, String quantityBought, String priceBought, String fee, String date, String time, String shortNameSold, String longNameSold, String quantitySold, String priceSold, ArrayList<String> photosPath) {
+    public void saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, BigDecimal priceSold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -71,15 +72,15 @@ public class TransactionOperationModel {
         transactionEntity.shortNameBought = shortNameBought;
         transactionEntity.longNameBought = longNameBought;
         transactionEntity.currency = currency;
-        transactionEntity.quantityBought = quantityBought;
-        transactionEntity.priceBought = priceBought;
+        transactionEntity.quantityBought = String.valueOf(quantityBought);
+        transactionEntity.priceBought = String.valueOf(priceBought);
         transactionEntity.fee = fee;
         transactionEntity.date = date;
         transactionEntity.time = time;
         transactionEntity.shortNameSold = shortNameSold;
         transactionEntity.longNameSold = longNameSold;
-        transactionEntity.quantitySold = quantitySold;
-        transactionEntity.priceSold = priceSold;
+        transactionEntity.quantitySold = String.valueOf(quantitySold);
+        transactionEntity.priceSold = String.valueOf(priceSold);
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -90,18 +91,18 @@ public class TransactionOperationModel {
         }
     }
 
-    public void createOwnedCryptoEntity(Context context, String shortName, String longName, String amount){
+    public void createOwnedCryptoEntity(Context context, String shortName, String longName, BigDecimal amount){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCrypto = new OwnedCryptoEntity();
         ownedCrypto.shortName = shortName;
         ownedCrypto.longName = longName;
-        ownedCrypto.amount = amount;
+        ownedCrypto.amount = String.valueOf(amount);
         db.databaseDao().insertOwnedCrypto(ownedCrypto);
     }
 
-    public void updateOwnedCryptoEntity(Context context, String amount, OwnedCryptoEntity ownedCrypto){
+    public void updateOwnedCryptoEntity(Context context, BigDecimal amount, OwnedCryptoEntity ownedCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        ownedCrypto.amount = amount;
+        ownedCrypto.amount = String.valueOf(amount);
         db.databaseDao().updateOwnedCrypto(ownedCrypto);
     }
 

@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.math.BigDecimal;
+
 @Entity
 public class TransactionHistoryEntity {
 
@@ -42,7 +44,7 @@ public class TransactionHistoryEntity {
     public String priceSold;
 
     @ColumnInfo(name = "fee")
-    public String fee;
+    public Double fee;
 
     @ColumnInfo(name = "date")
     public String date;

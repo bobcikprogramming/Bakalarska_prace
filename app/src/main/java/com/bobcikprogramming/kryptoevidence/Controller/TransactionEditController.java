@@ -19,6 +19,7 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class TransactionEditController {
@@ -33,7 +34,8 @@ public class TransactionEditController {
     private ImageManager imgManager;
     private TransactionOperationController transactionOperation;
 
-    private String shortName, longName, quantityOld, quantityNew, shortNameChange, longNameChange, quantityChangeOld, quantityChangeNew ;
+    private String shortName, longName, shortNameChange, longNameChange;
+    private BigDecimal quantityOld, quantityNew, quantityChangeOld, quantityChangeNew;
     private int operationType;
     private boolean changed;
     private Context context;
@@ -70,57 +72,57 @@ public class TransactionEditController {
             if (transaction.transactionType.equals("Nákup")) {
                 newTransaction.shortNameBought = transaction.shortNameBought;
                 newTransaction.longNameBought = transaction.longNameBought;
-                newTransaction.quantityBought = shared.getStringByEditDouble(valueRowFirst);
-                newTransaction.priceBought = shared.getStringByEditDouble(valueRowSecond);
-                newTransaction.quantitySold = shared.getPrice(valueRowFirst, valueRowSecond, valueFee);
+                newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
+                newTransaction.priceBought = shared.getStringFromBigDecimal(valueRowSecond);
+                newTransaction.quantitySold = String.valueOf(shared.getPrice(valueRowFirst, valueRowSecond, valueFee));
 
                 operationType = 0;
                 shortName = transaction.shortNameBought;
                 longName = transaction.longNameBought;
-                quantityOld = transaction.quantityBought;
-                quantityNew = newTransaction.quantityBought;
+                quantityOld = shared.getBigDecimal(transaction.quantityBought);
+                quantityNew = shared.getBigDecimal(newTransaction.quantityBought);
 
-                if(!newTransaction.quantityBought.equals(transaction.quantityBought)){
+                if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0){
                     transactionHistory.quantityBought = transaction.quantityBought;
                     changed = true;
                 }
-                if(!newTransaction.priceBought.equals(transaction.priceBought)){
+                if(newTransaction.priceBought.compareTo(transaction.priceBought) != 0){
                     transactionHistory.priceBought = transaction.priceBought;
                     changed = true;
                 }
-                if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
+                if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
                     transactionHistory.quantitySold = transaction.quantitySold;
                     changed = true;
                 }
             }else {
                 newTransaction.shortNameSold = transaction.shortNameSold;
                 newTransaction.longNameSold = transaction.longNameSold;
-                newTransaction.quantitySold = shared.getStringByEditDouble(valueRowFirst);
-                newTransaction.priceSold = shared.getStringByEditDouble(valueRowSecond);
-                newTransaction.quantityBought = shared.getProfit(valueRowFirst, valueRowSecond, valueFee);
+                newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFirst);
+                newTransaction.priceSold = shared.getStringFromBigDecimal(valueRowSecond);
+                newTransaction.quantityBought = String.valueOf(shared.getProfit(valueRowFirst, valueRowSecond, valueFee));
 
                 operationType = 1;
                 shortName = transaction.shortNameSold;
                 longName = transaction.longNameSold;
-                quantityOld = transaction.quantitySold;
-                quantityNew = newTransaction.quantitySold;
+                quantityOld = shared.getBigDecimal(transaction.quantitySold);
+                quantityNew = shared.getBigDecimal(newTransaction.quantitySold);
 
 
-                if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
+                if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
                     transactionHistory.quantitySold = transaction.quantitySold;
                     changed = true;
                 }
-                if(!newTransaction.priceSold.equals(transaction.priceSold)){
+                if(newTransaction.priceSold.compareTo(transaction.priceSold) != 0){
                     transactionHistory.priceSold = transaction.priceSold;
                     changed = true;
                 }
-                if(!newTransaction.quantityBought.equals(transaction.quantityBought)){
+                if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0){
                     transactionHistory.quantityBought = transaction.quantityBought;
                     changed = true;
                 }
             }
             newTransaction.currency = shared.getString(spinnerRowThird);
-            newTransaction.fee = shared.getFeeString(valueFee);;
+            newTransaction.fee = shared.getFee(valueFee);
             newTransaction.date = shared.getString(valueDate);
             newTransaction.time = shared.getString(valueTime);
 
@@ -130,7 +132,7 @@ public class TransactionEditController {
                 transactionHistory.currency = transaction.currency;
                 changed = true;
             }
-            if(!newTransaction.fee.equals(transaction.fee)){
+            if(newTransaction.fee.compareTo(transaction.fee) != 0){
                 transactionHistory.fee = transaction.fee;
                 changed = true;
             }
@@ -147,35 +149,33 @@ public class TransactionEditController {
             newTransaction.transactionType = transaction.transactionType;
             newTransaction.shortNameBought = transaction.shortNameBought;
             newTransaction.longNameBought = transaction.longNameBought;
-            newTransaction.quantityBought = shared.getStringByEditDouble(valueRowFirst);
-            newTransaction.priceBought =  shared.getStringByEditDouble(valueRowSecond);
+            newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
+            newTransaction.priceBought =  shared.getStringFromBigDecimal(valueRowSecond);
             newTransaction.currency =  shared.getString(spinnerRowThird);
             newTransaction.shortNameSold = shortNameCryptoSell == null ? transaction.shortNameSold : shortNameCryptoSell;
             newTransaction.longNameSold = longNameCryptoSell == null ? transaction.longNameSold : longNameCryptoSell;
-            newTransaction.quantitySold = shared.getStringByEditDouble(valueRowFifth);
-            newTransaction.priceSold = shared.getStringByEditDouble(valueRowSixth);
-            String transactionFee = shared.getFeeString(valueFee);
-            newTransaction.fee = transactionFee;
+            newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFifth);
+            newTransaction.priceSold = shared.getStringFromBigDecimal(valueRowSixth);
+            newTransaction.fee = shared.getFee(valueFee);
             newTransaction.date = shared.getString(valueDate);
             newTransaction.time = shared.getString(valueTime);
 
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>> měl bych být tu");
             operationType = 2;
             shortName = transaction.shortNameBought;
             longName = transaction.longNameBought;
-            quantityOld = transaction.quantityBought;
-            quantityNew = newTransaction.quantityBought;
+            quantityOld = shared.getBigDecimal(transaction.quantityBought);
+            quantityNew = shared.getBigDecimal(newTransaction.quantityBought);
             shortNameChange = transaction.shortNameSold;
             longNameChange = transaction.longNameSold;
-            quantityChangeOld = transaction.quantitySold;
-            quantityChangeNew = newTransaction.quantitySold;
+            quantityChangeOld = shared.getBigDecimal(transaction.quantitySold);
+            quantityChangeNew = shared.getBigDecimal(newTransaction.quantitySold);
 
             transactionHistory.transactionType = transaction.transactionType;
-            if(!newTransaction.quantityBought.equals(transaction.quantityBought)) {
+            if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0) {
                 transactionHistory.quantityBought = transaction.quantityBought;
                 changed = true;
             }
-            if(!newTransaction.priceBought.equals(transaction.priceBought)){
+            if(newTransaction.priceBought.compareTo(transaction.priceBought) != 0){
                 transactionHistory.priceBought = transaction.priceBought;
                 changed = true;
             }
@@ -191,15 +191,15 @@ public class TransactionEditController {
                 transactionHistory.longNameSold = transaction.longNameSold;
                 changed = true;
             }
-            if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
+            if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
                 transactionHistory.quantitySold = transaction.quantitySold;
                 changed = true;
             }
-            if(!newTransaction.priceSold.equals(transaction.priceSold)){
+            if(newTransaction.priceSold.compareTo(transaction.priceSold) != 0){
                 transactionHistory.priceSold = transaction.priceSold;
                 changed = true;
             }
-            if (!newTransaction.fee.equals(transaction.fee)) {
+            if (newTransaction.fee.compareTo(transaction.fee) != 0) {
                 transactionHistory.fee = transaction.fee;
                 changed = true;
             }
@@ -239,44 +239,39 @@ public class TransactionEditController {
 
     private void editOwnedCrypto(){
         if(operationType != 2){
-            if(!quantityOld.equals(quantityNew)){
-                String quantity;
-                if(operationType == 0) {
-                    quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
-                }else {
-                    quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
-                }
-                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, operationType);
+            if(quantityOld.compareTo(quantityNew) != 0){
+                BigDecimal quantity = quantityNew.subtract(quantityOld);
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, operationType, null);
             }
         }else{
             if(!quantityOld.equals(quantityNew)){
-                String quantity = String.valueOf(Double.parseDouble(quantityNew) - Double.parseDouble(quantityOld));
-                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, 0);
+                BigDecimal quantity = quantityNew.subtract(quantityOld);
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortName, longName, quantity, 0, null);
             }
             if(!quantityChangeOld.equals(quantityChangeNew)){
-                String quantity = String.valueOf(Double.parseDouble(quantityChangeNew) - Double.parseDouble(quantityChangeOld));
-                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortNameChange, longNameChange, quantity, 1);
+                BigDecimal quantity =quantityChangeNew.subtract(quantityChangeOld);
+                transactionOperation.changeAmountOfOwnedCryptoOnEdit(shortNameChange, longNameChange, quantity, 1, null);
             }
         }
     }
 
     private void deleteFromOwnedCrypto(){
         if(operationType == 0) {
-            String quantity = getNegativeQuantity(getTransactionEntity().quantityBought);
-            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameBought, getTransactionEntity().longNameBought, quantity, 0);
+            BigDecimal quantity = getNegativeQuantity(getTransactionEntity().quantityBought);
+            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameBought, getTransactionEntity().longNameBought, quantity, 0, null);
         }else if(operationType == 1) {
-            String quantity = getNegativeQuantity(getTransactionEntity().quantitySold);
-            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold, quantity, 1);
+            BigDecimal quantity = getNegativeQuantity(getTransactionEntity().quantitySold);
+            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold, quantity, 1, null);
         }else {
-            String quantityBought = getNegativeQuantity(getTransactionEntity().quantityBought);
-            String quantitySold = getNegativeQuantity(getTransactionEntity().quantitySold);
+            BigDecimal quantityBought = getNegativeQuantity(getTransactionEntity().quantityBought);
+            BigDecimal quantitySold = getNegativeQuantity(getTransactionEntity().quantitySold);
             transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().shortNameBought, getTransactionEntity().longNameBought, quantityBought, 2,
-                    getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold, quantitySold);
+                    quantitySold, getTransactionEntity().shortNameSold, getTransactionEntity().longNameSold);
         }
     }
 
-    private String getNegativeQuantity(String quantity){
-        return "-" + quantity;
+    private BigDecimal getNegativeQuantity(String quantity){
+        return shared.getBigDecimal(quantity).multiply(shared.getBigDecimal("-1"));
     }
 
     public void deleteFromDatabase(){
