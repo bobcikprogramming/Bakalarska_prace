@@ -2,10 +2,10 @@ package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.content.Context;
 import android.net.Uri;
-import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.OwnedCryptoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionOperationModel;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
@@ -24,6 +24,8 @@ public class TransactionOperationController {
     private CalendarManager calendar;
     private SharedMethods shared;
 
+    private BigDecimal ZEROBIGDECIMAL;
+
     public TransactionOperationController(Context context){
         this.context = context;
 
@@ -33,6 +35,8 @@ public class TransactionOperationController {
         database = new TransactionOperationModel();
         calendar = new CalendarManager();
         shared = new SharedMethods();
+
+        ZEROBIGDECIMAL = shared.getBigDecimal("0.0");
     }
 
     public boolean saveTransactionBuy(String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold){
@@ -41,7 +45,7 @@ public class TransactionOperationController {
         }
         if(photosPath != null) {
             long transactionID = database.saveTransactionBuyToDb(context, shortName, longName, quantityBought, price, fee, date, time, currency, quantitySold, photosPath);
-            calcFifoOnBuy(transactionID, date, quantityBought, shortName, time);
+            calcFifoOnBuy(transactionID, quantityBought, date, time, shortName);
             return true;
         }else {
             return false;
@@ -53,7 +57,8 @@ public class TransactionOperationController {
             photosPath = imgManager.saveImage(context, photos);
         }
         if(photosPath != null) {
-            database.saveTransactionSellToDb(context, shortName, longName, quantitySold, price, fee, date, time, currency, quantityBought, photosPath);
+            long transactionID = database.saveTransactionSellToDb(context, shortName, longName, quantitySold, price, fee, date, time, currency, quantityBought, photosPath);
+            calcFifoSell(transactionID, quantitySold, date, time, shortName);
             return true;
         }else {
             return false;
@@ -103,8 +108,8 @@ public class TransactionOperationController {
     public void saveAmountOfOwnedCrypto(OwnedCryptoEntity ownedCrypto, String shortName, String longName, BigDecimal quantity, int operationType, String[] change, BigDecimal quantityChange){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCryptoChange = null;
-        BigDecimal amount = ownedCrypto == null ? shared.getBigDecimal("0.0") : shared.getBigDecimal(ownedCrypto.amount);
-        BigDecimal amountChange = shared.getBigDecimal("0.0");
+        BigDecimal amount = ownedCrypto == null ? ZEROBIGDECIMAL : shared.getBigDecimal(ownedCrypto.amount);
+        BigDecimal amountChange = ZEROBIGDECIMAL;
 
         if(operationType == 0){
             amount = amount.add(quantity);
@@ -113,7 +118,7 @@ public class TransactionOperationController {
         }else{
             amount = amount.add(quantity);
             ownedCryptoChange = db.databaseDao().getOwnedCryptoByID(change[0]);
-            amountChange = ownedCryptoChange == null ? shared.getBigDecimal("0.0") : shared.getBigDecimal(ownedCryptoChange.amount);
+            amountChange = ownedCryptoChange == null ? ZEROBIGDECIMAL : shared.getBigDecimal(ownedCryptoChange.amount);
             amountChange = amountChange.subtract(quantityChange);
         }
 
@@ -137,7 +142,7 @@ public class TransactionOperationController {
      * @param date
      * @param quantity
      */
-    private void calcFifoOnBuy(long transactionID, String date, BigDecimal quantity, String shortName, String time){
+    private void calcFifoOnBuy(long transactionID, BigDecimal quantity, String date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
         BigDecimal amountLeft = quantity;
 
@@ -149,10 +154,10 @@ public class TransactionOperationController {
         for(TransactionWithPhotos sell : listOfIncompleteSales){
             BigDecimal usedFromFirst = sell.transaction.usedFromFirst == null ? null : shared.getBigDecimal(sell.transaction.usedFromFirst);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
-            BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : shared.getBigDecimal("0.0");
+            BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : ZEROBIGDECIMAL;
 
-            if(amountLeft.compareTo(shared.getBigDecimal("0.0")) == 1) {
-                amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal("0.0") : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
+            if(amountLeft.compareTo(ZEROBIGDECIMAL) == 1) {
+                amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? ZEROBIGDECIMAL : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
                 if (usedFromFirst == null) {
                     firstTakenFrom = transactionID;
                     usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
@@ -161,18 +166,18 @@ public class TransactionOperationController {
                 db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
             }
 
-            if (inSellLeft.compareTo(shared.getBigDecimal("0.0")) == 1) {
-                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyNotEmptyAfterNewBuy(date, time, shortName);
+            if (inSellLeft.compareTo(ZEROBIGDECIMAL) == 1) {
+                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyNotEmptyAfter(date, time, shortName);
 
                 for (TransactionWithPhotos nextBuy : listOfNextBuy) {
                     BigDecimal amountOfNextBuy = shared.getBigDecimal(nextBuy.transaction.amountLeft);
 
                     if(inSellLeft.compareTo(amountOfNextBuy) < 1){
                         amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
-                        inSellLeft = shared.getBigDecimal("0.0");
+                        inSellLeft = ZEROBIGDECIMAL;
                     }else{
                         inSellLeft = inSellLeft.subtract(amountOfNextBuy);
-                        amountOfNextBuy = shared.getBigDecimal("0.0");
+                        amountOfNextBuy = ZEROBIGDECIMAL;
                     }
 
                     if (usedFromFirst == null) {
@@ -192,12 +197,12 @@ public class TransactionOperationController {
 
     private void resetTransactionSellAfterNewBuy(String transactionID, String shortName, String date, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfterNewBuy(date, time, shortName);
+        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfter(date, time, shortName);
 
         for(TransactionWithPhotos sellToReset : listOfUsedSell){
             String dateFrom = db.databaseDao().getTransactionByTransactionID(String.valueOf(sellToReset.transaction.firstTakenFrom)).transaction.date;
             List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetween(String.valueOf(transactionID), dateFrom, date, shortName);
-            BigDecimal usedAmount = shared.getBigDecimal("0.0");
+            BigDecimal usedAmount = ZEROBIGDECIMAL;
 
             for(TransactionWithPhotos used : listOfUsedBuyBetween){
                 usedAmount = usedAmount.add((shared.getBigDecimal(used.transaction.quantityBought)).subtract(shared.getBigDecimal(used.transaction.amountLeft)));
@@ -207,7 +212,7 @@ public class TransactionOperationController {
             String usedFromFirst = null;
             String firstTakenFrom = "-1";
 
-            if(usedAmount.compareTo(shared.getBigDecimal("0.0")) != 0){
+            if(usedAmount.compareTo(ZEROBIGDECIMAL) != 0){
                 usedFromFirst = sellToReset.transaction.usedFromFirst;
                 firstTakenFrom = String.valueOf(sellToReset.transaction.firstTakenFrom);
             }
@@ -216,8 +221,100 @@ public class TransactionOperationController {
         }
     }
 
-    private void calcFifoSell(){
+    private void calcFifoSell(long transactionID, BigDecimal quantity, String date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
+        List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellAfter(date, time, shortName);
+        if(!listOfUsedSales.isEmpty()) {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>su tu?");
+            TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(listOfUsedSales.get(0).transaction.uidTransaction)).transaction;
+            String startingDate = firstBuy.date;
+            String startingTime = firstBuy.time;
+            resetTransactionAfterNewSell(shortName, date, time, startingDate, startingTime);
+        }
+
+        db.databaseDao().resetAmoutLeftUsedSell(date, time);
+
+        List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(date, time, shortName);
+
+        if(listOfAvailableBuys.isEmpty()){
+            System.out.println(">>>>>>>>>>>>>>>>>>>>je empty");
+        }
+        setSellAndBuyForNewSell(String.valueOf(transactionID), quantity, listOfAvailableBuys);
+
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, time, shortName);
+        for(TransactionWithPhotos sell : listOfIncompleteSales) {
+            listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
+            if(listOfAvailableBuys.isEmpty()){
+                break;
+            }
+            setSellAndBuyForNewSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+        }
+    }
+
+    private void resetTransactionAfterNewSell(String shortName, String date, String time, String firstBuydate, String firstBuytime){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+
+        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfter(date, time, shortName);
+        if(listOfUsedSell.isEmpty()){
+            return;
+        }
+        long transactionIDOfFirstBuy = listOfUsedSell.get(0).transaction.firstTakenFrom;
+
+        for(TransactionWithPhotos sell : listOfUsedSell){
+            if(sell.transaction.firstTakenFrom != transactionIDOfFirstBuy){
+                break;
+            }
+            db.databaseDao().updateAmoutLeftMathAdd(String.valueOf(transactionIDOfFirstBuy), sell.transaction.usedFromFirst);
+        }
+
+        List<TransactionWithPhotos> listOfBuys = db.databaseDao().getUsedBuyFrom(firstBuydate, firstBuytime, shortName);
+        List<TransactionWithPhotos> listOfBuysFromRightPosition = listOfBuys;
+
+        for(TransactionWithPhotos buyToRemove : listOfBuys){
+            listOfBuysFromRightPosition.remove(buyToRemove);
+            if(buyToRemove.transaction.uidTransaction == transactionIDOfFirstBuy){
+                break;
+            }
+        }
+
+        for(TransactionWithPhotos buy : listOfBuysFromRightPosition){
+            db.databaseDao().resetAmountLeftBuyById(String.valueOf(buy.transaction.uidTransaction));
+        }
+    }
+
+    private void setSellAndBuyForNewSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys ){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        boolean first = true;
+        BigDecimal usedFromFirst = ZEROBIGDECIMAL;
+        long firstTakenFrom = 0;
+
+        for(TransactionWithPhotos buy : listOfAvailableBuys) {
+            if(quantity.compareTo(ZEROBIGDECIMAL) < 1) {
+                break;
+            }
+
+            BigDecimal newAmoutLeftBuy = shared.getBigDecimal(buy.transaction.amountLeft);
+            if(shared.getBigDecimal(buy.transaction.amountLeft).compareTo(quantity) < 1){
+                quantity = quantity.subtract(shared.getBigDecimal(buy.transaction.amountLeft));
+                if(first){
+                    usedFromFirst = newAmoutLeftBuy;
+                }
+                newAmoutLeftBuy = ZEROBIGDECIMAL;
+            }else{
+                newAmoutLeftBuy = newAmoutLeftBuy.subtract(quantity);
+                if(first){
+                    usedFromFirst = quantity;
+                }
+                quantity = ZEROBIGDECIMAL;
+            }
+
+            if(first){
+                firstTakenFrom = buy.transaction.uidTransaction;
+                first = false;
+            }
+            db.databaseDao().updateAmoutLeft(String.valueOf(buy.transaction.uidTransaction), String.valueOf(newAmoutLeftBuy));
+        }
+        db.databaseDao().updateFifoCalc(String.valueOf(sellTransactionID), String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
     }
 
     public ArrayList<Uri> getPhotos() {
