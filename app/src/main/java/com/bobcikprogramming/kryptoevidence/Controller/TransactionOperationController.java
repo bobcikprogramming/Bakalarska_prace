@@ -25,6 +25,7 @@ public class TransactionOperationController {
     private SharedMethods shared;
 
     private BigDecimal ZEROBIGDECIMAL;
+    private BigDecimal EMPTYBIGDECIMAL;
 
     public TransactionOperationController(Context context){
         this.context = context;
@@ -37,6 +38,7 @@ public class TransactionOperationController {
         shared = new SharedMethods();
 
         ZEROBIGDECIMAL = shared.getBigDecimal("0.0");
+        EMPTYBIGDECIMAL = shared.getBigDecimal("-1.0");
     }
 
     public boolean saveTransactionBuy(String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold){
@@ -152,13 +154,14 @@ public class TransactionOperationController {
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, time, shortName);
 
         for(TransactionWithPhotos sell : listOfIncompleteSales){
-            BigDecimal usedFromFirst = sell.transaction.usedFromFirst == null ? null : shared.getBigDecimal(sell.transaction.usedFromFirst);
+            BigDecimal usedFromFirst = sell.transaction.usedFromFirst.equals("-1.0") ? EMPTYBIGDECIMAL : shared.getBigDecimal(sell.transaction.usedFromFirst);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
             BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : ZEROBIGDECIMAL;
 
             if(amountLeft.compareTo(ZEROBIGDECIMAL) == 1) {
                 amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? ZEROBIGDECIMAL : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
-                if (usedFromFirst == null) {
+                if (usedFromFirst.compareTo(EMPTYBIGDECIMAL) == 0) {
+                    System.out.println(">>>>>>>>>>>>>>>>>>>je to tady");
                     firstTakenFrom = transactionID;
                     usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
                 }
@@ -180,7 +183,7 @@ public class TransactionOperationController {
                         amountOfNextBuy = ZEROBIGDECIMAL;
                     }
 
-                    if (usedFromFirst == null) {
+                    if (usedFromFirst.compareTo(EMPTYBIGDECIMAL) == 0) {
                         firstTakenFrom = nextBuy.transaction.uidTransaction;
                         usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
                     }
@@ -209,15 +212,15 @@ public class TransactionOperationController {
             }
 
             BigDecimal toRemove = shared.getBigDecimal(sellToReset.transaction.quantitySold).subtract(usedAmount);
-            String usedFromFirst = null;
-            String firstTakenFrom = "-1";
+            BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
+            long firstTakenFrom = -1;
 
             if(usedAmount.compareTo(ZEROBIGDECIMAL) != 0){
-                usedFromFirst = sellToReset.transaction.usedFromFirst;
-                firstTakenFrom = String.valueOf(sellToReset.transaction.firstTakenFrom);
+                usedFromFirst = shared.getBigDecimal(sellToReset.transaction.usedFromFirst);
+                firstTakenFrom = sellToReset.transaction.firstTakenFrom;
             }
 
-            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(toRemove), usedFromFirst, firstTakenFrom);
+            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(toRemove), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
         }
     }
 
@@ -285,7 +288,7 @@ public class TransactionOperationController {
     private void setSellAndBuyForNewSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys ){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
-        BigDecimal usedFromFirst = ZEROBIGDECIMAL;
+        BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
         long firstTakenFrom = 0;
 
         for(TransactionWithPhotos buy : listOfAvailableBuys) {
