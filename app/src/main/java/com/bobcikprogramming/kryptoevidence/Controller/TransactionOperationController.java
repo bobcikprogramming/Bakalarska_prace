@@ -11,6 +11,7 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionOperationController {
@@ -24,7 +25,6 @@ public class TransactionOperationController {
     private CalendarManager calendar;
     private SharedMethods shared;
 
-    private BigDecimal ZEROBIGDECIMAL;
     private BigDecimal EMPTYBIGDECIMAL;
 
     public TransactionOperationController(Context context){
@@ -37,7 +37,6 @@ public class TransactionOperationController {
         calendar = new CalendarManager();
         shared = new SharedMethods();
 
-        ZEROBIGDECIMAL = shared.getBigDecimal("0.0");
         EMPTYBIGDECIMAL = shared.getBigDecimal("-1.0");
     }
 
@@ -110,8 +109,8 @@ public class TransactionOperationController {
     public void saveAmountOfOwnedCrypto(OwnedCryptoEntity ownedCrypto, String shortName, String longName, BigDecimal quantity, int operationType, String[] change, BigDecimal quantityChange){
         AppDatabase db = AppDatabase.getDbInstance(context);
         OwnedCryptoEntity ownedCryptoChange = null;
-        BigDecimal amount = ownedCrypto == null ? ZEROBIGDECIMAL : shared.getBigDecimal(ownedCrypto.amount);
-        BigDecimal amountChange = ZEROBIGDECIMAL;
+        BigDecimal amount = ownedCrypto == null ? BigDecimal.ZERO : shared.getBigDecimal(ownedCrypto.amount);
+        BigDecimal amountChange = BigDecimal.ZERO;
 
         if(operationType == 0){
             amount = amount.add(quantity);
@@ -120,7 +119,7 @@ public class TransactionOperationController {
         }else{
             amount = amount.add(quantity);
             ownedCryptoChange = db.databaseDao().getOwnedCryptoByID(change[0]);
-            amountChange = ownedCryptoChange == null ? ZEROBIGDECIMAL : shared.getBigDecimal(ownedCryptoChange.amount);
+            amountChange = ownedCryptoChange == null ? BigDecimal.ZERO : shared.getBigDecimal(ownedCryptoChange.amount);
             amountChange = amountChange.subtract(quantityChange);
         }
 
@@ -151,36 +150,39 @@ public class TransactionOperationController {
         db.databaseDao().resetAmoutLeftUsedBuy(date, time);
         resetTransactionSellAfterNewBuy(String.valueOf(transactionID), shortName, date, time);
 
-        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, time, shortName);
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyFrom(date, time, shortName);
 
         for(TransactionWithPhotos sell : listOfIncompleteSales){
             BigDecimal usedFromFirst = sell.transaction.usedFromFirst.equals("-1.0") ? EMPTYBIGDECIMAL : shared.getBigDecimal(sell.transaction.usedFromFirst);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
-            BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : ZEROBIGDECIMAL;
+            long lastTakenFrom = sell.transaction.lastTakenFrom;
+            BigDecimal inSellLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? shared.getBigDecimal(sell.transaction.amountLeft).subtract(amountLeft) : BigDecimal.ZERO;
 
-            if(amountLeft.compareTo(ZEROBIGDECIMAL) == 1) {
-                amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? ZEROBIGDECIMAL : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
+            if(amountLeft.compareTo(BigDecimal.ZERO) == 1) {
+                amountLeft = amountLeft.compareTo(shared.getBigDecimal(sell.transaction.amountLeft)) < 1 ? BigDecimal.ZERO : amountLeft.subtract(shared.getBigDecimal(sell.transaction.amountLeft));
                 if (usedFromFirst.compareTo(EMPTYBIGDECIMAL) == 0) {
-                    System.out.println(">>>>>>>>>>>>>>>>>>>je to tady");
                     firstTakenFrom = transactionID;
                     usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
                 }
-
-                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
+                lastTakenFrom = transactionID;
             }
 
-            if (inSellLeft.compareTo(ZEROBIGDECIMAL) == 1) {
-                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getBuyNotEmptyAfter(date, time, shortName);
+            if (inSellLeft.compareTo(BigDecimal.ZERO) == 1) {
+                List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
 
                 for (TransactionWithPhotos nextBuy : listOfNextBuy) {
                     BigDecimal amountOfNextBuy = shared.getBigDecimal(nextBuy.transaction.amountLeft);
 
+                    if(inSellLeft.compareTo(BigDecimal.ZERO) < 1){
+                        break;
+                    }
+
                     if(inSellLeft.compareTo(amountOfNextBuy) < 1){
                         amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
-                        inSellLeft = ZEROBIGDECIMAL;
+                        inSellLeft = BigDecimal.ZERO;
                     }else{
                         inSellLeft = inSellLeft.subtract(amountOfNextBuy);
-                        amountOfNextBuy = ZEROBIGDECIMAL;
+                        amountOfNextBuy = BigDecimal.ZERO;
                     }
 
                     if (usedFromFirst.compareTo(EMPTYBIGDECIMAL) == 0) {
@@ -188,11 +190,13 @@ public class TransactionOperationController {
                         usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
                     }
 
+                    lastTakenFrom = nextBuy.transaction.uidTransaction;
+
                     db.databaseDao().updateAmoutLeft(String.valueOf(nextBuy.transaction.uidTransaction), String.valueOf(amountOfNextBuy));
                 }
 
-                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
             }
+            db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }
 
         db.databaseDao().updateAmoutLeft(String.valueOf(transactionID), String.valueOf(amountLeft));
@@ -200,27 +204,48 @@ public class TransactionOperationController {
 
     private void resetTransactionSellAfterNewBuy(String transactionID, String shortName, String date, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfter(date, time, shortName);
+        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellFrom(date, time, shortName);
 
         for(TransactionWithPhotos sellToReset : listOfUsedSell){
-            String dateFrom = db.databaseDao().getTransactionByTransactionID(String.valueOf(sellToReset.transaction.firstTakenFrom)).transaction.date;
-            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetween(String.valueOf(transactionID), dateFrom, date, shortName);
-            BigDecimal usedAmount = ZEROBIGDECIMAL;
-
-            for(TransactionWithPhotos used : listOfUsedBuyBetween){
-                usedAmount = usedAmount.add((shared.getBigDecimal(used.transaction.quantityBought)).subtract(shared.getBigDecimal(used.transaction.amountLeft)));
+            TransactionWithPhotos firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(sellToReset.transaction.firstTakenFrom));
+            String dateFrom = firstBuy.transaction.date;
+            Date firstBuyDate = calendar.getDateFormat(dateFrom);
+            Date newBuyDate = calendar.getDateFormat(date);
+            String timeFrom = firstBuy.transaction.time;
+            Date firstBuyTime = calendar.getTimeFormat(timeFrom);
+            Date newBuyTime = calendar.getTimeFormat(time);
+            /** Pokud je první nákup prováděn až po datu nového nákupu */
+            if(firstBuyDate.after(newBuyDate) || (firstBuyDate.equals(newBuyDate) && firstBuyTime.after(newBuyTime))){
+                db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), "-1.0", "-1", "-1");
+                return;
             }
 
-            BigDecimal toRemove = shared.getBigDecimal(sellToReset.transaction.quantitySold).subtract(usedAmount);
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetweenWithoutFirstAndLast(String.valueOf(firstBuy.transaction.uidTransaction), String.valueOf(transactionID), dateFrom, timeFrom, date, time, shortName);
+            BigDecimal restAmount = shared.getBigDecimal(sellToReset.transaction.quantitySold).subtract(shared.getBigDecimal(sellToReset.transaction.usedFromFirst));
+            for(TransactionWithPhotos used : listOfUsedBuyBetween){
+                if(restAmount.compareTo(BigDecimal.ZERO) < 1){
+                    break;
+                }
+                
+                if(shared.getBigDecimal(used.transaction.quantityBought).compareTo(restAmount) == 1){
+                    restAmount = BigDecimal.ZERO;
+                    break;
+                }else{
+                    restAmount = restAmount.subtract(shared.getBigDecimal(used.transaction.quantityBought));
+                }
+            }
+            
             BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
             long firstTakenFrom = -1;
+            long lastTakenFrom = -1;
 
-            if(usedAmount.compareTo(ZEROBIGDECIMAL) != 0){
+            if(!sellToReset.transaction.usedFromFirst.equals("-1.0")){
                 usedFromFirst = shared.getBigDecimal(sellToReset.transaction.usedFromFirst);
                 firstTakenFrom = sellToReset.transaction.firstTakenFrom;
+                lastTakenFrom = sellToReset.transaction.lastTakenFrom;
             }
 
-            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(toRemove), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
+            db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }
     }
 
@@ -228,23 +253,18 @@ public class TransactionOperationController {
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellAfter(date, time, shortName);
         if(!listOfUsedSales.isEmpty()) {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>su tu?");
             TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(listOfUsedSales.get(0).transaction.uidTransaction)).transaction;
             String startingDate = firstBuy.date;
             String startingTime = firstBuy.time;
-            resetTransactionAfterNewSell(shortName, date, time, startingDate, startingTime);
+            resetTransactionBuyAfterNewSell(shortName, startingDate, startingTime, listOfUsedSales);
         }
 
         db.databaseDao().resetAmoutLeftUsedSell(date, time);
 
         List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(date, time, shortName);
-
-        if(listOfAvailableBuys.isEmpty()){
-            System.out.println(">>>>>>>>>>>>>>>>>>>>je empty");
-        }
         setSellAndBuyForNewSell(String.valueOf(transactionID), quantity, listOfAvailableBuys);
 
-        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterDate(date, time, shortName);
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfter(date, time, shortName);
         for(TransactionWithPhotos sell : listOfIncompleteSales) {
             listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
             if(listOfAvailableBuys.isEmpty()){
@@ -254,33 +274,21 @@ public class TransactionOperationController {
         }
     }
 
-    private void resetTransactionAfterNewSell(String shortName, String date, String time, String firstBuydate, String firstBuytime){
+    private void resetTransactionBuyAfterNewSell(String shortName, String firstBuyDate, String firstBuyTime, List<TransactionWithPhotos> listOfUsedSales){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
-        List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellAfter(date, time, shortName);
-        if(listOfUsedSell.isEmpty()){
-            return;
-        }
-        long transactionIDOfFirstBuy = listOfUsedSell.get(0).transaction.firstTakenFrom;
+        long transactionIDOfFirstBuy = listOfUsedSales.get(0).transaction.firstTakenFrom;
 
-        for(TransactionWithPhotos sell : listOfUsedSell){
+        for(TransactionWithPhotos sell : listOfUsedSales){
             if(sell.transaction.firstTakenFrom != transactionIDOfFirstBuy){
                 break;
             }
             db.databaseDao().updateAmoutLeftMathAdd(String.valueOf(transactionIDOfFirstBuy), sell.transaction.usedFromFirst);
         }
 
-        List<TransactionWithPhotos> listOfBuys = db.databaseDao().getUsedBuyFrom(firstBuydate, firstBuytime, shortName);
-        List<TransactionWithPhotos> listOfBuysFromRightPosition = listOfBuys;
+        List<TransactionWithPhotos> listOfBuys = db.databaseDao().getUsedBuyFrom(String.valueOf(transactionIDOfFirstBuy), firstBuyDate, firstBuyTime, shortName);
 
-        for(TransactionWithPhotos buyToRemove : listOfBuys){
-            listOfBuysFromRightPosition.remove(buyToRemove);
-            if(buyToRemove.transaction.uidTransaction == transactionIDOfFirstBuy){
-                break;
-            }
-        }
-
-        for(TransactionWithPhotos buy : listOfBuysFromRightPosition){
+        for(TransactionWithPhotos buy : listOfBuys){
             db.databaseDao().resetAmountLeftBuyById(String.valueOf(buy.transaction.uidTransaction));
         }
     }
@@ -289,10 +297,12 @@ public class TransactionOperationController {
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
         BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
-        long firstTakenFrom = 0;
+        long firstTakenFrom = -1;
+        long lastTakenFrom = -1;
+
 
         for(TransactionWithPhotos buy : listOfAvailableBuys) {
-            if(quantity.compareTo(ZEROBIGDECIMAL) < 1) {
+            if(quantity.compareTo(BigDecimal.ZERO) < 1) {
                 break;
             }
 
@@ -302,22 +312,23 @@ public class TransactionOperationController {
                 if(first){
                     usedFromFirst = newAmoutLeftBuy;
                 }
-                newAmoutLeftBuy = ZEROBIGDECIMAL;
+                newAmoutLeftBuy = BigDecimal.ZERO;
             }else{
                 newAmoutLeftBuy = newAmoutLeftBuy.subtract(quantity);
                 if(first){
                     usedFromFirst = quantity;
                 }
-                quantity = ZEROBIGDECIMAL;
+                quantity = BigDecimal.ZERO;
             }
 
             if(first){
                 firstTakenFrom = buy.transaction.uidTransaction;
                 first = false;
             }
+            lastTakenFrom = buy.transaction.uidTransaction;
             db.databaseDao().updateAmoutLeft(String.valueOf(buy.transaction.uidTransaction), String.valueOf(newAmoutLeftBuy));
         }
-        db.databaseDao().updateFifoCalc(String.valueOf(sellTransactionID), String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom));
+        db.databaseDao().updateFifoCalc(String.valueOf(sellTransactionID), String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
     }
 
     public ArrayList<Uri> getPhotos() {

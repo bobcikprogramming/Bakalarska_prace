@@ -63,4 +63,7 @@ public class TransactionEntity {
 
     @ColumnInfo(name = "first_taken_from")
     public long firstTakenFrom;
+
+    @ColumnInfo(name = "last_taken_from")
+    public long lastTakenFrom;
 }

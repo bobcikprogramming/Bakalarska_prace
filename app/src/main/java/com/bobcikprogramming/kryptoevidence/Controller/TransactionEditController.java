@@ -1,10 +1,7 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -17,8 +14,6 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionWithHistory;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -41,6 +36,8 @@ public class TransactionEditController {
     private Context context;
     private String transactionID;
 
+    private BigDecimal EMPTYBIGDECIMAL;
+
     public TransactionEditController(String transactionId, Context context, String transactionID){
         this.context = context;
         this.transactionID = transactionID;
@@ -49,6 +46,8 @@ public class TransactionEditController {
         calendar = new CalendarManager();
         imgManager = new ImageManager();
         transactionOperation = new TransactionOperationController(context);
+
+        EMPTYBIGDECIMAL = shared.getBigDecimal("-1.0");
 
         loadDataFromDB(transactionId);
     }
@@ -277,6 +276,11 @@ public class TransactionEditController {
     public void deleteFromDatabase(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
+        TransactionEntity toRemove = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        if(toRemove.transactionType.equals("Nákup")) {
+            fifoDeleteBuy(transactionID, toRemove.date, toRemove.time, toRemove.shortNameBought);
+        }
+
         List<PhotoEntity> photos = db.databaseDao().getPhotoByTransactionID(transactionID);
 
         for(PhotoEntity photo : photos) {
@@ -288,6 +292,133 @@ public class TransactionEditController {
         db.databaseDao().deleteHistory(transactionID);
         db.databaseDao().deletePhotos(transactionID);
         db.databaseDao().deleteTransactionTable(transactionID);
+    }
+
+    private void fifoDeleteBuy(String transactionID, String date, String time, String shortName){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        List<TransactionWithPhotos> usedBuys = db.databaseDao().getUsedBuyFrom(transactionID ,date, time, shortName);
+
+        // Resetovat všechny nákupy následující po odstraněném.
+        for(TransactionWithPhotos buy : usedBuys) {
+            db.databaseDao().resetAmountLeftBuyById(String.valueOf(buy.transaction.uidTransaction));
+        }
+
+        // Všechny prodeje od prvního prodeje který je na tomto nákupu resetovat. První je potřeba udělat zvlášť.
+        /** TODO: předělat to, aby to začalo od toho kde to jako první vzalo pomocí lasttaken - potřeba zkontrolovat jestli to není mezi first a last */
+        List<TransactionWithPhotos> listOfSales = db.databaseDao().getUsedSellFrom(date, time, shortName);
+        TransactionEntity firstSell = null;
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>> před cyklem");
+        for(TransactionWithPhotos sell : listOfSales){
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>> v cyklu");
+            TransactionWithPhotos lastTakenBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(sell.transaction.lastTakenFrom));
+            if(sell.transaction.lastTakenFrom == Long.parseLong(transactionID) || usedBuys.contains(lastTakenBuy)){
+                firstSell = sell.transaction;
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>> break cyklu");
+                break;
+            }
+        }
+
+        if(firstSell != null) {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>> v ifu");
+            db.databaseDao().resetAmoutLeftUsedSellFromDateAfterIDForSameTime(String.valueOf(firstSell.uidTransaction), firstSell.date, firstSell.time, shortName);
+            /** TODO: Pro první zjistit kolik bylo vzato z prodeje před smazaným prodejem a tuto hodnotu odečíst od obnoveného množství */
+            TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
+            String dateFrom = firstBuy.date;
+            String timeFrom = firstBuy.time;
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetweenWithoutFirstAndLast(String.valueOf(firstSell.firstTakenFrom), transactionID, dateFrom, timeFrom, date, time, shortName);
+
+            BigDecimal restAmount;
+            if(listOfUsedBuyBetween.isEmpty()){
+                BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
+                long firstTakenFrom = -1;
+                long lastTakenFrom = -1;
+                if (firstSell.firstTakenFrom == firstSell.lastTakenFrom) {
+                    restAmount = shared.getBigDecimal(firstSell.quantitySold);
+                } else {
+                    restAmount = shared.getBigDecimal(firstSell.quantitySold).subtract(shared.getBigDecimal(firstSell.usedFromFirst));
+                    usedFromFirst = shared.getBigDecimal(firstSell.usedFromFirst);
+                    firstTakenFrom = firstSell.firstTakenFrom;
+                }
+                db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            }else {
+                restAmount = shared.getBigDecimal(firstSell.quantitySold).subtract(shared.getBigDecimal(firstSell.usedFromFirst));
+
+                System.out.println(">>>>>>>>>>>>>>>>>>>>>> před cyklem between");
+                for (TransactionWithPhotos used : listOfUsedBuyBetween) {
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>> v cyklu between");
+                    if (restAmount.compareTo(BigDecimal.ZERO) < 1) {
+                        System.out.println(">>>>>>>>>>>>>>>>>>>>>> break v cyklu between");
+                        break;
+                    }
+
+                    if (shared.getBigDecimal(used.transaction.quantityBought).compareTo(restAmount) == 1) {
+                        restAmount = BigDecimal.ZERO;
+                        break;
+                    } else {
+                        restAmount = restAmount.subtract(shared.getBigDecimal(used.transaction.quantityBought));
+                    }
+                }
+
+                BigDecimal usedFromFirst = shared.getBigDecimal(firstSell.usedFromFirst);
+                long firstTakenFrom = firstSell.firstTakenFrom;
+                long lastTakenFrom = -1;
+
+                if (firstSell.firstTakenFrom == Long.parseLong(transactionID)) {
+                    usedFromFirst = EMPTYBIGDECIMAL;
+                    firstTakenFrom = -1;
+                }
+                db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            }
+        }
+
+        // Smazat daný nákup.
+        db.databaseDao().setBuyToDeleteById(transactionID);
+
+        // Přepočítat.
+        System.out.println(">>>>>>>>>>>>>>>Přepočítávám date: "+ date + " time: " + time);
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyFrom(date, time, shortName);
+        if(listOfIncompleteSales.isEmpty()){
+            System.out.println(">>>>>>>>>>>>Je to empty");
+        }
+
+        for(TransactionWithPhotos sell : listOfIncompleteSales){
+            System.out.println(">>>>>>>>>>>>>>>Přepočítávám 1. cyklus");
+            BigDecimal usedFromFirst = sell.transaction.usedFromFirst.equals("-1.0") ? EMPTYBIGDECIMAL : shared.getBigDecimal(sell.transaction.usedFromFirst);
+            long firstTakenFrom = sell.transaction.firstTakenFrom;
+            long lastTakenFrom = sell.transaction.lastTakenFrom;
+            BigDecimal inSellLeft = shared.getBigDecimal(sell.transaction.amountLeft);
+
+            List<TransactionWithPhotos> listOfNextBuy = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
+
+            for (TransactionWithPhotos nextBuy : listOfNextBuy) {
+                System.out.println(">>>>>>>>>>>>>>>Přepočítávám 2. cyklus");
+                BigDecimal amountOfNextBuy = shared.getBigDecimal(nextBuy.transaction.amountLeft);
+
+                if(inSellLeft.compareTo(BigDecimal.ZERO) < 1){
+                    break;
+                }
+
+                if(inSellLeft.compareTo(amountOfNextBuy) < 1){
+                    amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
+                    inSellLeft = BigDecimal.ZERO;
+                }else{
+                    inSellLeft = inSellLeft.subtract(amountOfNextBuy);
+                    amountOfNextBuy = BigDecimal.ZERO;
+                }
+
+                if (usedFromFirst.compareTo(EMPTYBIGDECIMAL) == 0) {
+                    firstTakenFrom = nextBuy.transaction.uidTransaction;
+                    usedFromFirst = shared.getBigDecimal(sell.transaction.amountLeft).subtract(inSellLeft);
+                }
+
+                lastTakenFrom = nextBuy.transaction.uidTransaction;
+
+                db.databaseDao().updateAmoutLeft(String.valueOf(nextBuy.transaction.uidTransaction), String.valueOf(amountOfNextBuy));
+            }
+
+            db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+        }
     }
 
     /** https://stackoverflow.com/a/10716773 */
