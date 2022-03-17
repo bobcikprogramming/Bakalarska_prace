@@ -147,7 +147,7 @@ public class TransactionOperationController {
         AppDatabase db = AppDatabase.getDbInstance(context);
         BigDecimal amountLeft = quantity;
 
-        db.databaseDao().resetAmoutLeftUsedBuy(date, time);
+        db.databaseDao().resetAmoutLeftUsedBuy(date, time, shortName);
         resetTransactionSellAfterNewBuy(String.valueOf(transactionID), shortName, date, time);
 
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyFrom(date, time, shortName);
@@ -217,7 +217,7 @@ public class TransactionOperationController {
             /** Pokud je první nákup prováděn až po datu nového nákupu */
             if(firstBuyDate.after(newBuyDate) || (firstBuyDate.equals(newBuyDate) && firstBuyTime.after(newBuyTime))){
                 db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), "-1.0", "-1", "-1");
-                return;
+                continue;
             }
 
             List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyBetweenWithoutFirstAndLast(String.valueOf(firstBuy.transaction.uidTransaction), String.valueOf(transactionID), dateFrom, timeFrom, date, time, shortName);
@@ -259,12 +259,12 @@ public class TransactionOperationController {
             resetTransactionBuyAfterNewSell(shortName, startingDate, startingTime, listOfUsedSales);
         }
 
-        db.databaseDao().resetAmoutLeftUsedSell(date, time);
+        db.databaseDao().resetAmoutLeftUsedSell(date, time, shortName);
 
         List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(date, time, shortName);
         setSellAndBuyForNewSell(String.valueOf(transactionID), quantity, listOfAvailableBuys);
 
-        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfter(date, time, shortName);
+        List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAfterFirst(String.valueOf(transactionID), date, time, shortName);
         for(TransactionWithPhotos sell : listOfIncompleteSales) {
             listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
             if(listOfAvailableBuys.isEmpty()){
@@ -293,7 +293,7 @@ public class TransactionOperationController {
         }
     }
 
-    private void setSellAndBuyForNewSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys ){
+    private void setSellAndBuyForNewSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
         BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
@@ -307,8 +307,8 @@ public class TransactionOperationController {
             }
 
             BigDecimal newAmoutLeftBuy = shared.getBigDecimal(buy.transaction.amountLeft);
-            if(shared.getBigDecimal(buy.transaction.amountLeft).compareTo(quantity) < 1){
-                quantity = quantity.subtract(shared.getBigDecimal(buy.transaction.amountLeft));
+            if(newAmoutLeftBuy.compareTo(quantity) < 1){
+                quantity = quantity.subtract(newAmoutLeftBuy);
                 if(first){
                     usedFromFirst = newAmoutLeftBuy;
                 }
@@ -328,7 +328,7 @@ public class TransactionOperationController {
             lastTakenFrom = buy.transaction.uidTransaction;
             db.databaseDao().updateAmoutLeft(String.valueOf(buy.transaction.uidTransaction), String.valueOf(newAmoutLeftBuy));
         }
-        db.databaseDao().updateFifoCalc(String.valueOf(sellTransactionID), String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+        db.databaseDao().updateFifoCalc(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
     }
 
     public ArrayList<Uri> getPhotos() {
