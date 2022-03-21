@@ -58,6 +58,9 @@ public class TransactionEntity {
     @ColumnInfo(name = "amount_left")
     public String amountLeft;
 
+    @ColumnInfo(name = "amount_left_change_sell")
+    public String amountLeftChangeSell;
+
     @ColumnInfo(name = "used_from_first")
     public String usedFromFirst;
 

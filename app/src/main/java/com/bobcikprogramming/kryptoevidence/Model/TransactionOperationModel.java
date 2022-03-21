@@ -25,6 +25,7 @@ public class TransactionOperationModel {
         transactionEntity.currency = currency;
         transactionEntity.quantitySold = String.valueOf(quantitySold);
         transactionEntity.firstTakenFrom = 0;
+        transactionEntity.amountLeftChangeSell = "0";
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -52,8 +53,7 @@ public class TransactionOperationModel {
         transactionEntity.time = time;
         transactionEntity.currency = currency;
         transactionEntity.quantityBought = String.valueOf(quantityBought);
-
-        transactionEntity.amountLeft = String.valueOf(quantitySold);
+        transactionEntity.amountLeftChangeSell = "0";
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 
@@ -66,7 +66,7 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
-    public void saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, BigDecimal priceSold, ArrayList<String> photosPath) {
+    public long saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, BigDecimal priceSold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -92,6 +92,8 @@ public class TransactionOperationModel {
             photoEntity.transactionId = uidTransaction;
             db.databaseDao().insertPhoto(photoEntity);
         }
+
+        return uidTransaction;
     }
 
     public void createOwnedCryptoEntity(Context context, String shortName, String longName, BigDecimal amount){
