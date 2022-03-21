@@ -65,7 +65,6 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent();
         intent.putExtra("changed", controller.isChanged());
         setResult(RESULT_OK, intent );
-        System.out.println("---------------------volám toto");
         finish();
     }
 
@@ -81,7 +80,6 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
                 if(controller.isChanged() || photoChange){
                     controller.loadDataFromDb();
                     if(deleted){
-                        System.out.println("--------------close: " + String.valueOf(controller.isChanged()));
                         closeActivity();
                     }else {
                         controller.viewPagerAdapterUpdate();

@@ -15,6 +15,7 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class TransactionEditController {
@@ -233,11 +234,7 @@ public class TransactionEditController {
 
             if(isBuy){
                 if(dateOrTimeChange){
-                    if(quantityChange){
-
-                    }else{
-
-                    }
+                    fifoEditTimeBuy(String.valueOf(newTransaction.uidTransaction), newTransaction.date, newTransaction.time, newTransaction.shortNameBought, newTransaction.quantityBought);
                 }else{
                     if(quantityChange){
                         fifoEditAmountBuy(String.valueOf(newTransaction.uidTransaction), newTransaction.date, newTransaction.time, newTransaction.shortNameBought, newTransaction.quantityBought);
@@ -245,11 +242,7 @@ public class TransactionEditController {
                 }
             }else if(isSell){
                 if(dateOrTimeChange){
-                    if(quantityChange){
-
-                    }else{
-
-                    }
+                    fifoEditTimeSell(String.valueOf(newTransaction.uidTransaction), newTransaction.date, newTransaction.time, newTransaction.shortNameSold, newTransaction.quantitySold);
                 }else{
                     if(quantityChange){
                         fifoEditAmountSell(String.valueOf(newTransaction.uidTransaction), newTransaction.date, newTransaction.time, newTransaction.shortNameSold, newTransaction.quantitySold);
@@ -333,13 +326,10 @@ public class TransactionEditController {
         //List<TransactionWithPhotos> usedBuys = db.databaseDao().getUsedBuyFrom(transactionID ,date, time, shortName);
 
         // Všechny prodeje od prvního prodeje který je na tomto nákupu resetovat. První je potřeba udělat zvlášť.
-        resetSales(transactionID, date, time, shortName);
+        resetSales(transactionID, date, time, shortName, false);
 
         // Resetovat všechny nákupy následující po odstraněném.
         db.databaseDao().resetAmountLeftBuyAfterFirst(transactionID, date, time, shortName);
-        /*for(TransactionWithPhotos buy : usedBuys) { // TODO predelat na sql query
-            db.databaseDao().resetAmountLeftBuyById(String.valueOf(buy.transaction.uidTransaction));
-        }*/
 
         // Smazat daný nákup.
         db.databaseDao().setTransactionToDeleteById(transactionID);
@@ -348,16 +338,23 @@ public class TransactionEditController {
         recalculateForEditBuy(date, time, shortName);
     }
 
-    private void resetSales(String transactionID, String date, String time, String shortName){
+    private void resetSales(String transactionID, String date, String time, String shortName, boolean editingTimeBefore){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfSales = db.databaseDao().getUsedSellFrom(date, time, shortName);
         TransactionEntity firstSell = null;
 
         for(TransactionWithPhotos sell : listOfSales){
             String lastTakenBuyID = String.valueOf(sell.transaction.lastTakenFrom);
-            if(!db.databaseDao().findIfExistBuyWithIdForUsedBuyAfter(transactionID, date, time, shortName, lastTakenBuyID).isEmpty()){
-                firstSell = sell.transaction;
-                break;
+            if(editingTimeBefore){
+                if (!db.databaseDao().findIfExistBuyWithIdForUsedBuyAllFrom(date, time, shortName, lastTakenBuyID).isEmpty()) {
+                    firstSell = sell.transaction;
+                    break;
+                }
+            }else {
+                if (db.databaseDao().findIfExistBuyWithIdForUsedBuyFromFirst(transactionID, date, time, shortName, lastTakenBuyID) != null) {
+                    firstSell = sell.transaction;
+                    break;
+                }
             }
         }
 
@@ -374,12 +371,20 @@ public class TransactionEditController {
                 BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
                 long firstTakenFrom = -1;
                 long lastTakenFrom = -1;
-                if (!db.databaseDao().findIfExistBuyWithIdForUsedBuyAfter(transactionID, date, time, shortName, String.valueOf(firstSell.firstTakenFrom)).isEmpty()) {
+                boolean firstIsBetween;
+
+                if(editingTimeBefore){
+                    firstIsBetween = db.databaseDao().findIfExistBuyWithIdForUsedBuyAllFrom(date, time, shortName, String.valueOf(firstSell.firstTakenFrom)) != null;
+                }else{
+                    firstIsBetween = db.databaseDao().findIfExistBuyWithIdForUsedBuyFromFirst(transactionID, date, time, shortName, String.valueOf(firstSell.firstTakenFrom)) != null;
+                }
+                if (firstIsBetween) {
                     restAmount = shared.getBigDecimal(firstSell.quantitySold);
                 } else {
                     restAmount = shared.getBigDecimal(firstSell.quantitySold).subtract(shared.getBigDecimal(firstSell.usedFromFirst));
                     usedFromFirst = shared.getBigDecimal(firstSell.usedFromFirst);
                     firstTakenFrom = firstSell.firstTakenFrom;
+                    lastTakenFrom = firstSell.firstTakenFrom;
                 }
                 db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }else {
@@ -527,10 +532,10 @@ public class TransactionEditController {
     private void fifoEditAmountBuy(String transactionID, String date, String time, String shortName, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
-        // Vzít všechny prodeje od data nákupu a najít první (ten, který končí na daném prodeji nebo který začíná před a končí po).
+        // Vzít všechny prodeje od data nákupu a najít první (ten, který končí na daném nákupu nebo který začíná před a končí po).
         // První prodej zpracovat zvlášť. Ponechat amountLeft před datem editovaného nákupu.
         // Resetovat všechny prodeje následující za prvním.
-        resetSales(transactionID, date, time, shortName);
+        resetSales(transactionID, date, time, shortName, false);
 
         // Resetovat všechny nákupy následující za editovaným.
         db.databaseDao().resetAmountLeftBuyAfterFirst(transactionID, date, time, shortName);
@@ -578,6 +583,138 @@ public class TransactionEditController {
             }
 
             recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+        }
+
+        // Uložím nové hodnoty amountLeft, firstTakenFrom, usedFromFirst a lastTakenFrom do aktualizované transakce.
+        TransactionEntity changedSell = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        newTransaction.amountLeft = changedSell.amountLeft;
+        newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
+        newTransaction.usedFromFirst = changedSell.usedFromFirst;
+        newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
+    }
+
+    private void fifoEditTimeBuy(String transactionID, String date, String time, String shortName, String newAmountLeft){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+
+        // Zkontrolovat, zdali je nový čas/datum nákupu před původním.
+        TransactionEntity editingTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        Date oldDate = calendar.getDateFormat(editingTransaction.date);
+        Date oldTime = calendar.getTimeFormat(editingTransaction.time);
+        Date newDate = calendar.getDateFormat(date);
+        Date newTime = calendar.getTimeFormat(time);
+
+        if(newDate.before(oldDate) || (newDate.equals(oldDate) && newTime.before(oldTime))){
+            // Pokud ano:
+            // Vzít všechny prodeje od nového času/data nákupu a najít první (ten, který končí na prvním nákupu v listu nebo který začíná před a končí po).
+            // První prodej zpracovat zvlášť. Ponechat amountLeft před prvním nákupem.
+            // Resetovat všechny prodeje následující za prvním.
+            resetSales(transactionID, date, time, shortName, true);
+
+            // Resetovat všechny nákupy od nového data včetně.
+            db.databaseDao().resetAmountLeftBuyFrom(date, time, shortName);
+
+            // Nastavit novou hodnotu editovanému nákupu. (amountLeft, date, time)
+            db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
+
+            // Přepočítat od nového data
+            recalculateForEditBuy(date, time, shortName);
+        }else{
+            // Pokud ne:
+            // Vzít všechny prodeje od data nákupu a najít první (ten, který končí na daném nákupu nebo který začíná před a končí po).
+            // První prodej zpracovat zvlášť. Ponechat amountLeft před datem editovaného nákupu.
+            // Resetovat všechny prodeje následující za prvním.
+            resetSales(transactionID, editingTransaction.date, editingTransaction.time, shortName, false);
+
+            // Resetovat všechny nákupy následující za editovaným.
+            db.databaseDao().resetAmountLeftBuyAfterFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+
+            // Nastavit novou hodnotu editovanému nákupu. (amountLeft, date, time)
+            db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
+
+            // Přepočítat od původního data
+            recalculateForEditBuy(editingTransaction.date, editingTransaction.time, shortName);
+        }
+
+        // Uložit novou hodnotu amountLeft do newTransaction.
+        TransactionEntity changedBuy = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        newTransaction.amountLeft = changedBuy.amountLeft;
+    }
+
+    private void fifoEditTimeSell(String transactionID, String date, String time, String shortName, String newAmountLeft){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+
+        // Zkontrolovat, zdali je nový čas/datum prodeje před původním.
+        TransactionEntity editingTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        Date oldDate = calendar.getDateFormat(editingTransaction.date);
+        Date oldTime = calendar.getTimeFormat(editingTransaction.time);
+        Date newDate = calendar.getDateFormat(date);
+        Date newTime = calendar.getTimeFormat(time);
+        TransactionEntity firstSell;
+
+        if(newDate.before(oldDate) || (newDate.equals(oldDate) && newTime.before(oldTime))) {
+            // Pokud ano:
+            // Vezmu všechny prodeje od nového času/date (včetně). A vyberu první.
+            List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellFrom(date, time, shortName);
+            firstSell = listOfUsedSales.get(0).transaction;
+
+            // Budu je procházet a dokud bude mít prodej první nákup stejný jako měněný prodej, tak tomu prvnímu nákupu přičtu použito z prvního.
+            int i = 0;
+            do {
+                db.databaseDao().updateAmoutLeftMathAdd(String.valueOf(listOfUsedSales.get(i).transaction.firstTakenFrom), listOfUsedSales.get(i).transaction.usedFromFirst);
+                i++;
+            }while(i < listOfUsedSales.size() && listOfUsedSales.get(i).transaction.firstTakenFrom == firstSell.firstTakenFrom);
+
+            // Poté ty prodeje vyresetuji (od toho nového data včetně).
+            db.databaseDao().resetAmoutLeftUsedSellAllFrom(date, time, shortName);
+
+            // Nastavím novou hodnotu měněnému (amountLeft, date, time).
+            db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
+
+            // Obnovit zbylé nákupy.
+            TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
+            db.databaseDao().resetAmountLeftBuyAfterFirst(String.valueOf(firstBuy.uidTransaction), firstBuy.date, firstBuy.time, shortName);
+
+            // Přepočítat od nového data. Beru včetně prvního (ten zůstal, jen má jinou hodnotu).
+            List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyAllFrom(date, time, shortName);
+            for(TransactionWithPhotos sell : listOfIncompleteSales) {
+                List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
+                if(listOfAvailableBuys.isEmpty()){
+                    break;
+                }
+                recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+            }
+        }else {
+            // Pokud ne:
+            // Vezmu všechny prodeje od toho co měním (včetně toho co měním). A vyberu ten co měním.
+            List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellAllFromFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+            firstSell = listOfUsedSales.get(0).transaction;
+
+            // Budu je procházet a dokud bude mít prodej první nákup stejný jako měněný prodej, tak tomu prvnímu nákupu přičtu použito z prvního.
+            int i = 0;
+            do {
+                db.databaseDao().updateAmoutLeftMathAdd(String.valueOf(listOfUsedSales.get(i).transaction.firstTakenFrom), listOfUsedSales.get(i).transaction.usedFromFirst);
+                i++;
+            }while(i < listOfUsedSales.size() && listOfUsedSales.get(i).transaction.firstTakenFrom == firstSell.firstTakenFrom);
+
+            // Poté vyresetuji prodeje od měněného.
+            db.databaseDao().resetAmoutLeftUsedSellAfterFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+
+            // Nastavím novou hodnotu měněnému (amountLeft, date, time).
+            db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
+
+            // Obnovit zbylé nákupy.
+            TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
+            db.databaseDao().resetAmountLeftBuyAfterFirst(String.valueOf(firstBuy.uidTransaction), firstBuy.date, firstBuy.time, shortName);
+
+            // Přepočítat od původního. Beru včetně prvního (ten zůstal, jen má jinou hodnotu).
+            List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyFromFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+            for(TransactionWithPhotos sell : listOfIncompleteSales) {
+                List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(sell.transaction.date, sell.transaction.time, shortName);
+                if(listOfAvailableBuys.isEmpty()){
+                    break;
+                }
+                recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+            }
         }
 
         // Uložím nové hodnoty amountLeft, firstTakenFrom, usedFromFirst a lastTakenFrom do aktualizované transakce.

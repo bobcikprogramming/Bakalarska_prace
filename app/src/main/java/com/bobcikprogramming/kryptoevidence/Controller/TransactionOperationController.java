@@ -147,7 +147,7 @@ public class TransactionOperationController {
         AppDatabase db = AppDatabase.getDbInstance(context);
         BigDecimal amountLeft = quantity;
 
-        db.databaseDao().resetAmoutLeftUsedBuy(date, time, shortName);
+        db.databaseDao().resetAmountLeftBuyAfterFirst(String.valueOf(transactionID), date, time, shortName);
         resetTransactionSellAfterNewBuy(String.valueOf(transactionID), shortName, date, time);
 
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellNotEmptyFrom(date, time, shortName);
@@ -259,7 +259,7 @@ public class TransactionOperationController {
             resetTransactionBuyAfterNewSell(shortName, startingDate, startingTime, listOfUsedSales);
         }
 
-        db.databaseDao().resetAmoutLeftUsedSell(date, time, shortName);
+        db.databaseDao().resetAmoutLeftUsedSellAfterFirst(String.valueOf(transactionID), date, time, shortName);
 
         List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyTo(date, time, shortName);
         setSellAndBuyForNewSell(String.valueOf(transactionID), quantity, listOfAvailableBuys);

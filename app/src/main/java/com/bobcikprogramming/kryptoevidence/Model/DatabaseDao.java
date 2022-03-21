@@ -61,6 +61,9 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND short_name_sold = :shortName AND ((date = :date AND time = :time AND transaction_id >= :transactionID) OR (date = :date AND time > :time) OR date > :date) AND amount_left > 0.0 ORDER BY date, time")
     List<TransactionWithPhotos> getSellNotEmptyFromFirst(String transactionID, String date, String time, String shortName);
 
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND short_name_sold = :shortName AND ((date = :date AND time >= :time) OR date > :date) AND amount_left > 0.0 ORDER BY date, time")
+    List<TransactionWithPhotos> getSellNotEmptyAllFrom(String date, String time, String shortName);
+
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND ((date = :date AND time > :time) OR date > :date) AND short_name_sold = :shortName AND amount_left != quantity_sold ORDER BY date, time")
     List<TransactionWithPhotos> getUsedSellAfter(String date, String time, String shortName);
 
@@ -80,7 +83,10 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> getNotEmptyBuyTo(String date, String time, String shortName);
 
     @Query("SELECT * FROM (SELECT * FROM TransactionEntity WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND amount_left != quantity_bought AND ((date = :date AND time = :time AND transaction_id >= :transactionID) OR (date = :date AND time > :time) OR date > :date) ORDER BY date, time) WHERE transaction_id = :lookingForID")
-    List<TransactionWithPhotos> findIfExistBuyWithIdForUsedBuyAfter(String transactionID, String date, String time, String shortName, String lookingForID);
+    TransactionWithPhotos findIfExistBuyWithIdForUsedBuyFromFirst(String transactionID, String date, String time, String shortName, String lookingForID);
+
+    @Query("SELECT * FROM (SELECT * FROM TransactionEntity WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND amount_left != quantity_bought AND ((date = :date AND time >= :time) OR date > :date) ORDER BY date, time) WHERE transaction_id = :lookingForID")
+    List<TransactionWithPhotos> findIfExistBuyWithIdForUsedBuyAllFrom(String date, String time, String shortName, String lookingForID);
 
     @Insert
     long insertTransaction(TransactionEntity transaction);
@@ -106,11 +112,11 @@ public interface DatabaseDao {
     @Query("UPDATE TransactionEntity SET amount_left = :amountLeft WHERE transaction_id = :transactionID")
     void updateAmoutLeft(String transactionID, String amountLeft);
 
+    @Query("UPDATE TransactionEntity SET amount_left = :amountLeft, date = :date, time = :time WHERE transaction_id = :transactionID")
+    void updateForEditingTime(String transactionID, String amountLeft, String date, String time);
+
     @Query("UPDATE TransactionEntity SET amount_left = (amount_left + :amountLeft) WHERE transaction_id = :transactionID")
     void updateAmoutLeftMathAdd(String transactionID, String amountLeft);
-
-    @Query("UPDATE TransactionEntity SET amount_left = quantity_bought WHERE ((date = :date AND time > :time) OR date > :date) AND transaction_type = 'Nákup' AND short_name_bought = :shortName")
-    void resetAmoutLeftUsedBuy(String date, String time, String shortName);
 
     @Query("UPDATE TransactionEntity SET amount_left = quantity_bought WHERE transaction_id = :transactionID")
     void resetAmountLeftBuyById(String transactionID);
@@ -118,8 +124,11 @@ public interface DatabaseDao {
     @Query("UPDATE TransactionEntity SET amount_left = quantity_bought WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND ((date = :date AND time = :time AND transaction_id > :transactionID) OR (date = :date AND time > :time) OR date > :date)")
     void resetAmountLeftBuyAfterFirst(String transactionID, String date, String time, String shortName);
 
-    @Query("UPDATE TransactionEntity SET amount_left = quantity_sold, used_from_first = -1.0, first_taken_from = -1, last_taken_from = -1 WHERE ((date = :date AND time > :time) OR date > :date) AND transaction_type = 'Prodej' AND short_name_bought = :shortName")
-    void resetAmoutLeftUsedSell(String date, String time, String shortName);
+    @Query("UPDATE TransactionEntity SET amount_left = quantity_bought WHERE transaction_type = 'Nákup' AND short_name_bought = :shortName AND ((date = :date AND time >= :time) OR date > :date)")
+    void resetAmountLeftBuyFrom(String date, String time, String shortName);
+
+    @Query("UPDATE TransactionEntity SET amount_left = quantity_sold, used_from_first = -1.0, first_taken_from = -1, last_taken_from = -1 WHERE ((date = :date AND time >= :time) OR date > :date) AND transaction_type = 'Prodej' AND short_name_sold = :shortName")
+    void resetAmoutLeftUsedSellAllFrom(String date, String time, String shortName);
 
     @Query("UPDATE TransactionEntity SET amount_left = quantity_sold, used_from_first = -1.0, first_taken_from = -1, last_taken_from = -1 WHERE transaction_type = 'Prodej' AND short_name_sold = :shortName AND ((date = :date AND time = :time AND transaction_id > :transactionID) OR (date = :date AND time > :time) OR date > :date)")
     void resetAmoutLeftUsedSellAfterFirst(String transactionID, String date, String time, String shortName);
