@@ -42,6 +42,8 @@
     <color name="recyclerItemOfCryptoSelectionLongNameTextColor">@color/white</color>
     <color name="recyclerItemOfCryptoSelectionShortNameTextColor">#A0A0A0</color>
     <color name="historyHeadlineTextColor">#F9B720</color>
+    <color name="PDFDate">#DDDDDD</color>
+    <color name="PDFYear">#FFFFFF</color>
 
 
     <!-- Pozadí -->
@@ -56,6 +58,8 @@
     <color name="button">#EBB742</color>
     <color name="searchBackground">#303030</color>
     <color name="historyBackground">#303030</color>
+    <color name="PDFCardBackground">#131313</color>
+    <color name="PDFImage">#EBB742</color>
 
     <!-- Drawable -->
     <color name="roundedImageStroke">#EBB742</color>

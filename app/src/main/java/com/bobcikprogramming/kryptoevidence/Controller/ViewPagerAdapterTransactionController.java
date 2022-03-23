@@ -21,9 +21,13 @@ public class ViewPagerAdapterTransactionController {
     private List<TransactionHistoryEntity> dataListHistory;
     private int position;
 
+    private CalendarManager calendar;
+
     public ViewPagerAdapterTransactionController(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory){
         this.dataList = dataList;
         this.dataListHistory = dataListHistory;
+
+        calendar = new CalendarManager();
     }
 
     public ArrayList<TransactionHistoryList> sortListByDate(ArrayList<TransactionHistoryList> data){
@@ -99,7 +103,7 @@ public class ViewPagerAdapterTransactionController {
 
         sixthRow.setLeftDesc("Datum");
         sixthRow.setRightDesc("Čas");
-        sixthRow.setLeftValue(transaction.date);
+        sixthRow.setLeftValue(calendar.getDateFormatFromDatabase(transaction.date));
         sixthRow.setRightValue(transaction.time);
 
 
@@ -192,7 +196,7 @@ public class ViewPagerAdapterTransactionController {
 
         eighthRow.setLeftDesc("Datum");
         eighthRow.setRightDesc("Čas");
-        eighthRow.setLeftValue(transaction.date);
+        eighthRow.setLeftValue(calendar.getDateFormatFromDatabase(transaction.date));
         eighthRow.setRightValue(transaction.time);
 
         transactionInfoList.add(firstRow);
@@ -276,7 +280,7 @@ public class ViewPagerAdapterTransactionController {
                 }
                 if(transactionHistory.date != null){
                     transaction.setDateDesc("Datum provedení");
-                    transaction.setDateValue(transactionHistory.date);
+                    transaction.setDateValue(calendar.getDateFormatFromDatabase(transactionHistory.date));
                 }
                 if(transactionHistory.time != null){
                     transaction.setTimeDesc("Čas provedení");

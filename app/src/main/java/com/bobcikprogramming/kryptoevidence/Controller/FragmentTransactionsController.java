@@ -52,7 +52,7 @@ public class FragmentTransactionsController {
         TransactionWithPhotos tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
                 try{
                     Date dateFirst = format.parse(data.get(j).transaction.date);
                     Date dateSecond = format.parse(data.get(j+1).transaction.date);
@@ -93,14 +93,14 @@ public class FragmentTransactionsController {
             int yearFrom = calendarDateFrom.get(Calendar.YEAR);
             int monthFrom = calendarDateFrom.get(Calendar.MONTH) + 1;
             int dayFrom = calendarDateFrom.get(Calendar.DAY_OF_MONTH);
-            String dateFrom = dayFrom + "." + monthFrom + "." + yearFrom;
+            String dateFrom = yearFrom + "." + monthFrom + "." + dayFrom;
 
             int yearTo = calendarDateTo.get(Calendar.YEAR);
             int monthTo = calendarDateTo.get(Calendar.MONTH) + 1;
             int dayTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
-            String dateTo = dayTo + "." + monthTo + "." + yearTo;
+            String dateTo = yearTo + "." + monthTo + "." + dayTo;
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
             List<TransactionWithPhotos> newDataList = new ArrayList<TransactionWithPhotos>();
 
@@ -132,6 +132,7 @@ public class FragmentTransactionsController {
         for (TransactionWithPhotos transaction : dataFromDatabase) {
             try {
                 Date dateOfTransaction = dateFormat.parse(transaction.transaction.date);
+                System.out.println("----------------: dateFrom: "+String.valueOf(dateFromParsed) + " dateOfTransaction: " + dateOfTransaction);
                 /** https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java */
                 if (!dateOfTransaction.before(dateFromParsed) && !dateOfTransaction.after(dateToParsed)) {
                     newDataList.add(transaction);

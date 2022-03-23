@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
@@ -25,11 +26,13 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
     private View.OnClickListener myClickListener;
 
     private SharedMethods shared;
+    private CalendarManager calendar;
 
     public RecyclerViewTransactions(Context context, View.OnClickListener myClickListener) {
         this.context = context;
         this. myClickListener = myClickListener;
         shared = new SharedMethods();
+        calendar = new CalendarManager();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity transaction = data.transaction;
 
         holder.textViewOperation.setText(transaction.transactionType);
-        holder.textViewDate.setText(transaction.date);
+        holder.textViewDate.setText(calendar.getDateFormatFromDatabase(transaction.date));
 
         changeItemViewByTransactionType(transaction.transactionType, holder);
         loadDataToItems(transaction.transactionType, holder, data);

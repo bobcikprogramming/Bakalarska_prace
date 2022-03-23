@@ -227,7 +227,7 @@
     <style name="DataPicker" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="colorAccent">@color/dataPickerHeadlineTextColor</item>                          <!--header background-->
         <item name="android:windowBackground">@color/dataPickerBackground</item>                    <!--calendar background-->
-        <item name="android:colorControlActivated">@color/dataPickerSelected</item>                       <!--selected day-->
+        <item name="android:colorControlActivated">@color/dataPickerSelected</item>                 <!--selected day-->
         <item name="android:colorControlHighlight">@color/dataPickerSelecting</item>                <!--selecting day-->
         <item name="android:textColorPrimary">@color/dataPickerTextColor</item>                     <!--days of the month-->
         <item name="android:textColorSecondary">@color/dataPickerHeadlineTextColor</item>           <!--days of the week-->
@@ -487,5 +487,16 @@
     </style>
 
     <!-- __________ Konex: Styl dialogového okna pro uložení změny __________ -->
+
+
+    <!-- Začátek: Styl pro year dialog picker -->
+    <!-- https://stackoverflow.com/a/53300524 -->
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/button</item>  // you can change the color of the yearPiker dialog
+        <item name="android:textColorPrimary">@color/button</item> // you can change the color of the yearPiker dialog
+    </style>
+
+    <!-- __________ Konex: Styl pro year dialog picker __________ -->
 
 </resources>

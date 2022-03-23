@@ -228,7 +228,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 break;
         }
         valueFee.setText(String.valueOf(transaction.fee));
-        valueDate.setText(transaction.date);
+        valueDate.setText(calendar.getDateFormatFromDatabase(transaction.date));
         valueTime.setText(transaction.time);
     }
 

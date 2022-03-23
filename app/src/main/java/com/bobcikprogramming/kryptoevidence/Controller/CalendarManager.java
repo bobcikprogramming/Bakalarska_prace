@@ -6,8 +6,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -132,6 +135,13 @@ public class CalendarManager {
         return actualDay;
     }
 
+    public String getActualYear(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("yyyy");
+        String actualYear = dateFormatCompare.format(calendarDate.getTime());
+        return actualYear;
+    }
+
     public String getActualTime(){
         Calendar calendarDate = Calendar.getInstance();
         SimpleDateFormat dateFormatCompare = new SimpleDateFormat("HH:mm");
@@ -191,5 +201,29 @@ public class CalendarManager {
         long maxDate = isDateFrom ? calendarDateTo.getTimeInMillis() : System.currentTimeMillis(); /** https://stackoverflow.com/a/11430439 */
         dialog.getDatePicker().setMaxDate(maxDate); /** https://stackoverflow.com/a/20971151 */
         dialog.show();
+    }
+
+    public String getDateFormatToDatabase(String date){
+        String result = "";
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat dateFormatSecond = new SimpleDateFormat("yyyy.MM.dd");
+            result = dateFormatSecond.format(dateFormat.parse(date));
+        } catch (ParseException e) {
+            System.err.println("Chyba při parsování data: "+e);
+        }
+        return result;
+    }
+
+    public String getDateFormatFromDatabase(String date){
+        String result = "";
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+            SimpleDateFormat dateFormatSecond = new SimpleDateFormat("dd.MM.yyyy");
+            result = dateFormatSecond.format(dateFormat.parse(date));
+        } catch (ParseException e) {
+            System.err.println("Chyba při parsování data: "+e);
+        }
+        return result;
     }
 }
