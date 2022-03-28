@@ -58,6 +58,10 @@ public class SharedMethods {
         return new BigDecimal(stringFrom);
     }
 
+    public BigDecimal getBigDecimal(Double doubleFrom) {
+        return new BigDecimal(doubleFrom);
+    }
+
     public String getStringByEditDouble(EditText stringFrom){
         String toEdit = stringFrom.getText().toString();
         do {
@@ -72,14 +76,14 @@ public class SharedMethods {
         return toEdit;
     }
 
-    public BigDecimal getPrice(EditText etQuantity, EditText etPrice, EditText etFee) {
-        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) + editTextToDouble(etFee);
+    public BigDecimal getPrice(EditText etPrice, EditText etFee) {
+        double toRound = editTextToDouble(etPrice) + editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
         return BigDecimal.valueOf(result);
     }
 
-    public BigDecimal getProfit(EditText etQuantity, EditText etPrice, EditText etFee) {
-        double toRound = (editTextToDouble(etQuantity) * editTextToDouble(etPrice)) - editTextToDouble(etFee);
+    public BigDecimal getProfit(EditText etPrice, EditText etFee) {
+        double toRound = editTextToDouble(etPrice) - editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
         return BigDecimal.valueOf(result);
     }
@@ -141,5 +145,13 @@ public class SharedMethods {
          //   number = number.replaceAll("...(?!$)", "$0 ");
         //}
         return number;
+    }
+
+    public Double getTwoDecimalDouble(Double toEdit){
+        return Math.round(toEdit * 100.0) / 100.0;
+    }
+
+    public Double getTwoDecimalDouble(String toEdit){
+        return Math.round(Double.parseDouble(toEdit) * 100.0) / 100.0;
     }
 }

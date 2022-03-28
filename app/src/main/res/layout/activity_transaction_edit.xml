@@ -72,7 +72,9 @@
                     style="@style/AddTransactionUnderline"/>
 
                 <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
+                    style="@style/AddTransactionItemLinearLayout"
+                    android:id="@+id/layoutRowSecond"
+                    android:visibility="visible">
 
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
@@ -86,10 +88,14 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
+                    style="@style/AddTransactionUnderline"
+                    android:id="@+id/underlineRowSecond"
+                    android:visibility="visible"/>
 
                 <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
+                    style="@style/AddTransactionItemLinearLayout"
+                    android:id="@+id/layoutRowThird"
+                    android:visibility="visible">
 
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
@@ -103,7 +109,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
+                    style="@style/AddTransactionUnderline"
+                    android:id="@+id/underlineRowThird"
+                    android:visibility="visible"/>
 
                 <LinearLayout
                     style="@style/AddTransactionItemLinearLayout"
@@ -166,6 +174,27 @@
                 <LinearLayout
                     style="@style/AddTransactionUnderline"
                     android:id="@+id/underlineRowSixth"
+                    android:visibility="visible"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout"
+                    android:id="@+id/layoutRowSeventh"
+                    android:visibility="visible">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descRowSeventh"
+                        android:text="Cena v měně" />
+
+                    <Spinner
+                        style="@style/AddTransactionItemSpinner"
+                        android:id="@+id/spinnerRowSeventh"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"
+                    android:id="@+id/underlineRowSeventh"
                     android:visibility="visible"/>
 
                 <LinearLayout

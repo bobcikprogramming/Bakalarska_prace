@@ -39,7 +39,7 @@ public class FragmentPDF extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pdf, container, false);
 
         calendar = new CalendarManager();
-        controller = new FragmentPDFController(getContext());
+        controller = new FragmentPDFController(getContext(), getActivity());
 
         setupUIViews(view);
 

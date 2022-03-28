@@ -60,7 +60,7 @@ public class TransactionEditController {
         transactionWithHistory = db.databaseDao().getTransactionByTransactionHistoryID(transactionID);
     }
 
-    public void getUpdateStatus(EditText valueRowFirst, EditText valueRowSecond, Spinner spinnerRowThird, EditText valueRowFifth, EditText valueRowSixth, EditText valueFee, TextView valueDate, TextView valueTime, String shortNameCryptoSell, String longNameCryptoSell){
+    public void getUpdateStatus(EditText valueRowFirst, EditText valueRowSecond, Spinner spinnerRowThird, EditText valueRowFifth, EditText valueRowSixth, Spinner spinnerRowSeventh, EditText valueFee, TextView valueDate, TextView valueTime, String shortNameCryptoSell, String longNameCryptoSell){
         TransactionEntity transaction = getTransactionEntity();
         newTransaction = new TransactionEntity();
         transactionHistory = new TransactionHistoryEntity();
@@ -76,7 +76,7 @@ public class TransactionEditController {
                 newTransaction.longNameBought = transaction.longNameBought;
                 newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
                 newTransaction.priceBought = shared.getStringFromBigDecimal(valueRowSecond);
-                newTransaction.quantitySold = String.valueOf(shared.getPrice(valueRowFirst, valueRowSecond, valueFee));
+                newTransaction.quantitySold = String.valueOf(shared.getPrice(valueRowSecond, valueFee));
 
                 operationType = 0;
                 shortName = transaction.shortNameBought;
@@ -84,16 +84,16 @@ public class TransactionEditController {
                 quantityOld = shared.getBigDecimal(transaction.quantityBought);
                 quantityNew = shared.getBigDecimal(newTransaction.quantityBought);
 
-                if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0){
+                if(!newTransaction.quantityBought.equals(transaction.quantityBought)){
                     transactionHistory.quantityBought = transaction.quantityBought;
                     quantityChange = true;
                     changed = true;
                 }
-                if(newTransaction.priceBought.compareTo(transaction.priceBought) != 0){
+                if(!newTransaction.priceBought.equals(transaction.priceBought)){
                     transactionHistory.priceBought = transaction.priceBought;
                     changed = true;
                 }
-                if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
+                if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
                     transactionHistory.quantitySold = transaction.quantitySold;
                     changed = true;
                 }
@@ -103,7 +103,7 @@ public class TransactionEditController {
                 newTransaction.longNameSold = transaction.longNameSold;
                 newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFirst);
                 newTransaction.priceSold = shared.getStringFromBigDecimal(valueRowSecond);
-                newTransaction.quantityBought = String.valueOf(shared.getProfit(valueRowFirst, valueRowSecond, valueFee));
+                newTransaction.quantityBought = String.valueOf(shared.getProfit(valueRowSecond, valueFee));
 
                 operationType = 1;
                 shortName = transaction.shortNameSold;
@@ -112,16 +112,16 @@ public class TransactionEditController {
                 quantityNew = shared.getBigDecimal(newTransaction.quantitySold);
 
 
-                if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
+                if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
                     quantityChange = true;
                     transactionHistory.quantitySold = transaction.quantitySold;
                     changed = true;
                 }
-                if(newTransaction.priceSold.compareTo(transaction.priceSold) != 0){
+                if(!newTransaction.priceSold.equals(transaction.priceSold)){
                     transactionHistory.priceSold = transaction.priceSold;
                     changed = true;
                 }
-                if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0){
+                if(!newTransaction.quantityBought.equals(transaction.quantityBought)){
                     transactionHistory.quantityBought = transaction.quantityBought;
                     changed = true;
                 }
@@ -158,12 +158,11 @@ public class TransactionEditController {
             newTransaction.shortNameBought = transaction.shortNameBought;
             newTransaction.longNameBought = transaction.longNameBought;
             newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
-            newTransaction.priceBought =  shared.getStringFromBigDecimal(valueRowSecond);
-            newTransaction.currency =  shared.getString(spinnerRowThird);
+            newTransaction.priceBought =  shared.getStringFromBigDecimal(valueRowSixth);
+            newTransaction.currency =  shared.getString(spinnerRowSeventh);
             newTransaction.shortNameSold = shortNameCryptoSell == null ? transaction.shortNameSold : shortNameCryptoSell;
             newTransaction.longNameSold = longNameCryptoSell == null ? transaction.longNameSold : longNameCryptoSell;
             newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFifth);
-            newTransaction.priceSold = shared.getStringFromBigDecimal(valueRowSixth);
             newTransaction.fee = shared.getFee(valueFee);
             newTransaction.date = calendar.getDateFormatToDatabase(shared.getString(valueDate));
             newTransaction.time = shared.getString(valueTime);
@@ -179,12 +178,12 @@ public class TransactionEditController {
             quantityChangeNew = shared.getBigDecimal(newTransaction.quantitySold);
 
             transactionHistory.transactionType = transaction.transactionType;
-            if(newTransaction.quantityBought.compareTo(transaction.quantityBought) != 0) {
+            if(!newTransaction.quantityBought.equals(transaction.quantityBought)) {
                 quantityBuyChanged = true;
                 transactionHistory.quantityBought = transaction.quantityBought;
                 changed = true;
             }
-            if(newTransaction.priceBought.compareTo(transaction.priceBought) != 0){
+            if(!newTransaction.priceBought.equals(transaction.priceBought)){
                 transactionHistory.priceBought = transaction.priceBought;
                 changed = true;
             }
@@ -200,13 +199,9 @@ public class TransactionEditController {
                 transactionHistory.longNameSold = transaction.longNameSold;
                 changed = true;
             }
-            if(newTransaction.quantitySold.compareTo(transaction.quantitySold) != 0){
+            if(!newTransaction.quantitySold.equals(transaction.quantitySold)){
                 quantitySellChanged = true;
                 transactionHistory.quantitySold = transaction.quantitySold;
-                changed = true;
-            }
-            if(newTransaction.priceSold.compareTo(transaction.priceSold) != 0){
-                transactionHistory.priceSold = transaction.priceSold;
                 changed = true;
             }
             if (newTransaction.fee.compareTo(transaction.fee) != 0) {
@@ -258,6 +253,7 @@ public class TransactionEditController {
                         newTransaction.amountLeft = changedSell.amountLeft;
                         newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
                         newTransaction.usedFromFirst = changedSell.usedFromFirst;
+                        newTransaction.usedFromLast = changedSell.usedFromLast;
                         newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
                     }
                 }
@@ -268,12 +264,13 @@ public class TransactionEditController {
                     if(quantityBuyChanged || quantitySellChanged){
                         fifoEditAmountChange(String.valueOf(newTransaction.uidTransaction), newTransaction.date, newTransaction.time, newTransaction.shortNameBought, newTransaction.shortNameSold, newTransaction.quantityBought, newTransaction.quantitySold);
                     }else{
-                        TransactionEntity changedSell = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
-                        newTransaction.amountLeft = changedSell.amountLeft;
-                        newTransaction.amountLeftChangeSell = changedSell.amountLeftChangeSell;
-                        newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
-                        newTransaction.usedFromFirst = changedSell.usedFromFirst;
-                        newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
+                        TransactionEntity changedChange = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+                        newTransaction.amountLeft = changedChange.amountLeft;
+                        newTransaction.amountLeftChangeSell = changedChange.amountLeftChangeSell;
+                        newTransaction.firstTakenFrom = changedChange.firstTakenFrom;
+                        newTransaction.usedFromFirst = changedChange.usedFromFirst;
+                        newTransaction.usedFromLast = changedChange.usedFromLast;
+                        newTransaction.lastTakenFrom = changedChange.lastTakenFrom;
                     }
                 }
             }
@@ -370,7 +367,6 @@ public class TransactionEditController {
     private void resetSales(String transactionID, String date, String time, String shortName, boolean editingTimeBefore){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfSales = db.databaseDao().getUsedSellChangeFrom(date, time, shortName);
-        System.out.println("----------------- size:"+listOfSales.size() + " first: " + listOfSales.get(0).transaction.date);
         TransactionEntity firstSell = null;
 
         for(TransactionWithPhotos sell : listOfSales){
@@ -399,7 +395,8 @@ public class TransactionEditController {
 
             BigDecimal restAmount;
             if(listOfUsedBuyBetween.isEmpty()){
-                BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
+                String usedFromFirst = "-1.0";
+                String usedFromLast = "-1.0";
                 long firstTakenFrom = -1;
                 long lastTakenFrom = -1;
                 boolean firstIsBetween;
@@ -413,14 +410,15 @@ public class TransactionEditController {
                     restAmount = shared.getBigDecimal(firstSell.quantitySold);
                 } else {
                     restAmount = shared.getBigDecimal(firstSell.quantitySold).subtract(shared.getBigDecimal(firstSell.usedFromFirst));
-                    usedFromFirst = shared.getBigDecimal(firstSell.usedFromFirst);
+                    usedFromFirst = firstSell.usedFromFirst;
+                    usedFromLast = firstSell.usedFromLast;
                     firstTakenFrom = firstSell.firstTakenFrom;
                     lastTakenFrom = firstSell.firstTakenFrom;
                 }
                 if(firstSell.transactionType.equals("Prodej")){
-                    db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                    db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
                 }else{
-                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
                 }
             }else {
                 restAmount = shared.getBigDecimal(firstSell.quantitySold).subtract(shared.getBigDecimal(firstSell.usedFromFirst));
@@ -438,18 +436,19 @@ public class TransactionEditController {
                     }
                 }
 
-                BigDecimal usedFromFirst = shared.getBigDecimal(firstSell.usedFromFirst);
+                String usedFromFirst = firstSell.usedFromFirst;
+                String usedFromLast = "-1.0";
                 long firstTakenFrom = firstSell.firstTakenFrom;
                 long lastTakenFrom = -1;
 
                 if (firstSell.firstTakenFrom == Long.parseLong(transactionID)) {
-                    usedFromFirst = EMPTYBIGDECIMAL;
+                    usedFromFirst = "-1.0";
                     firstTakenFrom = -1;
                 }
                 if (firstSell.transactionType.equals("Prodej")) {
-                    db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                    db.databaseDao().updateFifoCalc(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
                 }else{
-                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(firstSell.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
                 }
             }
         }
@@ -461,6 +460,7 @@ public class TransactionEditController {
 
         for(TransactionWithPhotos sell : listOfIncompleteSales){
             BigDecimal usedFromFirst = sell.transaction.usedFromFirst.equals("-1.0") ? EMPTYBIGDECIMAL : shared.getBigDecimal(sell.transaction.usedFromFirst);
+            BigDecimal usedFromLast = sell.transaction.usedFromLast.equals("-1.0") ? EMPTYBIGDECIMAL : shared.getBigDecimal(sell.transaction.usedFromLast);
             long firstTakenFrom = sell.transaction.firstTakenFrom;
             long lastTakenFrom = sell.transaction.lastTakenFrom;
             BigDecimal inSellLeft;
@@ -481,9 +481,11 @@ public class TransactionEditController {
 
                 if(inSellLeft.compareTo(amountOfNextBuy) < 1){
                     amountOfNextBuy = amountOfNextBuy.subtract(inSellLeft);
+                    usedFromLast = inSellLeft;
                     inSellLeft = BigDecimal.ZERO;
                 }else{
                     inSellLeft = inSellLeft.subtract(amountOfNextBuy);
+                    usedFromLast = amountOfNextBuy;
                     amountOfNextBuy = BigDecimal.ZERO;
                 }
 
@@ -502,9 +504,9 @@ public class TransactionEditController {
             }
 
             if(sell.transaction.transactionType.equals("Prodej")) {
-                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }else{
-                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }
         }
     }
@@ -559,6 +561,7 @@ public class TransactionEditController {
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
         BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
+        BigDecimal usedFromLast = EMPTYBIGDECIMAL;
         long firstTakenFrom = -1;
         long lastTakenFrom = -1;
 
@@ -574,12 +577,14 @@ public class TransactionEditController {
                 if (first) {
                     usedFromFirst = newAmoutLeftBuy;
                 }
+                usedFromLast = newAmoutLeftBuy;
                 newAmoutLeftBuy = BigDecimal.ZERO;
             } else {
                 newAmoutLeftBuy = newAmoutLeftBuy.subtract(quantity);
                 if (first) {
                     usedFromFirst = quantity;
                 }
+                usedFromLast = quantity;
                 quantity = BigDecimal.ZERO;
             }
 
@@ -592,9 +597,9 @@ public class TransactionEditController {
         }
         TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionHistoryID(sellTransactionID).transaction;
         if(sellEntity.transactionType.equals("Prodej")) {
-            db.databaseDao().updateFifoCalc(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            db.databaseDao().updateFifoCalc(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }else{
-            db.databaseDao().updateFifoCalcChangeSell(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            db.databaseDao().updateFifoCalcChangeSell(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }
     }
 
@@ -690,6 +695,7 @@ public class TransactionEditController {
         newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
         newTransaction.usedFromFirst = changedSell.usedFromFirst;
         newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
+        newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
     private void fifoEditAmountChange(String transactionID, String date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){
@@ -724,6 +730,7 @@ public class TransactionEditController {
             newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
             newTransaction.usedFromFirst = changedSell.usedFromFirst;
             newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
+            newTransaction.usedFromLast = changedSell.usedFromLast;
         }
     }
 
@@ -885,6 +892,7 @@ public class TransactionEditController {
         newTransaction.firstTakenFrom = changedSell.firstTakenFrom;
         newTransaction.usedFromFirst = changedSell.usedFromFirst;
         newTransaction.lastTakenFrom = changedSell.lastTakenFrom;
+        newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
     private void fifoEditTimeChange(String transactionID, String date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){

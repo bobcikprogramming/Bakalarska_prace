@@ -35,10 +35,10 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private TextView descRowFirst, descRowSecond, descRowThird, descRowFourth, descRowFifth, descRowSixth, descDate, descTime;
     private EditText valueRowFirst, valueRowSecond, valueRowFifth, valueRowSixth, valueFee, valueNote;
     private TextView valueDate, valueTime, valueRowFourth;
-    private Spinner spinnerRowThird;
+    private Spinner spinnerRowThird, spinnerRowSeventh;
     private ImageView imgButtonAddPhoto;
-    private LinearLayout layoutRowFourth, layoutRowFifth, layoutRowSixth;
-    private LinearLayout underlineRowFourth, underlineRowFifth, underlineRowSixth;
+    private LinearLayout layoutRowSecond, layoutRowThird, layoutRowFourth, layoutRowFifth, layoutRowSixth, layoutRowSeventh;
+    private LinearLayout underlineRowSecond, underlineRowThird, underlineRowFourth, underlineRowFifth, underlineRowSixth, underlineRowSeventh;
     private LinearLayout fragmentBackgroundEdit;
 
     private DatePickerDialog.OnDateSetListener dateSetListener;
@@ -138,6 +138,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         valueRowFourth = findViewById(R.id.valueRowFourth);
         valueRowFifth = findViewById(R.id.valueRowFifth);
         valueRowSixth = findViewById(R.id.valueRowSixth);
+        spinnerRowSeventh = findViewById(R.id.spinnerRowSeventh);
         valueFee = findViewById(R.id.valueFee);
         valueDate = findViewById(R.id.valueDate);
         valueTime = findViewById(R.id.valueTime);
@@ -148,13 +149,19 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         imgButtonAddPhoto = findViewById(R.id.imgButtonAddPhoto);
         imgButtonAddPhoto.setOnClickListener(this);
 
+        layoutRowSecond = findViewById(R.id.layoutRowSecond);
+        layoutRowThird = findViewById(R.id.layoutRowThird);
         layoutRowFourth = findViewById(R.id.layoutRowFourth);
         layoutRowFifth = findViewById(R.id.layoutRowFifth);
         layoutRowSixth = findViewById(R.id.layoutRowSixth);
+        layoutRowSeventh = findViewById(R.id.layoutRowSeventh);
 
+        underlineRowSecond = findViewById(R.id.underlineRowSecond);
+        underlineRowThird = findViewById(R.id.underlineRowThird);
         underlineRowFourth = findViewById(R.id.underlineRowFourth);
         underlineRowFifth = findViewById(R.id.underlineRowFifth);
         underlineRowSixth = findViewById(R.id.underlineRowSixth);
+        underlineRowSeventh = findViewById(R.id.underlineRowSeventh);
 
         fragmentBackgroundEdit = findViewById(R.id.fragmentBackgroundEdit);
         fragmentBackgroundEdit.setOnClickListener(this);
@@ -167,34 +174,44 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 layoutRowFourth.setVisibility(View.GONE);
                 layoutRowFifth.setVisibility(View.GONE);
                 layoutRowSixth.setVisibility(View.GONE);
+                layoutRowSeventh.setVisibility(View.GONE);
                 underlineRowFourth.setVisibility(View.GONE);
                 underlineRowFifth.setVisibility(View.GONE);
                 underlineRowSixth.setVisibility(View.GONE);
+                underlineRowSeventh.setVisibility(View.GONE);
                 descRowFirst.setText("Koupené množství");
-                descRowSecond.setText("Cena za kus");
+                descRowSecond.setText("Pořizovací cena");
                 descRowThird.setText("Cena v měně");
                 break;
             case "Prodej":
                 layoutRowFourth.setVisibility(View.GONE);
                 layoutRowFifth.setVisibility(View.GONE);
                 layoutRowSixth.setVisibility(View.GONE);
+                layoutRowSeventh.setVisibility(View.GONE);
                 underlineRowFourth.setVisibility(View.GONE);
                 underlineRowFifth.setVisibility(View.GONE);
                 underlineRowSixth.setVisibility(View.GONE);
+                underlineRowSeventh.setVisibility(View.GONE);
                 descRowFirst.setText("Prodané množství");
-                descRowSecond.setText("Cena za kus");
+                descRowSecond.setText("Prodejní cena");
                 descRowThird.setText("Cena v měně");
                 break;
             case "Směna":
+                layoutRowSecond.setVisibility(View.GONE);
+                layoutRowThird.setVisibility(View.GONE);
+                layoutRowFourth.setVisibility(View.VISIBLE);
+                layoutRowFifth.setVisibility(View.VISIBLE);
                 layoutRowFourth.setVisibility(View.VISIBLE);
                 layoutRowFifth.setVisibility(View.VISIBLE);
                 layoutRowSixth.setVisibility(View.VISIBLE);
+                layoutRowSeventh.setVisibility(View.VISIBLE);
+                underlineRowSecond.setVisibility(View.GONE);
+                underlineRowThird.setVisibility(View.GONE);
                 underlineRowFourth.setVisibility(View.VISIBLE);
                 underlineRowFifth.setVisibility(View.VISIBLE);
                 underlineRowSixth.setVisibility(View.VISIBLE);
-                descRowFirst.setText("Koupené množství");
-                descRowSecond.setText("Cena za kus");
-                descRowThird.setText("Cena v měně");
+                underlineRowSeventh.setVisibility(View.VISIBLE);
+                descRowSixth.setText("Cena směny");
 
                 shortNameCryptoSell = controller.getShortNameSold();
                 longNameCryptoSell = controller.getLongNameSold();
@@ -219,12 +236,11 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 break;
             case "Směna":
                 valueRowFirst.setText(transaction.quantityBought);
-                valueRowSecond.setText(transaction.priceBought);
-                spinnerRowThird.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
-                spinnerRowThird.setSelection(((ArrayAdapter) spinnerRowThird.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
+                spinnerRowSeventh.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
+                spinnerRowSeventh.setSelection(((ArrayAdapter) spinnerRowSeventh.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
                 valueRowFourth.setText(transaction.longNameSold);
                 valueRowFifth.setText(transaction.quantitySold);
-                valueRowSixth.setText(transaction.priceSold);
+                valueRowSixth.setText(transaction.priceBought);
                 break;
         }
         valueFee.setText(String.valueOf(transaction.fee));
@@ -248,8 +264,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     }
 
     private boolean shakeEmptyChange(){
-        boolean findEmpty = shakeEmptyBuySell();
+        boolean findEmpty = false;
 
+        findEmpty = shared.checkIfEmptyAndShake(valueRowFirst, descRowFirst, findEmpty, this);
         findEmpty = shared.checkIfEmptyAndShake(valueRowFifth, descRowFifth, findEmpty, this);
         findEmpty = shared.checkIfEmptyAndShake(valueRowSixth, descRowSixth, findEmpty, this);
 
@@ -298,7 +315,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //int success = updateDatabase();
-                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
                         boolean isEmpty = false;
                         if(controller.getTransactionType().equals("Směna")){
                             isEmpty = shakeEmptyChange();
@@ -334,7 +351,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
                         controller.deleteFromDatabase();
                         closeActivity(true, true, true);
                     }

@@ -35,6 +35,9 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
 
         setupUIViews();
 
+        if(getIntent().getParcelableArrayListExtra("photos") == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 3");
+        }
         controller = new PhotoViewerController(getIntent().getParcelableArrayListExtra("photos"), photoViewer, this);
 
         controller.setViewPagerAdapter();

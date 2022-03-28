@@ -86,7 +86,7 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
                     boolean saved = controller.saveTransactionSell(shortName, longName, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
-                            calendar.getDateFormatToDatabase(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etQuantity, etPrice, etFee));
+                            calendar.getDateFormatToDatabase(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getBigDecimal(etQuantity), 1, null);
                         clearEditText();

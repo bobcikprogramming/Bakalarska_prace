@@ -64,6 +64,9 @@ public class TransactionEntity {
     @ColumnInfo(name = "used_from_first")
     public String usedFromFirst;
 
+    @ColumnInfo(name = "used_from_last")
+    public String usedFromLast;
+
     @ColumnInfo(name = "first_taken_from")
     public long firstTakenFrom;
 

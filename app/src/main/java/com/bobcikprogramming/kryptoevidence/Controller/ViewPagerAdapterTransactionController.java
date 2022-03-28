@@ -22,12 +22,14 @@ public class ViewPagerAdapterTransactionController {
     private int position;
 
     private CalendarManager calendar;
+    private SharedMethods shared;
 
     public ViewPagerAdapterTransactionController(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory){
         this.dataList = dataList;
         this.dataListHistory = dataListHistory;
 
         calendar = new CalendarManager();
+        shared = new SharedMethods();
     }
 
     public ArrayList<TransactionHistoryList> sortListByDate(ArrayList<TransactionHistoryList> data){
@@ -89,10 +91,6 @@ public class ViewPagerAdapterTransactionController {
 
         secondRow.setRightDesc("Měna");
 
-        thirdRow.setLeftDesc("Cena za kus");
-        thirdRow.setRightDesc("Měna");
-        thirdRow.setRightValue(transaction.currency);
-
         fourthRow.setLeftDesc("Poplatek");
         fourthRow.setRightDesc("Měna");
         fourthRow.setLeftValue(String.valueOf(transaction.fee));
@@ -113,26 +111,33 @@ public class ViewPagerAdapterTransactionController {
             firstRow.setRightValue(transaction.shortNameBought);
 
             secondRow.setLeftDesc("Koupené množství");
-            secondRow.setLeftValue(String.valueOf(transaction.quantityBought));
+            secondRow.setLeftValue(transaction.quantityBought);
             secondRow.setRightValue(transaction.shortNameBought);
 
-            thirdRow.setLeftValue(String.valueOf(transaction.priceBought));
+            thirdRow.setLeftDesc("Pořizovací cena");
+            thirdRow.setRightDesc("Měna");
+            thirdRow.setRightValue(transaction.currency);
+            thirdRow.setLeftValue(transaction.priceBought);
 
-            fifthRow.setLeftDesc("Celková cena");
-            fifthRow.setLeftValue(String.valueOf(transaction.quantitySold));
+            fifthRow.setLeftDesc("Poř. cena včetně poplatku");
+            fifthRow.setLeftValue(transaction.quantitySold);
         }else{
             firstRow.setLeftDesc("Prodaná měna");
             firstRow.setLeftValue(transaction.longNameSold);
             firstRow.setRightValue(transaction.shortNameSold);
 
             secondRow.setLeftDesc("Prodané množství");
-            secondRow.setLeftValue(String.valueOf(transaction.quantitySold));
+            secondRow.setLeftValue(transaction.quantitySold);
             secondRow.setRightValue(transaction.shortNameSold);
 
+            thirdRow.setLeftDesc("Prodejní cena");
+            thirdRow.setRightDesc("Měna");
+            thirdRow.setRightValue(transaction.currency);
+            thirdRow.setLeftValue(transaction.priceBought);
             thirdRow.setLeftValue(String.valueOf(transaction.priceSold));
 
-            fifthRow.setLeftDesc("Celkový zisk");
-            fifthRow.setLeftValue(String.valueOf(transaction.quantityBought));
+            fifthRow.setLeftDesc("Čistá prodejní cena");
+            fifthRow.setLeftValue(transaction.quantityBought);
         }
 
         transactionInfoList.add(firstRow);
@@ -154,7 +159,7 @@ public class ViewPagerAdapterTransactionController {
         TransactionInfoList fourthRow = new TransactionInfoList();
         TransactionInfoList fifthRow = new TransactionInfoList();
         TransactionInfoList sixthRow = new TransactionInfoList();
-        TransactionInfoList seventhRow = new TransactionInfoList();
+        //TransactionInfoList seventhRow = new TransactionInfoList();
         TransactionInfoList eighthRow = new TransactionInfoList();
 
         TransactionEntity transaction = dataList.get(position).transaction;
@@ -169,7 +174,7 @@ public class ViewPagerAdapterTransactionController {
         secondRow.setLeftValue(String.valueOf(transaction.quantityBought));
         secondRow.setRightValue(transaction.shortNameBought);
 
-        thirdRow.setLeftDesc("Cena za kus");
+        thirdRow.setLeftDesc("Cena směny");
         thirdRow.setRightDesc("Měna");
         thirdRow.setLeftValue(String.valueOf(transaction.priceBought));
         thirdRow.setRightValue(transaction.currency);
@@ -184,15 +189,10 @@ public class ViewPagerAdapterTransactionController {
         fifthRow.setLeftValue(String.valueOf(transaction.quantitySold));
         fifthRow.setRightValue(transaction.shortNameSold);
 
-        sixthRow.setLeftDesc("Cena za kus");
+        sixthRow.setLeftDesc("Poplatek");
         sixthRow.setRightDesc("Měna");
-        sixthRow.setLeftValue(String.valueOf(transaction.priceSold));
+        sixthRow.setLeftValue(String.valueOf(transaction.fee));
         sixthRow.setRightValue(transaction.currency);
-
-        seventhRow.setLeftDesc("Poplatek");
-        seventhRow.setRightDesc("Měna");
-        seventhRow.setLeftValue(String.valueOf(transaction.fee));
-        seventhRow.setRightValue(transaction.currency);
 
         eighthRow.setLeftDesc("Datum");
         eighthRow.setRightDesc("Čas");
@@ -205,7 +205,6 @@ public class ViewPagerAdapterTransactionController {
         transactionInfoList.add(fourthRow);
         transactionInfoList.add(fifthRow);
         transactionInfoList.add(sixthRow);
-        transactionInfoList.add(seventhRow);
         transactionInfoList.add(eighthRow);
 
         return transactionInfoList;
@@ -229,7 +228,7 @@ public class ViewPagerAdapterTransactionController {
                         transaction.setQuantityBoughtValue(String.valueOf(transactionHistory.quantityBought));
                     }
                     if(transactionHistory.priceBought != null){
-                        transaction.setPriceBoughtDesc("Cena za kus");
+                        transaction.setPriceBoughtDesc("Pořizovací cena");
                         transaction.setPriceBoughtValue(String.valueOf(transactionHistory.priceBought));
                     }
                 }
@@ -241,7 +240,7 @@ public class ViewPagerAdapterTransactionController {
                         transaction.setQuantitySoldValue(String.valueOf(transactionHistory.quantitySold));
                     }
                     if(transactionHistory.priceSold != null){
-                        transaction.setPriceSoldDesc("Cena za kus");
+                        transaction.setPriceSoldDesc("Prodejní cena");
                         transaction.setPriceSoldValue(String.valueOf(transactionHistory.priceSold));
                     }
                 }
@@ -253,7 +252,7 @@ public class ViewPagerAdapterTransactionController {
                         transaction.setQuantityBoughtValue(String.valueOf(transactionHistory.quantityBought));
                     }
                     if(transactionHistory.priceBought != null){
-                        transaction.setPriceBoughtDesc("Cena za kus");
+                        transaction.setPriceBoughtDesc("Cena směny");
                         transaction.setPriceBoughtValue(String.valueOf(transactionHistory.priceBought));
                     }
                     if(transactionHistory.longNameSold != null){
@@ -263,10 +262,6 @@ public class ViewPagerAdapterTransactionController {
                     if(transactionHistory.quantitySold != null){
                         transaction.setQuantitySoldDesc("Prodané množství");
                         transaction.setQuantitySoldValue(String.valueOf(transactionHistory.quantitySold));
-                    }
-                    if(transactionHistory.priceSold != null){
-                        transaction.setPriceSoldDesc("Cena za kus");
-                        transaction.setPriceSoldValue(String.valueOf(transactionHistory.priceSold));
                     }
                 }
 

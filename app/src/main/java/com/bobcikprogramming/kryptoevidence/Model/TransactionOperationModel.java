@@ -64,7 +64,7 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
-    public long saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, BigDecimal priceSold, ArrayList<String> photosPath) {
+    public long saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -81,7 +81,6 @@ public class TransactionOperationModel {
         transactionEntity.shortNameSold = shortNameSold;
         transactionEntity.longNameSold = longNameSold;
         transactionEntity.quantitySold = String.valueOf(quantitySold);
-        transactionEntity.priceSold = String.valueOf(priceSold);
 
         long uidTransaction = db.databaseDao().insertTransaction(transactionEntity);
 

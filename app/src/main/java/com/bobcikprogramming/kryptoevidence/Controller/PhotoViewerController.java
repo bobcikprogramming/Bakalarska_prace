@@ -18,6 +18,9 @@ public class PhotoViewerController {
 
     public PhotoViewerController(ArrayList<Uri> photos, ViewPager photoViewer, Context context){
         this.photos = photos;
+        if(photos == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 4");
+        }
         this.context = context;
         this.photoViewer = photoViewer;
     }

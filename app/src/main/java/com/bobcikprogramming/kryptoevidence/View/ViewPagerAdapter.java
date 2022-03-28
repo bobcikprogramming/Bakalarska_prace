@@ -26,11 +26,17 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     public ViewPagerAdapter(Context context, ArrayList<Uri> photos) {
         this.photos = photos;
+        if(photos == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 5");
+        }
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
+        if(photos == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 6");
+        }
         return photos.size();
     }
 

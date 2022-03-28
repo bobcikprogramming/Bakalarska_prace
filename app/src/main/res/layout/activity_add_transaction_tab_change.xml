@@ -49,40 +49,6 @@
 
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descriptionPriceChangeBuy"
-                        android:text="Cena za kus"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/editTextPriceChangeBuy"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descriptionCurrencyChange"
-                        android:text="Cena v měně" />
-
-                    <Spinner
-                        style="@style/AddTransactionItemSpinner"
-                        android:id="@+id/spinnerCurrencyChange"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionNameChangeSell"
                         android:text="Prodej kryptoměny" />
 
@@ -117,12 +83,29 @@
 
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descriptionPriceChangeSell"
-                        android:text="Cena za kus"/>
+                        android:id="@+id/descriptionPriceChangeBuy"
+                        android:text="@string/priceChange"/>
 
                     <EditText
                         style="@style/AddTransactionItemEditText"
-                        android:id="@+id/editTextPriceChangeSell"/>
+                        android:id="@+id/editTextPriceChangeBuy"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/AddTransactionUnderline"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionItemLinearLayout">
+
+                    <TextView
+                        style="@style/AddTransactionItemDescriptionTextView"
+                        android:id="@+id/descriptionCurrencyChange"
+                        android:text="Cena v měně" />
+
+                    <Spinner
+                        style="@style/AddTransactionItemSpinner"
+                        android:id="@+id/spinnerCurrencyChange"/>
 
                 </LinearLayout>
 

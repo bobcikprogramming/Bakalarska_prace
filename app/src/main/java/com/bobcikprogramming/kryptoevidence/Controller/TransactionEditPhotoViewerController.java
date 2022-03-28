@@ -17,8 +17,6 @@ import java.util.List;
 
 public class TransactionEditPhotoViewerController {
 
-    private TransactionWithPhotos transactionWithPhotos;
-    private List<TransactionWithPhotos> transaction;
     private ViewPager photoViewer;
     private List<PhotoEntity> photos;
     private ArrayList<Uri> photosUri;
@@ -37,8 +35,8 @@ public class TransactionEditPhotoViewerController {
         imgManager = new ImageManager();
         photoChange = false;
 
-        setViewPagerAdapter();
         setPhotosUri();
+        setViewPagerAdapter();
     }
 
     private void setPhotosUri(){
@@ -51,6 +49,9 @@ public class TransactionEditPhotoViewerController {
     }
 
     private void setViewPagerAdapter(){
+        if(photosUri == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 7");
+        }
         viewPagerAdapter = new ViewPagerAdapter(context, photosUri);
         photoViewer.setAdapter(viewPagerAdapter);
     }
@@ -62,6 +63,7 @@ public class TransactionEditPhotoViewerController {
             photos = db.databaseDao().getPhotoByTransactionID(transactionID);
             db.databaseDao().deletePhotoById(String.valueOf(photos.get(position).uidPhoto));
             viewPagerAdapter.removeItem(position);
+            photos = db.databaseDao().getPhotoByTransactionID(transactionID);
         }
     }
 
@@ -103,7 +105,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     public boolean transactionWithPhotoIsEmpty(){
-        return transactionWithPhotos.photos.isEmpty();
+        return photos.isEmpty();
     }
 
     public boolean isPhotoChange() {

@@ -50,7 +50,7 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPriceBuy"
-                        android:text="Cena za kus"/>
+                        android:text="@string/priceBuy"/>
 
                     <EditText
                         style="@style/AddTransactionItemEditText"

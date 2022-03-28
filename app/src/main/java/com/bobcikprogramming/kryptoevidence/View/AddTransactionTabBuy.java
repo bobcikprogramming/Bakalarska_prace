@@ -85,7 +85,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
                     boolean saved = controller.saveTransactionBuy(shortName, longName, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
-                            calendar.getDateFormatToDatabase(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPrice(etQuantity, etPrice, etFee));
+                            calendar.getDateFormatToDatabase(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPrice(etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getBigDecimal(etQuantity), 0, null);
                         clearEditText();
@@ -228,6 +228,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
 
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
+        if(controller.getPhotos() == null){
+            System.err.println(">>>>>>>>>>>>>>>>>> chyba 2");
+        }
         photoViewer.putParcelableArrayListExtra("photos", controller.getPhotos());
         appGallery.launch(photoViewer);
     }

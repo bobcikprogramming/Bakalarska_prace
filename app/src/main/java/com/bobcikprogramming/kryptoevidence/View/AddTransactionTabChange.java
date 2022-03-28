@@ -40,8 +40,8 @@ import java.util.ArrayList;
 
 public class AddTransactionTabChange extends Fragment implements View.OnClickListener {
 
-    private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etPriceSell, etFee;
-    private TextView tvDate, tvTime, tvNameSell, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesPriceSell, tvDesDate, tvDesTime, tvDesNameSell;
+    private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etFee;
+    private TextView tvDate, tvTime, tvNameSell, tvDesQuantityBuy, tvDesQuantitySell, tvDesPriceBuy, tvDesDate, tvDesTime, tvDesNameSell;
     private Button btnSave;
     private ImageView imvBtnShowPhoto, imgBtnAddPhoto;
     private LinearLayout viewBackgroung;
@@ -89,7 +89,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
                     boolean saved = controller.saveTransactionChange(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
                             shared.getBigDecimal(etQuantityBuy), shared.getBigDecimal(etPriceBuy), shared.getFee(etFee), calendar.getDateFormatToDatabase(shared.getString(tvDate)), shared.getString(tvTime),
-                            shortNameCryptoSell, longNameCryptoSell, shared.getBigDecimal(etQuantitySell), shared.getBigDecimal(etPriceSell));
+                            shortNameCryptoSell, longNameCryptoSell, shared.getBigDecimal(etQuantitySell));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, shared.getBigDecimal(etQuantitySell), shortNameCryptoSell, longNameCryptoSell);
                         clearEditText();
@@ -121,7 +121,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         etQuantitySell = view.findViewById(R.id.editTextQuantityChangeSell);
         etPriceBuy = view.findViewById(R.id.editTextPriceChangeBuy);
         tvNameSell = view.findViewById(R.id.textViewNameChangeSell);
-        etPriceSell = view.findViewById(R.id.editTextPriceChangeSell);
         etFee = view.findViewById(R.id.editTextFeeChange);
         tvDate = view.findViewById(R.id.textViewDateChange);
         tvTime = view.findViewById(R.id.textViewTimeChange);
@@ -129,7 +128,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvDesQuantityBuy = view.findViewById(R.id.descriptionQuantityChangeBuy);
         tvDesQuantitySell = view.findViewById(R.id.descriptionQuantityChangeSell);
         tvDesPriceBuy = view.findViewById(R.id.descriptionPriceChangeBuy);
-        tvDesPriceSell = view.findViewById(R.id.descriptionPriceChangeSell);
         tvDesDate = view.findViewById(R.id.descriptionDateChange);
         tvDesTime = view.findViewById(R.id.descriptionTimeChange);
         tvDesNameSell = view.findViewById(R.id.descriptionNameChangeSell);
@@ -157,7 +155,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         etQuantityBuy.setText("");
         etQuantitySell.setText("");
         etPriceBuy.setText("");
-        etPriceSell.setText("");
         etFee.setText("");
         tvDate.setText("");
         tvTime.setText("");
@@ -271,7 +268,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         findEmpty = shared.checkIfEmptyAndShake(tvNameSell, tvDesNameSell, findEmpty, getContext());
         findEmpty = shared.checkIfEmptyAndShake(etQuantitySell, tvDesQuantitySell, findEmpty, getContext());
         findEmpty = shared.checkIfEmptyAndShake(etPriceBuy, tvDesPriceBuy, findEmpty, getContext());
-        findEmpty = shared.checkIfEmptyAndShake(etPriceSell, tvDesPriceSell, findEmpty, getContext());
         findEmpty = shared.checkIfEmptyAndShake(tvDate, tvDesDate, findEmpty, getContext());
         findEmpty = shared.checkIfEmptyAndShake(tvTime, tvDesTime, findEmpty, getContext());
 

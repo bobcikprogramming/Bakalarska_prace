@@ -149,6 +149,13 @@ public class CalendarManager {
         return actualTime;
     }
 
+    public String getActualDateFolderNameFormat(){
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat dateFormatCompare = new SimpleDateFormat("yyyyMMddHHmmss");
+        String actualDate = dateFormatCompare.format(calendarDate.getTime());
+        return actualDate;
+    }
+
     public Date getDateFormat(String dateInString){
         Date date = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
