@@ -1,10 +1,11 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
 public class BuyTransactionPDFList {
-    String date, quantity, name, price, fee, total;
+    private String date, time, quantity, name, price, fee, total;
 
-    public BuyTransactionPDFList(String date, String quantity, String name, String price, String fee, String total) {
+    public BuyTransactionPDFList(String date, String time, String quantity, String name, String price, String fee, String total) {
         this.date = date;
+        this.time = time;
         this.quantity = quantity;
         this.name = name;
         this.price = price;
@@ -14,6 +15,10 @@ public class BuyTransactionPDFList {
 
     public String getDate() {
         return date;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public String getQuantity() {

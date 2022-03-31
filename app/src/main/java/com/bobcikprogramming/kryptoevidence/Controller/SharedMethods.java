@@ -42,10 +42,6 @@ public class SharedMethods {
         return String.valueOf(getBigDecimal(stringFrom.getText().toString()));
     }
 
-    public String getStringFromBigDecimal(TextView stringFrom){
-        return String.valueOf(getBigDecimal(stringFrom.getText().toString()));
-    }
-
     public Double getFee(EditText etFee){
         return getString(etFee).isEmpty() ? 0.0 :  Double.parseDouble(getString(etFee));
     }
@@ -163,5 +159,8 @@ public class SharedMethods {
     public BigDecimal getTwoDecimalBigDecimal(String toEdit){
         BigDecimal toRound = getBigDecimal(toEdit);
         return toRound.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
+    public BigDecimal getTwoDecimalBigDecimal(BigDecimal toEdit){
+        return toEdit.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
 }

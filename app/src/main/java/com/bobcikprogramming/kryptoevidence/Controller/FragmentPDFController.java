@@ -11,7 +11,11 @@ import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FragmentPDFController {
@@ -65,10 +69,12 @@ public class FragmentPDFController {
             // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
             Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
         }else{
+            ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
             ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
+            ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
 
             try {
-                generator.createPDF(selectedYear, sellList);
+                generator.createPDF(selectedYear, buyList, sellList, changeList);
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
@@ -97,7 +103,7 @@ public class FragmentPDFController {
         SellTransactionPDFList sellTransaction;
         for(TransactionWithPhotos sell : salesInYear){
             TransactionEntity sellEntity = sell.transaction;
-            BigDecimal price = shared.getTwoDecimalBigDecimal(sellEntity.priceSold); // TODO: Asi problém že to je v double, možná použít bigdecimal
+            BigDecimal price = shared.getTwoDecimalBigDecimal(sellEntity.priceSold);
             BigDecimal fee = shared.getTwoDecimalBigDecimal(sellEntity.fee);
             BigDecimal profit = BigDecimal.ZERO;
             if(sellEntity.currency.equals("EUR")){
@@ -116,87 +122,197 @@ public class FragmentPDFController {
         return sellList;
     }
 
-    private Double buyValue(String dateFrom, String dateTo){
+    private ArrayList<BuyTransactionPDFList> buyValue(String dateFrom, String dateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        Double buyValue = 0.0;
+        ArrayList<BuyTransactionPDFList> buyList = new ArrayList<>();
+        BuyTransactionPDFList buyTransaction;
 
         // Vytvořit seznam kryptoměn, které se v daném roce prodali.
         List<String> shortNameSellInYear = db.databaseDao().getUsedShortNameSellBetween(dateFrom, dateTo);
         // Pro jednotlivé kryptoměny:
-        for(String shortName : shortNameSellInYear){
-            // Najít první a poslední nákup.
-            Double shortNameBuyValue = 0.0;
+        for(String shortName : shortNameSellInYear) {
+            // Vzít všechny prodeje od do.
             List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellBetweenByShortName(shortName, dateFrom, dateTo);
-            TransactionEntity firstSell = listOfUsedSell.get(0).transaction;
-            TransactionEntity lastSell = listOfUsedSell.get(listOfUsedSell.size()-1).transaction;
-            TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
-            TransactionEntity lastBuy = db.databaseDao().getTransactionByTransactionHistoryID(String.valueOf(lastSell.lastTakenFrom)).transaction;
+            long uidFirst = 0, uidLast = 0;
+            BigDecimal takenFromFirst = BigDecimal.ZERO, takenFromLast = BigDecimal.ZERO;
+            for(TransactionWithPhotos sellTransaction : listOfUsedSell){
+                TransactionEntity sell = sellTransaction.transaction;
 
-            // Získat cenu z prvního nákupu zvlášť.
+                // Uložit UID a množství použitého prvního a posledního nákupu.
+                if(uidFirst == 0){
+                    uidFirst = sell.firstTakenFrom;
+                    takenFromFirst = shared.getBigDecimal(sell.usedFromFirst);
 
-            if(firstBuy.currency.equals("CZK")){
-                Double pricePerPiece = Double.parseDouble(firstBuy.priceBought) / Double.parseDouble(firstBuy.quantityBought);
-                shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(firstSell.usedFromFirst) * pricePerPiece);
-            }else if(firstBuy.currency.equals("EUR")){
-                Double pricePerPiece = (Double.parseDouble(firstBuy.priceBought) / Double.parseDouble(firstBuy.quantityBought)) * TMPEUREXCHANGERATE;
-                shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(firstSell.usedFromFirst) * pricePerPiece);
-            }else if(firstBuy.currency.equals("USD")){
-                Double pricePerPiece = (Double.parseDouble(firstBuy.priceBought) / Double.parseDouble(firstBuy.quantityBought)) * TMPUSDEXCHANGERATE;
-                shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(firstSell.usedFromFirst) * pricePerPiece);
-            }
+                    uidLast = sell.lastTakenFrom;
+                    takenFromLast = shared.getBigDecimal(sell.usedFromLast);
 
-            if(firstBuy.uidTransaction != lastBuy.uidTransaction) {
-                // Získat cenu z posledního nákupu zvlášť.
-                if(lastBuy.currency.equals("CZK")){
-                    Double pricePerPiece = Double.parseDouble(lastBuy.priceBought) / Double.parseDouble(lastBuy.quantityBought);
-                    shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(lastSell.usedFromLast) * pricePerPiece);
-                }else if(lastBuy.currency.equals("EUR")){
-                    Double pricePerPiece = (Double.parseDouble(lastBuy.priceBought) / Double.parseDouble(lastBuy.quantityBought)) * TMPEUREXCHANGERATE;
-                    shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(lastSell.usedFromLast) * pricePerPiece);
-                }else if(lastBuy.currency.equals("USD")){
-                    Double pricePerPiece = (Double.parseDouble(lastBuy.priceBought) / Double.parseDouble(lastBuy.quantityBought)) * TMPUSDEXCHANGERATE;
-                    shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(lastSell.usedFromLast) * pricePerPiece);
+                    continue;
                 }
 
-                // Získat ceny všech nákupů mezi prvním a posledním.
-                List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(firstBuy.uidTransaction), String.valueOf(lastBuy.uidTransaction), firstBuy.date, firstBuy.time, lastBuy.date, lastBuy.time, shortName);
-                for (TransactionWithPhotos buy : listOfUsedBuyBetween) {
-                    if(buy.transaction.currency.equals("CZK")){
-                        shortNameBuyValue += shared.getTwoDecimalDouble(buy.transaction.priceBought);
-                    }else if(buy.transaction.currency.equals("EUR")){
-                        shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(buy.transaction.priceBought) * TMPEUREXCHANGERATE);
-                    }else if(buy.transaction.currency.equals("USD")){
-                        shortNameBuyValue += shared.getTwoDecimalDouble(Double.parseDouble(buy.transaction.priceBought) * TMPUSDEXCHANGERATE);
-                    }
+                // Dokud se UID rovná s tím prvním, tak přičítat k množství.
+                if(sell.firstTakenFrom == uidFirst){
+                    takenFromFirst = takenFromFirst.add(shared.getBigDecimal(sell.usedFromFirst));
+                }
+
+                // Pokud se UID posledního rovná s uloženým UID, přičtu k množství. Jinak aktualizuji UID i množství.
+                if(sell.lastTakenFrom == uidLast){
+                    takenFromLast = takenFromLast.add(shared.getBigDecimal(sell.usedFromLast));
+                }else{
+                    uidLast = sell.lastTakenFrom;
+                    takenFromLast = shared.getBigDecimal(sell.usedFromLast);
                 }
             }
+            // Poté co se projdou všechny prodeje, budou uloženy hodnoty prvního a posledního.
+            /** Zpracuji hodnoty prvního. */
+            buyTransaction = getBuyTransaction(uidFirst, takenFromFirst, shortName);
+            // Uložím datum a čas prvního.
+            String dateFirst = buyTransaction.getDate();
+            String timeFirst = buyTransaction.getTime();
+            buyList.add(buyTransaction);
 
-            buyValue += shortNameBuyValue;
+            /** Zpracuji hodnoty posledního. */
+            buyTransaction = getBuyTransaction(uidLast, takenFromLast, shortName);
+            // Uložím datum a čas posledního.
+            String dateLast = buyTransaction.getDate();
+            String timeLast = buyTransaction.getTime();
+            buyList.add(buyTransaction);
+
+            // Zpracuji hodnoty mezi prvním a posledním.
+            // Získám nákupy mezi prvním a posledním prodejem.
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), dateFirst, timeFirst, dateLast, timeLast, shortName);
+            for (TransactionWithPhotos buy : listOfUsedBuyBetween) {
+                TransactionEntity buyEntity = buy.transaction;
+                // Získáme hodnoty: Cena, Množství, Poplatek.
+                BigDecimal price = shared.getBigDecimal(buyEntity.priceBought);
+                BigDecimal quantity = shared.getBigDecimal(buyEntity.quantityBought);
+                BigDecimal fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(buyEntity.fee));
+
+                // Zjistíme celkovou cenu (včetně poplatku).
+                BigDecimal total = price.add(fee);
+
+                // Převedeme měnu na CZK, nejedná-li se o CZK.
+                if(buyEntity.currency.equals("EUR")){
+                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+                }else if(buyEntity.currency.equals("USD")){
+                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+                }
+
+                buyTransaction = new BuyTransactionPDFList(buyEntity.date, buyEntity.time, quantity.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
+                buyList.add(buyTransaction);
+            }
+
         }
-        return buyValue;
+        // Seřadím.
+        sortListByTime(buyList);
+        sortListByDate(buyList);
+        return buyList;
     }
 
-    private Double changeValue(String dateFrom, String dateTo){
+    private BuyTransactionPDFList getBuyTransaction(long uid, BigDecimal takenFrom, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
+        TransactionEntity buy = db.databaseDao().getTransactionByTransactionID(String.valueOf(uid)).transaction;
+
+        // Získáme hodnoty: Cena, Množství, Poplatek.
+        BigDecimal price = shared.getBigDecimal(buy.priceBought);
+        BigDecimal quantity = shared.getBigDecimal(buy.quantityBought);
+        BigDecimal fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(buy.fee));
+
+        // Vypočteme cenu za jednu kryptoměnu.
+        BigDecimal pricePerPiece;
+        if(quantity.compareTo(BigDecimal.ONE) < 0){
+            // Pokud je koupené množství menší jedné, tak násobíme.
+            pricePerPiece = shared.getTwoDecimalBigDecimal(price.multiply(quantity));
+        }else{
+            // Jinak dělíme.
+            pricePerPiece = price.divide(quantity, 2, RoundingMode.HALF_EVEN);
+        }
+
+        // Zjistíme cenu nákupu pro využité množství.
+        price = shared.getTwoDecimalBigDecimal(pricePerPiece.multiply(takenFrom));
+
+        // Zjistíme celkovou cenu (včetně poplatku).
+        BigDecimal total = price.add(fee);
+
+        // Převedeme měnu na CZK, nejedná-li se o CZK.
+        if(buy.currency.equals("EUR")){
+            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+        }else if(buy.currency.equals("USD")){
+            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+        }
+
+        // Vrátím nákup.
+        return new BuyTransactionPDFList(buy.date, buy.time, takenFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
+    }
+
+    private ArrayList<ChangeTransactionPDFList> changeValue(String dateFrom, String dateTo){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        ArrayList<ChangeTransactionPDFList> changeList = new ArrayList<>();
+        ChangeTransactionPDFList changeTransaction;
 
         // Sečíst zisky ze směny od první v roce po poslední (Zaokrouhleno na dvě desetiná místa (kvůli pozdějšímu výpisu v PDF)).
         List<TransactionWithPhotos> salesInYear = db.databaseDao().getUsedChangeBetween(dateFrom, dateTo);
-        Double changeValue = 0.0;
         for(TransactionWithPhotos change : salesInYear){
-            Double fee;
-            Double profit = 0.0;
-            if(change.transaction.currency.equals("CZK")){
-                fee = shared.getTwoDecimalDouble(change.transaction.fee);
-                profit = shared.getTwoDecimalDouble(change.transaction.priceBought) - fee;
-            }else if(change.transaction.currency.equals("EUR")){
-                fee = shared.getTwoDecimalDouble(change.transaction.fee * TMPEUREXCHANGERATE);
-                profit = shared.getTwoDecimalDouble(Double.parseDouble(change.transaction.priceBought) * TMPEUREXCHANGERATE) - fee;
+            TransactionEntity changeEntity = change.transaction;
+            BigDecimal fee = shared.getTwoDecimalBigDecimal(change.transaction.fee);
+            BigDecimal profit = shared.getTwoDecimalBigDecimal(change.transaction.priceBought).subtract(fee);
+            if(change.transaction.currency.equals("EUR")){
+                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(TMPEUREXCHANGERATE));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(TMPEUREXCHANGERATE))).subtract(fee);
             }else if(change.transaction.currency.equals("USD")){
-                fee = shared.getTwoDecimalDouble(change.transaction.fee * TMPUSDEXCHANGERATE);
-                profit = shared.getTwoDecimalDouble(Double.parseDouble(change.transaction.priceBought) * TMPUSDEXCHANGERATE) - fee;
+                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE))).subtract(fee);
             }
-            changeValue += profit;
+            changeTransaction = new ChangeTransactionPDFList(calendar.getDateFormatFromDatabase(changeEntity.date), changeEntity.quantityBought, changeEntity.shortNameBought, changeEntity.quantitySold, changeEntity.shortNameSold, profit.toString());
+            changeList.add(changeTransaction);
         }
-        return changeValue;
+        return changeList;
+    }
+
+    private void sortListByDate(ArrayList<BuyTransactionPDFList> data){
+        BuyTransactionPDFList tmp;
+        for(int i = 0; i < data.size() - 1; i++){
+            for(int j = 0; j < data.size() - i - 1; j++){
+                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                try{
+                    Date dateFirst = format.parse(data.get(j).getDate());
+                    Date dateSecond = format.parse(data.get(j+1).getDate());
+                    if(dateFirst.compareTo(dateSecond) > 0){
+                        tmp = data.get(j);
+                        data.set(j, data.get(j+1));
+                        data.set(j+1, tmp);
+                    }
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void sortListByTime(ArrayList<BuyTransactionPDFList> data){
+        BuyTransactionPDFList tmp;
+        for(int i = 0; i < data.size() - 1; i++){
+            for(int j = 0; j < data.size() - i - 1; j++){
+                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                try{
+                    Date timeFirst = format.parse(data.get(j).getTime());
+                    Date timeSecond = format.parse(data.get(j+1).getTime());
+                    if(timeFirst.compareTo(timeSecond) > 0){
+                        tmp = data.get(j);
+                        data.set(j, data.get(j+1));
+                        data.set(j+1, tmp);
+                    }
+                }catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

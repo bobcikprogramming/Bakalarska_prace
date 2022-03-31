@@ -64,7 +64,7 @@ public interface DatabaseDao {
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left != quantity_sold AND short_name_sold = :shortName AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
     List<TransactionWithPhotos> getUsedSellBetweenByShortName(String shortName, String dateFrom, String dateTo);
 
-    @Query("SELECT short_name_sold FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left != quantity_sold AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
+    @Query("SELECT short_name_sold FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left != quantity_sold AND date BETWEEN :dateFrom AND :dateTo GROUP BY short_name_sold ORDER BY date, time")
     List <String> getUsedShortNameSellBetween(String dateFrom, String dateTo);
 
     @Query("SELECT * FROM TransactionEntity WHERE (transaction_type = 'Prodej' AND amount_left != quantity_sold OR transaction_type = 'Směna' AND amount_left_change_sell != quantity_sold) AND ((date = :date AND time >= :time) OR date > :date) AND short_name_sold = :shortName ORDER BY date, time")
