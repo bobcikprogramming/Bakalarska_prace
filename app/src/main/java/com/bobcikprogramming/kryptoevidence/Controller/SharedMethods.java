@@ -154,4 +154,14 @@ public class SharedMethods {
     public Double getTwoDecimalDouble(String toEdit){
         return Math.round(Double.parseDouble(toEdit) * 100.0) / 100.0;
     }
+
+    public BigDecimal getTwoDecimalBigDecimal(Double toEdit){
+        BigDecimal toRound = getBigDecimal(toEdit);
+        return toRound.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    public BigDecimal getTwoDecimalBigDecimal(String toEdit){
+        BigDecimal toRound = getBigDecimal(toEdit);
+        return toRound.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
 }

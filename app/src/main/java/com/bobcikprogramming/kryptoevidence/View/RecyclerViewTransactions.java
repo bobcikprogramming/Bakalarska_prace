@@ -109,21 +109,21 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         switch (transactionType){
             case "Nákup":
                 holder.tvNameFC.setText(transaction.longNameBought);
-                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantityBought));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
-                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantitySold));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 break;
             case "Prodej":
                 holder.tvNameFC.setText(transaction.longNameSold);
-                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantitySold));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
-                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantityBought));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 break;
             case "Směna":
                 holder.tvNameFC.setText(transaction.longNameBought);
-                holder.tvQuantityFC.setText(shared.editNumberForTextView(transaction.quantityBought));
+                holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 holder.tvNameSC.setText(transaction.shortNameSold);
-                holder.tvQuantitySC.setText(shared.editNumberForTextView(transaction.quantitySold));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 break;
 
         }
@@ -131,7 +131,6 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     public void setTransactionData(List<TransactionWithPhotos> transactionData){
         this.dataList = transactionData;
-        Toast.makeText(context, String.valueOf(this.dataList.size()), Toast.LENGTH_SHORT).show();
         notifyDataSetChanged();
     }
 

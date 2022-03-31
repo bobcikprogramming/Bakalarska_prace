@@ -223,24 +223,24 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         TransactionEntity transaction = controller.getTransactionEntity();
         switch (controller.getTransactionType()){
             case "Nákup":
-                valueRowFirst.setText(transaction.quantityBought);
-                valueRowSecond.setText(transaction.priceBought);
+                valueRowFirst.setText(shared.getBigDecimal(transaction.quantityBought).toPlainString()); /** <-- https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html#toPlainString%28%29 */
+                valueRowSecond.setText(shared.getBigDecimal(transaction.priceBought).toPlainString());
                 spinnerRowThird.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
                 spinnerRowThird.setSelection(((ArrayAdapter) spinnerRowThird.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
                 break;
             case "Prodej":
-                valueRowFirst.setText(transaction.quantitySold);
-                valueRowSecond.setText(transaction.priceSold);
+                valueRowFirst.setText(shared.getBigDecimal(transaction.quantitySold).toPlainString());
+                valueRowSecond.setText(shared.getBigDecimal(transaction.priceSold).toPlainString());
                 spinnerRowThird.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
                 spinnerRowThird.setSelection(((ArrayAdapter) spinnerRowThird.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
                 break;
             case "Směna":
-                valueRowFirst.setText(transaction.quantityBought);
+                valueRowFirst.setText(shared.getBigDecimal(transaction.quantityBought).toPlainString());
                 spinnerRowSeventh.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
                 spinnerRowSeventh.setSelection(((ArrayAdapter) spinnerRowSeventh.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
                 valueRowFourth.setText(transaction.longNameSold);
-                valueRowFifth.setText(transaction.quantitySold);
-                valueRowSixth.setText(transaction.priceBought);
+                valueRowFifth.setText(shared.getBigDecimal(transaction.quantitySold).toPlainString());
+                valueRowSixth.setText(shared.getBigDecimal(transaction.priceBought).toPlainString());
                 break;
         }
         valueFee.setText(String.valueOf(transaction.fee));

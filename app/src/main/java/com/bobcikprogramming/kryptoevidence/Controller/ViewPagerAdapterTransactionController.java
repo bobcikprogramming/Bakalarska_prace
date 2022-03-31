@@ -111,33 +111,32 @@ public class ViewPagerAdapterTransactionController {
             firstRow.setRightValue(transaction.shortNameBought);
 
             secondRow.setLeftDesc("Koupené množství");
-            secondRow.setLeftValue(transaction.quantityBought);
+            secondRow.setLeftValue(shared.getBigDecimal(transaction.quantityBought).toPlainString());
             secondRow.setRightValue(transaction.shortNameBought);
 
             thirdRow.setLeftDesc("Pořizovací cena");
             thirdRow.setRightDesc("Měna");
             thirdRow.setRightValue(transaction.currency);
-            thirdRow.setLeftValue(transaction.priceBought);
+            thirdRow.setLeftValue(shared.getBigDecimal(transaction.priceBought).toPlainString());
 
             fifthRow.setLeftDesc("Poř. cena včetně poplatku");
-            fifthRow.setLeftValue(transaction.quantitySold);
+            fifthRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
         }else{
             firstRow.setLeftDesc("Prodaná měna");
             firstRow.setLeftValue(transaction.longNameSold);
             firstRow.setRightValue(transaction.shortNameSold);
 
             secondRow.setLeftDesc("Prodané množství");
-            secondRow.setLeftValue(transaction.quantitySold);
+            secondRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
             secondRow.setRightValue(transaction.shortNameSold);
 
             thirdRow.setLeftDesc("Prodejní cena");
             thirdRow.setRightDesc("Měna");
             thirdRow.setRightValue(transaction.currency);
-            thirdRow.setLeftValue(transaction.priceBought);
-            thirdRow.setLeftValue(String.valueOf(transaction.priceSold));
+            thirdRow.setLeftValue(shared.getBigDecimal(transaction.priceSold).toPlainString());
 
             fifthRow.setLeftDesc("Čistá prodejní cena");
-            fifthRow.setLeftValue(transaction.quantityBought);
+            fifthRow.setLeftValue(shared.getBigDecimal(transaction.quantityBought).toPlainString());
         }
 
         transactionInfoList.add(firstRow);
@@ -171,12 +170,12 @@ public class ViewPagerAdapterTransactionController {
 
         secondRow.setLeftDesc("Koupené množství");
         secondRow.setRightDesc("Měna");
-        secondRow.setLeftValue(String.valueOf(transaction.quantityBought));
+        secondRow.setLeftValue(shared.getBigDecimal(transaction.quantityBought).toPlainString());
         secondRow.setRightValue(transaction.shortNameBought);
 
         thirdRow.setLeftDesc("Cena směny");
         thirdRow.setRightDesc("Měna");
-        thirdRow.setLeftValue(String.valueOf(transaction.priceBought));
+        thirdRow.setLeftValue(shared.getBigDecimal(transaction.priceBought).toPlainString());
         thirdRow.setRightValue(transaction.currency);
 
         fourthRow.setLeftDesc("Prodaná měna");
@@ -186,7 +185,7 @@ public class ViewPagerAdapterTransactionController {
 
         fifthRow.setLeftDesc("Prodané množství");
         fifthRow.setRightDesc("Měna");
-        fifthRow.setLeftValue(String.valueOf(transaction.quantitySold));
+        fifthRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
         fifthRow.setRightValue(transaction.shortNameSold);
 
         sixthRow.setLeftDesc("Poplatek");

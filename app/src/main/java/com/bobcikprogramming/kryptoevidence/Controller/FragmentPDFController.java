@@ -10,6 +10,7 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,20 +97,18 @@ public class FragmentPDFController {
         SellTransactionPDFList sellTransaction;
         for(TransactionWithPhotos sell : salesInYear){
             TransactionEntity sellEntity = sell.transaction;
-            Double price = shared.getTwoDecimalDouble(sellEntity.priceSold); // TODO: Asi problém že to je v double, možná použít bigdecimal
-            Double fee = shared.getTwoDecimalDouble(sellEntity.fee);
-            Double profit = 0.0;
-            if(sellEntity.currency.equals("CZK")){
-                profit = price - fee;
-            }else if(sellEntity.currency.equals("EUR")){
-                price = shared.getTwoDecimalDouble(Double.parseDouble(sellEntity.priceSold) * TMPEUREXCHANGERATE);
-                fee = shared.getTwoDecimalDouble(sellEntity.fee * TMPEUREXCHANGERATE);
-                profit = price - fee;
+            BigDecimal price = shared.getTwoDecimalBigDecimal(sellEntity.priceSold); // TODO: Asi problém že to je v double, možná použít bigdecimal
+            BigDecimal fee = shared.getTwoDecimalBigDecimal(sellEntity.fee);
+            BigDecimal profit = BigDecimal.ZERO;
+            if(sellEntity.currency.equals("EUR")){
+                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * TMPEUREXCHANGERATE);
+                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * TMPEUREXCHANGERATE);
             }else if(sellEntity.currency.equals("USD")){
-                price = shared.getTwoDecimalDouble(Double.parseDouble(sellEntity.priceSold) * TMPUSDEXCHANGERATE);
-                fee = shared.getTwoDecimalDouble(sellEntity.fee * TMPUSDEXCHANGERATE);
-                profit = price - fee;
+                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * TMPUSDEXCHANGERATE);
+                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * TMPUSDEXCHANGERATE);
             }
+
+            profit = price.subtract(fee);
 
             sellTransaction = new SellTransactionPDFList(calendar.getDateFormatFromDatabase(sellEntity.date), sellEntity.quantitySold, sellEntity.shortNameSold, String.valueOf(price), String.valueOf(fee), String.valueOf(profit));
             sellList.add(sellTransaction);
