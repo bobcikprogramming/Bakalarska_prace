@@ -56,16 +56,17 @@ public class PDFGenerator {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
     }
 
-    public void createPDF(String selectedYear,  ArrayList<SellTransactionPDFList> sellList) throws IOException {
+    public void createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList) throws IOException {
         loadFonts();
         createNewPage();
         cellWidthXPos = (width/6f);
-        int lastPageNum = createSell(sellList);
+        createBuy(buyList);
+        createSell(sellList);
 
 
         // Přidání zápatí v případě, že stránka nebyla zcela zaplněna
         if(curYVal - 15f > 65) {
-            createFooter(String.valueOf(lastPageNum));
+            createFooter(String.valueOf(pageNum));
         }
 
         contentStream.close();
@@ -132,7 +133,281 @@ public class PDFGenerator {
         curYVal -= 55f;
     }
 
-    private int createSell(ArrayList<SellTransactionPDFList> sellList) throws IOException {
+    private void createFooter(String pageNum) throws IOException {
+        float width = page.getMediaBox().getWidth() - (MARGINSIDE * 2);
+        curYVal = 50;
+        contentStream.setNonStrokingColor(200, 200, 200);
+        contentStream.addRect(MARGINSIDE, curYVal, width, 0.75f);
+        contentStream.fill();
+
+        curYVal -= 20;
+
+        contentStream.beginText();
+        curXVal = 0f;
+        String created = "Vytvořeno:";
+        contentStream.setNonStrokingColor(100, 100, 100);
+        contentStream.setLeading(15f);
+        writeTextNewLineAtOffset(created, font, 10, MARGINSIDE, curYVal);
+
+        float textWidth = (fontBold.getStringWidth(created) / 1000.0f) * 10 + 2;
+        contentStream.setNonStrokingColor(50, 50, 50);
+        writeTextNewLineAtOffset(calendar.getActualDay(), fontBold, 11, textWidth, 0);
+
+        contentStream.setNonStrokingColor(0, 0, 0);
+        textWidth = (font.getStringWidth(pageNum) / 1000.0f) * 10 + textWidth + 5;
+        writeTextNewLineAtOffset(pageNum, font, 10, width-textWidth, 0);
+        contentStream.endText();
+    }
+
+    /** PDF sekce nákupu */
+    private void createBuy(ArrayList<BuyTransactionPDFList> buyList) throws IOException {
+        float lastTextWidth = 0f;
+        // Vložit popis tabulky
+        createBuyHeadline(true);
+
+        BigDecimal buyTotal = BigDecimal.ZERO;
+
+        contentStream.beginText();
+        curXVal = 0f;
+        for(int i = 0; i < 19; i++) {
+            for (BuyTransactionPDFList buy : buyList) {
+                // Dokud mám nějaký prodej
+                contentStream.setLeading(20f);
+
+                if (curYVal - 20f > 70f) {
+                    // Dokud jsem nepřetekl obsah stránky
+                    // Vypsat prodej
+                    lastTextWidth = insertBuy(cellWidthXPos, buy, lastTextWidth);
+                    firstPageRow = false;
+
+                } else {
+                    // Obsah přetekl stránku
+                    contentStream.endText();
+
+                    // Přidat zápatí
+                    createFooter(String.valueOf(pageNum));
+
+                    // Vytvořit novou stránku
+                    contentStream.close();
+                    createNewPage();
+                    contentStream.setNonStrokingColor(150, 150, 150);
+                    createSellHeadline(false);
+                    contentStream.setNonStrokingColor(0, 0, 0);
+                    contentStream.setFont(font, 12);
+
+                    // Vložit prodej
+                    contentStream.beginText();
+                    curXVal = 0f;
+                    insertBuy(cellWidthXPos, buy, lastTextWidth);
+                    firstPageRow = false;
+                    pageNum += 1;
+                }
+                buyTotal = buyTotal.add(shared.getBigDecimal(buy.getTotal()));
+            }
+        }
+        createBuyTotal(buyTotal.toPlainString());
+        contentStream.endText();
+    }
+
+    private float insertBuy(float cellWidthXPos, BuyTransactionPDFList buy, float lastTextWidth) throws IOException {
+        curYVal -= 20f;
+        int textOverflowCounter = 0;
+        ArrayList<String> textOverflow = new ArrayList<>();
+
+        if(firstPageRow) {
+            writeTextNewLineAtOffset(buy.getDate(), font, 12, MARGINSIDE, curYVal);
+        }else{
+            writeTextNewLineAtOffset(buy.getDate(), font, 12, -curXVal + MARGINSIDE, -20);
+            curXVal = MARGINSIDE;
+        }
+
+        writeTextNewLineAtOffset(buy.getName(), font, 12, cellWidthXPos - MARGINSIDE, 0);
+
+        if((font.getStringWidth(buy.getQuantity()) / 1000.0f) * 11 <= cellWidthXPos){
+            writeTextNewLineAtOffset(buy.getQuantity(), font, 12, cellWidthXPos + 5, 0);
+        }else{
+            textOverflowCounter ++;
+            writeTextNewLineAtOffset("*" + textOverflowCounter, font, 12, cellWidthXPos + 5, 0);
+            textOverflow.add(buy.getQuantity());
+        }
+
+        if((font.getStringWidth(buy.getPrice()) / 1000.0f) * 11 <= cellWidthXPos){
+            writeTextNewLineAtOffset(buy.getPrice(), font, 12, cellWidthXPos + 5, 0);
+        }else{
+            textOverflowCounter ++;
+            writeTextNewLineAtOffset("*" + textOverflowCounter, font, 12, cellWidthXPos + 5, 0);
+            textOverflow.add(buy.getPrice());
+        }
+
+        if((font.getStringWidth(buy.getFee()) / 1000.0f) * 11 <= cellWidthXPos){
+            writeTextNewLineAtOffset(buy.getFee(), font, 12, cellWidthXPos + 5, 0);
+        }else{
+            textOverflowCounter ++;
+            writeTextNewLineAtOffset("*" + textOverflowCounter, font, 12, cellWidthXPos + 5, 0);
+            textOverflow.add(buy.getFee());
+        }
+
+        if((fontBold.getStringWidth(buy.getTotal()) / 1000.0f) * 11 <= cellWidthXPos){
+            lastTextWidth = (fontBold.getStringWidth(buy.total) / 1000.0f) * 12;
+            writeTextNewLineAtOffset(buy.getTotal(), fontBold, 12, cellWidthXPos + (cellWidthXPos-lastTextWidth) + 5, 0);
+        }else{
+            textOverflowCounter ++;
+            lastTextWidth = (fontBold.getStringWidth("*" + textOverflowCounter) / 1000.0f) * 12;
+            writeTextNewLineAtOffset("*" + textOverflowCounter, fontBold, 12, cellWidthXPos + (cellWidthXPos-lastTextWidth) + 5, 0);
+            textOverflow.add(buy.getTotal());
+        }
+
+        boolean firstStar = true;
+        for(int i = 1; i <= textOverflowCounter; i++){
+            if(curYVal - 20f > 70f) {
+                // Dokud jsem nepřetekl obsah stránky
+                // Vypsat prodej
+                curYVal -= 20f;
+
+                contentStream.setFont(font, 12);
+                if(firstStar) {
+                    contentStream.newLineAtOffset(-curXVal + 25, -20);
+                    firstStar = false;
+                }else{
+                    contentStream.newLine();
+                }
+                curXVal = 25;
+                contentStream.showText("*" + i + " : " + textOverflow.get(i-1));
+
+
+            }else{
+                contentStream.endText();
+
+                // Přidat zápatí
+                createFooter(String.valueOf(pageNum));
+
+                // Vytvořit novou stránku
+                contentStream.close();
+                createNewPage();
+                contentStream.setNonStrokingColor(150, 150, 150);
+                createBuyHeadline(false);
+                contentStream.setNonStrokingColor(0, 0, 0);
+                contentStream.setFont(font, 12);
+
+                // Vložit přetečený text
+                contentStream.beginText();
+                curXVal = 25f;
+                curYVal -= 20f;
+                contentStream.newLineAtOffset(curXVal, curYVal);
+                contentStream.showText("*" + i + " : " + textOverflow.get(i-1));
+                firstPageRow = false;
+
+                pageNum += 1;
+            }
+        }
+        return lastTextWidth;
+    }
+
+    private void createBuyHeadline(boolean showTransactionType) throws IOException {
+        contentStream.beginText();
+        curXVal = 0f;
+
+        contentStream.setLeading(25f);
+        if(showTransactionType) {
+            writeTextNewLineAtOffset("Nákup", fontBold, 16, MARGINSIDE, curYVal);
+            String currency = "Cena vede v CZK";
+            float textWidth = (font.getStringWidth(currency) / 1000.0f) * 11;
+            float textPos = width - textWidth;
+            writeTextNewLineAtOffset(currency, font, 11, textPos, 0);
+            curYVal -= 25f;
+            writeTextNewLineAtOffset("Datum", font, 14, -curXVal + MARGINSIDE, -25);
+        }else{
+            writeTextNewLineAtOffset("Datum", font, 14, -curXVal + MARGINSIDE, curYVal);
+        }
+
+        contentStream.newLineAtOffset(cellWidthXPos - MARGINSIDE, 0);
+        curXVal += cellWidthXPos - MARGINSIDE;
+        contentStream.showText("Název");
+
+        contentStream.newLineAtOffset(cellWidthXPos + 5, 0);
+        curXVal += cellWidthXPos + 5;
+        contentStream.showText("Množství");
+
+        contentStream.newLineAtOffset(cellWidthXPos + 5, 0);
+        curXVal += cellWidthXPos + 5;
+        contentStream.showText("Cena");
+
+        contentStream.newLineAtOffset(cellWidthXPos + 5, 0);
+        curXVal += cellWidthXPos + 5;
+        contentStream.showText("Poplatek");
+
+        String value = "Celkové náklady";
+        float textWidth = (fontBold.getStringWidth(value) / 1000.0f) * 14;
+        writeTextNewLineAtOffset(value, fontBold, 14, cellWidthXPos + (cellWidthXPos-textWidth) + 5, 0);
+
+        curYVal -= 10f;
+        contentStream.endText();
+
+        if(showTransactionType) {
+            contentStream.setNonStrokingColor(0, 0, 0);
+        }
+
+        contentStream.addRect(MARGINSIDE, curYVal, width, 3);
+        contentStream.fill();
+    }
+
+    private void createBuyTotal(String sellTotal) throws IOException {
+        contentStream.endText();
+        if(curYVal - 25f > 70f) {
+            // Dokud jsem nepřetekl obsah stránky
+            // Vypsat celkovou hodnotu prodeje
+            String sellTotalText = "Výdaj za nákup:";
+            float textWidthText = (font.getStringWidth(sellTotalText) / 1000.0f) * 12;
+            float textWidth = (fontBold.getStringWidth(sellTotal) / 1000.0f) * 14;
+            float moveRight = width - textWidth - textWidthText - 5 + MARGINSIDE;
+
+            if(firstPageRow) {
+                insertSellTotal(20f, moveRight, textWidth, textWidthText, sellTotalText);
+                firstPageRow = false;
+            }else{
+                insertSellTotal(25f, moveRight, textWidth, textWidthText, sellTotalText);
+            }
+
+            writeTextNewLineAtOffset(sellTotal, fontBold, 14, textWidthText + 5, 0);
+        }else{
+            // Pokud jsem přetekl
+            // Přidat zápatí
+            createFooter(String.valueOf(pageNum));
+
+            // Vytvořit novou stránku
+            contentStream.close();
+            createNewPage();
+
+            // Vložit přetečený text
+            String sellTotalText = "Výdaj za nákup:";
+            float textWidthText = (font.getStringWidth(sellTotalText) / 1000.0f) * 12;
+            float textWidth = (fontBold.getStringWidth(sellTotal) / 1000.0f) * 14;
+            float moveRight = width - textWidth - textWidthText - 5 + MARGINSIDE;
+
+            insertSellTotal(20f, moveRight, textWidth, textWidthText, sellTotalText);
+            writeTextNewLineAtOffset(sellTotal, fontBold, 14, textWidthText + 5, 0);
+
+            curYVal -= 5;
+            firstPageRow = false;
+            pageNum += 1;
+        }
+    }
+
+    private void insertBuyTotal(float yVal, float moveRight, float textWidth, float textWidthText, String buyTotalText) throws IOException {
+        curYVal -= yVal;
+        contentStream.setNonStrokingColor(0, 0, 0);
+        contentStream.addRect(moveRight, curYVal, textWidth + textWidthText + 5, 2);
+        contentStream.fill();
+
+        contentStream.beginText();
+        curXVal = 0f;
+        curYVal -= 15f;
+        writeTextNewLineAtOffset(buyTotalText, font, 12, moveRight, curYVal);
+    }
+    /** PDF sekce nákupu */
+
+    /** PDF sekce prodeje */
+    private void createSell(ArrayList<SellTransactionPDFList> sellList) throws IOException {
         float lastTextWidth = 0f;
         // Vložit popis tabulky
         createSellHeadline(true);
@@ -179,7 +454,6 @@ public class PDFGenerator {
         }
         createSellTotal(sellTotal.toPlainString());
         contentStream.endText();
-        return pageNum;
     }
 
     private float insertSell(float cellWidthXPos, SellTransactionPDFList sell, float lastTextWidth) throws IOException {
@@ -274,32 +548,6 @@ public class PDFGenerator {
             }
         }
         return lastTextWidth;
-    }
-
-    private void createFooter(String pageNum) throws IOException {
-        float width = page.getMediaBox().getWidth() - (MARGINSIDE * 2);
-        curYVal = 50;
-        contentStream.setNonStrokingColor(200, 200, 200);
-        contentStream.addRect(MARGINSIDE, curYVal, width, 0.75f);
-        contentStream.fill();
-
-        curYVal -= 20;
-
-        contentStream.beginText();
-        curXVal = 0f;
-        String created = "Vytvořeno:";
-        contentStream.setNonStrokingColor(100, 100, 100);
-        contentStream.setLeading(15f);
-        writeTextNewLineAtOffset(created, font, 10, MARGINSIDE, curYVal);
-
-        float textWidth = (fontBold.getStringWidth(created) / 1000.0f) * 10 + 2;
-        contentStream.setNonStrokingColor(50, 50, 50);
-        writeTextNewLineAtOffset(calendar.getActualDay(), fontBold, 11, textWidth, 0);
-
-        contentStream.setNonStrokingColor(0, 0, 0);
-        textWidth = (font.getStringWidth(pageNum) / 1000.0f) * 10 + textWidth + 5;
-        writeTextNewLineAtOffset(pageNum, font, 10, width-textWidth, 0);
-        contentStream.endText();
     }
 
     private void createSellHeadline(boolean showTransactionType) throws IOException {
@@ -403,4 +651,5 @@ public class PDFGenerator {
         curYVal -= 15f;
         writeTextNewLineAtOffset(sellTotalText, font, 12, moveRight, curYVal);
     }
+    /** PDF sekce prodeje */
 }
