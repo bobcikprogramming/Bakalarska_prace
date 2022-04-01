@@ -48,7 +48,7 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
         TransactionEntity transaction = data.transaction;
 
         holder.textViewOperation.setText(transaction.transactionType);
-        holder.textViewDate.setText(calendar.getDateFormatFromDatabase(transaction.date));
+        holder.textViewDate.setText(calendar.getDateFromMillis(transaction.date));
 
         changeItemViewByTransactionType(transaction.transactionType, holder);
         loadDataToItems(transaction.transactionType, holder, data);

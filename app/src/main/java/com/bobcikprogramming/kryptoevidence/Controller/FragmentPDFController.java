@@ -23,6 +23,7 @@ public class FragmentPDFController {
     private String selectedYear;
     private ArrayList<RecyclerViewPDFList> dataList;
     private Context context;
+    private Activity activity;
 
     private RecyclerViewPDF adapter;
 
@@ -35,10 +36,10 @@ public class FragmentPDFController {
 
     public FragmentPDFController(Context context, Activity activity){
         this.context = context;
+        this.activity = activity;
 
         calendar = new CalendarManager();
         shared = new SharedMethods();
-        generator = new PDFGenerator(context.getAssets(), context, activity);
         selectedYear = "";
         dataList = new ArrayList<>();
         adapter = new RecyclerViewPDF(context, dataList);
@@ -60,18 +61,25 @@ public class FragmentPDFController {
     private void checkIfThereIsATransaction(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
-        String dateFrom = selectedYear + ".01.01";
-        String dateTo = selectedYear + ".12.31";
+        long dateFrom = calendar.getDateMillis("01.01." + selectedYear);
+        long dateTo = calendar.getDateMillis("31.12." + selectedYear);
         // Zkontrolovat, zdali v daném roce existuje prodej.
         List<TransactionWithPhotos> salesInYear = db.databaseDao().getUsedSellBetween(dateFrom, dateTo);
         if(salesInYear.isEmpty()){
             // Pokud ne:
             // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
+            System.out.println(">>>>>>>>>>>>>salesInYear: empty");
             Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
         }else{
+            System.out.println(">>>>>>>>>>>>>salesInYear: "+salesInYear.size());
+            for(TransactionWithPhotos test : salesInYear){
+                System.out.println(">>>>>>>>>>>>>salesInYear: "+selectedYear + " from: " + dateFrom + " to: " +dateTo + " searching: " + test.transaction.date);
+                System.out.println(">>>>>>>>>> "+calendar.getDateFromMillis(test.transaction.date));
+            }
             ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
             ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
             ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
+            generator = new PDFGenerator(context.getAssets(), context, activity, TMPEUREXCHANGERATE, TMPUSDEXCHANGERATE);
 
             try {
                 generator.createPDF(selectedYear, buyList, sellList, changeList);
@@ -116,13 +124,13 @@ public class FragmentPDFController {
 
             profit = price.subtract(fee);
 
-            sellTransaction = new SellTransactionPDFList(calendar.getDateFormatFromDatabase(sellEntity.date), sellEntity.quantitySold, sellEntity.shortNameSold, String.valueOf(price), String.valueOf(fee), String.valueOf(profit));
+            sellTransaction = new SellTransactionPDFList(calendar.getDateFromMillis(sellEntity.date), sellEntity.quantitySold, sellEntity.shortNameSold, String.valueOf(price), String.valueOf(fee), String.valueOf(profit));
             sellList.add(sellTransaction);
         }
         return sellList;
     }
 
-    private ArrayList<BuyTransactionPDFList> buyValue(String dateFrom, String dateTo){
+    private ArrayList<BuyTransactionPDFList> buyValue(long dateFrom, long dateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<BuyTransactionPDFList> buyList = new ArrayList<>();
         BuyTransactionPDFList buyTransaction;
@@ -170,16 +178,18 @@ public class FragmentPDFController {
             String timeFirst = buyTransaction.getTime();
             buyList.add(buyTransaction);
 
-            /** Zpracuji hodnoty posledního. */
-            buyTransaction = getBuyTransaction(uidLast, takenFromLast, shortName);
-            // Uložím datum a čas posledního.
+            /** Zpracuji hodnoty posledního, pokud se nejedná zároveň o první. */
             String dateLast = buyTransaction.getDate();
             String timeLast = buyTransaction.getTime();
-            buyList.add(buyTransaction);
+            if(uidFirst != uidLast) {
+                buyTransaction = getBuyTransaction(uidLast, takenFromLast, shortName);
+                // Uložím datum a čas posledního.
+                buyList.add(buyTransaction);
+            }
 
             // Zpracuji hodnoty mezi prvním a posledním.
             // Získám nákupy mezi prvním a posledním prodejem.
-            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), dateFirst, timeFirst, dateLast, timeLast, shortName);
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), calendar.getDateMillis(dateFirst), timeFirst, calendar.getDateMillis(dateLast), timeLast, shortName);
             for (TransactionWithPhotos buy : listOfUsedBuyBetween) {
                 TransactionEntity buyEntity = buy.transaction;
                 // Získáme hodnoty: Cena, Množství, Poplatek.
@@ -201,7 +211,7 @@ public class FragmentPDFController {
                     total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
                 }
 
-                buyTransaction = new BuyTransactionPDFList(buyEntity.date, buyEntity.time, quantity.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
+                buyTransaction = new BuyTransactionPDFList(calendar.getDateFromMillis(buyEntity.date), buyEntity.time, quantity.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
                 buyList.add(buyTransaction);
             }
 
@@ -249,10 +259,10 @@ public class FragmentPDFController {
         }
 
         // Vrátím nákup.
-        return new BuyTransactionPDFList(buy.date, buy.time, takenFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
+        return new BuyTransactionPDFList(calendar.getDateFromMillis(buy.date), buy.time, takenFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
     }
 
-    private ArrayList<ChangeTransactionPDFList> changeValue(String dateFrom, String dateTo){
+    private ArrayList<ChangeTransactionPDFList> changeValue(long dateFrom, long dateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<ChangeTransactionPDFList> changeList = new ArrayList<>();
         ChangeTransactionPDFList changeTransaction;
@@ -270,7 +280,7 @@ public class FragmentPDFController {
                 fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE));
                 profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE))).subtract(fee);
             }
-            changeTransaction = new ChangeTransactionPDFList(calendar.getDateFormatFromDatabase(changeEntity.date), changeEntity.quantityBought, changeEntity.shortNameBought, changeEntity.quantitySold, changeEntity.shortNameSold, profit.toString());
+            changeTransaction = new ChangeTransactionPDFList(calendar.getDateFromMillis(changeEntity.date), changeEntity.quantityBought, changeEntity.shortNameBought, changeEntity.quantitySold, changeEntity.shortNameSold, profit.toString());
             changeList.add(changeTransaction);
         }
         return changeList;

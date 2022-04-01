@@ -40,7 +40,7 @@ public class TransactionOperationController {
         EMPTYBIGDECIMAL = shared.getBigDecimal("-1.0");
     }
 
-    public boolean saveTransactionBuy(String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold){
+    public boolean saveTransactionBuy(String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantitySold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -53,7 +53,7 @@ public class TransactionOperationController {
         }
     }
 
-    public boolean saveTransactionSell(String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantityBought){
+    public boolean saveTransactionSell(String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantityBought){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -66,7 +66,7 @@ public class TransactionOperationController {
         }
     }
 
-    public boolean saveTransactionChange(String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold){
+    public boolean saveTransactionChange(String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, long date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
         }
@@ -144,7 +144,7 @@ public class TransactionOperationController {
      * @param date
      * @param quantity
      */
-    private void calcFifoBuy(long transactionID, BigDecimal quantity, String date, String time, String shortName){
+    private void calcFifoBuy(long transactionID, BigDecimal quantity, long date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         db.databaseDao().resetAmountLeftBuyChangeAfterFirst(String.valueOf(transactionID), date, time, shortName);
@@ -153,15 +153,15 @@ public class TransactionOperationController {
         recaclForBuy(transactionID, quantity, date, time, shortName);
     }
 
-    private void resetTransactionSellAfterNewBuy(String transactionID, String shortName, String date, String time){
+    private void resetTransactionSellAfterNewBuy(String transactionID, String shortName, long date, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellChangeFrom(date, time, shortName);
 
         for(TransactionWithPhotos sellToReset : listOfUsedSell){
             TransactionWithPhotos firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(sellToReset.transaction.firstTakenFrom));
-            String dateFrom = firstBuy.transaction.date;
-            Date firstBuyDate = calendar.getDateFormat(dateFrom);
-            Date newBuyDate = calendar.getDateFormat(date);
+            long dateFrom = firstBuy.transaction.date;
+            Date firstBuyDate = calendar.getDateFormat(calendar.getDateFromMillis(dateFrom));
+            Date newBuyDate = calendar.getDateFormat(calendar.getDateFromMillis(date));
             String timeFrom = firstBuy.transaction.time;
             Date firstBuyTime = calendar.getTimeFormat(timeFrom);
             Date newBuyTime = calendar.getTimeFormat(time);
@@ -210,14 +210,13 @@ public class TransactionOperationController {
         }
     }
 
-    public void calcFifoSell(long transactionID, BigDecimal quantity, String date, String time, String shortName){
+    public void calcFifoSell(long transactionID, BigDecimal quantity, long date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellChangeAfter(date, time, shortName);
         if(!listOfUsedSales.isEmpty()) {
             TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(listOfUsedSales.get(0).transaction.uidTransaction)).transaction;
-            String startingDate = firstBuy.date;
             String startingTime = firstBuy.time;
-            resetTransactionBuyAfterNewSell(shortName, startingDate, startingTime, listOfUsedSales);
+            resetTransactionBuyAfterNewSell(shortName, firstBuy.date, startingTime, listOfUsedSales);
         }
 
         db.databaseDao().resetAmountLeftUsedSellAfterFirst(String.valueOf(transactionID), date, time, shortName);
@@ -236,7 +235,7 @@ public class TransactionOperationController {
         }
     }
 
-    private void resetTransactionBuyAfterNewSell(String shortName, String firstBuyDate, String firstBuyTime, List<TransactionWithPhotos> listOfUsedSales){
+    private void resetTransactionBuyAfterNewSell(String shortName, long firstBuyDate, String firstBuyTime, List<TransactionWithPhotos> listOfUsedSales){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         long transactionIDOfFirstBuy = listOfUsedSales.get(0).transaction.firstTakenFrom;
@@ -301,7 +300,7 @@ public class TransactionOperationController {
         }
     }
 
-    private void calcFifoChange(long transactionID, BigDecimal quantityBuy, BigDecimal quantitySell, String date, String time, String shortNameBuy, String shortNameSell){
+    private void calcFifoChange(long transactionID, BigDecimal quantityBuy, BigDecimal quantitySell, long date, String time, String shortNameBuy, String shortNameSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // ----------------------------------------------
@@ -315,7 +314,7 @@ public class TransactionOperationController {
         // ----------------------------------------------
     }
 
-    private void recaclForBuy(long transactionID, BigDecimal quantity, String date, String time, String shortNameBuy) {
+    private void recaclForBuy(long transactionID, BigDecimal quantity, long date, String time, String shortNameBuy) {
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         BigDecimal amountLeft = quantity;

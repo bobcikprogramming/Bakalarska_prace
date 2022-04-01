@@ -52,17 +52,12 @@ public class TransactionViewerController {
         TransactionWithPhotos tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
-                try{
-                    Date dateFirst = format.parse(data.get(j).transaction.date);
-                    Date dateSecond = format.parse(data.get(j+1).transaction.date);
-                    if(dateFirst.compareTo(dateSecond) < 0){
-                        tmp = data.get(j);
-                        data.set(j, data.get(j+1));
-                        data.set(j+1, tmp);
-                    }
-                }catch (ParseException e) {
-                    e.printStackTrace();
+                long dateFirst = data.get(j).transaction.date;
+                long dateSecond = data.get(j+1).transaction.date;
+                if(dateFirst < dateSecond){
+                    tmp = data.get(j);
+                    data.set(j, data.get(j+1));
+                    data.set(j+1, tmp);
                 }
             }
         }

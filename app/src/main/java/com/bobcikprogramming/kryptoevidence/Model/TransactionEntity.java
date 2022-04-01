@@ -50,7 +50,7 @@ public class TransactionEntity {
     public Double fee;
 
     @ColumnInfo(name = "date")
-    public String date;
+    public long date;
 
     @ColumnInfo(name = "time")
     public String time;

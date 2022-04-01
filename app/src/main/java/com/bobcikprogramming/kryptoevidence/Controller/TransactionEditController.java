@@ -128,7 +128,7 @@ public class TransactionEditController {
             }
             newTransaction.currency = shared.getString(spinnerRowThird);
             newTransaction.fee = shared.getFee(valueFee);
-            newTransaction.date = calendar.getDateFormatToDatabase(shared.getString(valueDate));
+            newTransaction.date = calendar.getDateMillis(shared.getString(valueDate));
             newTransaction.time = shared.getString(valueTime);
 
             transactionHistory.transactionType = transaction.transactionType;
@@ -141,10 +141,12 @@ public class TransactionEditController {
                 transactionHistory.fee = transaction.fee;
                 changed = true;
             }
-            if(!newTransaction.date.equals(transaction.date)){
+            if(newTransaction.date != transaction.date){
                 transactionHistory.date = transaction.date;
                 dateOrTimeChange = true;
                 changed = true;
+            }else{
+                transactionHistory.date = 0;
             }
             if(!newTransaction.time.equals(transaction.time)){
                 transactionHistory.time = transaction.time;
@@ -164,7 +166,7 @@ public class TransactionEditController {
             newTransaction.longNameSold = longNameCryptoSell == null ? transaction.longNameSold : longNameCryptoSell;
             newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFifth);
             newTransaction.fee = shared.getFee(valueFee);
-            newTransaction.date = calendar.getDateFormatToDatabase(shared.getString(valueDate));
+            newTransaction.date = calendar.getDateMillis(shared.getString(valueDate));
             newTransaction.time = shared.getString(valueTime);
 
             operationType = 2;
@@ -208,7 +210,7 @@ public class TransactionEditController {
                 transactionHistory.fee = transaction.fee;
                 changed = true;
             }
-            if (!newTransaction.date.equals(transaction.date)) {
+            if (newTransaction.date != transaction.date) {
                 dateOrTimeChange = true;
                 transactionHistory.date = transaction.date;
                 changed = true;
@@ -348,7 +350,7 @@ public class TransactionEditController {
         db.databaseDao().deleteTransactionTable(transactionID);
     }
 
-    private void fifoDeleteBuy(String transactionID, String date, String time, String shortName){
+    private void fifoDeleteBuy(String transactionID, long date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // Všechny prodeje od prvního prodeje který je na tomto nákupu resetovat. První je potřeba udělat zvlášť.
@@ -364,7 +366,7 @@ public class TransactionEditController {
         recalculateForEditBuy(date, time, shortName);
     }
 
-    private void resetSales(String transactionID, String date, String time, String shortName, boolean editingTimeBefore){
+    private void resetSales(String transactionID, long date, String time, String shortName, boolean editingTimeBefore){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfSales = db.databaseDao().getUsedSellChangeFrom(date, time, shortName);
         TransactionEntity firstSell = null;
@@ -389,7 +391,7 @@ public class TransactionEditController {
             db.databaseDao().resetAmountLeftUsedChangeAfterFirst(String.valueOf(firstSell.uidTransaction), firstSell.date, firstSell.time, shortName);
             /** Pro první zjistit kolik bylo vzato z prodeje před smazaným prodejem a tuto hodnotu odečíst od obnoveného množství */
             TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
-            String dateFrom = firstBuy.date;
+            long dateFrom = firstBuy.date;
             String timeFrom = firstBuy.time;
             List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(firstSell.firstTakenFrom), transactionID, dateFrom, timeFrom, date, time, shortName);
 
@@ -454,7 +456,7 @@ public class TransactionEditController {
         }
     }
 
-    private void recalculateForEditBuy(String date, String time, String shortName){
+    private void recalculateForEditBuy(long date, String time, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellChangeNotEmptyFrom(date, time, shortName);
 
@@ -511,7 +513,7 @@ public class TransactionEditController {
         }
     }
 
-    private void fifoDeleteSell(String transactionID, String date, String time, String shortName){
+    private void fifoDeleteSell(String transactionID, long date, String time, String shortName){
         // Brát prodeje v cyklu a dokud další prodej nezačíná na jiné transakci než na té, kde první, a přičíst usedFromFirst k prvnímu nákupu
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellChangeAllFromFirst(transactionID, date, time, shortName);
@@ -603,7 +605,7 @@ public class TransactionEditController {
         }
     }
 
-    private void fifoDeleteChange(String transactionID, String date, String time, String shortNameBuy, String shortNameSell){
+    private void fifoDeleteChange(String transactionID, long date, String time, String shortNameBuy, String shortNameSell){
         // -------------------------------------------------------
         // Nákup:
         fifoDeleteBuy(transactionID, date, time, shortNameBuy);
@@ -615,7 +617,7 @@ public class TransactionEditController {
         // -------------------------------------------------------
     }
 
-    private void fifoEditAmountBuy(String transactionID, String date, String time, String shortName, String newAmountLeft){
+    private void fifoEditAmountBuy(String transactionID, long date, String time, String shortName, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // Vzít všechny prodeje od data nákupu a najít první (ten, který končí na daném nákupu nebo který začíná před a končí po).
@@ -636,7 +638,7 @@ public class TransactionEditController {
         newTransaction.amountLeft = db.databaseDao().getTransactionByTransactionID(transactionID).transaction.amountLeft;
     }
 
-    private void fifoEditAmountSell(String transactionID, String date, String time, String shortName, String newAmountLeft){
+    private void fifoEditAmountSell(String transactionID, long date, String time, String shortName, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // Vezmu všechny prodeje od toho co měním (včetně toho co měním). A vyberu ten co měním.
@@ -698,7 +700,7 @@ public class TransactionEditController {
         newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
-    private void fifoEditAmountChange(String transactionID, String date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){
+    private void fifoEditAmountChange(String transactionID, long date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // -------------------------------------------------------
         // Nákup:
@@ -734,17 +736,17 @@ public class TransactionEditController {
         }
     }
 
-    private void fifoEditTimeBuy(String transactionID, String date, String time, String shortName, String newAmountLeft){
+    private void fifoEditTimeBuy(String transactionID, long date, String time, String shortName, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // Zkontrolovat, zdali je nový čas/datum nákupu před původním.
         TransactionEntity editingTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
-        Date oldDate = calendar.getDateFormat(editingTransaction.date);
+        long oldDate = editingTransaction.date;
         Date oldTime = calendar.getTimeFormat(editingTransaction.time);
-        Date newDate = calendar.getDateFormat(date);
+        long newDate = date;
         Date newTime = calendar.getTimeFormat(time);
 
-        if(newDate.before(oldDate) || (newDate.equals(oldDate) && newTime.before(oldTime))){
+        if(newDate < oldDate || (newDate == oldDate && newTime.before(oldTime))){
             // Pokud ano:
             // Vzít všechny prodeje od nového času/data nákupu a najít první (ten, který končí na prvním nákupu v listu nebo který začíná před a končí po).
             // První prodej zpracovat zvlášť. Ponechat amountLeft před prvním nákupem.
@@ -781,18 +783,18 @@ public class TransactionEditController {
         newTransaction.amountLeft = changedBuy.amountLeft;
     }
 
-    private void fifoEditTimeSell(String transactionID, String date, String time, String shortName, String newAmountLeft){
+    private void fifoEditTimeSell(String transactionID, long date, String time, String shortName, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         // Zkontrolovat, zdali je nový čas/datum prodeje před původním.
         TransactionEntity editingTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
-        Date oldDate = calendar.getDateFormat(editingTransaction.date);
+        long oldDate = editingTransaction.date;
         Date oldTime = calendar.getTimeFormat(editingTransaction.time);
-        Date newDate = calendar.getDateFormat(date);
+        long newDate = date;
         Date newTime = calendar.getTimeFormat(time);
         TransactionEntity firstSell;
 
-        if(newDate.before(oldDate) || (newDate.equals(oldDate) && newTime.before(oldTime))) {
+        if(newDate < oldDate || (newDate == oldDate && newTime.before(oldTime))) {
             // Pokud ano:
             // Vezmu všechny prodeje od nového času/date (včetně). A vyberu první.
             List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellChangeFrom(date, time, shortName);
@@ -853,9 +855,9 @@ public class TransactionEditController {
                     i++;
                 } while (i < listOfUsedSales.size() && listOfUsedSales.get(i).transaction.firstTakenFrom == firstSell.firstTakenFrom);
 
-                // Poté vyresetuji prodeje od měněného.
-                db.databaseDao().resetAmountLeftUsedSellAfterFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
-                db.databaseDao().resetAmountLeftUsedChangeAfterFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+                // Poté vyresetuji prodeje od měněného (včetně).
+                db.databaseDao().resetAmountLeftUsedSellAllFrom(editingTransaction.date, editingTransaction.time, shortName);
+                db.databaseDao().resetAmountLeftUsedChangeAllFrom(editingTransaction.date, editingTransaction.time, shortName);
 
                 // Obnovit zbylé nákupy.
                 TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
@@ -865,15 +867,22 @@ public class TransactionEditController {
             // Nastavím novou hodnotu měněnému (amountLeft, date, time).
             db.databaseDao().updateChangeSellForEditingTime(transactionID, newAmountLeft, date, time);
 
+            System.out.println("---------------------------- před if");
             if(!listOfUsedSales.isEmpty()) {
+                System.out.println("---------------------------- v if");
                 // Přepočítat od původního. Beru včetně prvního (ten zůstal, jen má jinou hodnotu).
                 List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellChangeNotEmptyFromFirst(transactionID, editingTransaction.date, editingTransaction.time, shortName);
+                if(listOfIncompleteSales.isEmpty()){
+                    System.out.println("-------------------------------- je  to empty");
+                }
                 for (TransactionWithPhotos sell : listOfIncompleteSales) {
                     List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyChangeTo(sell.transaction.date, sell.transaction.time, shortName);
                     if (listOfAvailableBuys.isEmpty()) {
+                        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
                         break;
                     }
                     if (sell.transaction.transactionType.equals("Prodej")) {
+                        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                         recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                     } else {
                         recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
@@ -895,7 +904,7 @@ public class TransactionEditController {
         newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
-    private void fifoEditTimeChange(String transactionID, String date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){
+    private void fifoEditTimeChange(String transactionID, long date, String time, String shortNameBuy, String shortNameSell, String newAmountLeftBuy, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // -------------------------------------------------------
         // Nákup:
@@ -958,7 +967,7 @@ public class TransactionEditController {
     }
 
     public String getDate(){
-        return calendar.getDateFormatFromDatabase(getTransactionEntity().date);
+        return calendar.getDateFromMillis(getTransactionEntity().date);
     }
 
     public String getTime(){

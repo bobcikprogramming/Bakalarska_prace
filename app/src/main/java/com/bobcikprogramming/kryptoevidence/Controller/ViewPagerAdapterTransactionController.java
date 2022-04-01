@@ -101,7 +101,7 @@ public class ViewPagerAdapterTransactionController {
 
         sixthRow.setLeftDesc("Datum");
         sixthRow.setRightDesc("Čas");
-        sixthRow.setLeftValue(calendar.getDateFormatFromDatabase(transaction.date));
+        sixthRow.setLeftValue(calendar.getDateFromMillis(transaction.date));
         sixthRow.setRightValue(transaction.time);
 
 
@@ -195,7 +195,7 @@ public class ViewPagerAdapterTransactionController {
 
         eighthRow.setLeftDesc("Datum");
         eighthRow.setRightDesc("Čas");
-        eighthRow.setLeftValue(calendar.getDateFormatFromDatabase(transaction.date));
+        eighthRow.setLeftValue(calendar.getDateFromMillis(transaction.date));
         eighthRow.setRightValue(transaction.time);
 
         transactionInfoList.add(firstRow);
@@ -272,9 +272,9 @@ public class ViewPagerAdapterTransactionController {
                     transaction.setFeeDesc("Poplatek");
                     transaction.setFeeValue(String.valueOf(transactionHistory.fee));
                 }
-                if(transactionHistory.date != null){
+                if(transactionHistory.date != 0){
                     transaction.setDateDesc("Datum provedení");
-                    transaction.setDateValue(calendar.getDateFormatFromDatabase(transactionHistory.date));
+                    transaction.setDateValue(calendar.getDateFromMillis(transactionHistory.date));
                 }
                 if(transactionHistory.time != null){
                     transaction.setTimeDesc("Čas provedení");

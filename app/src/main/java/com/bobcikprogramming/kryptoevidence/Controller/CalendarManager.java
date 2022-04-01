@@ -158,7 +158,7 @@ public class CalendarManager {
 
     public Date getDateFormat(String dateInString){
         Date date = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         try {
             date = dateFormat.parse(String.valueOf(dateInString));
         }catch (ParseException e) {
@@ -210,27 +210,13 @@ public class CalendarManager {
         dialog.show();
     }
 
-    public String getDateFormatToDatabase(String date){
-        String result = "";
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            SimpleDateFormat dateFormatSecond = new SimpleDateFormat("yyyy.MM.dd");
-            result = dateFormatSecond.format(dateFormat.parse(date));
-        } catch (ParseException e) {
-            System.err.println("Chyba při parsování data: "+e);
-        }
-        return result;
+    public long getDateMillis(String dateInString){
+        return getDateFormat(dateInString).getTime();
     }
 
-    public String getDateFormatFromDatabase(String date){
-        String result = "";
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-            SimpleDateFormat dateFormatSecond = new SimpleDateFormat("dd.MM.yyyy");
-            result = dateFormatSecond.format(dateFormat.parse(date));
-        } catch (ParseException e) {
-            System.err.println("Chyba při parsování data: "+e);
-        }
-        return result;
+    public String getDateFromMillis(long millis){
+        Date date = new Date(millis);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return dateFormat.format(date);
     }
 }

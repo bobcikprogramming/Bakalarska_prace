@@ -9,7 +9,7 @@ public class TransactionOperationModel {
 
     public TransactionOperationModel(){}
 
-    public long saveTransactionBuyToDb(Context context, String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantitySold, ArrayList<String> photosPath) {
+    public long saveTransactionBuyToDb(Context context, String shortName, String longName, BigDecimal quantityBought, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -37,7 +37,7 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
-    public long saveTransactionSellToDb(Context context, String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, String date, String time, String currency, BigDecimal quantityBought, ArrayList<String> photosPath) {
+    public long saveTransactionSellToDb(Context context, String shortName, String longName, BigDecimal quantitySold, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantityBought, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
@@ -64,7 +64,7 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
-    public long saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, String date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, ArrayList<String> photosPath) {
+    public long saveTransactionChangeToDb(Context context, String shortNameBought, String longNameBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, long date, String time, String shortNameSold, String longNameSold, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
         PhotoEntity photoEntity = new PhotoEntity();
