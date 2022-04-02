@@ -21,7 +21,7 @@ import com.bobcikprogramming.kryptoevidence.R;
 public class FragmentPDF extends Fragment {
 
     private RecyclerView recyclerView;
-    private ImageView btnAdd;
+    private ImageView btnAdd, btnDelete;
 
     private String selectedYear;
 

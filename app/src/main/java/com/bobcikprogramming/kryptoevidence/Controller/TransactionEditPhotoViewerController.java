@@ -49,9 +49,6 @@ public class TransactionEditPhotoViewerController {
     }
 
     private void setViewPagerAdapter(){
-        if(photosUri == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 7");
-        }
         viewPagerAdapter = new ViewPagerAdapter(context, photosUri);
         photoViewer.setAdapter(viewPagerAdapter);
     }
@@ -73,7 +70,7 @@ public class TransactionEditPhotoViewerController {
             if(toDelete.delete()){
                 Toast.makeText(context, "Snímek úspěšně smazán.", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(context, "Snímek se nepodařilo smazat. Opakujte prosím akci.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Snímek se nepodařilo smazat. Opakujte prosím akci.", Toast.LENGTH_LONG).show();
                 return false;
             }
         }else{
