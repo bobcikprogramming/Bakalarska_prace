@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
@@ -21,7 +22,7 @@ import java.util.List;
 public class FragmentPDFController {
 
     private String selectedYear;
-    private ArrayList<RecyclerViewPDFList> dataList;
+    private List<PDFEntity> dataList;
     private Context context;
     private Activity activity;
 
@@ -41,24 +42,25 @@ public class FragmentPDFController {
         calendar = new CalendarManager();
         shared = new SharedMethods();
         selectedYear = "";
-        dataList = new ArrayList<>();
-        adapter = new RecyclerViewPDF(context, dataList);
+        loadDataFromDb();
+    }
+
+    private void loadDataFromDb(){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        dataList = db.databaseDao().getPDF();
     }
 
     public void setSelectedYear(String selectedYear){
         this.selectedYear = selectedYear;
-        RecyclerViewPDFList newPDF = new RecyclerViewPDFList(selectedYear, calendar.getActualDay());
-        dataList.add(newPDF);
-        adapter.setDataList(dataList);
 
-        checkIfThereIsATransaction();
+        createIfThereIsATransaction();
     }
 
     public RecyclerViewPDF getAdapter() {
         return adapter;
     }
 
-    private void checkIfThereIsATransaction(){
+    private void createIfThereIsATransaction(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         long dateFrom = calendar.getDateMillis("01.01." + selectedYear);
@@ -68,14 +70,8 @@ public class FragmentPDFController {
         if(salesInYear.isEmpty()){
             // Pokud ne:
             // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
-            System.out.println(">>>>>>>>>>>>>salesInYear: empty");
             Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
         }else{
-            System.out.println(">>>>>>>>>>>>>salesInYear: "+salesInYear.size());
-            for(TransactionWithPhotos test : salesInYear){
-                System.out.println(">>>>>>>>>>>>>salesInYear: "+selectedYear + " from: " + dateFrom + " to: " +dateTo + " searching: " + test.transaction.date);
-                System.out.println(">>>>>>>>>> "+calendar.getDateFromMillis(test.transaction.date));
-            }
             ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
             ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
             ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
@@ -86,23 +82,10 @@ public class FragmentPDFController {
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
+                return;
             }
+            saveToDb(generator.getFileName(), generator.getTotal());
         }
-
-        // Pokud ano:
-        // Získat hodnotu prodeje.
-        /*Double sellValue = sellValue(salesInYear).getTotal();
-        System.out.println(">>>>>>>>>>>>>>Prodej: "+sellValue(salesInYear));
-        // Získat hodnotu nákupu.
-        Double buyValue = buyValue(dateFrom, dateTo);
-        System.out.println(">>>>>>>>>>>>>>Nákup: "+buyValue(dateFrom, dateTo));
-        // Získat hodontu směny.
-        Double changeValue = changeValue(dateFrom, dateTo);
-        System.out.println(">>>>>>>>>>>>>>Směna: "+changeValue(dateFrom, dateTo));
-
-        Double result = shared.getTwoDecimalDouble((sellValue + changeValue) - buyValue);
-
-        System.out.println(">>>>>>>>>>>Zisk/ztráta: "+result);*/
     }
 
     private ArrayList<SellTransactionPDFList> sellValue(List<TransactionWithPhotos> salesInYear){
@@ -324,5 +307,20 @@ public class FragmentPDFController {
                 }
             }
         }
+    }
+
+    private void saveToDb(String fileName, BigDecimal total){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+
+        PDFEntity pdf = new PDFEntity();
+        pdf.fileName = fileName;
+        pdf.total = total.toPlainString();
+        pdf.year = selectedYear;
+        pdf.date = calendar.getActualDateMillis();
+
+        db.databaseDao().insertPDF(pdf);
+
+        dataList.add(pdf);
+        adapter.setDataList(dataList);
     }
 }

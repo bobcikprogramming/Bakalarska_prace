@@ -147,7 +147,7 @@
     </style>
 
     <style name="SearchImageViewRight" parent="SearchImageView">
-        <item name="android:src">@drawable/ic_delete_search</item>
+        <item name="android:src">@drawable/ic_delete_btn_color</item>
     </style>
 
     <!-- __________ Konec: Styl edittextu pro vyhledávání __________ -->

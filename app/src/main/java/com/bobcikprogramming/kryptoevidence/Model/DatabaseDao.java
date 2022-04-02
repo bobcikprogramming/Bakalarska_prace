@@ -21,6 +21,10 @@ public interface DatabaseDao {
     List<ModeEntity> getType();
 
     @Transaction
+    @Query("SELECT * FROM PDFEntity")
+    List<PDFEntity> getPDF();
+
+    @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE transaction_id = :transactionID")
     TransactionWithPhotos getTransactionByTransactionID(String transactionID);
 
@@ -100,6 +104,9 @@ public interface DatabaseDao {
     @Insert
     void insertOwnedCrypto(OwnedCryptoEntity ownedCrypto);
 
+    @Insert
+    void insertPDF(PDFEntity pdfEntity);
+
     @Update
     void updateTransaction(TransactionEntity transaction);
 
@@ -165,4 +172,7 @@ public interface DatabaseDao {
 
     @Query("DELETE FROM PhotoEntity WHERE photo_id = :photoID")
     void deletePhotoById(String photoID);
+
+    @Query("DELETE FROM PDFEntity WHERE fila_name = :fileName")
+    void deletePDFEntity(String fileName);
 }

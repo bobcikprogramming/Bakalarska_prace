@@ -73,7 +73,7 @@
     <color name="cursor">#008000</color>                                            <!-- Barva kurzoru edittextu -->
     <color name="colorAccent">#d9e650</color>
     <color name="AddTransactionCloseButtonTextColor">@color/black</color>
-    <color name="searchDeleteButtonColor">#008000</color>
+    <color name="btnDeleteButtonColor">#008000</color>
     <color name="overviewSelectedMode">@color/white</color>                         <!-- Barva tlačítka vybraného módu (Light/Dark/System) aplikace -->
     <color name="overviewUnselectedMode">#4F4F4F</color>                            <!-- Barva tlačítka nevybraného módu (Light/Dark/System) aplikace -->
     <color name="dataPickerSelected">@color/navBarBackground</color>                <!-- Zvýraznění vybraného dne v kalendáři -->

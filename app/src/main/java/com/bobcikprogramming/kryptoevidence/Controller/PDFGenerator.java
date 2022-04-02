@@ -45,9 +45,8 @@ public class PDFGenerator {
     private float cellWidthXPos;
     private int pageNum = 1;
     private boolean firstPageRow;
-    private BigDecimal buyTotal;
-    private BigDecimal sellTotal;
-    private BigDecimal changeTotal;
+    private BigDecimal total;
+    private String fileName;
 
     public PDFGenerator(AssetManager assetManager, Context context, Activity activity, double eurExchangeRate, double usdExchangeRate){
         PDFBoxResourceLoader.init(context);
@@ -60,22 +59,24 @@ public class PDFGenerator {
         calendar = new CalendarManager();
         shared = new SharedMethods();
 
-        buyTotal = BigDecimal.ZERO;
-        sellTotal = BigDecimal.ZERO;
-        changeTotal = BigDecimal.ZERO;
+        total = BigDecimal.ZERO;
 
         ActivityCompat.requestPermissions(activity, new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
     }
 
     public void createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
+        BigDecimal buyTotal = BigDecimal.ZERO;
+        BigDecimal sellTotal = BigDecimal.ZERO;
+        BigDecimal changeTotal = BigDecimal.ZERO;
+
         loadFonts();
         createNewPage();
         cellWidthXPos = (width/6f);
-        createBuy(buyList);
-        createSell(sellList);
-        createChange(changeList);
-        createTotalOverview();
+        buyTotal = createBuy(buyList);
+        sellTotal = createSell(sellList);
+        changeTotal = createChange(changeList);
+        createTotalOverview(buyTotal, sellTotal, changeTotal);
 
         // Přidání zápatí v případě, že stránka nebyla zcela zaplněna
         if(curYVal - 15f > 65) {
@@ -88,7 +89,8 @@ public class PDFGenerator {
         if(!directory.exists()){
             directory.mkdir();
         }
-        File path = new File(dirName, selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf");
+        fileName = selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf";
+        File path = new File(dirName, fileName);
         doc.save(path);
         doc.close();
     }
@@ -187,8 +189,8 @@ public class PDFGenerator {
     }
 
     /** PDF sekce nákupu */
-    private void createBuy(ArrayList<BuyTransactionPDFList> buyList) throws IOException {
-        float lastTextWidth = 0f;
+    private BigDecimal createBuy(ArrayList<BuyTransactionPDFList> buyList) throws IOException {
+        BigDecimal buyTotal = BigDecimal.ZERO;
         // Vložit popis tabulky
         createBuyHeadline(true);
 
@@ -232,6 +234,8 @@ public class PDFGenerator {
         }
         createBuyTotal(buyTotal.toPlainString());
         contentStream.endText();
+
+        return buyTotal;
     }
 
     private void insertBuy(float cellWidthXPos, BuyTransactionPDFList buy) throws IOException {
@@ -425,8 +429,9 @@ public class PDFGenerator {
     /** PDF sekce nákupu */
 
     /** PDF sekce prodeje */
-    private void createSell(ArrayList<SellTransactionPDFList> sellList) throws IOException {
+    private BigDecimal createSell(ArrayList<SellTransactionPDFList> sellList) throws IOException {
         boolean firstRow = true;
+        BigDecimal sellTotal = BigDecimal.ZERO;
         // Vložit popis tabulky
         createSellHeadline(true);
 
@@ -472,6 +477,8 @@ public class PDFGenerator {
         }
         createSellTotal(sellTotal.toPlainString());
         contentStream.endText();
+
+        return sellTotal;
     }
 
     private void insertSell(float cellWidthXPos, SellTransactionPDFList sell, boolean firstRow) throws IOException {
@@ -668,8 +675,9 @@ public class PDFGenerator {
     /** PDF sekce prodeje */
 
     /** PDF sekce směny */
-    private void createChange(ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
+    private BigDecimal createChange(ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
         boolean firstRow = true;
+        BigDecimal changeTotal = BigDecimal.ZERO;
         // Vložit popis tabulky
         createChangeHeadline(true);
 
@@ -715,6 +723,8 @@ public class PDFGenerator {
         }
         createChangeTotal(changeTotal.toPlainString());
         contentStream.endText();
+
+        return changeTotal;
     }
 
     private void insertChange(float cellWidthXPos, ChangeTransactionPDFList change, boolean firstRow) throws IOException {
@@ -904,7 +914,7 @@ public class PDFGenerator {
     /** PDF sekce směny */
 
     /** PDF celkový součet */
-    private void createTotalOverview() throws IOException {
+    private void createTotalOverview(BigDecimal buyTotal, BigDecimal sellTotal, BigDecimal changeTotal) throws IOException {
         if(curYVal - 75f < 70f) {
             createFooter(String.valueOf(pageNum));
             contentStream.close();
@@ -915,7 +925,7 @@ public class PDFGenerator {
         }
         contentStream.beginText();
         curXVal = 0f;
-        BigDecimal total = (sellTotal.add(changeTotal)).subtract(buyTotal);
+        total = (sellTotal.add(changeTotal)).subtract(buyTotal);
         String profitLoseText = "Zisk (CZK):";
         if(total.compareTo(BigDecimal.ZERO)<0){
             profitLoseText = "Ztráta (CZK):";
@@ -951,4 +961,12 @@ public class PDFGenerator {
         contentStream.endText();
     }
     /** PDF celkový součet */
+
+    public String getFileName(){
+        return fileName;
+    }
+
+    public BigDecimal getTotal(){
+        return total;
+    }
 }

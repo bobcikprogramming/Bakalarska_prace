@@ -214,6 +214,10 @@ public class CalendarManager {
         return getDateFormat(dateInString).getTime();
     }
 
+    public long getActualDateMillis(){
+        return getDateMillis(getActualDay());
+    }
+
     public String getDateFromMillis(long millis){
         Date date = new Date(millis);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
