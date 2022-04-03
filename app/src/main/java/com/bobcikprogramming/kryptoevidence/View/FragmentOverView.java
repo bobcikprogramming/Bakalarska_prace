@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bobcikprogramming.kryptoevidence.Controller.FragmentOverViewController;
+import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 import com.bobcikprogramming.kryptoevidence.R;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.util.List;
 
 
 public class FragmentOverView extends Fragment implements View.OnClickListener {
 
-    private LinearLayout btnOverview, btnTransactions, layoutShowMore;
-    private TextView txOverview, txTransactions;
+    private LinearLayout layoutShowMore;
+    private TextView tvOverviewHeadline, tvAnnualReport, tvSelectedYear, tvCurrency, btnPrevYear, btnNextYear;
     private ImageView imgBtnModeDark, imgBtnModeLight, imgBtnModeBySystem, imgBtnShowMore;
     private View view;
     private RecyclerView recyclerView;
@@ -40,6 +38,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     private RecyclerViewOwnedCrypto adapter;
 
     private boolean showMoreOpen;
+    private int position;
     private FragmentOverViewController controller;
 
     public FragmentOverView() {
@@ -60,6 +59,9 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
 
         adapter = new RecyclerViewOwnedCrypto(getContext(), controller.getDataToShow());
         recyclerView.setAdapter(adapter);
+
+        position = controller.getPosition();
+        showAnnualReport();
         return view;
     }
 
@@ -80,6 +82,17 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+
+        btnPrevYear = view.findViewById(R.id.btnPrevYear);
+        btnNextYear = view.findViewById(R.id.btnNextYear);
+
+        btnPrevYear.setOnClickListener(this);
+        btnNextYear.setOnClickListener(this);
+
+        tvOverviewHeadline = view.findViewById(R.id.tvOverviewHeadline);
+        tvAnnualReport = view.findViewById(R.id.tvAnnualReport);
+        tvCurrency = view.findViewById(R.id.tvCurrency);
+        tvSelectedYear = view.findViewById(R.id.tvSelectedYear);
     }
 
     @Override
@@ -144,6 +157,14 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                     showMoreOpen = false;
                 }
                 break;
+            case R.id.btnPrevYear:
+                position -= 1;
+                showAnnualReport();
+                break;
+            case R.id.btnNextYear:
+                position += 1;
+                showAnnualReport();
+                break;
         }
     }
 
@@ -170,6 +191,42 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
             imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
             imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
             imgBtnModeBySystem.setImageResource(R.drawable.ic_system_selected);
+        }
+    }
+
+    private void showAnnualReport(){
+        List<PDFEntity> listAnnualReport = controller.showAnnualReport();
+        if(listAnnualReport == null){
+            tvCurrency.setVisibility(View.GONE);
+            /** https://stackoverflow.com/a/6999195 */
+            tvAnnualReport.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+            tvAnnualReport.setText("Roční výpis nenalezen");
+
+            btnPrevYear.setVisibility(View.GONE);
+            btnNextYear.setVisibility(View.GONE);
+            tvSelectedYear.setVisibility(View.GONE);
+        }else{
+            tvCurrency.setVisibility(View.VISIBLE);
+            tvAnnualReport.setTextSize(TypedValue.COMPLEX_UNIT_SP,35);
+            tvAnnualReport.setText(listAnnualReport.get(position).total);
+
+            btnNextYear.setVisibility(View.GONE);
+            tvSelectedYear.setVisibility(View.VISIBLE);
+            tvSelectedYear.setText(listAnnualReport.get(position).year);
+
+            if(position > 0){
+                btnPrevYear.setVisibility(View.VISIBLE);
+                btnPrevYear.setText(listAnnualReport.get(position - 1).year);
+            }else{
+                btnPrevYear.setVisibility(View.INVISIBLE);
+            }
+
+            if(position < (listAnnualReport.size() - 1)){
+                btnNextYear.setVisibility(View.VISIBLE);
+                btnNextYear.setText(listAnnualReport.get(position + 1).year);
+            }else{
+                btnNextYear.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

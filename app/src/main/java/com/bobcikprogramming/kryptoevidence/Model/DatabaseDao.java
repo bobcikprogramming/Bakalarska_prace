@@ -92,7 +92,7 @@ public interface DatabaseDao {
     @Query("SELECT * FROM (SELECT * FROM TransactionEntity WHERE (transaction_type = 'Nákup' OR transaction_type = 'Směna') AND short_name_bought = :shortName AND amount_left != quantity_bought AND ((date = :date AND time >= :time) OR date > :date) ORDER BY date, time) WHERE transaction_id = :lookingForID")
     List<TransactionWithPhotos> findIfExistBuyWithIdForUsedBuyChangeAllFrom(long date, String time, String shortName, String lookingForID);
 
-    @Query("SELECT *, MAX(date) FROM PDFEntity GROUP BY year")
+    @Query("SELECT *, MAX(date) FROM PDFEntity GROUP BY year ORDER BY year")
     List<PDFEntity> getLatestAnnualReport();
 
     @Insert

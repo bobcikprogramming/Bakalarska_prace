@@ -4,15 +4,13 @@ import android.content.Context;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.OwnedCryptoEntity;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewOwnedCrypto;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
+import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +20,14 @@ public class FragmentOverViewController {
     private List<OwnedCryptoEntity> ownedCryptos;
     private SharedMethods shared;
 
+    private List<PDFEntity> annualList;
+    private int position;
+
     public FragmentOverViewController(Context context) {
         this.context = context;
+
         shared = new SharedMethods();
+        position = -1;
 
         loadDataFromDb();
     }
@@ -74,6 +77,7 @@ public class FragmentOverViewController {
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ownedCryptos = db.databaseDao().getAllOwnedCrypto();
+        annualList = db.databaseDao().getLatestAnnualReport();
     }
 
     public ArrayList<OwnedCryptoEntity> getDataToShow(){
@@ -84,5 +88,19 @@ public class FragmentOverViewController {
             }
         }
         return dataToShow;
+    }
+
+    public List<PDFEntity> showAnnualReport(){
+        // Pokud jsou data k zobrazení
+        if(annualList != null || !annualList.isEmpty()){
+            position = annualList.size() - 1;
+            return annualList;
+        }else{
+            return null;
+        }
+    }
+
+    public int getPosition(){
+        return position;
     }
 }

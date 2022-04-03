@@ -72,20 +72,6 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="right">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/ic_pdf"
-                                android:layout_marginEnd="10dp"
-                                android:layout_gravity="right"/>
-
-                        </LinearLayout>
-
                     </LinearLayout>
 
                     <LinearLayout
@@ -120,9 +106,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:id="@+id/tvOverviewHeadline"
                             android:gravity="bottom"
                             android:paddingTop="10dp"
-                            android:text="Skutečný zisk"
+                            android:text="Roční zisk"
                             android:textColor="@color/overviewNormalTextColor"
                             android:textSize="20sp"
                             android:textStyle="bold"/>
@@ -144,6 +131,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
+                                        android:id="@+id/tvAnnualReport"
                                         android:gravity="bottom"
                                         android:paddingEnd="10dp"
                                         android:text="7 000 000"
@@ -154,6 +142,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
+                                        android:id="@+id/tvCurrency"
                                         android:gravity="bottom"
                                         android:paddingEnd="10dp"
                                         android:paddingBottom="5dp"
@@ -174,78 +163,56 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1.8"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Daňové období:"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:gravity="bottom"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                style="@style/OverviewAdditionalInfoTopLayout">
-
-                                <TextView
-                                    style="@style/OverviewAdditionalInfoTextViewDescription"
-                                    android:text="Celkový obrat" />
-
-                                <LinearLayout
-                                    style="@style/OverviewAdditionalInfoInsideLayout">
-
-                                    <TextView
-                                        style="@style/OverviewAdditionalInfoTextView"
-                                        android:text="50 000 000" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                style="@style/OverviewAdditionalInfoTopLayout">
-
-                                <TextView
-                                    style="@style/OverviewAdditionalInfoTextViewDescription"
-                                    android:text="Daňové období" />
-
-                                <LinearLayout
-                                    style="@style/OverviewAdditionalInfoInsideLayout">
-
-                                    <TextView
-                                        style="@style/OverviewAdditionalInfoTextViewNextPrevYear"
-                                        android:text="2019"/>
-
-                                    <TextView
-                                        style="@style/OverviewAdditionalInfoTextView"
-                                        android:text="2020"/>
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:gravity="right"
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="bottom"
-                                android:paddingBottom="1.5dp"
-                                android:singleLine="true"
-                                android:text="CZK"
-                                android:textColor="@color/overviewDescriptionTextColor"
-                                android:textSize="15dp" />
+                                android:id="@+id/btnPrevYear"
+                                android:minWidth="50dp"
+                                android:text="2019"
+                                android:textColor="@color/button"
+                                android:textSize="20sp"
+                                android:gravity="bottom|center"
+                                android:paddingBottom="2dp"/>
 
                             <TextView
-                                style="@style/OverviewAdditionalInfoTextViewNextPrevYear"
-                                android:layout_weight="1"
-                                android:text="2021"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/tvSelectedYear"
+                                android:minWidth="70dp"
+                                android:text="2020"
+                                android:textColor="@color/white"
+                                android:textSize="30sp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginEnd="10dp"
+                                android:gravity="bottom|center"/>
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:id="@+id/btnNextYear"
+                                android:minWidth="50dp"
+                                android:text="2021"
+                                android:textColor="@color/button"
+                                android:textSize="20sp"
+                                android:gravity="bottom|center"
+                                android:paddingBottom="2dp"/>
                         </LinearLayout>
 
                     </LinearLayout>
