@@ -1,14 +1,19 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
+import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -42,12 +47,17 @@ public class FragmentPDFController {
         calendar = new CalendarManager();
         shared = new SharedMethods();
         selectedYear = "";
+
+        ActivityCompat.requestPermissions(activity, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+
         loadDataFromDb();
     }
 
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         dataList = db.databaseDao().getPDF();
+        adapter = new RecyclerViewPDF(context, dataList);
     }
 
     public void setSelectedYear(String selectedYear){
@@ -78,7 +88,11 @@ public class FragmentPDFController {
             generator = new PDFGenerator(context.getAssets(), context, activity, TMPEUREXCHANGERATE, TMPUSDEXCHANGERATE);
 
             try {
-                generator.createPDF(selectedYear, buyList, sellList, changeList);
+                boolean permissionGaranted = generator.createPDF(selectedYear, buyList, sellList, changeList);
+                if(!permissionGaranted){
+                    Toast.makeText(context, "Pro vytvoření PDF je zapotřebí povolit přístup k souborům.", Toast.LENGTH_LONG).show();
+                    return;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();

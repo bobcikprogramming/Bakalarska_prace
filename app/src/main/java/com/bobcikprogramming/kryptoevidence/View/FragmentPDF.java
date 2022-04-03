@@ -21,11 +21,8 @@ import com.bobcikprogramming.kryptoevidence.R;
 public class FragmentPDF extends Fragment {
 
     private RecyclerView recyclerView;
-    private ImageView btnAdd, btnDelete;
+    private ImageView btnAdd;
 
-    private String selectedYear;
-
-    private CalendarManager calendar;
     private FragmentPDFController controller;
 
     public FragmentPDF() {
@@ -38,7 +35,6 @@ public class FragmentPDF extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pdf, container, false);
 
-        calendar = new CalendarManager();
         controller = new FragmentPDFController(getContext(), getActivity());
 
         setupUIViews(view);

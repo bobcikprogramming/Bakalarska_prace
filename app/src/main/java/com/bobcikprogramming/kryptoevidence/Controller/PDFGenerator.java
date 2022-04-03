@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 public class PDFGenerator {
     private AssetManager assetManager;
+    private Context context;
+    private Activity activity;
 
     private PDDocument doc;
     private PDFont font = null, fontBold = null;
@@ -55,20 +57,29 @@ public class PDFGenerator {
         this.assetManager = assetManager;
         this.eurExchangeRate = eurExchangeRate;
         this.usdExchangeRate = usdExchangeRate;
+        this.context = context;
+        this.activity = activity;
 
         calendar = new CalendarManager();
         shared = new SharedMethods();
 
         total = BigDecimal.ZERO;
-
-        ActivityCompat.requestPermissions(activity, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
     }
 
-    public void createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
-        BigDecimal buyTotal = BigDecimal.ZERO;
-        BigDecimal sellTotal = BigDecimal.ZERO;
-        BigDecimal changeTotal = BigDecimal.ZERO;
+    public boolean createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
+        BigDecimal buyTotal;
+        BigDecimal sellTotal;
+        BigDecimal changeTotal;
+
+        /** https://stackoverflow.com/a/42143490 */
+        String requiredPermission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+        int checkVal = context.checkSelfPermission(requiredPermission);
+
+        if(checkVal != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(activity, new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+            return false;
+        }
 
         loadFonts();
         createNewPage();
@@ -93,6 +104,7 @@ public class PDFGenerator {
         File path = new File(dirName, fileName);
         doc.save(path);
         doc.close();
+        return true;
     }
 
     private void writeTextNewLineAtOffset(String text, PDFont font, float fontSize, float tx, float ty ) throws IOException {
