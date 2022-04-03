@@ -2,7 +2,9 @@ package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
+import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
 
@@ -82,24 +85,35 @@ public class FragmentPDFController {
             // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
             Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
         }else{
-            ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
-            ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
-            ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
-            generator = new PDFGenerator(context.getAssets(), context, activity, TMPEUREXCHANGERATE, TMPUSDEXCHANGERATE);
+            List<TransactionWithPhotos> unfinishedSalesInYear = db.databaseDao().getUnfinishedSellBetween(dateFrom, dateTo);
+            if(unfinishedSalesInYear == null || unfinishedSalesInYear.isEmpty()){
+                createPDF(dateFrom, dateTo, salesInYear);
+            }else{
+                // Zobrazit upozornění
+                confirmDialogUnfinishedCreate(dateFrom, dateTo, salesInYear);
+            }
 
-            try {
-                boolean permissionGaranted = generator.createPDF(selectedYear, buyList, sellList, changeList);
-                if(!permissionGaranted){
-                    Toast.makeText(context, "Pro vytvoření PDF je zapotřebí povolit přístup k souborům.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void createPDF(long dateFrom, long dateTo, List<TransactionWithPhotos> salesInYear){
+        ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
+        ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
+        ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
+        generator = new PDFGenerator(context.getAssets(), context, activity, TMPEUREXCHANGERATE, TMPUSDEXCHANGERATE);
+
+        try {
+            boolean permissionGaranted = generator.createPDF(selectedYear, buyList, sellList, changeList);
+            if(!permissionGaranted){
+                Toast.makeText(context, "Pro vytvoření PDF je zapotřebí povolit přístup k souborům.", Toast.LENGTH_LONG).show();
                 return;
             }
-            saveToDb(generator.getFileName(), generator.getTotal());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
+            return;
         }
+        saveToDb(generator.getFileName(), generator.getTotal());
     }
 
     private ArrayList<SellTransactionPDFList> sellValue(List<TransactionWithPhotos> salesInYear){
@@ -334,7 +348,29 @@ public class FragmentPDFController {
 
         db.databaseDao().insertPDF(pdf);
 
-        dataList.add(pdf);
+        dataList = db.databaseDao().getPDF();
         adapter.setDataList(dataList);
+    }
+
+    private void confirmDialogUnfinishedCreate(long dateFrom, long dateTo, List<TransactionWithPhotos> salesInYear){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialog);
+        builder.setCancelable(true);
+        builder.setTitle("Neúplný prodej");
+        builder.setMessage("V daném daňovém období se nachází jeden, či více prodejů, " +
+                "jenž nemají kompletně evidováno nabytí prodávané kryptoměny.\n\n" +
+                "Přejete si pokračovat v generování PDF?");
+        builder.setPositiveButton("Pokračovat",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createPDF(dateFrom, dateTo, salesInYear);
+                    }
+                });
+        builder.setNegativeButton("Zrušit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) { }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

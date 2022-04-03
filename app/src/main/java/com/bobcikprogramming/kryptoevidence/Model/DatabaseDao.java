@@ -21,7 +21,7 @@ public interface DatabaseDao {
     List<ModeEntity> getType();
 
     @Transaction
-    @Query("SELECT * FROM PDFEntity")
+    @Query("SELECT * FROM PDFEntity ORDER BY fila_name DESC")
     List<PDFEntity> getPDF();
 
     @Transaction
@@ -61,6 +61,9 @@ public interface DatabaseDao {
 
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND (amount_left == 0 OR amount_left == 0.0) AND date >= :dateFrom AND date <= :dateTo ORDER BY date, time")
     List<TransactionWithPhotos> getUsedSellBetween(long dateFrom, long dateTo);
+
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left > 0.0 AND date >= :dateFrom AND date <= :dateTo ORDER BY date, time")
+    List<TransactionWithPhotos> getUnfinishedSellBetween(long dateFrom, long dateTo);
 
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Směna' AND amount_left_change_sell != quantity_sold AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
     List<TransactionWithPhotos> getUsedChangeBetween(long dateFrom, long dateTo);

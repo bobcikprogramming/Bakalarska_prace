@@ -35,6 +35,7 @@
     <color name="spinnerItemTextColor">@color/black</color>
     <color name="addTransactionHeadlineTextColor">@color/black</color>
     <color name="overviewProfitTextColor">@color/white</color>
+    <color name="overviewLossTextColor">@color/white</color>
     <color name="overviewListDescriptionTextColor">#4F4F4F</color>
     <color name="overviewListShortNameTextColor">@color/black</color>
     <color name="overviewListLongNameTextColor">#3F3F3F</color>

@@ -27,7 +27,6 @@ public class FragmentOverViewController {
         this.context = context;
 
         shared = new SharedMethods();
-        position = -1;
 
         loadDataFromDb();
     }
@@ -93,14 +92,31 @@ public class FragmentOverViewController {
     public List<PDFEntity> showAnnualReport(){
         // Pokud jsou data k zobrazení
         if(annualList != null || !annualList.isEmpty()){
-            position = annualList.size() - 1;
             return annualList;
         }else{
             return null;
         }
     }
 
-    public int getPosition(){
+    public int getLastPosition(){
+        position = annualList.size() - 1;
         return position;
+    }
+
+    public ArrayList<OwnedCryptoEntity> filter(String searching){
+        ArrayList<OwnedCryptoEntity> ownedCryptoListToShow = new ArrayList<>();
+        ArrayList<OwnedCryptoEntity> ownedCrypto = getDataToShow();
+
+        if(searching.length() == 0){
+            ownedCryptoListToShow = ownedCrypto;
+        }else {
+            for (OwnedCryptoEntity toShow : ownedCrypto) {
+                if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
+                    ownedCryptoListToShow.add(toShow);
+                }
+            }
+        }
+
+        return ownedCryptoListToShow;
     }
 }

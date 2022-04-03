@@ -76,7 +76,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
 
     public void setDataList(List<PDFEntity> dataList) {
         this.dataList = dataList;
-        notifyItemInserted(dataList.size()-1);
+        notifyDataSetChanged();
     }
 
     public void openPDF(String fileName){

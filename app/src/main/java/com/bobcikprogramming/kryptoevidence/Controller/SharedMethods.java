@@ -2,6 +2,7 @@ package com.bobcikprogramming.kryptoevidence.Controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -162,5 +163,10 @@ public class SharedMethods {
     }
     public BigDecimal getTwoDecimalBigDecimal(BigDecimal toEdit){
         return toEdit.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    public int dpToPx(int dp, Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 }
