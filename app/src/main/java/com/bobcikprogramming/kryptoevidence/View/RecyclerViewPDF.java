@@ -137,7 +137,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
                 return false;
             }
         }else{
-            return false;
+            return true;
         }
         return true;
     }

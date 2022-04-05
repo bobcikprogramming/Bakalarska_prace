@@ -1,13 +1,8 @@
 package com.bobcikprogramming.kryptoevidence.Model;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 public class TransactionEntity {

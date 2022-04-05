@@ -11,12 +11,12 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.ExchangeByYearEntity;
 import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.R;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -40,8 +40,11 @@ public class FragmentPDFController {
     private SharedMethods shared;
     private PDFGenerator generator;
 
-    private Double TMPEUREXCHANGERATE = 25.65;
-    private Double TMPUSDEXCHANGERATE = 21.72;
+    private Double DEFAULT_EUR_EXCHANGERATE = 26.0;
+    private Double DEFAULT_USD_EXCHANGERATE = 21.0;
+
+    private Double eurExchangeRate, usdExchangeRate;
+    private boolean correctRate;
 
     public FragmentPDFController(Context context, Activity activity){
         this.context = context;
@@ -76,23 +79,46 @@ public class FragmentPDFController {
     private void createIfThereIsATransaction(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
+        setExchangeRate();
+
         long dateFrom = calendar.getDateMillis("01.01." + selectedYear);
         long dateTo = calendar.getDateMillis("31.12." + selectedYear);
         // Zkontrolovat, zdali v daném roce existuje prodej.
-        List<TransactionWithPhotos> salesInYear = db.databaseDao().getUsedSellBetween(dateFrom, dateTo);
-        if(salesInYear.isEmpty()){
-            // Pokud ne:
-            // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
-            Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
-        }else{
-            List<TransactionWithPhotos> unfinishedSalesInYear = db.databaseDao().getUnfinishedSellBetween(dateFrom, dateTo);
-            if(unfinishedSalesInYear == null || unfinishedSalesInYear.isEmpty()){
-                createPDF(dateFrom, dateTo, salesInYear);
-            }else{
-                // Zobrazit upozornění
-                confirmDialogUnfinishedCreate(dateFrom, dateTo, salesInYear);
-            }
 
+        List<TransactionWithPhotos> unfinishedSalesInYear = db.databaseDao().getUnfinishedSellBetween(dateFrom, dateTo);
+        List<TransactionWithPhotos> salesInYear = db.databaseDao().getUsedSellBetween(dateFrom, dateTo);
+        if(unfinishedSalesInYear == null || unfinishedSalesInYear.isEmpty()){
+            if(salesInYear.isEmpty()){
+                // Pokud ne:
+                // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
+                Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
+            }else {
+                createPDF(dateFrom, dateTo, salesInYear);
+            }
+        }else{
+            // Zobrazit upozornění
+            confirmDialogUnfinishedCreate(dateFrom, dateTo, salesInYear);
+        }
+
+    }
+
+    private void setExchangeRate() {
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        ExchangeByYearEntity exchange = db.databaseDao().getExchange(Integer.parseInt(selectedYear));
+        if(exchange != null){
+            eurExchangeRate = exchange.eur;
+            usdExchangeRate = exchange.usd;
+            correctRate = true;
+        }else{
+            List<ExchangeByYearEntity> exchangeList = db.databaseDao().getExchangeListTo(Integer.parseInt(selectedYear));
+            if(exchangeList != null || !exchangeList.isEmpty()){
+                eurExchangeRate = exchangeList.get(exchangeList.size()-1).eur;
+                usdExchangeRate = exchangeList.get(exchangeList.size()-1).usd;
+            }else {
+                eurExchangeRate = DEFAULT_EUR_EXCHANGERATE;
+                usdExchangeRate = DEFAULT_USD_EXCHANGERATE;
+            }
+            correctRate = false;
         }
     }
 
@@ -100,7 +126,7 @@ public class FragmentPDFController {
         ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
         ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
         ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
-        generator = new PDFGenerator(context.getAssets(), context, activity, TMPEUREXCHANGERATE, TMPUSDEXCHANGERATE);
+        generator = new PDFGenerator(context.getAssets(), context, activity, eurExchangeRate, usdExchangeRate, correctRate);
 
         try {
             boolean permissionGaranted = generator.createPDF(selectedYear, buyList, sellList, changeList);
@@ -126,11 +152,11 @@ public class FragmentPDFController {
             BigDecimal fee = shared.getTwoDecimalBigDecimal(sellEntity.fee);
             BigDecimal profit = BigDecimal.ZERO;
             if(sellEntity.currency.equals("EUR")){
-                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * TMPEUREXCHANGERATE);
-                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * TMPEUREXCHANGERATE);
+                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * eurExchangeRate);
+                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * eurExchangeRate);
             }else if(sellEntity.currency.equals("USD")){
-                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * TMPUSDEXCHANGERATE);
-                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * TMPUSDEXCHANGERATE);
+                price = shared.getTwoDecimalBigDecimal(Double.parseDouble(sellEntity.priceSold) * usdExchangeRate);
+                fee = shared.getTwoDecimalBigDecimal(sellEntity.fee * usdExchangeRate);
             }
 
             profit = price.subtract(fee);
@@ -213,13 +239,13 @@ public class FragmentPDFController {
 
                 // Převedeme měnu na CZK, nejedná-li se o CZK.
                 if(buyEntity.currency.equals("EUR")){
-                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
-                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
-                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(eurExchangeRate)));
+                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(eurExchangeRate)));
+                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(eurExchangeRate)));
                 }else if(buyEntity.currency.equals("USD")){
-                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
-                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
-                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+                    price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(usdExchangeRate)));
+                    fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(usdExchangeRate)));
+                    total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(usdExchangeRate)));
                 }
 
                 buyTransaction = new BuyTransactionPDFList(calendar.getDateFromMillis(buyEntity.date), buyEntity.time, quantity.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
@@ -260,13 +286,13 @@ public class FragmentPDFController {
 
         // Převedeme měnu na CZK, nejedná-li se o CZK.
         if(buy.currency.equals("EUR")){
-            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
-            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
-            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPEUREXCHANGERATE)));
+            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(eurExchangeRate)));
+            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(eurExchangeRate)));
+            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(eurExchangeRate)));
         }else if(buy.currency.equals("USD")){
-            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
-            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
-            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE)));
+            price = shared.getTwoDecimalBigDecimal(price.multiply(shared.getBigDecimal(usdExchangeRate)));
+            fee = shared.getTwoDecimalBigDecimal(fee.multiply(shared.getBigDecimal(usdExchangeRate)));
+            total = shared.getTwoDecimalBigDecimal(total.multiply(shared.getBigDecimal(usdExchangeRate)));
         }
 
         // Vrátím nákup.
@@ -285,11 +311,11 @@ public class FragmentPDFController {
             BigDecimal fee = shared.getTwoDecimalBigDecimal(change.transaction.fee);
             BigDecimal profit = shared.getTwoDecimalBigDecimal(change.transaction.priceBought).subtract(fee);
             if(change.transaction.currency.equals("EUR")){
-                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(TMPEUREXCHANGERATE));
-                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(TMPEUREXCHANGERATE))).subtract(fee);
+                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(eurExchangeRate));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(eurExchangeRate))).subtract(fee);
             }else if(change.transaction.currency.equals("USD")){
-                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE));
-                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(TMPUSDEXCHANGERATE))).subtract(fee);
+                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(usdExchangeRate));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(usdExchangeRate))).subtract(fee);
             }
             changeTransaction = new ChangeTransactionPDFList(calendar.getDateFromMillis(changeEntity.date), changeEntity.quantityBought, changeEntity.shortNameBought, changeEntity.quantitySold, changeEntity.shortNameSold, profit.toString());
             changeList.add(changeTransaction);

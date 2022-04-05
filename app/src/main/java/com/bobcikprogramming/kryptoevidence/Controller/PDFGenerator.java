@@ -37,6 +37,7 @@ public class PDFGenerator {
 
     private double eurExchangeRate;
     private double usdExchangeRate;
+    private boolean correctRate;
 
     private float MARGINSIDE = 20;
     private float MARGINTOP = 60;
@@ -50,7 +51,7 @@ public class PDFGenerator {
     private BigDecimal total;
     private String fileName;
 
-    public PDFGenerator(AssetManager assetManager, Context context, Activity activity, double eurExchangeRate, double usdExchangeRate){
+    public PDFGenerator(AssetManager assetManager, Context context, Activity activity, double eurExchangeRate, double usdExchangeRate, boolean correctRate){
         PDFBoxResourceLoader.init(context);
 
         doc = new PDDocument();
@@ -59,6 +60,7 @@ public class PDFGenerator {
         this.usdExchangeRate = usdExchangeRate;
         this.context = context;
         this.activity = activity;
+        this.correctRate = correctRate;
 
         calendar = new CalendarManager();
         shared = new SharedMethods();
@@ -927,7 +929,7 @@ public class PDFGenerator {
 
     /** PDF celkový součet */
     private void createTotalOverview(BigDecimal buyTotal, BigDecimal sellTotal, BigDecimal changeTotal) throws IOException {
-        if(curYVal - 75f < 70f) {
+        if(curYVal - 95f < 70f) {
             createFooter(String.valueOf(pageNum));
             contentStream.close();
             createNewPage();
@@ -970,6 +972,16 @@ public class PDFGenerator {
         contentStream.setLeading(15);
         contentStream.newLine();
         contentStream.showText(dollarExchRate);
+        curYVal -= 15;
+        if(!correctRate){
+            String warning = "POZOR! Nejedná se o jednotný kurz za dané daňové období.";
+            textWidth = (font.getStringWidth(dollarExchRate) / 1000.0f) * 12;
+            float warningWidth = (font.getStringWidth(warning) / 1000.0f) * 12;
+            float moveLeft = textWidth - warningWidth;
+            contentStream.setNonStrokingColor(5, 5, 5);
+            writeTextNewLineAtOffset(warning, font, 12, moveLeft, -20);
+        }
+
         contentStream.endText();
     }
     /** PDF celkový součet */

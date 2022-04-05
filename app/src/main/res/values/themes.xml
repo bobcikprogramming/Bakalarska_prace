@@ -496,6 +496,13 @@
         <item name="android:textColor">@color/button</item>  // you can change the color of the yearPiker dialog
         <item name="android:textColorPrimary">@color/button</item> // you can change the color of the yearPiker dialog
     </style>
+    <style name="Theme.KryptoEvidence.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.KryptoEvidence.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.KryptoEvidence.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- __________ Konex: Styl pro year dialog picker __________ -->
 

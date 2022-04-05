@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bobcikprogramming.kryptoevidence">
-
+    package="com.bobcikprogramming.kryptoevidence" >
     <!-- https://developer.android.com/training/permissions/requesting -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,56 +12,25 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.KryptoEvidence">
+        android:theme="@style/Theme.KryptoEvidence" >
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="true" />
         <!-- https://stackoverflow.com/a/58908053 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true" >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
         <activity
-            android:name=".View.TransactionEdit"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.TransactionViewer"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.CryptoChangeSelection"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.AddTransaction"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.CryptoSelection"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.PhotoViewer"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.TransactionPhotoViewer"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".View.TransactionEditPhotoViewer"
-            android:exported="true"
-            android:screenOrientation="portrait"/>
-        <!--
-        <activity
-            android:name=".RecyclerViewTransactions"
-            android:exported="true" />
-        -->
-        <activity
-            android:name=".Controller.MainActivity"
+            android:name=".View.LoadingScreen"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -71,6 +39,43 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".View.TransactionEdit"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.TransactionViewer"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.CryptoChangeSelection"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.AddTransaction"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.CryptoSelection"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.PhotoViewer"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.TransactionPhotoViewer"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".View.TransactionEditPhotoViewer"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Controller.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:launchMode="singleInstance"/>
     </application>
 
 </manifest>

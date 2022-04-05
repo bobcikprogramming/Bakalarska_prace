@@ -241,7 +241,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
 
     private void showAnnualReport(){
         List<PDFEntity> listAnnualReport = controller.showAnnualReport();
-        if(listAnnualReport == null){
+        if(listAnnualReport == null || listAnnualReport.isEmpty()){
             tvCurrency.setVisibility(View.GONE);
             /** https://stackoverflow.com/a/6999195 */
             tvAnnualReport.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);

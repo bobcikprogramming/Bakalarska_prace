@@ -8,6 +8,7 @@
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_indicator_default.xml" value="0.21851851851851853" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_indicator_selected.xml" value="0.21851851851851853" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable-v24/tab_selector.xml" value="0.21851851851851853" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/app_icon_rounded.xml" value="0.19814814814814816" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/avd_anim.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/circle_button.xml" value="0.2833333333333333" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/cursor.xml" value="0.37083333333333335" />
@@ -37,6 +38,7 @@
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_edit_text.xml" value="0.37083333333333335" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_edit_text_empty.xml" value="0.21354166666666666" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_image_button.xml" value="0.37083333333333335" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_image_view.xml" value="0.19814814814814816" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_overview_layout.xml" value="0.2851851851851852" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_overview_layout_crypto.xml" value="0.26944444444444443" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/drawable/rounded_overview_layout_result.xml" value="0.26944444444444443" />
@@ -48,6 +50,7 @@
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_add_transaction_tab_change.xml" value="0.25" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_add_transaction_tab_sell.xml" value="0.19739583333333333" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_crypto_selection.xml" value="0.25" />
+        <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_loading_screen.xml" value="0.22" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_overview.xml" value="0.19739583333333333" />
         <entry key="..\:/Android Studio/Projekty/KryptoEvidence/app/src/main/res/layout/activity_transaction_edit.xml" value="0.25" />
