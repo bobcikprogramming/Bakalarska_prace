@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "794784736779",
+    "project_id": "krypto-evidence",
+    "storage_bucket": "krypto-evidence.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794784736779:android:0481d0588d68a764ae090e",
+        "android_client_info": {
+          "package_name": "com.bobcikprogramming.kryptoevidence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "794784736779-6et75abmmvq4hndn8m01lem0jdgmc6fo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqkdK0A4s9GN6thRoN976UkCai3N6ADrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794784736779-6et75abmmvq4hndn8m01lem0jdgmc6fo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
