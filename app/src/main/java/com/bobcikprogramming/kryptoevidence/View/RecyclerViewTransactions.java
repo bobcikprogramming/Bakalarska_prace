@@ -17,6 +17,7 @@ import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.R;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewTransactions.ViewHolder>{
@@ -94,7 +95,11 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
             case "Prodej":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.red));
                 holder.tvDescriptionFC.setText("Prodáno");
-                holder.tvDescriptionSC.setText("Zisk");
+                if(shared.getBigDecimal(dataList.get(holder.getAdapterPosition()).transaction.quantityBought).compareTo(BigDecimal.ZERO) < 0){
+                    holder.tvDescriptionSC.setText("Ztráta");
+                }else {
+                    holder.tvDescriptionSC.setText("Zisk");
+                }
                 break;
             case "Směna":
                 holder.textViewOperation.setTextColor(ContextCompat.getColor(context, R.color.blue));
@@ -102,25 +107,27 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
                 holder.tvDescriptionSC.setText("Prodáno");
                 break;
         }
+        holder.tvNameFC.setFocusable(true);
+        holder.tvNameSC.setFocusable(true);
     }
 
     private void loadDataToItems(String transactionType, ViewHolder holder, TransactionWithPhotos data){
         TransactionEntity transaction = data.transaction;
         switch (transactionType){
             case "Nákup":
-                holder.tvNameFC.setText(transaction.longNameBought);
+                holder.tvNameFC.setText(transaction.shortNameBought);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
                 holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 break;
             case "Prodej":
-                holder.tvNameFC.setText(transaction.longNameSold);
+                holder.tvNameFC.setText(transaction.shortNameSold);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
                 holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 break;
             case "Směna":
-                holder.tvNameFC.setText(transaction.longNameBought);
+                holder.tvNameFC.setText(transaction.shortNameBought);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 holder.tvNameSC.setText(transaction.shortNameSold);
                 holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));

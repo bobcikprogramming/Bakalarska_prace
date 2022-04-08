@@ -55,7 +55,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     private SharedMethods shared;
     private CalendarManager calendar;
 
-    private String shortNameCryptoBuy, longNameCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
+    private String shortNameCryptoBuy, longNameCryptoBuy, idCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,9 +111,15 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 break;
             case R.id.textViewNameChangeSell:
                 Intent intent = new Intent(getContext(), CryptoChangeSelection.class);
-                intent.putExtra("shortName", shortNameCryptoBuy);
+                intent.putExtra("id", shortNameCryptoBuy);
                 cryptoSelectionForSell.launch(intent);
         }
+    }
+
+    public AddTransactionTabChange(String shortName, String longName, String idCryptoBuy) {
+        this.shortNameCryptoBuy = shortName;
+        this.longNameCryptoBuy = longName;
+        this.idCryptoBuy = idCryptoBuy;
     }
 
     private void setupUIViews(){
@@ -144,11 +150,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         imgBtnAddPhoto.setOnClickListener(this);
         imvBtnShowPhoto.setOnClickListener(this);
         tvNameSell.setOnClickListener(this);
-    }
-
-    public AddTransactionTabChange(String shortName, String longName) {
-        this.shortNameCryptoBuy = shortName;
-        this.longNameCryptoBuy = longName;
     }
 
     private void clearEditText(){

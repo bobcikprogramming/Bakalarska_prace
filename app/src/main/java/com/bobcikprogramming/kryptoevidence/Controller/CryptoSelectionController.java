@@ -1,33 +1,36 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
+import android.content.Context;
+
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
+
 import java.util.ArrayList;
 
 public class CryptoSelectionController {
+    private Context context;
 
-    private ArrayList<RecyclerViewSelectionList> cryptoList;
+    private ArrayList<CryptocurrencyEntity> cryptoList;
+    private ArrayList<CryptocurrencyEntity> cryptoListToShow;
 
-    public CryptoSelectionController(){
-        cryptoList = new ArrayList<>();
-        tmpAddCryptoToList();
+    public CryptoSelectionController(Context context){
+        this.context = context;
+
+        loadCryptoFromDb();
     }
 
-    private void tmpAddCryptoToList(){
-        RecyclerViewSelectionList btc = new RecyclerViewSelectionList("Bitcoin", "BTC");
-        cryptoList.add(btc);
-        RecyclerViewSelectionList link = new RecyclerViewSelectionList("Chainlink", "LINK");
-        cryptoList.add(link);
-        RecyclerViewSelectionList ada = new RecyclerViewSelectionList("Cardano", "ADA");
-        cryptoList.add(ada);
-        RecyclerViewSelectionList eth = new RecyclerViewSelectionList("Ethereum", "ETH");
-        cryptoList.add(eth);
+    private void loadCryptoFromDb(){
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        cryptoList = new ArrayList<>(db.databaseDao().getAllCrypto());
+        cryptoListToShow = cryptoList;
     }
 
-    public ArrayList<RecyclerViewSelectionList> removeSelectedValue(String shortName){
-        ArrayList<RecyclerViewSelectionList> cryptoListToShow;
+    public ArrayList<CryptocurrencyEntity> removeSelectedValue(String id){
+        ArrayList<CryptocurrencyEntity> cryptoListToShow;
         int objPosToRemove = -1;
 
-        for(RecyclerViewSelectionList toRemove : cryptoList){
-            if(toRemove.getShortName().equals(shortName)){
+        for(CryptocurrencyEntity toRemove : cryptoList){
+            if(toRemove.uid.equals(id)){
                 objPosToRemove = cryptoList.indexOf(toRemove);
             }
         }
@@ -38,14 +41,13 @@ public class CryptoSelectionController {
         return cryptoListToShow;
     }
 
-    public ArrayList<RecyclerViewSelectionList> filter(String searching){
-        ArrayList<RecyclerViewSelectionList> cryptoListToShow = new ArrayList<>();
-
+    public ArrayList<CryptocurrencyEntity> filter(String searching){
+        cryptoListToShow = new ArrayList<>();
         if(searching.length() == 0){
             cryptoListToShow = cryptoList;
         }else {
-            for (RecyclerViewSelectionList toShow : cryptoList) {
-                if (toShow.getLongName().toLowerCase().contains(searching.toLowerCase()) || toShow.getShortName().toLowerCase().contains(searching.toLowerCase())) {
+            for (CryptocurrencyEntity toShow : cryptoList) {
+                if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
                     cryptoListToShow.add(toShow);
                 }
             }
@@ -54,7 +56,7 @@ public class CryptoSelectionController {
         return cryptoListToShow;
     }
 
-    public ArrayList<RecyclerViewSelectionList> getCryptoList() {
-        return cryptoList;
+    public ArrayList<CryptocurrencyEntity> getCryptoList() {
+        return cryptoListToShow;
     }
 }

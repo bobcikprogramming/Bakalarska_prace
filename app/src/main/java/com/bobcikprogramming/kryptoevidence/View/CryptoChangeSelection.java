@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CryptoSelectionController;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
+import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.R;
 
 public class CryptoChangeSelection extends AppCompatActivity implements View.OnClickListener {
@@ -36,7 +37,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_crypto_selection);
 
         shared = new SharedMethods();
-        controller = new CryptoSelectionController();
+        controller = new CryptoSelectionController(this);
 
         Bundle extras = getIntent().getExtras();
 
@@ -44,7 +45,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         searchOnChange();
         hideKeyBoardOnRecyclerTouch();
 
-        adapter = new RecyclerViewSelection(this, controller.removeSelectedValue(extras.getString("shortName")), myClickListener);
+        adapter = new RecyclerViewSelection(this, controller.removeSelectedValue(extras.getString("id")), myClickListener);
         recyclerView.setAdapter(adapter);
     }
 
@@ -119,7 +120,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            closeActivity(controller.getCryptoList().get(position).getLongName(), controller.getCryptoList().get(position).getShortName());
+            closeActivity(controller.getCryptoList().get(position).longName, controller.getCryptoList().get(position).shortName);
         }
     };
 

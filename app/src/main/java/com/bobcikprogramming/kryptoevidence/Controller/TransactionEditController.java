@@ -962,8 +962,10 @@ public class TransactionEditController {
         return db.databaseDao().getPhotoByTransactionID(transactionID);
     }
 
-    public String getShortNameBought(){
-        return transactionWithHistory.transaction.shortNameBought;
+    public String getIdBought(){
+        String shortName = transactionWithHistory.transaction.shortNameBought;
+        String longName = transactionWithHistory.transaction.longNameBought;
+        return AppDatabase.getDbInstance(context).databaseDao().getCryptoID(shortName, longName);
     }
 
     public String getDate(){

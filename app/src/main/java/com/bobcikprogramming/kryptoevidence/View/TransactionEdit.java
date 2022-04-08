@@ -91,7 +91,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.valueRowFourth:
                 Intent intentSell = new Intent(this, CryptoChangeSelection.class);
-                intentSell.putExtra("shortName", controller.getShortNameBought());
+                intentSell.putExtra("id", controller.getIdBought());
                 openCryptoChangeSelection.launch(intentSell);
                 break;
             case R.id.imgButtonAddPhoto:

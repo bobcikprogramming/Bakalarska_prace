@@ -20,6 +20,7 @@ import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class PDFGenerator {
@@ -940,17 +941,21 @@ public class PDFGenerator {
         contentStream.beginText();
         curXVal = 0f;
         total = (sellTotal.add(changeTotal)).subtract(buyTotal);
+        String totalToShow;
         String profitLoseText = "Zisk (CZK):";
         if(total.compareTo(BigDecimal.ZERO)<0){
             profitLoseText = "Ztráta (CZK):";
+            totalToShow = (total.multiply(shared.getBigDecimal(-1.0))).toPlainString();
+        }else{
+            totalToShow = total.toPlainString();
         }
 
         float textWidthText = (font.getStringWidth(profitLoseText) / 1000.0f) * 12;
-        float textWidth = (fontBold.getStringWidth(total.toPlainString()) / 1000.0f) * 14;
+        float textWidth = (fontBold.getStringWidth(totalToShow) / 1000.0f) * 14;
         float moveRight = width - textWidth - textWidthText - 5 + MARGINSIDE;
 
         writeTextNewLineAtOffset(profitLoseText, font, 12, moveRight, curYVal);
-        writeTextNewLineAtOffset(total.toPlainString(), fontBold, 14, textWidthText + 5, 0);
+        writeTextNewLineAtOffset(totalToShow, fontBold, 14, textWidthText + 5, 0);
         contentStream.endText();
 
         curYVal -= 10;
@@ -963,12 +968,13 @@ public class PDFGenerator {
         curXVal = 0f;
 
         contentStream.setNonStrokingColor(50, 50, 50);
-        String euroExchRate = "Využitý kurz EUR: " + eurExchangeRate;
+        DecimalFormat df = new DecimalFormat("#.00");
+        String euroExchRate = "Využitý kurz EUR: " + df.format(eurExchangeRate);
         textWidth = (font.getStringWidth(euroExchRate) / 1000.0f) * 12;
         moveRight = width - textWidth + MARGINSIDE;
         writeTextNewLineAtOffset(euroExchRate, font, 12, moveRight, curYVal);
 
-        String dollarExchRate = "Využitý kurz USD: " + usdExchangeRate;
+        String dollarExchRate = "Využitý kurz USD: " + df.format(usdExchangeRate);
         contentStream.setLeading(15);
         contentStream.newLine();
         contentStream.showText(dollarExchRate);

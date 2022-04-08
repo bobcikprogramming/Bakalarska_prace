@@ -18,7 +18,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     private TextView tvBuy, tvSell, tvChange, tvCryptoName;
     private ImageView btnClose;
 
-    private String longName, shortName;
+    private String longName, shortName, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,9 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_add_transaction);
 
         Bundle extras = getIntent().getExtras();
-        this.longName = extras.getString("longName");
-        this.shortName = extras.getString("shortName");
+        longName = extras.getString("longName");
+        shortName = extras.getString("shortName");
+        id = extras.getString("id");
 
         setupUIViews();
         setStartItem();
@@ -72,7 +73,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
                 tvSell.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabChange(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabChange(shortName, longName, id)).commit();
                 resetColor();
                 tvChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;

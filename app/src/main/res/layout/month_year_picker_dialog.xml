@@ -9,9 +9,10 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/mainBackground">
 
         <LinearLayout
             android:layout_width="match_parent"

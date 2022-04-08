@@ -40,11 +40,10 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_crypto_selection);
 
         shared = new SharedMethods();
-        controller = new CryptoSelectionController();
+        controller = new CryptoSelectionController(this);
 
         setupUIViews();
         searchOnChange();
-        hideKeyBoardOnRecyclerTouch();
 
         adapter = new RecyclerViewSelection(CryptoSelection.this, controller.getCryptoList(), myClickListener);
         recyclerView.setAdapter(adapter);
@@ -119,10 +118,12 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onClick(View view)
         {
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>> klik zaznamenán");
             int position = (int) view.getTag();
             Intent addActivity = new Intent(CryptoSelection.this, AddTransaction.class);
-            addActivity.putExtra("longName", controller.getCryptoList().get(position).getLongName());
-            addActivity.putExtra("shortName", controller.getCryptoList().get(position).getShortName());
+            addActivity.putExtra("longName", controller.getCryptoList().get(position).longName);
+            addActivity.putExtra("shortName", controller.getCryptoList().get(position).shortName);
+            addActivity.putExtra("id", controller.getCryptoList().get(position).uid);
             addActivityResultLauncher.launch(addActivity);
         }
     };
@@ -140,14 +141,4 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
                     }
                 }
             });
-
-    private void hideKeyBoardOnRecyclerTouch(){
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                shared.hideKeyBoard(CryptoSelection.this);
-                return true;
-            }
-        });
-    }
 }

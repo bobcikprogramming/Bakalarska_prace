@@ -33,7 +33,7 @@ public class MonthYearPickerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         calendar = new CalendarManager();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.YearPicker);
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         Calendar cal = Calendar.getInstance();

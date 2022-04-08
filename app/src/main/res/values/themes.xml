@@ -4,7 +4,7 @@
         <item name="android:spinnerDropDownItemStyle">@style/MySpinnerItemStyle</item>
         <!-- Primary brand color. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
-        <item name="colorPrimary">@color/navBarSelect</item>
+        <item name="colorPrimary">@color/button</item>
         <item name="colorPrimaryVariant">@color/navBarBackground</item>
         <item name="colorOnPrimary">@color/navBarBackground</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -426,9 +426,14 @@
         <item name="android:textColor">@color/recyclerItemOfTransactionTextViewTextColor</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
-        <item name="android:singleLine">true</item>
         <item name="android:paddingStart">5dp</item>
         <item name="android:paddingEnd">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:scrollHorizontally">true</item>
     </style>
 
     <!-- __________ Konec: Styl pro recyclerview transakcí __________ -->
@@ -482,20 +487,25 @@
         <item name="buttonBarNegativeButtonStyle">@style/MyDialogButtonStyle</item>
     </style>
 
+    <style name="YearPicker" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:background">@color/navBarBackground</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowMinWidthMajor">200dp</item>
+        <item name="buttonBarPositiveButtonStyle">@style/YearPickerButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/YearPickerButtonStyle</item>
+    </style>
+
     <style name="MyDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/button</item>
     </style>
 
+    <style name="YearPickerButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/yearPickerButton</item>
+    </style>
+
     <!-- __________ Konex: Styl dialogového okna pro uložení změny __________ -->
 
-
-    <!-- Začátek: Styl pro year dialog picker -->
-    <!-- https://stackoverflow.com/a/53300524 -->
-
-    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:textColor">@color/button</item>  // you can change the color of the yearPiker dialog
-        <item name="android:textColorPrimary">@color/button</item> // you can change the color of the yearPiker dialog
-    </style>
     <style name="Theme.KryptoEvidence.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -504,6 +514,5 @@
         parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.KryptoEvidence.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- __________ Konex: Styl pro year dialog picker __________ -->
 
 </resources>

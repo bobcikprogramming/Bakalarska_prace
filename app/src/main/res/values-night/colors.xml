@@ -18,7 +18,7 @@
     <color name="textViewDescriptionTextColor">#D3D3D3</color>
     <color name="editTextAddTransactionTextColor">@color/white</color>
     <color name="searchHintTextColor">#808080</color>                               <!-- Barva hintu pro pole vyhledávání -->
-    <color name="searchTextColor">@color/white</color>                                   <!-- Barva textu pro pole vyhledávání -->
+    <color name="searchTextColor">@color/white</color>                              <!-- Barva textu pro pole vyhledávání -->
     <color name="headlineTextColor">@color/white</color>
     <color name="dataPickerHeadlineTextColor">#F9B720</color>                       <!-- Barva textu pro pole dnů (po - ne) pro datepicker -->
     <color name="dataPickerTextColor">@color/white</color>                          <!-- Barva textu pro jednotlivé dny pro datepicker -->
@@ -29,7 +29,7 @@
     <color name="transactionHistoryValueTextColor">@color/white</color>
     <color name="recyclerItemOfTransactionDescriptionSideTextColor">#D3D3D3</color> <!-- Barva textu pro postraní popis položky recyclerview -->
     <color name="recyclerItemOfTransactionDescriptionTopTextColor">#F9B720</color>  <!-- Barva textu pro nadpis hodnoty položky recyclerview -->
-    <color name="recyclerItemOfTransactionTextViewTextColor">@color/white</color>        <!-- Barva textu pro hodnotu položky recyclerview -->
+    <color name="recyclerItemOfTransactionTextViewTextColor">@color/white</color>   <!-- Barva textu pro hodnotu položky recyclerview -->
     <color name="tabbarTextViewTextColor">@color/white</color>
     <color name="dialogButtonTextColor">@color/button</color>
     <color name="spinnerItemTextColor">@color/white</color>
@@ -45,6 +45,8 @@
     <color name="historyHeadlineTextColor">#F9B720</color>
     <color name="PDFDate">#DDDDDD</color>
     <color name="PDFYear">#FFFFFF</color>
+    <color name="yearPickerButton">#EBB742</color>
+    <color name="favoriteButton">#EBB742</color>
 
 
     <!-- Pozadí -->

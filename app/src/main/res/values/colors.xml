@@ -18,7 +18,7 @@
     <color name="textViewDescriptionTextColor">#4F4F4F</color>
     <color name="editTextAddTransactionTextColor">@color/black</color>
     <color name="searchHintTextColor">#4F4F4F</color>                               <!-- Barva hintu pro pole vyhledávání -->
-    <color name="searchTextColor">@color/black</color>                                   <!-- Barva textu pro pole vyhledávání -->
+    <color name="searchTextColor">@color/black</color>                              <!-- Barva textu pro pole vyhledávání -->
     <color name="headlineTextColor">@color/white</color>
     <color name="dataPickerHeadlineTextColor">#008000</color>                       <!-- Barva textu pro pole dnů (po - ne) pro datepicker -->
     <color name="dataPickerTextColor">@color/black</color>                          <!-- Barva textu pro jednotlivé dny pro datepicker -->
@@ -41,10 +41,12 @@
     <color name="overviewListLongNameTextColor">#3F3F3F</color>
     <color name="overviewListCryptoAmountTextColor">@color/black</color>
     <color name="recyclerItemOfCryptoSelectionLongNameTextColor">@color/black</color>
-    <color name="recyclerItemOfCryptoSelectionShortNameTextColor">#3F3F3F</color>
+    <color name="recyclerItemOfCryptoSelectionShortNameTextColor">#5F5F5F</color>
     <color name="historyHeadlineTextColor">#008000</color>
     <color name="PDFDate">#333333</color>
     <color name="PDFYear">#000000</color>
+    <color name="yearPickerButton">#008000</color>
+    <color name="favoriteButton">#008000</color>
 
 
     <!-- Pozadí -->

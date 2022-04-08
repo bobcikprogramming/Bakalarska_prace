@@ -143,7 +143,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     private void confirmDialogDelete(String fileName, int position){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.YearPicker);
         builder.setCancelable(true);
         builder.setTitle("Smazat PDF");
         builder.setMessage("Opravdu chcete smazat PDF záznam?");

@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
     android:id="@+id/layoutCryptoSelection"
     android:orientation="vertical">
 
@@ -11,25 +11,48 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/cryptoLongName"
-            android:text="Bitcoin"
-            android:textColor="@color/recyclerItemOfCryptoSelectionLongNameTextColor"
-            android:textSize="23sp"
-            android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cryptoLongName"
+                android:text="Bitcoin"
+                android:textColor="@color/recyclerItemOfCryptoSelectionLongNameTextColor"
+                android:textSize="23sp"
+                android:paddingTop="5dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cryptoShortName"
+                android:text="BTC"
+                android:textColor="@color/recyclerItemOfCryptoSelectionShortNameTextColor"
+                android:textSize="18dp"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:id="@+id/cryptoShortName"
-            android:text="BTC"
-            android:textColor="@color/recyclerItemOfCryptoSelectionShortNameTextColor"
-            android:textSize="17dp"
-            android:gravity="center_vertical"
-            android:paddingTop="6dp"
-            android:paddingStart="10dp"/>
+            android:id="@+id/btnFavorite"
+            android:padding="10dp"
+            android:src="@drawable/ic_favorite_unselected"/>
 
     </LinearLayout>
 

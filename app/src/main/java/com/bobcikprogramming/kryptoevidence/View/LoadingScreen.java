@@ -10,11 +10,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bobcikprogramming.kryptoevidence.Controller.FirebaseAsyncTask;
 import com.bobcikprogramming.kryptoevidence.Controller.LoadingScreenController;
 import com.bobcikprogramming.kryptoevidence.Controller.MainActivity;
+import com.bobcikprogramming.kryptoevidence.Controller.APIAsyncTask;
+import com.bobcikprogramming.kryptoevidence.Controller.TaskDelegate;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.R;
 
-public class LoadingScreen extends AppCompatActivity {
+public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
 
     private TextView tvUpdateInfo;
     private ProgressBar progressBar;
@@ -42,23 +46,47 @@ public class LoadingScreen extends AppCompatActivity {
     }
 
     private void loadingAction(){
-        int actionCode = controller.checkVersion(tvUpdateInfo, progressBar);
-        switch (actionCode){
-            case 0:
-                startActivity();
-                break;
-            case 1:
-                tvUpdateInfo.setText("Při prvním použití je vyžadováno\npřipojení k internetu.");
-                break;
+        boolean isConnected = controller.checkInternetConnection();
+        if(!isConnected){
+            controller.setNetworkRequest();
+            if(controller.getVersionRate() == 0 ||controller.getVersionCrypto() == 0) {
+                tvUpdateInfo.setText("Pro dokončení instalace je vyžadováno připojení k internetu.");
+            }else{
+                startActivityDelay();
+            }
+        }else{
+            showLoadingScreenDelay();
         }
     }
 
-    private void startActivity(){
+    private void startAsynctaskAPI() {
+        APIAsyncTask asyncTask = new APIAsyncTask(this, this, tvUpdateInfo, progressBar);
+        asyncTask.execute();
+    }
+
+    private void startAsynctaskFirebase() {
+        FirebaseAsyncTask asyncTask = new FirebaseAsyncTask(this, this, tvUpdateInfo, progressBar);
+        asyncTask.execute();
+    }
+
+    private void showLoadingScreenDelay(){
         handler.postDelayed(new Runnable() {
             public void run() {
-                Intent intent = new Intent(LoadingScreen.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                startAsynctaskFirebase();
+            }
+        }, 2000);
+    }
+
+    private void startActivity(){
+        Intent intent = new Intent(LoadingScreen.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void startActivityDelay(){
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                startActivity();
             }
         }, 2000);
     }
@@ -82,5 +110,19 @@ public class LoadingScreen extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("test");
+    }
+
+    @Override
+    public void TaskCompletionResult(String result) {
+        int versionCrypto = controller.getVersionCrypto();
+        if(versionCrypto != 0){
+            startActivity();
+        }else {
+            if(!result.equals("api")) {
+                startAsynctaskAPI();
+            }else {
+                tvUpdateInfo.setText("Stahování dat se nezdařilo. Restartujte prosím aplikaci.");
+            }
+        }
     }
 }

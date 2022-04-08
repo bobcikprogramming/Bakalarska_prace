@@ -1,7 +1,6 @@
 package com.bobcikprogramming.kryptoevidence.Model;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -45,8 +44,20 @@ public interface DatabaseDao {
     List<OwnedCryptoEntity> getAllOwnedCrypto();
 
     @Transaction
-    @Query("SELECT version FROM DataVersion")
-    int getDataVersion();
+    @Query("SELECT version_rate FROM DataVersionEntity")
+    int getDataVersionRate();
+
+    @Transaction
+    @Query("SELECT version_crypto FROM DataVersionEntity")
+    int getDataVersionCrypto();
+
+    @Transaction
+    @Query("SELECT * FROM CryptocurrencyEntity ORDER BY favorite DESC, rank, longName")
+    List<CryptocurrencyEntity> getAllCrypto();
+
+    @Transaction
+    @Query("SELECT uid FROM CryptocurrencyEntity WHERE shortName = :shortName AND longName = :longName")
+    String getCryptoID(String shortName, String longName);
 
     @Transaction
     @Query("SELECT * FROM OwnedCryptoEntity WHERE short_name = :shortName")
@@ -151,7 +162,10 @@ public interface DatabaseDao {
     void insertExchange(ExchangeByYearEntity exchangeEntity);
 
     @Insert
-    void insertVersion(DataVersion versionEntity);
+    void insertVersion(DataVersionEntity versionEntity);
+
+    @Insert
+    void insertCryptocurrency(CryptocurrencyEntity cryptocurrencyEntity);
 
     @Update
     void updateTransaction(TransactionEntity transaction);
@@ -224,8 +238,20 @@ public interface DatabaseDao {
     void setTransactionChangeSellToDeleteById(String transactionID);
 
     @Transaction
-    @Query("UPDATE dataversion SET version = :version")
-    void updateVersion(int version);
+    @Query("UPDATE DataVersionEntity SET version_rate = :version")
+    void updateVersionRate(int version);
+
+    @Transaction
+    @Query("UPDATE DataVersionEntity SET version_crypto = :version")
+    void updateVersionCrypto(int version);
+
+    @Transaction
+    @Query("UPDATE CryptocurrencyEntity SET favorite = :favorite WHERE uid = :id")
+    void updateFavoriteSettingCrypto(String id, int favorite);
+
+    @Transaction
+    @Query("UPDATE CryptocurrencyEntity SET rank = :rank WHERE uid = :id")
+    void updateRankSettingCrypto(String id, int rank);
 
     @Transaction
     @Query("DELETE FROM TransactionHistoryEntity WHERE parent_id = :transactionID")
@@ -250,4 +276,8 @@ public interface DatabaseDao {
     @Transaction
     @Query("DELETE FROM ExchangeByYearEntity")
     void deleteExchange();
+
+    @Transaction
+    @Query("DELETE FROM CryptocurrencyEntity")
+    void deleteCrypto();
 }
