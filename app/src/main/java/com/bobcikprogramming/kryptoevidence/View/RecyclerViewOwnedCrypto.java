@@ -36,6 +36,10 @@ public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOw
         holder.tvShortName.setText(dataList.get(position).shortName);
         holder.tvLongName.setText(dataList.get(position).longName);
         holder.tvAmount.setText(dataList.get(position).amount);
+
+        holder.tvShortName.setFocusable(true);
+        holder.tvLongName.setFocusable(true);
+        holder.tvAmount.setFocusable(true);
     }
 
 

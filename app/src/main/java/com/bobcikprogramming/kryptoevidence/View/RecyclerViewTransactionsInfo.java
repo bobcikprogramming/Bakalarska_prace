@@ -35,10 +35,12 @@ public class RecyclerViewTransactionsInfo extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.infoDesLeft.setText(dataList.get(position).getLeftDesc());
         holder.infoValueLeft.setText(dataList.get(position).getLeftValue());
+        holder.infoValueLeft.setFocusable(true);
 
         if(dataList.get(position).getRightValue() != null){
             holder.infoDesRight.setText(dataList.get(position).getRightDesc());
             holder.infoValueRight.setText(dataList.get(position).getRightValue());
+            holder.infoValueRight.setFocusable(true);
         }else{
             holder.infoLayoutRight.setVisibility(View.GONE);
         }
