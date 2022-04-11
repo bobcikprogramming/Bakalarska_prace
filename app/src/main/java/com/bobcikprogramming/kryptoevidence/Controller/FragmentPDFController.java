@@ -135,6 +135,7 @@ public class FragmentPDFController {
                 return;
             }
         } catch (IOException e) {
+            System.out.println("Chyba: "+e);
             e.printStackTrace();
             Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
             return;
@@ -143,6 +144,7 @@ public class FragmentPDFController {
     }
 
     private ArrayList<SellTransactionPDFList> sellValue(List<TransactionWithPhotos> salesInYear){
+        AppDatabase db = AppDatabase.getDbInstance(context);
         // Sečíst zisky z prodeje od prvního prodeje v roce po poslední (Zaokrouhleno na dvě desetiná místa (kvůli pozdějšímu výpisu v PDF)).
         ArrayList<SellTransactionPDFList> sellList = new ArrayList<>();
         SellTransactionPDFList sellTransaction;
@@ -160,8 +162,9 @@ public class FragmentPDFController {
             }
 
             profit = price.subtract(fee);
+            String shortNameSold = db.databaseDao().getCryptoShortNameById(sellEntity.uidSold);
 
-            sellTransaction = new SellTransactionPDFList(calendar.getDateFromMillis(sellEntity.date), sellEntity.quantitySold, sellEntity.shortNameSold, String.valueOf(price), String.valueOf(fee), String.valueOf(profit));
+            sellTransaction = new SellTransactionPDFList(calendar.getDateFromMillis(sellEntity.date), sellEntity.quantitySold, shortNameSold, String.valueOf(price), String.valueOf(fee), String.valueOf(profit));
             sellList.add(sellTransaction);
         }
         return sellList;
@@ -173,11 +176,11 @@ public class FragmentPDFController {
         BuyTransactionPDFList buyTransaction;
 
         // Vytvořit seznam kryptoměn, které se v daném roce prodali.
-        List<String> shortNameSellInYear = db.databaseDao().getUsedShortNameSellBetween(dateFrom, dateTo);
+        List<String> salesInYear = db.databaseDao().getUsedSalesChangesBetween(dateFrom, dateTo);
         // Pro jednotlivé kryptoměny:
-        for(String shortName : shortNameSellInYear) {
+        for(String uidCrypto : salesInYear) {
             // Vzít všechny prodeje od do.
-            List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellBetweenByShortName(shortName, dateFrom, dateTo);
+            List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellChangeBetweenById(uidCrypto, dateFrom, dateTo);
             long uidFirst = 0, uidLast = 0;
             BigDecimal takenFromFirst = BigDecimal.ZERO, takenFromLast = BigDecimal.ZERO;
             for(TransactionWithPhotos sellTransaction : listOfUsedSell){
@@ -209,6 +212,7 @@ public class FragmentPDFController {
             }
             // Poté co se projdou všechny prodeje, budou uloženy hodnoty prvního a posledního.
             /** Zpracuji hodnoty prvního. */
+            String shortName = db.databaseDao().getCryptoShortNameById(uidCrypto);
             buyTransaction = getBuyTransaction(uidFirst, takenFromFirst, shortName);
             // Uložím datum a čas prvního.
             String dateFirst = buyTransaction.getDate();
@@ -222,15 +226,22 @@ public class FragmentPDFController {
                 buyTransaction = getBuyTransaction(uidLast, takenFromLast, shortName);
                 // Uložím datum a čas posledního.
                 buyList.add(buyTransaction);
+                dateLast = buyTransaction.getDate();
+                timeLast = buyTransaction.getTime();
             }
 
             // Zpracuji hodnoty mezi prvním a posledním.
             // Získám nákupy mezi prvním a posledním prodejem.
-            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), calendar.getDateMillis(dateFirst), timeFirst, calendar.getDateMillis(dateLast), timeLast, shortName);
+            System.out.println(">>>>>>>>>>>>>>>>UIDFIRST: "+uidFirst + " UIDLAST: "+uidLast);
+            System.out.println(">>>>>>>>>>>>>>>>datefirst: "+ calendar.getDateMillis(dateFirst) + " timefirst: "+ timeFirst);
+            System.out.println(">>>>>>>>>>>>>>>>datelast: "+ calendar.getDateMillis(dateLast) + " timelast: "+ timeLast);
+            List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), calendar.getDateMillis(dateFirst), timeFirst, calendar.getDateMillis(dateLast), timeLast, uidCrypto);
+            System.out.println(">>>>>>>>>>>>>>>>>List size: "+listOfUsedBuyBetween.size());
             for (TransactionWithPhotos buy : listOfUsedBuyBetween) {
                 TransactionEntity buyEntity = buy.transaction;
                 // Získáme hodnoty: Cena, Množství, Poplatek.
-                BigDecimal price = shared.getBigDecimal(buyEntity.priceBought);
+                boolean isFromBuy = buy.transaction.transactionType.equals("Nákup");
+                BigDecimal price = isFromBuy ? shared.getBigDecimal(buyEntity.quantitySold) : shared.getBigDecimal(buyEntity.priceBought).subtract(shared.getBigDecimal(buyEntity.fee));;
                 BigDecimal quantity = shared.getBigDecimal(buyEntity.quantityBought);
                 BigDecimal fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(buyEntity.fee));
 
@@ -259,27 +270,31 @@ public class FragmentPDFController {
         return buyList;
     }
 
-    private BuyTransactionPDFList getBuyTransaction(long uid, BigDecimal takenFrom, String shortName){
+    private BuyTransactionPDFList getBuyTransaction(long uid, BigDecimal usedFrom, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity buy = db.databaseDao().getTransactionByTransactionID(String.valueOf(uid)).transaction;
 
         // Získáme hodnoty: Cena, Množství, Poplatek.
-        BigDecimal price = shared.getBigDecimal(buy.priceBought);
+        boolean isFromBuy = buy.transactionType.equals("Nákup");
+        BigDecimal price = isFromBuy ? shared.getBigDecimal(buy.quantitySold) : shared.getBigDecimal(buy.priceBought).subtract(shared.getBigDecimal(buy.fee));;
         BigDecimal quantity = shared.getBigDecimal(buy.quantityBought);
-        BigDecimal fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(buy.fee));
+        BigDecimal fee = shared.getBigDecimal(buy.fee);
 
-        // Vypočteme cenu za jednu kryptoměnu.
-        BigDecimal pricePerPiece;
-        if(quantity.compareTo(BigDecimal.ONE) < 0){
+        // Vypočteme cenu a poplatek za jednu kryptoměnu.
+        BigDecimal pricePerPiece, feePerPiece;
+        if(quantity.compareTo(BigDecimal.ZERO) == 0){
             // Pokud je koupené množství menší jedné, tak násobíme.
-            pricePerPiece = shared.getTwoDecimalBigDecimal(price.multiply(quantity));
+            pricePerPiece = BigDecimal.ZERO;
+            feePerPiece = BigDecimal.ZERO;
         }else{
             // Jinak dělíme.
             pricePerPiece = price.divide(quantity, 2, RoundingMode.HALF_EVEN);
+            feePerPiece = fee.divide(quantity, 2, RoundingMode.HALF_EVEN);
         }
 
         // Zjistíme cenu nákupu pro využité množství.
-        price = shared.getTwoDecimalBigDecimal(pricePerPiece.multiply(takenFrom));
+        price = shared.getTwoDecimalBigDecimal(pricePerPiece.multiply(usedFrom));
+        fee = shared.getTwoDecimalBigDecimal(feePerPiece.multiply(usedFrom));
 
         // Zjistíme celkovou cenu (včetně poplatku).
         BigDecimal total = price.add(fee);
@@ -296,7 +311,7 @@ public class FragmentPDFController {
         }
 
         // Vrátím nákup.
-        return new BuyTransactionPDFList(calendar.getDateFromMillis(buy.date), buy.time, takenFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
+        return new BuyTransactionPDFList(calendar.getDateFromMillis(buy.date), buy.time, usedFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
     }
 
     private ArrayList<ChangeTransactionPDFList> changeValue(long dateFrom, long dateTo){
@@ -309,15 +324,18 @@ public class FragmentPDFController {
         for(TransactionWithPhotos change : salesInYear){
             TransactionEntity changeEntity = change.transaction;
             BigDecimal fee = shared.getTwoDecimalBigDecimal(change.transaction.fee);
-            BigDecimal profit = shared.getTwoDecimalBigDecimal(change.transaction.priceBought).subtract(fee);
+            BigDecimal profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).subtract(fee));
             if(change.transaction.currency.equals("EUR")){
-                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(eurExchangeRate));
-                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(eurExchangeRate))).subtract(fee);
+                fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(eurExchangeRate)));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(eurExchangeRate)).subtract(fee));
             }else if(change.transaction.currency.equals("USD")){
-                fee = shared.getTwoDecimalBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(usdExchangeRate));
-                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(usdExchangeRate))).subtract(fee);
+                fee = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.fee).multiply(shared.getBigDecimal(usdExchangeRate)));
+                profit = shared.getTwoDecimalBigDecimal(shared.getBigDecimal(change.transaction.priceBought).multiply(shared.getBigDecimal(usdExchangeRate)).subtract(fee));
             }
-            changeTransaction = new ChangeTransactionPDFList(calendar.getDateFromMillis(changeEntity.date), changeEntity.quantityBought, changeEntity.shortNameBought, changeEntity.quantitySold, changeEntity.shortNameSold, profit.toString());
+            String shortNameBought = db.databaseDao().getCryptoShortNameById(changeEntity.uidBought);
+            String shortNameSold = db.databaseDao().getCryptoShortNameById(changeEntity.uidSold);
+
+            changeTransaction = new ChangeTransactionPDFList(calendar.getDateFromMillis(changeEntity.date), changeEntity.quantityBought, shortNameBought, changeEntity.quantitySold, shortNameSold, profit.toString());
             changeList.add(changeTransaction);
         }
         return changeList;

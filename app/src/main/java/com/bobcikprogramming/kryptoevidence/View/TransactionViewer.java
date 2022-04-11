@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bobcikprogramming.kryptoevidence.Controller.MainActivity;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionViewerController;
 import com.bobcikprogramming.kryptoevidence.R;
 

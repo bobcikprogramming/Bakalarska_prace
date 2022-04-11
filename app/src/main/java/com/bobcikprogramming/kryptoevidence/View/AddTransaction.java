@@ -18,7 +18,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     private TextView tvBuy, tvSell, tvChange, tvCryptoName;
     private ImageView btnClose;
 
-    private String longName, shortName, id;
+    private String longName, id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,6 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
 
         Bundle extras = getIntent().getExtras();
         longName = extras.getString("longName");
-        shortName = extras.getString("shortName");
         id = extras.getString("id");
 
         setupUIViews();
@@ -51,6 +50,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         tvChange = findViewById(R.id.tabTextViewChange);
 
         tvCryptoName = findViewById(R.id.tvCryptoName);
+        tvCryptoName.setSelected(true);
         btnClose = findViewById(R.id.btnCloseAdd);
 
         btnBuy.setOnClickListener(this);
@@ -63,17 +63,17 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tabButtonBuy:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(id)).commit();
                 resetColor();
                 tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonSell:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabSell(shortName, longName)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabSell(id)).commit();
                 resetColor();
                 tvSell.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
             case R.id.tabButtonChange:
-                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabChange(shortName, longName, id)).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabChange(id)).commit();
                 resetColor();
                 tvChange.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
                 break;
@@ -115,7 +115,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
      * Metoda pro vybrání úvodní položky navbaru při otevření okna.
      */
     private void setStartItem(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(shortName, longName)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout, new AddTransactionTabBuy(id)).commit();
         tvBuy.setTextColor(ContextCompat.getColor(this, R.color.navBarSelect));
     }
 }

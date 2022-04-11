@@ -83,7 +83,6 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         position = controller.getLastPosition();
         showAnnualReport();
         onKeyboardVisibility();
-        hideKeyBoardOnRecyclerTouch();
 
         return view;
     }
@@ -345,15 +344,5 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                     }
                 }
             });
-    }
-
-    private void hideKeyBoardOnRecyclerTouch(){
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                shared.hideKeyBoard(getActivity());
-                return true;
-            }
-        });
     }
 }

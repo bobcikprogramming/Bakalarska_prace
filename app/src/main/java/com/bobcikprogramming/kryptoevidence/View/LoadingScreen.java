@@ -55,6 +55,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
                 startActivityDelay();
             }
         }else{
+            System.out.println(">>>>>>>>>>>>>>>>jsem v else");
             showLoadingScreenDelay();
         }
     }
@@ -70,8 +71,10 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     private void showLoadingScreenDelay(){
+        System.out.println(">>>>>>>>>>>>>>>>jdu čekat");
         handler.postDelayed(new Runnable() {
             public void run() {
+                System.out.println(">>>>>>>>>>>>>>>>dočekal jsem");
                 startAsynctaskFirebase();
             }
         }, 2000);
@@ -116,9 +119,11 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     public void TaskCompletionResult(String result) {
         int versionCrypto = controller.getVersionCrypto();
         if(versionCrypto != 0){
+            System.out.println(">>>>>>>>>>>>>>>>startuju aktivity");
             startActivity();
         }else {
             if(!result.equals("api")) {
+                System.out.println(">>>>>>>>>>>>>>>>stahuju api");
                 startAsynctaskAPI();
             }else {
                 tvUpdateInfo.setText("Stahování dat se nezdařilo. Restartujte prosím aplikaci.");

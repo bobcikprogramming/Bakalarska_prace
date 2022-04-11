@@ -96,7 +96,7 @@ public class RecyclerViewTransactionsInfoHistory extends RecyclerView.Adapter<Re
             layout.setVisibility(View.VISIBLE);
             tvDescription.setText(description);
             tvValue.setText(value);
-            tvValue.setFocusable(true);
+            tvValue.setSelected(true);
         }
     }
 

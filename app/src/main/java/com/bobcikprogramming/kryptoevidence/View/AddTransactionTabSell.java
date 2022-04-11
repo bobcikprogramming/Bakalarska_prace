@@ -48,7 +48,8 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    private String shortName, longName;
+    private String uidCrypto;
+    private String date, time;
 
     private TransactionOperationController controller;
     private SharedMethods shared;
@@ -70,6 +71,8 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         calendar = new CalendarManager();
 
         setupUIViews();
+        date = null;
+        time = null;
         openCalendar();
         openClock();
         hideKeyBoardOnSpinnerTouch();
@@ -85,10 +88,10 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             case R.id.buttonSaveSell:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    boolean saved = controller.saveTransactionSell(shortName, longName, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
+                    boolean saved = controller.saveTransactionSell(uidCrypto, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
                             calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etPrice, etFee));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getBigDecimal(etQuantity), 1, null);
+                        controller.changeAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 1, null, null);
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
@@ -134,9 +137,8 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         imvBtnShowPhoto.setOnClickListener(this);
     }
 
-    public AddTransactionTabSell(String shortName, String longName) {
-        this.shortName = shortName;
-        this.longName = longName;
+    public AddTransactionTabSell(String uidCrypto) {
+        this.uidCrypto = uidCrypto;
     }
 
     private void clearEditText(){
@@ -165,14 +167,15 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindow(getActivity(), dateSetListener, null);
+                calendar.openDateDialogWindow(getActivity(), dateSetListener, date);
             }
         });
 
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                tvDate.setText(calendar.returnDate(year, month, day));
+                date = calendar.returnDate(year, month, day);
+                tvDate.setText(date);
             }
         };
     }
@@ -181,14 +184,15 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openTimeDialogWindow(getActivity(), timeSetListener, null);
+                calendar.openTimeDialogWindow(getActivity(), timeSetListener, time);
             }
         });
 
         timeSetListener = new TimePickerDialog.OnTimeSetListener(){
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                tvTime.setText(calendar.returnTime(hour, minute));
+                time = calendar.returnTime(hour, minute);
+                tvTime.setText(time);
             }
         };
     }

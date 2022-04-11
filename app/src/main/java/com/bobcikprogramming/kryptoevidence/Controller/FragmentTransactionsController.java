@@ -20,6 +20,7 @@ public class FragmentTransactionsController {
     private CalendarManager calendar;
 
     private boolean isSetDateFrom, isSetDateTo;
+    private List<TransactionWithPhotos> dataToShow = new ArrayList<>();
 
     public FragmentTransactionsController(){
         isSetDateFrom = false;
@@ -49,7 +50,8 @@ public class FragmentTransactionsController {
         dataFromDatabase = db.databaseDao().getAll();
         sortListByTime(dataFromDatabase);
         sortListByDate(dataFromDatabase);
-        adapter.setTransactionData(getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo));
+        getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo);
+        adapter.setTransactionData(dataToShow);
     }
 
     private void sortListByDate(List<TransactionWithPhotos> data){
@@ -87,7 +89,7 @@ public class FragmentTransactionsController {
         }
     }
 
-    private List<TransactionWithPhotos> getDataToShow(List<TransactionWithPhotos> dataFromDatabase, Calendar calendarDateFrom, Calendar calendarDateTo){
+    private void getDataToShow(List<TransactionWithPhotos> dataFromDatabase, Calendar calendarDateFrom, Calendar calendarDateTo){
         if(isSetDateFrom || isSetDateTo) {
             int yearFrom = calendarDateFrom.get(Calendar.YEAR);
             int monthFrom = calendarDateFrom.get(Calendar.MONTH) + 1;
@@ -99,19 +101,15 @@ public class FragmentTransactionsController {
             int dayTo = calendarDateTo.get(Calendar.DAY_OF_MONTH);
             String dateTo = dayTo + "." + monthTo + "." + yearTo;
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-
-            List<TransactionWithPhotos> newDataList = new ArrayList<TransactionWithPhotos>();
-
             if(isSetDateFrom && isSetDateTo){
-                return getDataFromInterval(dataFromDatabase, dateFrom, dateTo);
+                dataToShow = getDataFromInterval(dataFromDatabase, dateFrom, dateTo);
             } else if (isSetDateFrom) {
-                return getDataFromSpecificDate(dataFromDatabase, dateFrom);
+                dataToShow = getDataFromSpecificDate(dataFromDatabase, dateFrom);
             } else{
-                return getDataToSpecificDate(dataFromDatabase, dateTo);
+                dataToShow = getDataToSpecificDate(dataFromDatabase, dateTo);
             }
         }else{
-            return dataFromDatabase;
+            dataToShow = dataFromDatabase;
         }
     }
 
@@ -159,6 +157,11 @@ public class FragmentTransactionsController {
     }
 
     public void refreshAdapter(RecyclerViewTransactions adapter, Calendar calendarDateFrom, Calendar calendarDateTo){
-        adapter.setTransactionData(getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo));
+        getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo);
+        adapter.setTransactionData(dataToShow);
+    }
+
+    public int getIndexToShow(int position) {
+        return dataFromDatabase.indexOf(dataToShow.get(position));
     }
 }

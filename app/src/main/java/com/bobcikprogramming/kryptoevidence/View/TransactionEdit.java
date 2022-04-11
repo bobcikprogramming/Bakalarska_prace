@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionEditController;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.R;
 
@@ -45,7 +46,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
     private String transactionID;
-    private String shortNameCryptoSell, longNameCryptoSell;
+    private String uidSell;
     private boolean photoChange;
 
     private SharedMethods shared;
@@ -213,8 +214,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 underlineRowSeventh.setVisibility(View.VISIBLE);
                 descRowSixth.setText("Cena směny");
 
-                shortNameCryptoSell = controller.getShortNameSold();
-                longNameCryptoSell = controller.getLongNameSold();
+                uidSell = controller.getIdSold();
                 break;
         }
     }
@@ -238,7 +238,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 valueRowFirst.setText(shared.getBigDecimal(transaction.quantityBought).toPlainString());
                 spinnerRowSeventh.setAdapter(getSpinnerAdapter(R.array.currency, R.layout.spinner_item, R.layout.spinner_dropdown_item));
                 spinnerRowSeventh.setSelection(((ArrayAdapter) spinnerRowSeventh.getAdapter()).getPosition(transaction.currency)); /** <-- https://stackoverflow.com/a/11072595 */
-                valueRowFourth.setText(transaction.longNameSold);
+                valueRowFourth.setText(AppDatabase.getDbInstance(this).databaseDao().getCryptoById(transaction.uidSold).longName);
                 valueRowFifth.setText(shared.getBigDecimal(transaction.quantitySold).toPlainString());
                 valueRowSixth.setText(shared.getBigDecimal(transaction.priceBought).toPlainString());
                 break;
@@ -315,7 +315,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //int success = updateDatabase();
-                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, uidSell);
                         boolean isEmpty = false;
                         if(controller.getTransactionType().equals("Směna")){
                             isEmpty = shakeEmptyChange();
@@ -351,7 +351,7 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, shortNameCryptoSell, longNameCryptoSell);
+                        controller.getUpdateStatus(valueRowFirst, valueRowSecond, spinnerRowThird, valueRowFifth, valueRowSixth, spinnerRowSeventh, valueFee, valueDate, valueTime, uidSell);
                         controller.deleteFromDatabase();
                         closeActivity(true, true, true);
                     }
@@ -373,12 +373,11 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onActivityResult(ActivityResult result) {
                 Intent data = result.getData();
-                String onReturnShort = data.getStringExtra("shortName");
+                String onReturnUid = data.getStringExtra("uidCrypto");
                 String onReturnLong = data.getStringExtra("longName");
-                if(!onReturnShort.isEmpty()) {
-                    shortNameCryptoSell = onReturnShort;
-                    longNameCryptoSell = onReturnLong;
-                    valueRowFourth.setText(longNameCryptoSell);
+                if(!onReturnUid.isEmpty()) {
+                    uidSell = onReturnUid;
+                    valueRowFourth.setText(onReturnLong);
                 }
             }
         });

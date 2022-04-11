@@ -45,6 +45,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     private View itemView;
 
     private LayoutInflater layoutInflater;
+    private Context context;
 
     private RecyclerViewTransactionsInfo adapter;
     private RecyclerViewTransactionsInfoHistory adapterHistory;
@@ -54,6 +55,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     public ViewPagerAdapterTransaction(Context context, List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory) {
         controller = new ViewPagerAdapterTransactionController(dataList, dataListHistory);
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context = context;
     }
 
     @Override
@@ -80,10 +82,10 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         openGalery(controller.getPosition());
         showPhotosIfNotEmpty();
 
-        adapter = new RecyclerViewTransactionsInfo(itemView.getContext(), transaction.transactionType.equals("Směna") ? controller.getTransactionForChange() : controller.getTransactionForBuyOrSell()); //TODO framgent by viewpager prostudovat
+        adapter = new RecyclerViewTransactionsInfo(itemView.getContext(), transaction.transactionType.equals("Směna") ? controller.getTransactionForChange(context) : controller.getTransactionForBuyOrSell(context)); //TODO framgent by viewpager prostudovat
         recyclerViewTransactionInfo.setAdapter(adapter);
 
-        adapterHistory = new RecyclerViewTransactionsInfoHistory(itemView.getContext(), controller.getHistoryList(historyUnderline, historyLayout, historyHeadline)); //TODO framgent by viewpager prostudovat
+        adapterHistory = new RecyclerViewTransactionsInfoHistory(itemView.getContext(), controller.getHistoryList(historyUnderline, historyLayout, historyHeadline, context)); //TODO framgent by viewpager prostudovat
         recyclerViewTransactionInfoHistory.setAdapter(adapterHistory);
 
         Objects.requireNonNull(container).addView(itemView);
@@ -138,10 +140,10 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
 
         controller.setPosition(position);
 
-        adapter.updateDataList(dataList.get(position).transaction.transactionType.equals("Směna") ? controller.getTransactionForChange() : controller.getTransactionForBuyOrSell());
+        adapter.updateDataList(dataList.get(position).transaction.transactionType.equals("Směna") ? controller.getTransactionForChange(context) : controller.getTransactionForBuyOrSell(context));
         adapter.notifyDataSetChanged();
 
-        ArrayList<TransactionHistoryList> historyList = controller.getHistoryList(historyUnderline, historyLayout, historyHeadline);
+        ArrayList<TransactionHistoryList> historyList = controller.getHistoryList(historyUnderline, historyLayout, historyHeadline, context);
         adapterHistory.updateDataList(historyList);
         adapterHistory.notifyDataSetChanged();
         notifyDataSetChanged();

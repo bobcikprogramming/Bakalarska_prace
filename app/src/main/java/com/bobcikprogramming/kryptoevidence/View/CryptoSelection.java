@@ -118,11 +118,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onClick(View view)
         {
-            System.out.println(">>>>>>>>>>>>>>>>>>>>>>> klik zaznamenán");
             int position = (int) view.getTag();
             Intent addActivity = new Intent(CryptoSelection.this, AddTransaction.class);
             addActivity.putExtra("longName", controller.getCryptoList().get(position).longName);
-            addActivity.putExtra("shortName", controller.getCryptoList().get(position).shortName);
             addActivity.putExtra("id", controller.getCryptoList().get(position).uid);
             addActivityResultLauncher.launch(addActivity);
         }

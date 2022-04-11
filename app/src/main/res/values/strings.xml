@@ -16,9 +16,9 @@
     <string name="cryptoNameChangeSell">Prodaná kryptoměna</string>
     <string name="quantityBuy">Množství nakoupené kryptoměny</string>
     <string name="quantitySell">Množství prodané kryptoměny</string>
-    <string name="priceBuy">Pořizovací cena</string>
-    <string name="priceSell">Prodejní cena</string>
-    <string name="priceChange">Cena směny</string>
+    <string name="priceBuy">Celková cena \nvč. poplatku</string>
+    <string name="priceSell">Celková cena \nvč. poplatku</string>
+    <string name="priceChange">Cena směny\nvč. poplatku</string>
     <string name="fee">Poplatek za transakci</string>
     <string name="date">Datum provedení transakce</string>
     <string name="time">Čas provedení transakce</string>

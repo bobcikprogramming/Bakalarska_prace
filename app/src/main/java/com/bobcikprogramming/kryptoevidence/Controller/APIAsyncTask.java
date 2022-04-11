@@ -88,6 +88,7 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
                             cryptoEntity.shortName = jsonArray.getJSONObject(i).getString("symbol").toUpperCase();
                             cryptoEntity.longName = jsonArray.getJSONObject(i).getString("name");
                             cryptoEntity.rank = 999999;
+                            cryptoEntity.amount = "0";
                         } catch (JSONException e) {
                             e.printStackTrace();
                             return;
@@ -95,8 +96,8 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
                         db.databaseDao().insertCryptocurrency(cryptoEntity);
                     }
 
-                    int pages = (int)Math.ceil(jsonArray.length() / 250);
-                    for(int i = 1; i <= pages; i++){
+                    //int pages = (int)Math.ceil(jsonArray.length() / 250);
+                    for(int i = 1; i <= 2; i++){
                         String urlApiCurrencyMarket = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page="+i;
                         Request requestMarket = new Request.Builder().url(urlApiCurrencyMarket).build();
 

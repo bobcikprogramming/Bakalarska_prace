@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.R;
@@ -113,23 +114,26 @@ public class RecyclerViewTransactions extends RecyclerView.Adapter<RecyclerViewT
 
     private void loadDataToItems(String transactionType, ViewHolder holder, TransactionWithPhotos data){
         TransactionEntity transaction = data.transaction;
+        AppDatabase db = AppDatabase.getDbInstance(context);
+        String shortNameBought = db.databaseDao().getCryptoShortNameById(transaction.uidBought);
+        String shortNameSold = db.databaseDao().getCryptoShortNameById(transaction.uidSold);
         switch (transactionType){
             case "Nákup":
-                holder.tvNameFC.setText(transaction.shortNameBought);
+                holder.tvNameFC.setText(shortNameBought);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
-                holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
+                holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.priceBought).toPlainString()));
                 break;
             case "Prodej":
-                holder.tvNameFC.setText(transaction.shortNameSold);
+                holder.tvNameFC.setText(shortNameSold);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 holder.tvNameSC.setText(transaction.currency);
                 holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
                 break;
             case "Směna":
-                holder.tvNameFC.setText(transaction.shortNameBought);
+                holder.tvNameFC.setText(shortNameBought);
                 holder.tvQuantityFC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantityBought).toPlainString()));
-                holder.tvNameSC.setText(transaction.shortNameSold);
+                holder.tvNameSC.setText(shortNameSold);
                 holder.tvQuantitySC.setText(shared.editNumberForTextView(shared.getBigDecimal(transaction.quantitySold).toPlainString()));
                 break;
 

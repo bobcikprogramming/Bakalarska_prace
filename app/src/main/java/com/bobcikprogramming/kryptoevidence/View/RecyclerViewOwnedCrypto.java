@@ -9,17 +9,17 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bobcikprogramming.kryptoevidence.Model.OwnedCryptoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.ArrayList;
 
 public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOwnedCrypto.ViewHolder>{
 
-    private ArrayList<OwnedCryptoEntity> dataList;
+    private ArrayList<CryptocurrencyEntity> dataList;
     private Context context;
 
-    public RecyclerViewOwnedCrypto(Context context, ArrayList<OwnedCryptoEntity> dataList) {
+    public RecyclerViewOwnedCrypto(Context context, ArrayList<CryptocurrencyEntity> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -37,9 +37,9 @@ public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOw
         holder.tvLongName.setText(dataList.get(position).longName);
         holder.tvAmount.setText(dataList.get(position).amount);
 
-        holder.tvShortName.setFocusable(true);
-        holder.tvLongName.setFocusable(true);
-        holder.tvAmount.setFocusable(true);
+        holder.tvShortName.setSelected(true);
+        holder.tvLongName.setSelected(true);
+        holder.tvAmount.setSelected(true);
     }
 
 

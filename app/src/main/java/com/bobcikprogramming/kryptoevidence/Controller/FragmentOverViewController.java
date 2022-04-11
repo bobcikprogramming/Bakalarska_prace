@@ -3,7 +3,7 @@ package com.bobcikprogramming.kryptoevidence.Controller;
 import android.content.Context;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.Model.OwnedCryptoEntity;
+import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.Model.PDFEntity;
 
 import java.io.BufferedReader;
@@ -17,7 +17,7 @@ import java.util.List;
 public class FragmentOverViewController {
 
     private Context context;
-    private List<OwnedCryptoEntity> ownedCryptos;
+    private ArrayList<CryptocurrencyEntity> ownedCryptoList;
     private SharedMethods shared;
 
     private List<PDFEntity> annualList;
@@ -75,18 +75,8 @@ public class FragmentOverViewController {
 
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
-        ownedCryptos = db.databaseDao().getAllOwnedCrypto();
+        ownedCryptoList = new ArrayList<>(db.databaseDao().getAllOwnedCrypto());
         annualList = db.databaseDao().getLatestAnnualReport();
-    }
-
-    public ArrayList<OwnedCryptoEntity> getDataToShow(){
-        ArrayList<OwnedCryptoEntity> dataToShow = new ArrayList<>();
-        for(OwnedCryptoEntity ownedCrypto : ownedCryptos){
-            if(shared.getBigDecimal(ownedCrypto.amount).compareTo(shared.getBigDecimal("0.0")) == 1){
-                dataToShow.add(ownedCrypto);
-            }
-        }
-        return dataToShow;
     }
 
     public List<PDFEntity> showAnnualReport(){
@@ -103,14 +93,13 @@ public class FragmentOverViewController {
         return position;
     }
 
-    public ArrayList<OwnedCryptoEntity> filter(String searching){
-        ArrayList<OwnedCryptoEntity> ownedCryptoListToShow = new ArrayList<>();
-        ArrayList<OwnedCryptoEntity> ownedCrypto = getDataToShow();
+    public ArrayList<CryptocurrencyEntity> filter(String searching){
+        ArrayList<CryptocurrencyEntity> ownedCryptoListToShow = new ArrayList<>();
 
         if(searching.length() == 0){
-            ownedCryptoListToShow = ownedCrypto;
+            ownedCryptoListToShow = ownedCryptoList;
         }else {
-            for (OwnedCryptoEntity toShow : ownedCrypto) {
+            for (CryptocurrencyEntity toShow : ownedCryptoList) {
                 if (toShow.longName.toLowerCase().contains(searching.toLowerCase()) || toShow.shortName.toLowerCase().contains(searching.toLowerCase())) {
                     ownedCryptoListToShow.add(toShow);
                 }

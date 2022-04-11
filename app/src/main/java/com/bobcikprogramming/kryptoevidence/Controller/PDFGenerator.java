@@ -417,7 +417,7 @@ public class PDFGenerator {
                 insertTotal(25f, moveRight, textWidth, textWidthText, buyTotalText, buyTotal);
             }
 
-            writeTextNewLineAtOffset(buyTotal, fontBold, 14, textWidthText + 5, 0);
+            //writeTextNewLineAtOffset(buyTotal, fontBold, 14, textWidthText + 5, 0);
         }else{
             // Pokud jsem přetekl
             // Přidat zápatí
@@ -625,7 +625,7 @@ public class PDFGenerator {
 
         contentStream.newLineAtOffset(cellWidthXPos + 5, 0);
         curXVal += cellWidthXPos + 5;
-        contentStream.showText("Příjem");
+        contentStream.showText("Cena");
 
         contentStream.newLineAtOffset(cellWidthXPos + 5, 0);
         curXVal += cellWidthXPos + 5;
@@ -663,7 +663,7 @@ public class PDFGenerator {
                 insertTotal(25f, moveRight, textWidth, textWidthText, sellTotalText, sellTotal);
             }
 
-            writeTextNewLineAtOffset(sellTotal, fontBold, 14, textWidthText + 5, 0);
+            //writeTextNewLineAtOffset(sellTotal, fontBold, 14, textWidthText + 5, 0);
         }else{
             // Pokud jsem přetekl
             // Přidat zápatí
@@ -903,7 +903,7 @@ public class PDFGenerator {
                 insertTotal(25f, moveRight, textWidth, textWidthText, changeTotalText, changeTotal);
             }
 
-            writeTextNewLineAtOffset(changeTotal, fontBold, 14, textWidthText + 5, 0);
+            //writeTextNewLineAtOffset(changeTotal, fontBold, 14, textWidthText + 5, 0);
         }else{
             // Pokud jsem přetekl
             // Přidat zápatí

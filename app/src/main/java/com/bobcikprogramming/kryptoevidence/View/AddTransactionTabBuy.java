@@ -34,6 +34,8 @@ import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
 import com.bobcikprogramming.kryptoevidence.R;
 
+import java.util.Date;
+
 public class AddTransactionTabBuy extends Fragment implements View.OnClickListener {
 
     private EditText etQuantity, etPrice, etFee;
@@ -47,7 +49,8 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     private DatePickerDialog.OnDateSetListener dateSetListener;
     private TimePickerDialog.OnTimeSetListener timeSetListener;
 
-    private String shortName, longName;
+    private String uidCrypto;
+    private String date, time;
 
     private TransactionOperationController controller;
     private SharedMethods shared;
@@ -68,8 +71,11 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         shared = new SharedMethods();
         calendar = new CalendarManager();
 
+
         setupUIViews();
         hideKeyBoardOnSpinnerTouch();
+        date = null;
+        time = null;
         openCalendar();
         openClock();
 
@@ -84,10 +90,10 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             case R.id.buttonSaveBuy:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    boolean saved = controller.saveTransactionBuy(shortName, longName, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
-                            calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPrice(etPrice, etFee));
+                    boolean saved = controller.saveTransactionBuy(uidCrypto, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
+                            calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPriceWithoutFee(etPrice, etFee));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(shortName, longName, shared.getBigDecimal(etQuantity), 0, null);
+                        controller.changeAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 0, null, null);
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
@@ -132,9 +138,8 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         imvBtnShowPhoto.setOnClickListener(this);
     }
 
-    public AddTransactionTabBuy(String shortName, String longName) {
-        this.shortName = shortName;
-        this.longName = longName;
+    public AddTransactionTabBuy(String uidCrypto) {
+        this.uidCrypto = uidCrypto;
     }
 
 
@@ -165,14 +170,15 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindow(getActivity(), dateSetListener, null);
+                calendar.openDateDialogWindow(getActivity(), dateSetListener, date);
             }
         });
 
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                tvDate.setText(calendar.returnDate(year, month, day));
+                date = calendar.returnDate(year, month, day);
+                tvDate.setText(date);
             }
         };
     }
@@ -181,14 +187,15 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openTimeDialogWindow(getActivity(), timeSetListener, null);
+                calendar.openTimeDialogWindow(getActivity(), timeSetListener, time);
             }
         });
 
         timeSetListener = new TimePickerDialog.OnTimeSetListener(){
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                tvTime.setText(calendar.returnTime(hour, minute));
+                time = calendar.returnTime(hour, minute);
+                tvTime.setText(time);
             }
         };
     }

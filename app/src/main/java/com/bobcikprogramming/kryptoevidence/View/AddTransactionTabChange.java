@@ -55,7 +55,8 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     private SharedMethods shared;
     private CalendarManager calendar;
 
-    private String shortNameCryptoBuy, longNameCryptoBuy, idCryptoBuy, shortNameCryptoSell, longNameCryptoSell;
+    private String uidCryptoBuy, uidCryptoSell;
+    private String date, time;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         calendar = new CalendarManager();
 
         setupUIViews();
+        date = null;
+        time = null;
         openCalendar();
         openClock();
 
@@ -87,11 +90,11 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             case R.id.buttonSaveChange:
                 shared.hideKeyBoard(getActivity());
                 if(!shakeEmpty() && calendar.checkDateAndTime(getContext(), tvDate, tvDesDate, tvTime, tvDesTime)){
-                    boolean saved = controller.saveTransactionChange(shortNameCryptoBuy, longNameCryptoBuy, shared.getString(spinnerCurrency),
+                    boolean saved = controller.saveTransactionChange(uidCryptoBuy, shared.getString(spinnerCurrency),
                             shared.getBigDecimal(etQuantityBuy), shared.getBigDecimal(etPriceBuy), shared.getFee(etFee), calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime),
-                            shortNameCryptoSell, longNameCryptoSell, shared.getBigDecimal(etQuantitySell));
+                            uidCryptoSell, shared.getBigDecimal(etQuantitySell));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(shortNameCryptoBuy, longNameCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, shared.getBigDecimal(etQuantitySell), shortNameCryptoSell, longNameCryptoSell);
+                        controller.changeAmountOfOwnedCrypto(uidCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, uidCryptoSell, shared.getBigDecimal(etQuantitySell));
                         clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
@@ -111,15 +114,13 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 break;
             case R.id.textViewNameChangeSell:
                 Intent intent = new Intent(getContext(), CryptoChangeSelection.class);
-                intent.putExtra("id", shortNameCryptoBuy);
+                intent.putExtra("id", uidCryptoBuy);
                 cryptoSelectionForSell.launch(intent);
         }
     }
 
-    public AddTransactionTabChange(String shortName, String longName, String idCryptoBuy) {
-        this.shortNameCryptoBuy = shortName;
-        this.longNameCryptoBuy = longName;
-        this.idCryptoBuy = idCryptoBuy;
+    public AddTransactionTabChange(String uidCryptoBuy) {
+        this.uidCryptoBuy = uidCryptoBuy;
     }
 
     private void setupUIViews(){
@@ -173,14 +174,15 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindow(getActivity(), dateSetListener, null);
+                calendar.openDateDialogWindow(getActivity(), dateSetListener, date);
             }
         });
 
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
-                tvDate.setText(calendar.returnDate(year, month, day));
+                date = calendar.returnDate(year, month, day);
+                tvDate.setText(date);
             }
         };
     }
@@ -189,14 +191,15 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openTimeDialogWindow(getActivity(), timeSetListener, null);
+                calendar.openTimeDialogWindow(getActivity(), timeSetListener, time);
             }
         });
 
         timeSetListener = new TimePickerDialog.OnTimeSetListener(){
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                tvTime.setText(calendar.returnTime(hour, minute));
+                time = calendar.returnTime(hour, minute);
+                tvTime.setText(time);
             }
         };
     }
@@ -252,12 +255,11 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     Intent data = result.getData();
-                    String onReturnShort = data.getStringExtra("shortName");
+                    String onReturnUid = data.getStringExtra("uidCrypto");
                     String onReturnLong = data.getStringExtra("longName");
-                    if(!onReturnShort.isEmpty()) {
-                        shortNameCryptoSell = onReturnShort;
-                        longNameCryptoSell = onReturnLong;
-                        tvNameSell.setText(longNameCryptoSell);
+                    if(!onReturnUid.isEmpty()) {
+                        uidCryptoSell = onReturnUid;
+                        tvNameSell.setText(onReturnLong);
                     }
                 }
             });

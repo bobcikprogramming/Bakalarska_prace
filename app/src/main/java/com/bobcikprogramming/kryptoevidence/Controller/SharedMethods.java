@@ -73,8 +73,8 @@ public class SharedMethods {
         return toEdit;
     }
 
-    public BigDecimal getPrice(EditText etPrice, EditText etFee) {
-        double toRound = editTextToDouble(etPrice) + editTextToDouble(etFee);
+    public BigDecimal getPriceWithoutFee(EditText etPrice, EditText etFee) {
+        double toRound = editTextToDouble(etPrice) - editTextToDouble(etFee);
         double result = (double)Math.round(toRound * 100d) / 100d;
         return BigDecimal.valueOf(result);
     }
@@ -142,14 +142,6 @@ public class SharedMethods {
          //   number = number.replaceAll("...(?!$)", "$0 ");
         //}
         return number;
-    }
-
-    public Double getTwoDecimalDouble(Double toEdit){
-        return Math.round(toEdit * 100.0) / 100.0;
-    }
-
-    public Double getTwoDecimalDouble(String toEdit){
-        return Math.round(Double.parseDouble(toEdit) * 100.0) / 100.0;
     }
 
     public BigDecimal getTwoDecimalBigDecimal(Double toEdit){

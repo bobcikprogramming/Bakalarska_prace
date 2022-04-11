@@ -25,4 +25,7 @@ public class CryptocurrencyEntity {
     @ColumnInfo(name = "favorite", defaultValue = "0")
     public int favorite;
 
+    @ColumnInfo(name = "amount")
+    public String amount;
+
 }

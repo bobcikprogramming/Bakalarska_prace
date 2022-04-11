@@ -1,9 +1,12 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
+import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
@@ -74,7 +77,8 @@ public class ViewPagerAdapterTransactionController {
         return data;
     }
 
-    public ArrayList<TransactionInfoList> getTransactionForBuyOrSell(){
+    public ArrayList<TransactionInfoList> getTransactionForBuyOrSell(Context context){
+        AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
 
         TransactionInfoList firstRow = new TransactionInfoList();
@@ -106,29 +110,37 @@ public class ViewPagerAdapterTransactionController {
 
 
         if(transaction.transactionType.equals("Nákup")){
+            CryptocurrencyEntity cryptoBuy = db.databaseDao().getCryptoById(transaction.uidBought);
+            String shortNameBought = cryptoBuy.shortName;
+            String longNameBought = cryptoBuy.longName;
+
             firstRow.setLeftDesc("Koupená měna");
-            firstRow.setLeftValue(transaction.longNameBought);
-            firstRow.setRightValue(transaction.shortNameBought);
+            firstRow.setLeftValue(longNameBought);
+            firstRow.setRightValue(shortNameBought);
 
             secondRow.setLeftDesc("Koupené množství");
             secondRow.setLeftValue(shared.getBigDecimal(transaction.quantityBought).toPlainString());
-            secondRow.setRightValue(transaction.shortNameBought);
+            secondRow.setRightValue(shortNameBought);
 
             thirdRow.setLeftDesc("Pořizovací cena");
             thirdRow.setRightDesc("Měna");
             thirdRow.setRightValue(transaction.currency);
             thirdRow.setLeftValue(shared.getBigDecimal(transaction.priceBought).toPlainString());
 
-            fifthRow.setLeftDesc("Poř. cena včetně poplatku");
+            fifthRow.setLeftDesc("Poř. cena bez poplatku");
             fifthRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
         }else{
+            CryptocurrencyEntity cryptoSell = db.databaseDao().getCryptoById(transaction.uidSold);
+            String shortNameSold = cryptoSell.shortName;
+            String longNameSold = cryptoSell.longName;
+
             firstRow.setLeftDesc("Prodaná měna");
-            firstRow.setLeftValue(transaction.longNameSold);
-            firstRow.setRightValue(transaction.shortNameSold);
+            firstRow.setLeftValue(longNameSold);
+            firstRow.setRightValue(shortNameSold);
 
             secondRow.setLeftDesc("Prodané množství");
             secondRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
-            secondRow.setRightValue(transaction.shortNameSold);
+            secondRow.setRightValue(shortNameSold);
 
             thirdRow.setLeftDesc("Prodejní cena");
             thirdRow.setRightDesc("Měna");
@@ -149,8 +161,18 @@ public class ViewPagerAdapterTransactionController {
         return transactionInfoList;
     }
 
-    public ArrayList<TransactionInfoList> getTransactionForChange(){
+    public ArrayList<TransactionInfoList> getTransactionForChange(Context context){
+        AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
+        TransactionEntity transaction = dataList.get(position).transaction;
+
+        CryptocurrencyEntity cryptoBuy = db.databaseDao().getCryptoById(transaction.uidBought);
+        String shortNameBought = cryptoBuy.shortName;
+        String longNameBought = cryptoBuy.longName;
+
+        CryptocurrencyEntity cryptoSell = db.databaseDao().getCryptoById(transaction.uidSold);
+        String shortNameSold = cryptoSell.shortName;
+        String longNameSold = cryptoSell.longName;
 
         TransactionInfoList firstRow = new TransactionInfoList();
         TransactionInfoList secondRow = new TransactionInfoList();
@@ -158,20 +180,17 @@ public class ViewPagerAdapterTransactionController {
         TransactionInfoList fourthRow = new TransactionInfoList();
         TransactionInfoList fifthRow = new TransactionInfoList();
         TransactionInfoList sixthRow = new TransactionInfoList();
-        //TransactionInfoList seventhRow = new TransactionInfoList();
         TransactionInfoList eighthRow = new TransactionInfoList();
-
-        TransactionEntity transaction = dataList.get(position).transaction;
 
         firstRow.setLeftDesc("Koupená měna");
         firstRow.setRightDesc("Zkratka");
-        firstRow.setLeftValue(transaction.longNameBought);
-        firstRow.setRightValue(transaction.shortNameBought);
+        firstRow.setLeftValue(longNameBought);
+        firstRow.setRightValue(shortNameBought);
 
         secondRow.setLeftDesc("Koupené množství");
         secondRow.setRightDesc("Měna");
         secondRow.setLeftValue(shared.getBigDecimal(transaction.quantityBought).toPlainString());
-        secondRow.setRightValue(transaction.shortNameBought);
+        secondRow.setRightValue(shortNameBought);
 
         thirdRow.setLeftDesc("Cena směny");
         thirdRow.setRightDesc("Měna");
@@ -180,13 +199,13 @@ public class ViewPagerAdapterTransactionController {
 
         fourthRow.setLeftDesc("Prodaná měna");
         fourthRow.setRightDesc("Zkratka");
-        fourthRow.setLeftValue(transaction.longNameSold);
-        fourthRow.setRightValue(transaction.shortNameSold);
+        fourthRow.setLeftValue(longNameSold);
+        fourthRow.setRightValue(shortNameSold);
 
         fifthRow.setLeftDesc("Prodané množství");
         fifthRow.setRightDesc("Měna");
         fifthRow.setLeftValue(shared.getBigDecimal(transaction.quantitySold).toPlainString());
-        fifthRow.setRightValue(transaction.shortNameSold);
+        fifthRow.setRightValue(shortNameSold);
 
         sixthRow.setLeftDesc("Poplatek");
         sixthRow.setRightDesc("Měna");
@@ -209,7 +228,7 @@ public class ViewPagerAdapterTransactionController {
         return transactionInfoList;
     }
 
-    public ArrayList<TransactionHistoryList> getHistoryList(LinearLayout historyUnderline, LinearLayout historyLayout, TextView historyHeadline){
+    public ArrayList<TransactionHistoryList> getHistoryList(LinearLayout historyUnderline, LinearLayout historyLayout, TextView historyHeadline, Context context){
         ArrayList<TransactionHistoryEntity> history = getHistoryForActualTransaction(position);
         ArrayList<TransactionHistoryList> historyOfActualTransaction = new ArrayList<>();
 
@@ -254,9 +273,10 @@ public class ViewPagerAdapterTransactionController {
                         transaction.setPriceBoughtDesc("Cena směny");
                         transaction.setPriceBoughtValue(String.valueOf(transactionHistory.priceBought));
                     }
-                    if(transactionHistory.longNameSold != null){
+                    if(transactionHistory.uidSold != null){
+                        String longNameSold = AppDatabase.getDbInstance(context).databaseDao().getCryptoById(transactionHistory.uidSold).longName;
                         transaction.setLongNameSoldDesc("Prodaná měna");
-                        transaction.setLongNameSoldValue(transactionHistory.longNameSold);
+                        transaction.setLongNameSoldValue(longNameSold);
                     }
                     if(transactionHistory.quantitySold != null){
                         transaction.setQuantitySoldDesc("Prodané množství");

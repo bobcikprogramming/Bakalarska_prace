@@ -5,11 +5,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,8 +47,8 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
 
         setupUIViews();
         searchOnChange();
-        hideKeyBoardOnRecyclerTouch();
 
+        System.out.println(">>>>>>>>>>>removing id: "+extras.getString("id"));
         adapter = new RecyclerViewSelection(this, controller.removeSelectedValue(extras.getString("id")), myClickListener);
         recyclerView.setAdapter(adapter);
     }
@@ -84,10 +88,10 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         layout.setOnClickListener(this);
     }
 
-    private void closeActivity(String longName, String shortName){
+    private void closeActivity(String longName, String uidCrypto){
         Intent intent = new Intent();
         intent.putExtra("longName", longName);
-        intent.putExtra("shortName", shortName);
+        intent.putExtra("uidCrypto", uidCrypto);
         setResult(RESULT_OK, intent );
         finish();
     }
@@ -120,17 +124,7 @@ public class CryptoChangeSelection extends AppCompatActivity implements View.OnC
         public void onClick(View view)
         {
             int position = (int) view.getTag();
-            closeActivity(controller.getCryptoList().get(position).longName, controller.getCryptoList().get(position).shortName);
+            closeActivity(controller.getCryptoList().get(position).longName, controller.getCryptoList().get(position).uid);
         }
     };
-
-    private void hideKeyBoardOnRecyclerTouch(){
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                shared.hideKeyBoard(CryptoChangeSelection.this);
-                return true;
-            }
-        });
-    }
 }

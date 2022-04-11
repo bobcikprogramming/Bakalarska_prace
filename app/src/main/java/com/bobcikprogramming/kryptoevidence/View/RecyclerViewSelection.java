@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.Controller.RecyclerViewSelectionList;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSelection.ViewHolder>{
 
