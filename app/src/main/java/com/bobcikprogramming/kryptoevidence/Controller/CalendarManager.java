@@ -44,6 +44,8 @@ public class CalendarManager {
                 activity, R.style.TimeDatePicker, dateSetListener, year, month, day
         );
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        long maxDate = System.currentTimeMillis(); /** https://stackoverflow.com/a/11430439 */
+        dialog.getDatePicker().setMaxDate(maxDate); /** https://stackoverflow.com/a/20971151 */
         dialog.show();
     }
 
@@ -216,6 +218,10 @@ public class CalendarManager {
 
     public long getActualDateMillis(){
         return getDateMillis(getActualDay());
+    }
+
+    public long getActualDateTimeMillis(){
+        return Long.parseLong(getActualDateFolderNameFormat());
     }
 
     public String getDateFromMillis(long millis){

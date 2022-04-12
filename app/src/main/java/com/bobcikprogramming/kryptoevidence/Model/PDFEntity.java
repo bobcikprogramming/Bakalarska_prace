@@ -10,7 +10,7 @@ public class PDFEntity {
 
     @PrimaryKey(autoGenerate = false)
     @NonNull
-    @ColumnInfo(name = "fila_name")
+    @ColumnInfo(name = "file_name")
     public String fileName;
 
     @ColumnInfo(name = "year")
@@ -21,4 +21,7 @@ public class PDFEntity {
 
     @ColumnInfo(name = "total")
     public String total;
+
+    @ColumnInfo(name = "created")
+    public long created;
 }

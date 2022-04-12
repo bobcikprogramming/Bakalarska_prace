@@ -142,4 +142,11 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/historyBackground"
+        android:orientation="vertical"
+        android:background="@color/historyBackground"/>
+
 </LinearLayout>

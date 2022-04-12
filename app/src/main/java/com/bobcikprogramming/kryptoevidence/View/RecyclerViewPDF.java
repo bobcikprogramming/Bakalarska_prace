@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,7 +81,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     public void openPDF(String fileName){
-        File file = new File(Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf", fileName);
+        File file = new File(getAppSpecificStorageDir(), fileName);
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             Intent target = new Intent(Intent.ACTION_VIEW);
             target.setDataAndType(Uri.fromFile(file), "application/pdf");
@@ -116,6 +117,16 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
         }
     }
 
+    @Nullable
+    File getAppSpecificStorageDir() {
+        File file = new File(context.getExternalFilesDir(
+                Environment.DIRECTORY_DOCUMENTS), "kryptoevidence_pdf");
+        if (file == null || !file.mkdirs()) {
+            System.err.println("Soubor nebyl vytvořen.");
+        }
+        return file;
+    }
+
     private void deletePDF(String fileName, int position){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -127,7 +138,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     private boolean deletePDFFile(String fileName){
-        String dirName = Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf";
+        File dirName = getAppSpecificStorageDir();
         File toDelete = new File(dirName, fileName);
         if(toDelete.exists()){
             if(toDelete.delete()){

@@ -228,7 +228,7 @@ public class ViewPagerAdapterTransactionController {
         return transactionInfoList;
     }
 
-    public ArrayList<TransactionHistoryList> getHistoryList(LinearLayout historyUnderline, LinearLayout historyLayout, TextView historyHeadline, Context context){
+    public ArrayList<TransactionHistoryList> getHistoryList(Context context){
         ArrayList<TransactionHistoryEntity> history = getHistoryForActualTransaction(position);
         ArrayList<TransactionHistoryList> historyOfActualTransaction = new ArrayList<>();
 
@@ -309,10 +309,6 @@ public class ViewPagerAdapterTransactionController {
             }
             historyOfActualTransaction = sortListByTime(historyOfActualTransaction);
             historyOfActualTransaction = sortListByDate(historyOfActualTransaction);
-        }else{
-            historyUnderline.setVisibility(View.GONE);
-            historyHeadline.setVisibility(View.GONE);
-            historyLayout.setVisibility(View.GONE);
         }
         return historyOfActualTransaction;
     }

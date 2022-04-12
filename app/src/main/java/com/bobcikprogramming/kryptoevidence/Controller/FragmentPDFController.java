@@ -389,6 +389,7 @@ public class FragmentPDFController {
         pdf.total = total.toPlainString();
         pdf.year = selectedYear;
         pdf.date = calendar.getActualDateMillis();
+        pdf.created = calendar.getActualDateTimeMillis();
 
         db.databaseDao().insertPDF(pdf);
 

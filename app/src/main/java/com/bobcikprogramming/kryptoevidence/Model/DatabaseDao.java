@@ -20,7 +20,7 @@ public interface DatabaseDao {
     List<ModeEntity> getType();
 
     @Transaction
-    @Query("SELECT * FROM PDFEntity ORDER BY fila_name DESC")
+    @Query("SELECT * FROM PDFEntity ORDER BY file_name DESC")
     List<PDFEntity> getPDF();
 
     @Transaction
@@ -140,7 +140,8 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> findIfExistBuyWithIdForUsedBuyChangeAllFrom(long date, String time, String uidBought, String lookingForID);
 
     @Transaction
-    @Query("SELECT * FROM (SELECT * FROM PDFEntity ORDER BY fila_name) GROUP BY year")
+    //@Query("SELECT * FROM (SELECT * FROM PDFEntity ORDER BY created DESC) GROUP BY year")
+    @Query("SELECT *, MAX(created) FROM PDFEntity GROUP BY year")
     List<PDFEntity> getLatestAnnualReport();
 
     @Transaction
@@ -276,7 +277,7 @@ public interface DatabaseDao {
     void deletePhotoById(String photoID);
 
     @Transaction
-    @Query("DELETE FROM PDFEntity WHERE fila_name = :fileName")
+    @Query("DELETE FROM PDFEntity WHERE file_name = :fileName")
     void deletePDFEntity(String fileName);
 
     @Transaction
