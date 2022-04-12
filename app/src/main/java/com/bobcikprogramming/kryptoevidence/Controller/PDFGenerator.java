@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Environment;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
@@ -102,7 +103,8 @@ public class PDFGenerator {
         File path;
         fileName = selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName);
+            //path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName);
+            path = getAppSpecificAlbumStorageDir();
         }else{
             String dirName = Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf";
             File directory = new File(dirName);
@@ -115,6 +117,18 @@ public class PDFGenerator {
         doc.save(path);
         doc.close();
         return true;
+    }
+
+    @Nullable
+    File getAppSpecificAlbumStorageDir() {
+        // Get the pictures directory that's inside the app-specific directory on
+        // external storage.
+        File file = new File(context.getExternalFilesDir(
+                Environment.DIRECTORY_DOCUMENTS), fileName);
+        if (file == null || !file.mkdirs()) {
+            System.err.println("Soubor nebyl vytvořen.");
+        }
+        return file;
     }
 
     private void writeTextNewLineAtOffset(String text, PDFont font, float fontSize, float tx, float ty ) throws IOException {
