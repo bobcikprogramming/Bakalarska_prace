@@ -54,8 +54,8 @@ public class FragmentPDFController {
         shared = new SharedMethods();
         selectedYear = "";
 
-        ActivityCompat.requestPermissions(activity, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+        /*ActivityCompat.requestPermissions(activity, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);*/
 
         loadDataFromDb();
     }

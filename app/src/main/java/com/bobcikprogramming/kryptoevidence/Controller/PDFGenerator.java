@@ -80,11 +80,11 @@ public class PDFGenerator {
         String requiredPermission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
         int checkVal = context.checkSelfPermission(requiredPermission);
 
-        if(checkVal != PackageManager.PERMISSION_GRANTED){
+        /*if(checkVal != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(activity, new String[]{
                     Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
             return false;
-        }
+        }*/
 
         loadFonts();
         createNewPage();
