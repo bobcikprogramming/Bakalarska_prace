@@ -104,7 +104,8 @@ public class PDFGenerator {
         fileName = selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             //path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName);
-            path = getAppSpecificAlbumStorageDir();
+            path = new File(getAppSpecificAlbumStorageDir(), fileName);
+            System.out.println(String.valueOf(getAppSpecificAlbumStorageDir()));
         }else{
             String dirName = Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf";
             File directory = new File(dirName);
@@ -124,7 +125,7 @@ public class PDFGenerator {
         // Get the pictures directory that's inside the app-specific directory on
         // external storage.
         File file = new File(context.getExternalFilesDir(
-                Environment.DIRECTORY_DOCUMENTS), fileName);
+                Environment.DIRECTORY_DOCUMENTS), "kryptoevidence_pdf");
         if (file == null || !file.mkdirs()) {
             System.err.println("Soubor nebyl vytvořen.");
         }
