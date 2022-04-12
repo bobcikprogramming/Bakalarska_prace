@@ -99,13 +99,19 @@ public class PDFGenerator {
         }
 
         contentStream.close();
-        String dirName = Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf";
-        File directory = new File(dirName);
-        if(!directory.exists()){
-            directory.mkdir();
-        }
+        File path;
         fileName = selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf";
-        File path = new File(dirName, fileName);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            path = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), fileName);
+        }else{
+            String dirName = Environment.getExternalStorageDirectory() + "/kryptoevidence_pdf";
+            File directory = new File(dirName);
+            if(!directory.exists()){
+                directory.mkdir();
+            }
+            path = new File(dirName, fileName);
+        }
+
         doc.save(path);
         doc.close();
         return true;
