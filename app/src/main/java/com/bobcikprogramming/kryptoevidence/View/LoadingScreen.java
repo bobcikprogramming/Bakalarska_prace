@@ -48,14 +48,12 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     private void loadingAction(){
         boolean isConnected = controller.checkInternetConnection();
         if(!isConnected){
-            controller.setNetworkRequest();
             if(controller.getVersionRate() == 0 ||controller.getVersionCrypto() == 0) {
                 tvUpdateInfo.setText("Pro dokončení instalace je vyžadováno připojení k internetu.");
             }else{
                 startActivityDelay();
             }
         }else{
-            System.out.println(">>>>>>>>>>>>>>>>jsem v else");
             showLoadingScreenDelay();
         }
     }
@@ -71,10 +69,8 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     private void showLoadingScreenDelay(){
-        System.out.println(">>>>>>>>>>>>>>>>jdu čekat");
         handler.postDelayed(new Runnable() {
             public void run() {
-                System.out.println(">>>>>>>>>>>>>>>>dočekal jsem");
                 startAsynctaskFirebase();
             }
         }, 2000);
@@ -110,20 +106,12 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        System.out.println("test");
-    }
-
-    @Override
     public void TaskCompletionResult(String result) {
         int versionCrypto = controller.getVersionCrypto();
         if(versionCrypto != 0){
-            System.out.println(">>>>>>>>>>>>>>>>startuju aktivity");
             startActivity();
         }else {
             if(!result.equals("api")) {
-                System.out.println(">>>>>>>>>>>>>>>>stahuju api");
                 startAsynctaskAPI();
             }else {
                 tvUpdateInfo.setText("Stahování dat se nezdařilo. Restartujte prosím aplikaci.");

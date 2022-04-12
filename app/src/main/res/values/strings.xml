@@ -34,28 +34,14 @@
         <item>USD</item>
     </string-array>
 
-    <string-array name="test">
-        <item>BTC</item>
-        <item>LINK</item>
-        <item>ADA</item>
-        <item>ETH</item>
-    </string-array>
-
-    <string-array name="transaction">
-        <item>Vše</item>
-        <item>Nákup</item>
-        <item>Prodej</item>
-        <item>Směna</item>
-    </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
     <string name="searchCrypto">Vyhledat kryptoměnu</string>
 
     <string name="transactionInfo">Výpis transakce</string>
     <string name="transactionEdit">Úprava</string>
 
-   <string name="apicredit">Data provided by CoinGecko</string>
+    <string name="apicredit">Data provided by CoinGecko</string>
+
+    <string name="desBtnClose">button close</string>
 
 </resources>
