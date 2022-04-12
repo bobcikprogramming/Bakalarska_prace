@@ -73,6 +73,10 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         openClock(controller.getTime());
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -101,11 +105,17 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity
+     */
     @Override
     public void onBackPressed() {
         closeActivity(false, photoChange, false);
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(boolean changed, boolean photoChange, boolean deleted){
         Intent intent = new Intent();
         intent.putExtra("changed", changed);
@@ -115,6 +125,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         btnCancel = findViewById(R.id.btnCancel);
         btnDelete = findViewById(R.id.btnDelete);
@@ -169,6 +182,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    /**
+     * Metoda pro nastavení prvků UI podle typu transakce
+     */
     private void setUIByTransactionType(){
         switch (controller.getTransactionType()){
             case "Nákup":
@@ -219,6 +235,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Metoda pro nastavení hodnoty UI prvků dle typu transakce
+     */
     private void setDataByTransactionType(){
         TransactionEntity transaction = controller.getTransactionEntity();
         switch (controller.getTransactionType()){
@@ -248,12 +267,23 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         valueTime.setText(transaction.time);
     }
 
+    /**
+     * Metoda pro získání adaptéru prvku spinner
+     * @param itemId UI pro položky spinneru
+     * @param layoutId UI pro layout spinneru
+     * @param dropDownId UI pro layout otevřeného spinneru
+     * @return Adaptér spinneru
+     */
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
         return spinnerAdapter;
     }
 
+    /**
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * @return true - vyplněna, jinak false
+     */
     private boolean shakeEmptyBuySell(){
         boolean findEmpty = false;
 
@@ -263,6 +293,10 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         return findEmpty;
     }
 
+    /**
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * @return true - vyplněna, jinak false
+     */
     private boolean shakeEmptyChange(){
         boolean findEmpty = false;
 
@@ -273,6 +307,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         return findEmpty;
     }
 
+    /**
+     * Metoda pro výběr data pomocí dialogového okna
+     */
     public void openCalendar(String date){
         valueDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,6 +326,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         };
     }
 
+    /**
+     * Metoda pro výběr času pomocí dialogového okna
+     */
     public void openClock(String time){
         valueTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,6 +345,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         };
     }
 
+    /**
+     * Metoda pro otevření dialogového okna k potvrzení uložení změn
+     */
     private void confirmDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialog);
         builder.setCancelable(true);
@@ -342,6 +385,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         dialog.show();
     }
 
+    /**
+     * Metoda pro otevření dialogového okna pro potvrzení smazání transakce
+     */
     private void confirmDialogDelete(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialog);
         builder.setCancelable(true);
@@ -367,6 +413,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         dialog.show();
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> openCryptoChangeSelection = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {
@@ -382,6 +431,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+    /**
+     * Metoda pro otevření nativní android galerii, neobsahuje-li transakce snímky, jinak k otevření activity TransactionEditPhotoViewer
+     */
     private void openGallery(){
         if(controller.getPhotos().isEmpty()){
             androidGallery.launch("image/*");
@@ -392,6 +444,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
         new ActivityResultContracts.GetContent(),
         new ActivityResultCallback<Uri>() {
@@ -403,6 +458,9 @@ public class TransactionEdit extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {

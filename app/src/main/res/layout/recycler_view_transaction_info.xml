@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -13,13 +14,12 @@
 
             <TextView
                 style="@style/TransactionInfoItemTextViewDescLeft"
-                android:id="@+id/infoDesLeft"
-                android:text="Typ transakce"/>
+                android:id="@+id/infoDesLeft"/>
 
             <TextView
-                style="@style/TransactionInfoItemTextViewValueLeft"
                 android:id="@+id/infoValueLeft"
-                android:text="Nákup"/>
+                style="@style/TransactionInfoItemTextViewValueLeft"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -29,13 +29,12 @@
 
             <TextView
                 style="@style/TransactionInfoItemTextViewDescRight"
-                android:id="@+id/infoDesRight"
-                android:text="Měna"/>
+                android:id="@+id/infoDesRight"/>
 
             <TextView
-                style="@style/TransactionInfoItemTextViewValueRight"
                 android:id="@+id/infoValueRight"
-                android:text="LINK"/>
+                style="@style/TransactionInfoItemTextViewValueRight"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
     </LinearLayout>

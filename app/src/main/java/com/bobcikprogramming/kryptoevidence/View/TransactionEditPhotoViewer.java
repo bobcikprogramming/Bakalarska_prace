@@ -1,16 +1,12 @@
 package com.bobcikprogramming.kryptoevidence.View;
 
 import android.app.AlertDialog;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -18,20 +14,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionEditPhotoViewerController;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.View.ViewPagerAdapter;
-import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.google.android.material.tabs.TabLayout;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransactionEditPhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,6 +40,9 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         tabLayout.setupWithViewPager(photoViewer, true);
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
 
@@ -70,6 +58,10 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         imgAdd.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -85,11 +77,17 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         }
     }
 
+    /**
+     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity
+     */
     @Override
     public void onBackPressed() {
         closeActivity();
     }
 
+    /**
+     * Metoda pro smazání snímku
+     */
     private void deletePhoto(){
         int position = photoViewer.getCurrentItem();
         confirmDialogDelete(position);
@@ -99,6 +97,10 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         }
     }
 
+    /**
+     * Metoda pro vytvoření dialogového okna k potvrzení smazání snímku
+     * @param position pozice snímku
+     */
     private void confirmDialogDelete(int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialog);
         builder.setCancelable(true);
@@ -124,6 +126,9 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         dialog.show();
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putExtra("photoChange", controller.isPhotoChange());
@@ -131,6 +136,9 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
         finish();
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
         new ActivityResultContracts.GetContent(),
         new ActivityResultCallback<Uri>() {

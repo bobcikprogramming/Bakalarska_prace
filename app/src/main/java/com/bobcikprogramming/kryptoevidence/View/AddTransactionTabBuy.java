@@ -34,8 +34,6 @@ import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
 import com.bobcikprogramming.kryptoevidence.R;
 
-import java.util.Date;
-
 public class AddTransactionTabBuy extends Fragment implements View.OnClickListener {
 
     private EditText etQuantity, etPrice, etFee;
@@ -84,6 +82,10 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         return view;
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -94,7 +96,6 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
                             calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPriceWithoutFee(etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 0, null, null);
-                        clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
                     }else{
@@ -114,6 +115,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         }
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         etQuantity = view.findViewById(R.id.editTextQuantityBuy);
         etPrice = view.findViewById(R.id.editTextPriceBuy);
@@ -142,15 +146,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         this.uidCrypto = uidCrypto;
     }
 
-
-    private void clearEditText(){
-        etQuantity.setText("");
-        etPrice.setText("");
-        etFee.setText("");
-        tvDate.setText("");
-        tvTime.setText("");
-    }
-
+    /**
+     * Metoda pro vykonání událostí při uzavření okna
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putExtra("close", true);
@@ -159,13 +157,30 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         getActivity().finish();
     }
 
-    /** https://stackoverflow.com/a/9768996*/
+    /**
+     * Metoda pro získání adaptéru prvku spinner
+     * @param itemId UI pro položky spinneru
+     * @param layoutId UI pro layout spinneru
+     * @param dropDownId UI pro layout otevřeného spinneru
+     * @return Adaptér spinneru
+     *
+     * Metoda inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/9768919
+     * Odpověď: https://stackoverflow.com/a/9768996
+     * Autor:   Deepak
+     * Autor:   https://stackoverflow.com/users/608024/deepak
+     * Datum:   19. března 2012
+     */
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
         return spinnerAdapter;
     }
 
+    /**
+     * Metoda pro výběr data pomocí dialogového okna
+     */
     private void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +198,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         };
     }
 
+    /**
+     * Metoda pro výběr času pomocí dialogového okna
+     */
     private void openClock(){
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +218,12 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         };
     }
 
-    /** https://developer.android.com/training/basics/intents/result */
+    /**
+     * Metoda zpracující návrat z aktivity
+     *
+     * Metoda inspirována z:
+     * https://developer.android.com/training/basics/intents/result
+     */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -216,6 +239,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
                 }
             });
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {
@@ -233,15 +259,19 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             }
         });
 
+    /**
+     * Metoda pro otevření PhotoViewer activity
+     */
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
-        if(controller.getPhotos() == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 2");
-        }
         photoViewer.putParcelableArrayListExtra("photos", controller.getPhotos());
         appGallery.launch(photoViewer);
     }
 
+    /**
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * @return true - vyplněna, jinak false
+     */
     private boolean shakeEmpty(){
         boolean findEmpty = false;
 
@@ -253,8 +283,9 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         return findEmpty;
     }
 
-
-
+    /**
+     * Metoda pro skrytí klávesnice při otevření spinneru
+     */
     private void hideKeyBoardOnSpinnerTouch(){
         spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -73,8 +73,8 @@ public class TransactionEditController {
             if (transaction.transactionType.equals("Nákup")) {
                 isBuy = true;
                 newTransaction.uidBought = transaction.uidBought;
-                newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
-                newTransaction.priceBought = shared.getStringFromBigDecimal(valueRowSecond);
+                newTransaction.quantityBought = shared.getString(valueRowFirst);
+                newTransaction.priceBought = shared.getString(valueRowSecond);
                 newTransaction.quantitySold = String.valueOf(shared.getPriceWithoutFee(valueRowSecond, valueFee));
 
                 operationType = 0;
@@ -98,8 +98,8 @@ public class TransactionEditController {
             }else {
                 isSell = true;
                 newTransaction.uidSold = transaction.uidSold;
-                newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFirst);
-                newTransaction.priceSold = shared.getStringFromBigDecimal(valueRowSecond);
+                newTransaction.quantitySold = shared.getString(valueRowFirst);
+                newTransaction.priceSold = shared.getString(valueRowSecond);
                 newTransaction.quantityBought = String.valueOf(shared.getProfit(valueRowSecond, valueFee));
 
                 operationType = 1;
@@ -154,11 +154,11 @@ public class TransactionEditController {
             newTransaction.uidTransaction = transaction.uidTransaction;
             newTransaction.transactionType = transaction.transactionType;
             newTransaction.uidBought = transaction.uidBought;
-            newTransaction.quantityBought = shared.getStringFromBigDecimal(valueRowFirst);
-            newTransaction.priceBought =  shared.getStringFromBigDecimal(valueRowSixth);
+            newTransaction.quantityBought = shared.getString(valueRowFirst);
+            newTransaction.priceBought =  shared.getString(valueRowSixth);
             newTransaction.currency =  shared.getString(spinnerRowSeventh);
             newTransaction.uidSold = uidSell == null ? transaction.uidSold : uidSell;
-            newTransaction.quantitySold = shared.getStringFromBigDecimal(valueRowFifth);
+            newTransaction.quantitySold = shared.getString(valueRowFifth);
             newTransaction.fee = shared.getFee(valueFee);
             newTransaction.date = calendar.getDateMillis(shared.getString(valueDate));
             newTransaction.time = shared.getString(valueTime);

@@ -75,13 +75,34 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
         });
     }
 
+    /**
+     * Metoda pro inicializaci pole PDF záznamů a aktualizování recyclerview
+     * @param dataList Pole PDF záznamů
+     */
     public void setDataList(List<PDFEntity> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
 
+    /**
+     * Metoda pro výběr aplikace k otevření PDF souboru
+     * @param fileName název PDF souboru
+     *
+     * Metoda pro udělení oprávnění k přístupu k souboru pro aplikace ke čtení souboru:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/57689792
+     * Odpověď: https://stackoverflow.com/a/59439316
+     * Autor:   Iakovos Gu
+     * Autor:   https://stackoverflow.com/users/808354/iakovos-gu
+     * Datum:   21. prosince 2019
+     */
     public void openPDF(String fileName){
-        File file = new File(getAppSpecificStorageDir(), fileName);
+        File dirName = getAppSpecificStorageDir();
+        if(dirName == null){
+            Toast.makeText(context, "Chybná cesta k PDF záznamu.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        File file = new File(dirName, fileName);
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             Intent target = new Intent(Intent.ACTION_VIEW);
             target.setDataAndType(Uri.fromFile(file), "application/pdf");
@@ -100,7 +121,6 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
             intent.setDataAndType(path, "application/pdf");
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-            /** https://stackoverflow.com/a/59439316 */
             List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
             for (ResolveInfo resolveInfo : resInfoList) {
@@ -117,16 +137,26 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
         }
     }
 
+    /**
+     * Metoda pro získání cesty do sloužky s PDF soubory
+     * @return Cestu do složky pokud existuje, jinak null
+     */
     @Nullable
     File getAppSpecificStorageDir() {
         File file = new File(context.getExternalFilesDir(
                 Environment.DIRECTORY_DOCUMENTS), "kryptoevidence_pdf");
         if (file == null || !file.mkdirs()) {
             System.err.println("Soubor nebyl vytvořen.");
+            return null;
         }
         return file;
     }
 
+    /**
+     * Metoda pro smazání PDF souboru z databáze a recyclerview
+     * @param fileName Název PDF souboru
+     * @param position Pozice v recyclerview
+     */
     private void deletePDF(String fileName, int position){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -137,8 +167,17 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
         }
     }
 
+    /**
+     * Metoda pro smazání PDF souboru ze složky
+     * @param fileName Název PDF souboru
+     * @return boolean hodnotu o úspěchu operace
+     */
     private boolean deletePDFFile(String fileName){
         File dirName = getAppSpecificStorageDir();
+        if(dirName == null){
+            Toast.makeText(context, "PDF záznam úspěšně smazán.", Toast.LENGTH_SHORT).show();
+            return true;
+        }
         File toDelete = new File(dirName, fileName);
         if(toDelete.exists()){
             if(toDelete.delete()){
@@ -153,6 +192,11 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
         return true;
     }
 
+    /**
+     * Metoda dialogováho okna pro potvrzení smazání PDF záznamu
+     * @param fileName Název PDF záznamu
+     * @param position Pozice v recyclerview
+     */
     private void confirmDialogDelete(String fileName, int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.YearPicker);
         builder.setCancelable(true);

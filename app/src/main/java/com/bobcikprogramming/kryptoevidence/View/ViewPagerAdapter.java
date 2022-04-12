@@ -26,17 +26,11 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     public ViewPagerAdapter(Context context, ArrayList<Uri> photos) {
         this.photos = photos;
-        if(photos == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 5");
-        }
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        if(photos == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 6");
-        }
         return photos.size();
     }
 
@@ -80,7 +74,15 @@ public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageCh
 
     }
 
-    /** https://stackoverflow.com/a/48081760 */
+    /**
+     * Metoda inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/48080275
+     * Odpověď: https://stackoverflow.com/a/48081760
+     * Autor:   jayeshsolanki93
+     * Autor:   https://stackoverflow.com/users/2686502/jayeshsolanki93
+     * Datum:   3. ledna 2018
+     */
     public int getItemPosition(Object object) {
         return POSITION_NONE;
     }

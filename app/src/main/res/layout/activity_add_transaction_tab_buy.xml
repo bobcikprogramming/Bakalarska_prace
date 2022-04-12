@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/fragmentBackgroundBuy"
             android:orientation="vertical"
             android:paddingTop="10dp">
@@ -33,11 +33,13 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionQuantityBuy"
-                        android:text="Koupené množství"/>
+                        android:text="@string/firstRowBuy"/>
 
                     <EditText
+                        android:id="@+id/editTextQuantityBuy"
                         style="@style/AddTransactionItemEditText"
-                        android:id="@+id/editTextQuantityBuy" />
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:importantForAutofill="no" />
 
                 </LinearLayout>
 
@@ -50,11 +52,13 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionPriceBuy"
-                        android:text="@string/priceBuy"/>
+                        android:text="@string/secondRowBuy"/>
 
                     <EditText
+                        android:id="@+id/editTextPriceBuy"
                         style="@style/AddTransactionItemEditText"
-                        android:id="@+id/editTextPriceBuy" />
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:importantForAutofill="no" />
 
                 </LinearLayout>
 
@@ -67,11 +71,12 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionCurrencyBuy"
-                        android:text="Cena v měně"/>
+                        android:text="@string/thirdRowBuy"/>
 
                     <Spinner
+                        android:id="@+id/spinnerCurrencyBuy"
                         style="@style/AddTransactionItemSpinner"
-                        android:id="@+id/spinnerCurrencyBuy"/>
+                        tools:ignore="SpeakableTextPresentCheck" />
 
                 </LinearLayout>
 
@@ -84,11 +89,13 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionFeeBuy"
-                        android:text="Poplatek"/>
+                        android:text="@string/fourthRowBuy"/>
 
                     <EditText
+                        android:id="@+id/editTextFeeBuy"
                         style="@style/AddTransactionItemEditText"
-                        android:id="@+id/editTextFeeBuy" />
+                        tools:ignore="SpeakableTextPresentCheck"
+                        android:importantForAutofill="no" />
 
                 </LinearLayout>
 
@@ -101,7 +108,7 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionDateBuy"
-                        android:text="Datum provedení"/>
+                        android:text="@string/fifthRowBuy"/>
 
                     <TextView
                         style="@style/AddTransactionItemTextView"
@@ -118,7 +125,7 @@
                     <TextView
                         style="@style/AddTransactionItemDescriptionTextView"
                         android:id="@+id/descriptionTimeBuy"
-                        android:text="Čas provedení"/>
+                        android:text="@string/sixthRowBuy"/>
 
                     <TextView
                         style="@style/AddTransactionItemTextView"
@@ -141,11 +148,13 @@
                         style="@style/AddTransactionEntryFields">
                         <ImageView
                             style="@style/AddTransactionImageViewPhotoSelected"
-                            android:id="@+id/imvButtonShowPhotoBuy"/>
+                            android:id="@+id/imvButtonShowPhotoBuy"
+                            android:contentDescription="@string/photos" />
 
                         <ImageView
                             style="@style/AddTransactionImageViewPhoto"
-                            android:id="@+id/imgButtonAddPhotoBuy"/>
+                            android:id="@+id/imgButtonAddPhotoBuy"
+                            android:contentDescription="@string/newPhoto"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -163,7 +172,7 @@
                     android:id="@+id/buttonSaveBuy"
                     style="@style/AddTransactionButton"
                     android:layout_marginBottom="24dp"
-                    android:text="Uložit"
+                    android:text="@string/btnSave"
                     app:backgroundTint="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -30,13 +30,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
-import com.bobcikprogramming.kryptoevidence.Controller.ImageManager;
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
-import com.bobcikprogramming.kryptoevidence.Model.TransactionOperationModel;
 import com.bobcikprogramming.kryptoevidence.R;
-
-import java.util.ArrayList;
 
 public class AddTransactionTabChange extends Fragment implements View.OnClickListener {
 
@@ -84,6 +80,10 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         return view;
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -95,7 +95,6 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                             uidCryptoSell, shared.getBigDecimal(etQuantitySell));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(uidCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, uidCryptoSell, shared.getBigDecimal(etQuantitySell));
-                        clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
                     }else{
@@ -123,6 +122,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         this.uidCryptoBuy = uidCryptoBuy;
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         etQuantityBuy = view.findViewById(R.id.editTextQuantityChangeBuy);
         etQuantitySell = view.findViewById(R.id.editTextQuantityChangeSell);
@@ -153,15 +155,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         tvNameSell.setOnClickListener(this);
     }
 
-    private void clearEditText(){
-        etQuantityBuy.setText("");
-        etQuantitySell.setText("");
-        etPriceBuy.setText("");
-        etFee.setText("");
-        tvDate.setText("");
-        tvTime.setText("");
-    }
-
+    /**
+     * Metoda pro vykonání událostí při uzavření okna
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putExtra("close", true);
@@ -170,6 +166,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         getActivity().finish();
     }
 
+    /**
+     * Metoda pro výběr data pomocí dialogového okna
+     */
     private void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +186,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         };
     }
 
+    /**
+     * Metoda pro výběr času pomocí dialogového okna
+     */
     private void openClock(){
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,13 +206,22 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
         };
     }
 
+    /**
+     * Metoda pro získání adaptéru prvku spinner
+     * @param itemId UI pro položky spinneru
+     * @param layoutId UI pro layout spinneru
+     * @param dropDownId UI pro layout otevřeného spinneru
+     * @return Adaptér spinneru
+     */
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
         return spinnerAdapter;
     }
 
-    // https://developer.android.com/training/basics/intents/result
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -226,6 +237,9 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 }
             });
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -243,12 +257,18 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 }
             });
 
+    /**
+     * Metoda pro otevření PhotoViewer activity
+     */
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
         photoViewer.putParcelableArrayListExtra("photos", controller.getPhotos());
         appGallery.launch(photoViewer);
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> cryptoSelectionForSell = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -264,6 +284,10 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                 }
             });
 
+    /**
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * @return true - vyplněna, jinak false
+     */
     private boolean shakeEmpty(){
         boolean findEmpty = false;
 

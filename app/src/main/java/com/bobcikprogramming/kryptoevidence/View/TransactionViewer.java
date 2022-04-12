@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bobcikprogramming.kryptoevidence.Controller.MainActivity;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionViewerController;
 import com.bobcikprogramming.kryptoevidence.R;
 
@@ -39,6 +38,10 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
         closeActivity();
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -53,6 +56,9 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
         }
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         transactionViewer = findViewById(R.id.viewPagerTransaction);
         btnBack = findViewById(R.id.btnBack);
@@ -62,6 +68,9 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
         btnEdit.setOnClickListener(this);
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putExtra("changed", controller.isChanged());
@@ -69,6 +78,9 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
         finish();
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> infoActivityTransactionEditLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {

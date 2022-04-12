@@ -74,7 +74,6 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
 
         adapter = new RecyclerViewTransactions((getActivity()), myClickListener);
         recyclerView.setAdapter(adapter);
-        //controller.loadDataFromDb(getContext(), adapter, calendarDateFrom, calendarDateTo);
         return view;
     }
 
@@ -82,9 +81,13 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
         controller.loadDataFromDb(getContext(), adapter, calendarDateFrom, calendarDateTo);
-        ((MainActivity)getActivity()).selectBottomMenu(R.id.transactions); //change value depending on your bottom menu position
+        ((MainActivity)getActivity()).selectBottomMenu(R.id.transactions);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -110,6 +113,9 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         }
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         recyclerView = view.findViewById(R.id.recyclerViewTransaction);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
@@ -131,6 +137,15 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         layoutFilter = view.findViewById(R.id.layoutFilter);
     }
 
+    /**
+     * Metoda pro nastavení viditelnosti layoutu s filtrem
+     * @param animLayout ID animace pro layout
+     * @param animTextview ID animace pro text view
+     * @param filterIcon ID icony filtru
+     * @param resetVisibility Nastavení viditelnosti
+     * @param layoutVisibility Nastavení viditelnosti
+     * @param textviewVisibility Nastavení viditelnosti
+     */
     private void setFilter(int animLayout, int animTextview, int filterIcon, int resetVisibility, int layoutVisibility, int textviewVisibility){
         Animation layout = AnimationUtils.loadAnimation(getContext(), animLayout);
         Animation textview = AnimationUtils.loadAnimation(getContext(), animTextview);
@@ -147,6 +162,9 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         resetFilterValues();
     }
 
+    /**
+     * Metoda pro restartování hodnoty filtru
+     */
     private void resetFilterValues(){
         calendarDateTo = Calendar.getInstance();
         calendarDateFrom = Calendar.getInstance();
@@ -160,7 +178,9 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         tvDateTo.setTextColor(ContextCompat.getColor(getContext(), R.color.button));
     }
 
-    // https://stackoverflow.com/a/45711180
+    /**
+     * Metoda slouží k předání pozice vybrané transakce z recyclerview do activity, jenž inicializovala aktuální activity
+     */
     private View.OnClickListener myClickListener = new View.OnClickListener()
     {
         @Override
@@ -173,6 +193,9 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         }
     };
 
+    /**
+     * Metoda pro otevření dialogového okna pro výběr data "OD"
+     */
     public void openCalendarForDateFrom(){
         tvDateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +219,9 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         };
     }
 
+    /**
+     * Metoda pro otevření dialogového okna pro výběr data "DO"
+     */
     public void openCalendarForDateTo(){
         tvDateTo.setOnClickListener(new View.OnClickListener() {
             @Override

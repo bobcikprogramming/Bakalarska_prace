@@ -14,7 +14,7 @@
 
         <TextView
             style="@style/HeadlineTextView"
-            android:text="Výběr kryptoměny" />
+            android:text="@string/cryptoSelectionHeadline" />
 
         <ImageView
             android:layout_width="40dp"
@@ -23,7 +23,8 @@
             android:baselineAligned="false"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_close"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:contentDescription="@string/desBtnClose"/>
 
     </LinearLayout>
 
@@ -40,11 +41,13 @@
 
             <EditText
                 style="@style/SearchEditText"
-                android:id="@+id/etSearch"/>
+                android:id="@+id/etSearch"
+                android:importantForAutofill="no"/>
 
             <ImageView
                 style="@style/SearchImageViewRight"
-                android:id="@+id/imgBtnDelete"/>
+                android:id="@+id/imgBtnDelete"
+                android:contentDescription="@string/desBtnDelete"/>
         </LinearLayout>
 
     </LinearLayout>

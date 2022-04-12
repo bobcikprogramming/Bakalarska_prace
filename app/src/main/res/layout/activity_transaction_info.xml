@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TransactionInfo"
+    tools:context=".View.TransactionViewer"
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="80dp"
             android:layout_weight="1"
             android:paddingTop="30dp"
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/infoOperationType"
                 android:paddingStart="70dp"
-                android:text="Nákup"
+                android:paddingEnd="0dp"
                 android:textColor="@color/white"
                 android:textSize="23sp"
                 android:gravity="center" />
@@ -96,7 +96,8 @@
                         <ImageView
                             style="@style/AddTransactionImageViewPhotoSelected"
                             android:id="@+id/imvButtonShowPhotos"
-                            android:visibility="visible"/>
+                            android:visibility="visible"
+                            android:contentDescription="@string/photos"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -124,7 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/historyHeadline"
-                    android:text="Historie úprav"
+                    android:text="@string/historyHeadline"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@color/historyHeadlineTextColor"/>

@@ -35,9 +35,6 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
 
         setupUIViews();
 
-        if(getIntent().getParcelableArrayListExtra("photos") == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 3");
-        }
         controller = new PhotoViewerController(getIntent().getParcelableArrayListExtra("photos"), photoViewer, this);
 
         controller.setViewPagerAdapter();
@@ -45,6 +42,9 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         tabLayout.setupWithViewPager(photoViewer, true);
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
 
@@ -57,6 +57,10 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         imgDelete.setOnClickListener(this);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -72,6 +76,9 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra("photos", controller.getPhotos());

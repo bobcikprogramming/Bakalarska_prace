@@ -82,6 +82,10 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         return view;
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -92,7 +96,6 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
                             calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getProfit(etPrice, etFee));
                     if(saved){
                         controller.changeAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 1, null, null);
-                        clearEditText();
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
                     }else{
@@ -112,6 +115,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         }
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         etQuantity = view.findViewById(R.id.editTextQuantitySell);
         etPrice = view.findViewById(R.id.editTextPriceSell);
@@ -141,14 +147,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         this.uidCrypto = uidCrypto;
     }
 
-    private void clearEditText(){
-        etQuantity.setText("");
-        etPrice.setText("");
-        etFee.setText("");
-        tvDate.setText("");
-        tvTime.setText("");
-    }
-
+    /**
+     * Metoda pro vykonání událostí při uzavření okna
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         intent.putExtra("close", true);
@@ -157,12 +158,22 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         getActivity().finish();
     }
 
+    /**
+     * Metoda pro získání adaptéru prvku spinner
+     * @param itemId UI pro položky spinneru
+     * @param layoutId UI pro layout spinneru
+     * @param dropDownId UI pro layout otevřeného spinneru
+     * @return Adaptér spinneru
+     */
     private ArrayAdapter<CharSequence> getSpinnerAdapter(int itemId, int layoutId, int dropDownId){
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(), itemId, layoutId);
         spinnerAdapter.setDropDownViewResource(dropDownId);
         return spinnerAdapter;
     }
 
+    /**
+     * Metoda pro výběr data pomocí dialogového okna
+     */
     private void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +191,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         };
     }
 
+    /**
+     * Metoda pro výběr času pomocí dialogového okna
+     */
     private void openClock(){
         tvTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +211,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         };
     }
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
         new ActivityResultContracts.GetContent(),
         new ActivityResultCallback<Uri>() {
@@ -212,6 +229,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             }
         });
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
         new ActivityResultCallback<ActivityResult>() {
@@ -229,12 +249,19 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
             }
         });
 
+    /**
+     * Metoda pro otevření PhotoViewer activity
+     */
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
         photoViewer.putParcelableArrayListExtra("photos",controller.getPhotos());
         appGallery.launch(photoViewer);
     }
 
+    /**
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * @return true - vyplněna, jinak false
+     */
     private boolean shakeEmpty(){
         boolean findEmpty = false;
 
@@ -246,6 +273,9 @@ public class AddTransactionTabSell extends Fragment implements View.OnClickListe
         return findEmpty;
     }
 
+    /**
+     * Metoda pro skrytí klávesnice při otevření spinneru
+     */
     private void hideKeyBoardOnSpinnerTouch(){
         spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {
             @Override

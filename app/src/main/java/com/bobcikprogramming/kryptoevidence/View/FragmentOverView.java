@@ -1,6 +1,5 @@
 package com.bobcikprogramming.kryptoevidence.View;
 
-import android.content.res.Resources;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
@@ -17,7 +16,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -74,7 +72,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         shared = new SharedMethods();
 
         setupUIViews();
-        setModeofGUI();
+        setModeOfGUI();
 
         searchOnChange();
         adapter = new RecyclerViewOwnedCrypto(getContext(), controller.filter(""));
@@ -87,6 +85,9 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         imgBtnModeLight = view.findViewById(R.id.imgBtnModeLight);
         imgBtnModeDark = view.findViewById(R.id.imgBtnModeDark);
@@ -127,12 +128,24 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         etSearch = view.findViewById(R.id.etSearch);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     *
+     * Metoda pro kontrolu verze SDK:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/3423754
+     * Odpověď: https://stackoverflow.com/a/3940823
+     * Autor:   ol_v_er
+     * Autor:   https://stackoverflow.com/users/384483/ol-v-er
+     * Datum:   15. října 2010
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.imgBtnModeLight:
                 controller.writeToFile("light");
-                setModeofGUI();
+                setModeOfGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_selected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_unselected);
@@ -140,7 +153,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                 break;
             case R.id.imgBtnModeDark:
                 controller.writeToFile("dark");
-                setModeofGUI();
+                setModeOfGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_selected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_unselected);
@@ -148,7 +161,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                 break;
             case R.id.imgBtnModeBySystem:
                 controller.writeToFile("system");
-                setModeofGUI();
+                setModeOfGUI();
                 imgBtnModeLight.setImageResource(R.drawable.ic_light_mode_unselected);
                 imgBtnModeDark.setImageResource(R.drawable.ic_dark_mode_unselected);
                 imgBtnModeBySystem.setImageResource(R.drawable.ic_system_selected);
@@ -212,7 +225,10 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void setModeofGUI(){
+    /**
+     * Metoda pro změnu barevného módu aplikace
+     */
+    private void setModeOfGUI(){
         String modeType = controller.readFromFile();
 
         if(modeType.equals("dark")){
@@ -238,11 +254,21 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Metoda pro výpis zisku/ztárty za daňová období
+     *
+     * Metoda pro změnu velikosti textu:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/6998938
+     * Odpověď: https://stackoverflow.com/a/6999195
+     * Autor:   Vikas
+     * Autor:   https://stackoverflow.com/users/1392727/vikas
+     * Datum:   9. září 2015
+     */
     private void showAnnualReport(){
         List<PDFEntity> listAnnualReport = controller.showAnnualReport();
         if(listAnnualReport == null || listAnnualReport.isEmpty()){
             tvCurrency.setVisibility(View.GONE);
-            /** https://stackoverflow.com/a/6999195 */
             tvAnnualReport.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
             tvAnnualReport.setText("Roční výpis nenalezen");
 
@@ -282,6 +308,9 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Metoda k aktualizování pole vlastněných kryptoměn na základě fráze v edit textu
+     */
     private void searchOnChange(){
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -303,7 +332,17 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
         });
     }
 
-    /** https://stackoverflow.com/a/26964010 */
+    /**
+     * Metoda pro skrytí/zobrazení overviewLayout při vysunutí/zasunutí klávesnice
+     *
+     * Metoda převzata z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/4745988
+     * Odpověď: https://stackoverflow.com/a/26964010
+     * Autor:   Brownsoo Han
+     * Autor:   https://stackoverflow.com/users/2746582/brownsoo-han
+     * Datum:   17. listopadu 2014
+     */
     private void onKeyboardVisibility(){
         overviewLayout.getViewTreeObserver().addOnGlobalLayoutListener(
             new ViewTreeObserver.OnGlobalLayoutListener() {

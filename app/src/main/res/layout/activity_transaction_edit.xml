@@ -16,7 +16,9 @@
             android:id="@+id/btnCancel"
             style="@style/NavBarIcon"
             android:paddingStart="12dp"
-            android:src="@drawable/ic_close"/>
+            android:paddingEnd="0dp"
+            android:src="@drawable/ic_close"
+            android:contentDescription="@string/desBtnClose"/>
 
         <TextView
             style="@style/NavBarHeadline"
@@ -25,13 +27,16 @@
         <ImageView
             android:id="@+id/btnDelete"
             style="@style/NavBarIcon"
-            android:src="@drawable/ic_delete"/>
+            android:src="@drawable/ic_delete"
+            android:contentDescription="@string/desBtnDelete"/>
 
         <ImageView
             android:id="@+id/btnSave"
             style="@style/NavBarIcon"
             android:paddingEnd="12dp"
-            android:src="@drawable/ic_save"/>
+            android:paddingStart="0dp"
+            android:src="@drawable/ic_save"
+            android:contentDescription="@string/desBtnSave"/>
 
     </LinearLayout>
 
@@ -44,254 +49,262 @@
         <LinearLayout
             android:id="@+id/fragmentBackgroundEdit"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowFirst"
-                        android:text="Koupené množství"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/valueRowFirst"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowSecond"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowSecond"
-                        android:text="Cena za kus"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/valueRowSecond"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowSecond"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowThird"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowThird"
-                        android:text="Cena v měně" />
-
-                    <Spinner
-                        style="@style/AddTransactionItemSpinner"
-                        android:id="@+id/spinnerRowThird"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowThird"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowFourth"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowFourth"
-                        android:text="Prodej kryptoměny" />
-
-                    <TextView
-                        style="@style/AddTransactionItemTextView"
-                        android:id="@+id/valueRowFourth"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowFourth"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowFifth"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowFifth"
-                        android:text="Prodané množství"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/valueRowFifth"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowFifth"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowSixth"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowSixth"
-                        android:text="Cena za kus"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/valueRowSixth"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowSixth"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout"
-                    android:id="@+id/layoutRowSeventh"
-                    android:visibility="visible">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descRowSeventh"
-                        android:text="Cena v měně" />
-
-                    <Spinner
-                        style="@style/AddTransactionItemSpinner"
-                        android:id="@+id/spinnerRowSeventh"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"
-                    android:id="@+id/underlineRowSeventh"
-                    android:visibility="visible"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:text="Poplatek"/>
-
-                    <EditText
-                        style="@style/AddTransactionItemEditText"
-                        android:id="@+id/valueFee"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descDate"
-                        android:text="Datum provedení" />
-
-                    <TextView
-                        style="@style/AddTransactionItemTextView"
-                        android:id="@+id/valueDate"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayout">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:id="@+id/descTime"
-                        android:text="Čas provedení"/>
-
-                    <TextView
-                        style="@style/AddTransactionItemTextView"
-                        android:id="@+id/valueTime"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/AddTransactionUnderline"/>
-
-                <LinearLayout
-                    style="@style/AddTransactionItemLinearLayoutForImageView">
-
-                    <TextView
-                        style="@style/AddTransactionItemDescriptionTextView"
-                        android:text="@string/newPhoto"/>
-
-                    <LinearLayout
-                        style="@style/AddTransactionEntryFields">
-
-                        <ImageView
-                            style="@style/AddTransactionImageViewPhoto"
-                            android:id="@+id/imgButtonAddPhoto"/>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/MyStrongUnderline"/>
-
+                style="@style/AddTransactionItemLinearLayout">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Poznámka k úpravě"
-                    android:textColor="@color/textViewDescriptionTextColor"
-                    android:textSize="15sp"/>
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowFirst"
+                    android:text="@string/firstRowEdit"/>
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="50dp"
-                    android:id="@+id/valueNote"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:background="@null"
-                    android:textCursorDrawable="@drawable/cursor"
-                    android:inputType="textMultiLine"
-                    android:textColor="@color/editTextAddTransactionTextColor"
-                    android:textSize="20sp"/>
-
+                    android:id="@+id/valueRowFirst"
+                    style="@style/AddTransactionItemEditText"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowSecond"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowSecond"
+                    android:text="@string/secondRowEdit"/>
+
+                <EditText
+                    android:id="@+id/valueRowSecond"
+                    style="@style/AddTransactionItemEditText"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowSecond"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowThird"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowThird"
+                    android:text="@string/thirdRowEdit"/>
+
+                <Spinner
+                    android:id="@+id/spinnerRowThird"
+                    style="@style/AddTransactionItemSpinner"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowThird"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowFourth"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowFourth"
+                    android:text="@string/fourthRowEdit" />
+
+                <TextView
+                    style="@style/AddTransactionItemTextView"
+                    android:id="@+id/valueRowFourth"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowFourth"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowFifth"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowFifth"
+                    android:text="@string/fifthRowEdit"/>
+
+                <EditText
+                    android:id="@+id/valueRowFifth"
+                    style="@style/AddTransactionItemEditText"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowFifth"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowSixth"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowSixth"
+                    android:text="@string/sixthRowEdit"/>
+
+                <EditText
+                    android:id="@+id/valueRowSixth"
+                    style="@style/AddTransactionItemEditText"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowSixth"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout"
+                android:id="@+id/layoutRowSeventh"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descRowSeventh"
+                    android:text="@string/seventhRowEdit" />
+
+                <Spinner
+                    android:id="@+id/spinnerRowSeventh"
+                    style="@style/AddTransactionItemSpinner"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"
+                android:id="@+id/underlineRowSeventh"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:text="@string/eighthRowEdit"/>
+
+                <EditText
+                    android:id="@+id/valueFee"
+                    style="@style/AddTransactionItemEditText"
+                    android:importantForAutofill="no"
+                    tools:ignore="SpeakableTextPresentCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descDate"
+                    android:text="@string/ninthRowEdit" />
+
+                <TextView
+                    style="@style/AddTransactionItemTextView"
+                    android:id="@+id/valueDate"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayout">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:id="@+id/descTime"
+                    android:text="@string/tenthRowEdit"/>
+
+                <TextView
+                    style="@style/AddTransactionItemTextView"
+                    android:id="@+id/valueTime"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/AddTransactionUnderline"/>
+
+            <LinearLayout
+                style="@style/AddTransactionItemLinearLayoutForImageView">
+
+                <TextView
+                    style="@style/AddTransactionItemDescriptionTextView"
+                    android:text="@string/newPhoto"/>
+
+                <LinearLayout
+                    style="@style/AddTransactionEntryFields">
+
+                    <ImageView
+                        style="@style/AddTransactionImageViewPhoto"
+                        android:id="@+id/imgButtonAddPhoto"
+                        android:contentDescription="@string/newPhoto"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/MyStrongUnderline"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/eleventhRowEdit"
+                android:textColor="@color/textViewDescriptionTextColor"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/valueNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:minHeight="50dp"
+                android:textColor="@color/editTextAddTransactionTextColor"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="20sp"
+                tools:ignore="SpeakableTextPresentCheck" />
+
 
         </LinearLayout>
 

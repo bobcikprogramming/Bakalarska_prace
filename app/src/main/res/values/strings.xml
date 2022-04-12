@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Krypto Evidence</string>
     <!-- Popis spodní lišty -->
-    <string name="btmNBAdd">Vytvořit</string>
     <string name="btmNBTransactions">Transakce</string>
     <string name="btmNBOverView">Přehled</string>
     <string name="btmNBPDF">PDF archiv</string>
@@ -9,24 +8,55 @@
     <string name="tabAddBuy">Nákup</string>
     <string name="tabAddSell">Prodej</string>
     <string name="tabAddChange">Směna</string>
-    <!-- Text Vytvořit -->
-    <string name="cryptoNameBuy">Nakoupená kryptoměna</string>
-    <string name="cryptoNameSell">Prodaná kryptoměna</string>
-    <string name="cryptoNameChangeBuy">Nakoupená kryptoměna</string>
-    <string name="cryptoNameChangeSell">Prodaná kryptoměna</string>
-    <string name="quantityBuy">Množství nakoupené kryptoměny</string>
-    <string name="quantitySell">Množství prodané kryptoměny</string>
-    <string name="priceBuy">Celková cena \nvč. poplatku</string>
-    <string name="priceSell">Celková cena \nvč. poplatku</string>
-    <string name="priceChange">Cena směny\nvč. poplatku</string>
-    <string name="fee">Poplatek za transakci</string>
-    <string name="date">Datum provedení transakce</string>
-    <string name="time">Čas provedení transakce</string>
-    <string name="currencyBuy">Platba v měně</string>
-    <string name="currencySell">Prodáno v měně</string>
-    <string name="currency">Cena uvedena v měně</string>
+    <!-- Text pro vytvoření (všeobecně) -->
     <string name="newPhoto">Vložit snímek</string>
     <string name="photos">Galerie snímků</string>
+    <string name="btnSave">Uložit</string>
+    <!-- Text pro vytvoření nákupu -->
+    <string name="firstRowBuy">Koupené množství</string>
+    <string name="secondRowBuy">Celková cena \nvč. poplatku</string>
+    <string name="thirdRowBuy">Cena v měně</string>
+    <string name="fourthRowBuy">Poplatek</string>
+    <string name="fifthRowBuy">Datum provedení</string>
+    <string name="sixthRowBuy">Čas provedení</string>
+    <!-- Text pro vytvoření směny -->
+    <string name="firstRowChange">Koupené množství</string>
+    <string name="secondRowChange">Prodej kryptoměny</string>
+    <string name="thirdRowChange">Prodané množství</string>
+    <string name="fourthRowChange">Cena směny\nvč. poplatku</string>
+    <string name="fifthRowChange">Cena v měně</string>
+    <string name="sixthRowChange">Poplatek</string>
+    <string name="seventhRowChange">Datum provedení</string>
+    <string name="eighthRowChange">Čas provedení</string>
+    <!-- Text pro vytvoření prodeje -->
+    <string name="firstRowSell">Prodané množství</string>
+    <string name="secondRowSell">Celková cena \nvč. poplatku</string>
+    <string name="thirdRowSell">Cena v měně</string>
+    <string name="fourthRowSell">Poplatek</string>
+    <string name="fifthRowSell">Datum provedení</string>
+    <string name="sixthRowSell">Čas provedení</string>
+    <!-- Text pro editaci transakce -->
+    <string name="firstRowEdit">Koupené množství</string>
+    <string name="secondRowEdit">Cena za kus</string>
+    <string name="thirdRowEdit">Cena v měně</string>
+    <string name="fourthRowEdit">Prodej kryptoměny</string>
+    <string name="fifthRowEdit">Prodané množství</string>
+    <string name="sixthRowEdit">Cena za kus</string>
+    <string name="seventhRowEdit">Cena v měně</string>
+    <string name="eighthRowEdit">Poplatek</string>
+    <string name="ninthRowEdit">Datum provedení</string>
+    <string name="tenthRowEdit">Čas provedení</string>
+    <string name="eleventhRowEdit">Poznámka k úpravě</string>
+    <!-- Text pro filtrování transakcí v časovém rozmezí -->
+    <string name="dateFrom">Období od:</string>
+    <string name="dateTo">Období do:</string>
+    <!-- Text v okně overView -->
+    <string name="overViewTax">Daňové období:</string>
+    <string name="overViewName">Název</string>
+    <string name="amount">Množství</string>
+    <!-- Text v okne transaction -->
+    <string name="transactionHeadline">Přehled transakcí</string>
+    <string name="currency">Měna</string>
 
     <string-array name="currency">
         <item>CZK</item>
@@ -42,6 +72,26 @@
 
     <string name="apicredit">Data provided by CoinGecko</string>
 
-    <string name="desBtnClose">button close</string>
+    <string name="historyHeadline">Historie úprav</string>
+    <string name="historyTimeHeadline">Datum a čas změny</string>
+    <string name="cryptoSelectionHeadline">Výběr kryptoměny</string>
+    <string name="pdfHeadline">Přehled PDF</string>
+
+    <string name="yearPickerTax">Daňové období</string>
+
+    <!-- Popis obrázků -->
+    <string name="desBtnClose">Ukončit</string>
+    <string name="desBtnDelete">Smazat</string>
+    <string name="desBtnSave">Uložit</string>
+    <string name="desBtnSystemMode">Systémový mód</string>
+    <string name="desBtnlightMode">Světlý mód</string>
+    <string name="desBtndarkMode">Tmavý mód</string>
+    <string name="desBtnMoreOptions">Další nastavení</string>
+    <string name="desBtnAdd">Přidat</string>
+    <string name="desBtnReset">Obnovit</string>
+    <string name="desBtnFilter">Filtrovat</string>
+    <string name="desBtnBack">Zpět</string>
+    <string name="desBtnFavorite">Oblíbené</string>
+    <string name="desBtnEdit">Upravit</string>
 
 </resources>

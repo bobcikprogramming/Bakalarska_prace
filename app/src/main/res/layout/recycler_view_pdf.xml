@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:gravity="right">
+                android:gravity="end">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -48,7 +48,8 @@
                     android:id="@+id/btnDelete"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
-                    android:src="@drawable/ic_delete_btn_color"/>
+                    android:src="@drawable/ic_delete_btn_color"
+                    android:contentDescription="@string/desBtnDelete"/>
 
             </LinearLayout>
 
@@ -59,7 +60,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvYear"
-            android:text="2020"
             android:textSize="30sp"
             android:textColor="@color/PDFYear"
             android:textStyle="bold"
@@ -69,7 +69,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvDate"
-            android:text="1.1.2020"
             android:textSize="18sp"
             android:textColor="@color/PDFDate"
             android:textAlignment="center"

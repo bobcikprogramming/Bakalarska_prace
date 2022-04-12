@@ -15,27 +15,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionHistoryList;
-import com.bobcikprogramming.kryptoevidence.Controller.TransactionInfoList;
 import com.bobcikprogramming.kryptoevidence.Controller.ViewPagerAdapterTransactionController;
-import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionHistoryEntity;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.R;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfo;
-import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactionsInfoHistory;
-import com.bobcikprogramming.kryptoevidence.View.TransactionPhotoViewer;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-// https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
+/**
+ * Třída vytvořena na základě tutoriálu z:
+ * Odkaz:   https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
+ * Datum:   15. září 2020
+ * Autor:   onlyklohan
+ * Autor:   https://auth.geeksforgeeks.org/user/onlyklohan/articles
+ */
 public class ViewPagerAdapterTransaction extends PagerAdapter {
 
     private RecyclerView recyclerViewTransactionInfo, recyclerViewTransactionInfoHistory;
@@ -104,12 +101,14 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         container.removeView((LinearLayout) object);
     }
 
-    //https://stackoverflow.com/a/7287121
     @Override
     public int getItemPosition(@NonNull Object object) {
         return POSITION_NONE;
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         recyclerViewTransactionInfo = itemView.findViewById(R.id.recyclerViewTransactionInfo);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
@@ -131,6 +130,10 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         imvButtonShowPhotos = itemView.findViewById(R.id.imvButtonShowPhotos);
     }
 
+    /**
+     * Metoda pro nastavení nadpisu a viditelnosti indikátoru další transakce
+     * @param transaction
+     */
     private void setupHeadline(TransactionEntity transaction){
         TextView headline = itemView.findViewById(R.id.infoOperationType);
         LinearLayout nextItem = itemView.findViewById(R.id.layoutNextItem);
@@ -142,6 +145,13 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         headline.setText(transaction.transactionType);
     }
 
+
+    /**
+     * Metoda k aktualizování výpisu transakce
+     * @param dataList Pole s daty transakce k výpisu
+     * @param dataListHistory Pole s daty historie transakce k výpisu
+     * @param position Pozice transakce z pole transakcí
+     */
     public void updateDatalists(List<TransactionWithPhotos> dataList, List<TransactionHistoryEntity> dataListHistory, int position){
         controller.setDataList(dataList);
         controller.setDataListHistory(dataListHistory);
@@ -164,6 +174,10 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Metoda k otevření activity TransactionPhotoViewer
+     * @param postion Pozice transakce z pole transakcí
+     */
     private void openGalery(int postion){
         imvButtonShowPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +189,9 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
         });
     }
 
+    /**
+     * Metoda k zobrazení ImageView se snímkem, obsahuje-li transakce nějaký snímek
+     */
     public void showPhotosIfNotEmpty(){
         if(!controller.getPhotos().isEmpty()){
             layoutPhotos.setVisibility(View.VISIBLE);

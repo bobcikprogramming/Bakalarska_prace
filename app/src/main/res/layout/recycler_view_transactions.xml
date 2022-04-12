@@ -26,7 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:id="@+id/textViewOperation"
-                android:text="Nákup"
                 android:textColor="@color/green"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -38,18 +37,17 @@
                 android:minWidth="70dp"
                 android:id="@+id/textViewDate"
                 android:gravity="top|end"
-                android:text="1.1.2021"
                 android:textColor="@color/recyclerItemOfTransactionDescriptionSideTextColor"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 style="@style/TransactionTextViewDescription"
-                android:text="Měna"/>
+                android:text="@string/currency"/>
 
             <TextView
                 style="@style/TransactionTextViewDescription"
-                android:text="Množství"/>
+                android:text="@string/amount"/>
 
         </LinearLayout>
 
@@ -58,20 +56,19 @@
 
             <TextView
                 android:id="@+id/textViewDescriptionFirstColumn"
-                style="@style/TransactionTextViewItemHeadline"
-                android:text="Koupeno"/>
+                style="@style/TransactionTextViewItemHeadline"/>
 
             <TextView
                 android:id="@+id/textViewNameFirstColumn"
                 style="@style/TransactionTextViewItem"
-                android:text="Bitcoin" />
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/textViewQuantityFirstColumn"
                 style="@style/TransactionTextViewItem"
-                android:text="0.0514700"
+                android:maxWidth="160dp"
                 android:minWidth="80dp"
-                android:maxWidth="160dp" />
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -80,20 +77,19 @@
 
             <TextView
                 android:id="@+id/textViewDescriptionSecondColumn"
-                style="@style/TransactionTextViewItemHeadline"
-                android:text="Platba"/>
+                style="@style/TransactionTextViewItemHeadline"/>
 
             <TextView
                 android:id="@+id/textViewNameSecondColumn"
                 style="@style/TransactionTextViewItem"
-                android:text="EUR"/>
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
                 android:id="@+id/textViewQuantitySecondColumn"
                 style="@style/TransactionTextViewItem"
-                android:text="100.0"
+                android:maxWidth="160dp"
                 android:minWidth="80dp"
-                android:maxWidth="160dp"/>
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 

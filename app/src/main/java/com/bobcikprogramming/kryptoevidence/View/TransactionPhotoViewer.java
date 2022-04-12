@@ -1,7 +1,6 @@
 package com.bobcikprogramming.kryptoevidence.View;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,14 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionPhotoViewerController;
-import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.Model.PhotoEntity;
-import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.R;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TransactionPhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,6 +35,9 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         tabLayout.setupWithViewPager(photoViewer, true);
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
 
@@ -54,6 +50,10 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         imgDelete.setVisibility(View.GONE);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -63,6 +63,9 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
         }
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(){
         Intent intent = new Intent();
         setResult(RESULT_OK, intent );

@@ -13,7 +13,7 @@
             style="@style/HeadlineTextView"
             android:id="@+id/tvHeadline"
             android:visibility="visible"
-            android:text="Přehled transakcí"/>
+            android:text="@string/transactionHeadline"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -22,7 +22,6 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             android:visibility="gone">
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Období od:"
+                    android:text="@string/dateFrom"
                     android:gravity="center_vertical"
                     android:textColor="@color/white"
                     android:textSize="15sp"/>
@@ -45,7 +44,8 @@
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:paddingStart="5dp"/>
+                    android:paddingStart="5dp"
+                    android:paddingEnd="0dp"/>
 
             </LinearLayout>
 
@@ -58,7 +58,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Období do:"
+                    android:text="@string/dateTo"
                     android:gravity="center_vertical"
                     android:textColor="@color/white"
                     android:textSize="15sp"/>
@@ -70,7 +70,8 @@
                     android:layout_weight="1"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:paddingStart="5dp"/>
+                    android:paddingStart="5dp"
+                    android:paddingEnd="0dp"/>
 
             </LinearLayout>
 
@@ -83,14 +84,16 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_refresh_anim"
             android:layout_marginEnd="10dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/desBtnReset"/>
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:id="@+id/btnFilter"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_filter"/>
+            android:src="@drawable/ic_filter"
+            android:contentDescription="@string/desBtnFilter"/>
 
     </LinearLayout>
 
@@ -127,7 +130,8 @@
             android:background="@drawable/floating_button_style"
             android:src="@drawable/ic_plus"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/desBtnAdd"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

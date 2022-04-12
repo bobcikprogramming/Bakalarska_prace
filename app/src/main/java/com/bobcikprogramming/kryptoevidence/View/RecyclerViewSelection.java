@@ -25,7 +25,6 @@ public class RecyclerViewSelection extends RecyclerView.Adapter<RecyclerViewSele
     public RecyclerViewSelection(Context context, ArrayList<CryptocurrencyEntity> dataList, View.OnClickListener myClickListener) {
         this.context = context;
         this.dataList = dataList;
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>velikost: "+dataList.size());
         this.myClickListener = myClickListener;
     }
 

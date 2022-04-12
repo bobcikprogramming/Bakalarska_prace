@@ -13,11 +13,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
@@ -36,7 +31,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:id="@+id/layoutShowMore"
                         android:layout_weight="1"
@@ -54,7 +49,8 @@
                                 android:src="@drawable/ic_system_unselected"
                                 android:padding="5dp"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginEnd="5dp"/>
+                                android:layout_marginEnd="5dp"
+                                android:contentDescription="@string/desBtnSystemMode"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -62,7 +58,8 @@
                                 android:id="@+id/imgBtnModeLight"
                                 android:src="@drawable/ic_light_mode_unselected"
                                 android:padding="5dp"
-                                android:layout_marginEnd="5dp"/>
+                                android:layout_marginEnd="5dp"
+                                android:contentDescription="@string/desBtnlightMode"/>
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -70,7 +67,8 @@
                                 android:id="@+id/imgBtnModeDark"
                                 android:src="@drawable/ic_dark_mode_unselected"
                                 android:padding="5dp"
-                                android:layout_marginEnd="5dp"/>
+                                android:layout_marginEnd="5dp"
+                                android:contentDescription="@string/desBtndarkMode"/>
 
                         </LinearLayout>
 
@@ -85,7 +83,8 @@
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:id="@+id/imgBtnShowMore"
-                            android:src="@drawable/ic_show_more_anim"/>
+                            android:src="@drawable/ic_show_more_anim"
+                            android:contentDescription="@string/desBtnMoreOptions"/>
 
                     </LinearLayout>
 
@@ -111,7 +110,6 @@
                             android:id="@+id/tvOverviewHeadline"
                             android:gravity="bottom"
                             android:paddingTop="10dp"
-                            android:text="Roční zisk"
                             android:textColor="@color/overviewNormalTextColor"
                             android:textSize="20sp"
                             android:textStyle="bold"/>
@@ -123,7 +121,7 @@
 
                             <!-- https://stackoverflow.com/a/39598604 -->
                             <TableLayout
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:shrinkColumns="0">
@@ -132,20 +130,16 @@
 
                                     <!-- Automatický scroll: https://stackoverflow.com/a/5472637 -->
                                     <TextView
+                                        android:id="@+id/tvAnnualReport"
+                                        style="@style/TextViewMarquee"
                                         android:layout_width="wrap_content"
                                         android:layout_height="match_parent"
-                                        android:id="@+id/tvAnnualReport"
                                         android:gravity="bottom"
+                                        android:paddingStart="0dp"
                                         android:paddingEnd="10dp"
-                                        android:text="7 000 000"
                                         android:textColor="@color/overviewProfitTextColor"
                                         android:textSize="35sp"
-                                        android:singleLine="true"
-                                        android:ellipsize="marquee"
-                                        android:marqueeRepeatLimit ="marquee_forever"
-                                        android:focusable="true"
-                                        android:focusableInTouchMode="true"
-                                        android:scrollHorizontally="true" />
+                                        tools:ignore="SpeakableTextPresentCheck" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -153,11 +147,11 @@
                                         android:id="@+id/tvCurrency"
                                         android:gravity="bottom"
                                         android:paddingEnd="10dp"
+                                        android:paddingStart="0dp"
                                         android:paddingBottom="5dp"
                                         android:singleLine="true"
-                                        android:text="CZK"
                                         android:textColor="@color/overviewDescriptionTextColor"
-                                        android:textSize="15dp" />
+                                        android:textSize="15sp" />
 
                                 </TableRow>
 
@@ -177,7 +171,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="Daňové období:"
+                            android:text="@string/overViewTax"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:gravity="bottom"
@@ -186,14 +180,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="right"
+                            android:gravity="end"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:id="@+id/btnPrevYear"
-                                android:text="2019"
                                 android:textColor="@color/button"
                                 android:textSize="17sp"
                                 android:gravity="bottom|center"
@@ -204,7 +197,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:id="@+id/tvSelectedYear"
-                                android:text="2020"
                                 android:textColor="@color/white"
                                 android:textSize="27sp"
                                 android:layout_marginStart="10dp"
@@ -216,7 +208,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:id="@+id/btnNextYear"
-                                android:text="2021"
                                 android:textColor="@color/button"
                                 android:textSize="17sp"
                                 android:gravity="bottom|center"
@@ -231,7 +222,6 @@
 
             </LinearLayout>
 
-        </LinearLayout>
 
 
         <LinearLayout
@@ -254,11 +244,13 @@
 
                     <EditText
                         style="@style/SearchEditText"
-                        android:id="@+id/etSearch"/>
+                        android:id="@+id/etSearch"
+                        android:importantForAutofill="no" />
 
                     <ImageView
                         style="@style/SearchImageViewRight"
-                        android:id="@+id/imgBtnDelete"/>
+                        android:id="@+id/imgBtnDelete"
+                        android:contentDescription="@string/desBtnDelete"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -275,16 +267,16 @@
                     android:layout_weight="1"
                     android:gravity="bottom"
                     android:paddingBottom="5dp"
-                    android:text="Název"
+                    android:text="@string/overViewName"
                     android:textColor="@color/overviewListDescriptionTextColor" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="bottom|right"
+                    android:gravity="bottom|end"
                     android:paddingBottom="5dp"
-                    android:text="Množství"
+                    android:text="@string/amount"
                     android:textColor="@color/overviewListDescriptionTextColor" />
 
 

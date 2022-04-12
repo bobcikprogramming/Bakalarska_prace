@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -15,15 +16,15 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:text="Datum a čas změny"
+                android:text="@string/historyTimeHeadline"
                 android:textColor="@color/historyHeadlineTextColor"
                 android:textStyle="bold"/>
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueDateTimeOfChange"
-                android:text="Nákup"
-                android:textStyle="bold"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                android:textStyle="bold"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -40,13 +41,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescFirstRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescFirstRow"/>
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueFirstRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -64,13 +64,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescSecondRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescSecondRow"/>
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueSecondRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -88,13 +87,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescThirdRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescThirdRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueThirdRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -112,13 +110,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescFourthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescFourthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueFourthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -136,13 +133,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescFifthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescFifthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueFifthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -162,13 +158,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescSixthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescSixthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueSixthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -186,13 +181,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescSeventhRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescSeventhRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueSeventhRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -210,13 +204,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescEighthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescEighthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueEighthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -233,13 +226,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescNinthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescNinthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueNinthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
@@ -257,13 +249,12 @@
 
             <TextView
                 style="@style/TransactionHistoryItemTextViewDesc"
-                android:id="@+id/histDescTenthRow"
-                android:text="Typ transakce"/>
+                android:id="@+id/histDescTenthRow" />
 
             <TextView
-                style="@style/TransactionHistoryItemTextViewValue"
                 android:id="@+id/histValueTenthRow"
-                android:text="Nákup"/>
+                style="@style/TransactionHistoryItemTextViewValue"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
     </LinearLayout>

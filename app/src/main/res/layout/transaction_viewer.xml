@@ -16,7 +16,9 @@
             android:id="@+id/btnBack"
             style="@style/NavBarIcon"
             android:paddingStart="12dp"
-            android:src="@drawable/ic_back"/>
+            android:paddingEnd="0dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/desBtnBack"/>
 
         <TextView
             style="@style/NavBarHeadline"
@@ -26,7 +28,9 @@
             android:id="@+id/btnEdit"
             style="@style/NavBarIcon"
             android:paddingEnd="12dp"
-            android:src="@drawable/ic_edit"/>
+            android:paddingStart="0dp"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/desBtnEdit"/>
 
     </LinearLayout>
 
@@ -36,6 +40,7 @@
         android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </LinearLayout>

@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,6 +48,10 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch(view.getId()){
@@ -62,11 +65,17 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    /**
+     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity
+     */
     @Override
     public void onBackPressed() {
         closeActivity(false);
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         recyclerView = findViewById(R.id.recyclerViewCryptoSelection);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getBaseContext());
@@ -84,6 +93,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         layout.setOnClickListener(this);
     }
 
+    /**
+     * Metoda pro ukončení activity
+     */
     private void closeActivity(boolean changed){
         Intent intent = new Intent();
         intent.putExtra("changed", changed);
@@ -91,6 +103,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
+    /**
+     * Metoda k aktualizování pole seznamu kryptoměn na základě fráze v edit textu
+     */
     private void searchOnChange(){
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,7 +127,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    // https://stackoverflow.com/a/45711180
+    /**
+     * Metoda slouží k předání ID vybrané kryptoměny z recyclerview do activity, jenž inicializovala aktuální activity
+     */
     private View.OnClickListener myClickListener = new View.OnClickListener()
     {
         @Override
@@ -126,6 +143,9 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
         }
     };
 
+    /**
+     * Metoda zpracující návrat z aktivity
+     */
     ActivityResultLauncher<Intent> addActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {

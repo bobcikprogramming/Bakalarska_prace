@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bobcikprogramming.kryptoevidence.Controller.CalendarManager;
 import com.bobcikprogramming.kryptoevidence.Controller.FragmentPDFController;
 import com.bobcikprogramming.kryptoevidence.Controller.MonthYearPickerDialog;
 import com.bobcikprogramming.kryptoevidence.R;
@@ -46,6 +45,9 @@ public class FragmentPDF extends Fragment {
         return view;
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(View view){
         recyclerView = view.findViewById(R.id.recyclerViewPDF);
         LinearLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -55,6 +57,9 @@ public class FragmentPDF extends Fragment {
         btnAdd = view.findViewById(R.id.btnAdd);
     }
 
+    /**
+     * Metoda pro výběr data pomocí dialogového okna
+     */
     public void openCalendar(){
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

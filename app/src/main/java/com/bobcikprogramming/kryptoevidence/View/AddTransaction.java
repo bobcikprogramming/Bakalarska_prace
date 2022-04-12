@@ -41,6 +41,9 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Metoda pro inicializování prvků UI
+     */
     private void setupUIViews(){
         btnBuy = findViewById(R.id.tabButtonBuy);
         btnSell = findViewById(R.id.tabButtonSell);
@@ -59,6 +62,10 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
         btnClose.setOnClickListener(this);
     }
 
+    /**
+     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * @param view Základní prvek UI komponent
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()){

@@ -26,9 +26,9 @@
                 android:layout_gravity="center"
                 android:elevation="8dp"
                 android:gravity="center"
-                android:text="Daňové období"
+                android:text="@string/yearPickerTax"
                 android:textColor="#ffffff"
-                android:textSize="22dp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

@@ -76,16 +76,6 @@ public class PDFGenerator {
         BigDecimal sellTotal;
         BigDecimal changeTotal;
 
-        /** https://stackoverflow.com/a/42143490 */
-        String requiredPermission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-        int checkVal = context.checkSelfPermission(requiredPermission);
-
-        /*if(checkVal != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(activity, new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
-            return false;
-        }*/
-
         loadFonts();
         createNewPage();
         cellWidthXPos = (width/6f);
