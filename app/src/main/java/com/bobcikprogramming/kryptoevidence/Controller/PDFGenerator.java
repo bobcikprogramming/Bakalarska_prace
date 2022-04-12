@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.core.app.ActivityCompat;
@@ -267,7 +268,7 @@ public class PDFGenerator {
 
         writeTextNewLineAtOffset(buy.getName(), font, 12, cellWidthXPos - MARGINSIDE, 0);
 
-        if((font.getStringWidth(buy.getQuantity()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(buy.getQuantity()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(buy.getQuantity(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -275,7 +276,7 @@ public class PDFGenerator {
             textOverflow.add(buy.getQuantity());
         }
 
-        if((font.getStringWidth(buy.getPrice()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(buy.getPrice()) / 1000.0f) * 11  + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(buy.getPrice(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -283,7 +284,7 @@ public class PDFGenerator {
             textOverflow.add(buy.getPrice());
         }
 
-        if((font.getStringWidth(buy.getFee()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(buy.getFee()) / 1000.0f) * 11  + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(buy.getFee(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -291,7 +292,7 @@ public class PDFGenerator {
             textOverflow.add(buy.getFee());
         }
 
-        if((fontBold.getStringWidth(buy.getTotal()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((fontBold.getStringWidth(buy.getTotal()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             float lastTextWidth = (fontBold.getStringWidth(buy.getTotal()) / 1000.0f) * 12;
             writeTextNewLineAtOffset(buy.getTotal(), fontBold, 12, cellWidthXPos + (cellWidthXPos-lastTextWidth) + 5, 0);
         }else{
@@ -513,7 +514,7 @@ public class PDFGenerator {
 
         writeTextNewLineAtOffset(sell.getName(), font, 12, cellWidthXPos - MARGINSIDE, 0);
 
-        if((font.getStringWidth(sell.getQuantity()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(sell.getQuantity()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(sell.getQuantity(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -521,7 +522,7 @@ public class PDFGenerator {
             textOverflow.add(sell.getQuantity());
         }
 
-        if((font.getStringWidth(sell.getProfit()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(sell.getProfit()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(sell.getProfit(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -529,7 +530,7 @@ public class PDFGenerator {
             textOverflow.add(sell.getProfit());
         }
 
-        if((font.getStringWidth(sell.getFee()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((font.getStringWidth(sell.getFee()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             writeTextNewLineAtOffset(sell.getFee(), font, 12, cellWidthXPos + 5, 0);
         }else{
             textOverflowCounter ++;
@@ -537,7 +538,7 @@ public class PDFGenerator {
             textOverflow.add(sell.getFee());
         }
 
-        if((fontBold.getStringWidth(sell.getTotal()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((fontBold.getStringWidth(sell.getTotal()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             float lastTextWidth = (fontBold.getStringWidth(sell.total) / 1000.0f) * 12;
             writeTextNewLineAtOffset(sell.getTotal(), fontBold, 12, cellWidthXPos + (cellWidthXPos-lastTextWidth) + 5, 0);
         }else{
@@ -759,7 +760,7 @@ public class PDFGenerator {
 
         writeTextNewLineAtOffset(change.getNameSold(), font, 12, cellWidthXPos - MARGINSIDE, 0);
 
-        if((font.getStringWidth(change.getQuantitySold()) / 1000.0f) * 11 <= cellWidthXPos + 25){
+        if((font.getStringWidth(change.getQuantitySold()) / 1000.0f) * 11 + 5 <= cellWidthXPos + 25){
             writeTextNewLineAtOffset(change.getQuantitySold(), font, 12, cellWidthXPos - 20, 0);
         }else{
             textOverflowCounter ++;
@@ -769,7 +770,7 @@ public class PDFGenerator {
 
         writeTextNewLineAtOffset(change.getNameBought(), font, 12, cellWidthXPos + 30, 0);
 
-        if((font.getStringWidth(change.getQuantityBought()) / 1000.0f) * 11 <= cellWidthXPos + 25){
+        if((font.getStringWidth(change.getQuantityBought()) / 1000.0f) * 11 + 5 <= cellWidthXPos + 25){
             writeTextNewLineAtOffset(change.getQuantityBought(), font, 12, cellWidthXPos - 20, 0);
         }else{
             textOverflowCounter ++;
@@ -777,7 +778,7 @@ public class PDFGenerator {
             textOverflow.add(change.getQuantityBought());
         }
 
-        if((fontBold.getStringWidth(change.getTotal()) / 1000.0f) * 11 <= cellWidthXPos){
+        if((fontBold.getStringWidth(change.getTotal()) / 1000.0f) * 11 + 5 <= cellWidthXPos){
             float lastTextWidth = (fontBold.getStringWidth(change.total) / 1000.0f) * 12;
             writeTextNewLineAtOffset(change.getTotal(), fontBold, 12, cellWidthXPos + (cellWidthXPos-lastTextWidth) + 30, 0);
         }else{
