@@ -35,6 +35,11 @@ public class ViewPagerAdapterTransactionController {
         shared = new SharedMethods();
     }
 
+    /**
+     * Metoda slouží k seřazení seznamu dle data (od nejvyššího po nejnižší)
+     * @param data Seznam k seřazení
+     * @return Seřazený seznam
+     */
     public ArrayList<TransactionHistoryList> sortListByDate(ArrayList<TransactionHistoryList> data){
         TransactionHistoryList tmp;
         for(int i = 0; i < data.size() - 1; i++){
@@ -56,6 +61,11 @@ public class ViewPagerAdapterTransactionController {
         return data;
     }
 
+    /**
+     * Metoda slouží k seřazení seznamu dle času (od nejvyššího po nejnižší)
+     * @param data Seznam k seřazení
+     * @return Seřazený seznam
+     */
     public ArrayList<TransactionHistoryList> sortListByTime(ArrayList<TransactionHistoryList> data){
         TransactionHistoryList tmp;
         for(int i = 0; i < data.size() - 1; i++){
@@ -77,6 +87,11 @@ public class ViewPagerAdapterTransactionController {
         return data;
     }
 
+    /**
+     * Metoda slouží k převedení transakce "Nákup" nebo "Prodej" do vyobrazovací podoby
+     * @param context Třída context activity, ze které je metoda volána
+     * @return Seznam řádků s daty k vyobrazení
+     */
     public ArrayList<TransactionInfoList> getTransactionForBuyOrSell(Context context){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
@@ -161,6 +176,11 @@ public class ViewPagerAdapterTransactionController {
         return transactionInfoList;
     }
 
+    /**
+     * Metoda slouží k převedení transakci "Směna" do vyobrazovací podoby
+     * @param context Třída context activity, ze které je metoda volána
+     * @return Seznam řádků s daty k vyobrazení
+     */
     public ArrayList<TransactionInfoList> getTransactionForChange(Context context){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<TransactionInfoList> transactionInfoList = new ArrayList<>();
@@ -228,6 +248,11 @@ public class ViewPagerAdapterTransactionController {
         return transactionInfoList;
     }
 
+    /**
+     * Metoda slouží k převedení historie transakce do vyobrazovací podoby historie
+     * @param context Třída context activity, ze které je metoda volána
+     * @return Seznam řádků s daty k vyobrazení
+     */
     public ArrayList<TransactionHistoryList> getHistoryList(Context context){
         ArrayList<TransactionHistoryEntity> history = getHistoryForActualTransaction(position);
         ArrayList<TransactionHistoryList> historyOfActualTransaction = new ArrayList<>();
@@ -313,6 +338,11 @@ public class ViewPagerAdapterTransactionController {
         return historyOfActualTransaction;
     }
 
+    /**
+     * Metoda slouží k získání seznamu změn transakce z databáze
+     * @param position Pozice transakce
+     * @return Seznam změn transakce
+     */
     private ArrayList<TransactionHistoryEntity> getHistoryForActualTransaction(int position){
         ArrayList<TransactionHistoryEntity> historyOfActualTransaction = new ArrayList<>();
         for(TransactionHistoryEntity history : dataListHistory){
@@ -326,10 +356,6 @@ public class ViewPagerAdapterTransactionController {
 
     public List<TransactionWithPhotos> getDataList() {
         return dataList;
-    }
-
-    public List<TransactionHistoryEntity> getDataListHistory() {
-        return dataListHistory;
     }
 
     public void setDataList(List<TransactionWithPhotos> dataList) {

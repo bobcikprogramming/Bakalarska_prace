@@ -94,7 +94,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
                             shared.getBigDecimal(etQuantityBuy), shared.getBigDecimal(etPriceBuy), shared.getFee(etFee), calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime),
                             uidCryptoSell, shared.getBigDecimal(etQuantitySell));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(uidCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, uidCryptoSell, shared.getBigDecimal(etQuantitySell));
+                        controller.saveAmountOfOwnedCrypto(uidCryptoBuy, shared.getBigDecimal(etQuantityBuy), 2, uidCryptoSell, shared.getBigDecimal(etQuantitySell));
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
                     }else{

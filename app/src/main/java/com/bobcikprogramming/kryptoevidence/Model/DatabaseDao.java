@@ -12,7 +12,7 @@ import java.util.List;
 public interface DatabaseDao {
 
     @Transaction
-    @Query("SELECT * FROM TransactionEntity")
+    @Query("SELECT * FROM TransactionEntity ORDER BY date DESC, time DESC")
     List<TransactionWithPhotos> getAll();
 
     @Transaction
@@ -96,16 +96,8 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> getUsedChangeBetween(long dateFrom, long dateTo);
 
     @Transaction
-    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left != quantity_sold AND uid_crypto_sold = :uidSold AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
-    List<TransactionWithPhotos> getUsedSellBetweenById(String uidSold, long dateFrom, long dateTo);
-
-    @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE ((transaction_type = 'Prodej' AND amount_left != quantity_sold) OR (transaction_type = 'Směna' AND amount_left_change_sell != quantity_sold)) AND uid_crypto_sold = :uidSold AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
     List<TransactionWithPhotos> getUsedSellChangeBetweenById(String uidSold, long dateFrom, long dateTo);
-
-    @Transaction
-    @Query("SELECT uid_crypto_sold FROM TransactionEntity WHERE transaction_type = 'Prodej' AND amount_left != quantity_sold AND date BETWEEN :dateFrom AND :dateTo GROUP BY uid_crypto_sold ORDER BY date, time")
-    List<String> getUsedSalesBetween(long dateFrom, long dateTo);
 
     @Transaction
     @Query("SELECT uid_crypto_sold FROM TransactionEntity WHERE ((transaction_type = 'Prodej' AND amount_left != quantity_sold) OR (transaction_type = 'Směna' AND amount_left_change_sell != quantity_sold))  AND date BETWEEN :dateFrom AND :dateTo GROUP BY uid_crypto_sold ORDER BY date, time")
@@ -140,7 +132,6 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> findIfExistBuyWithIdForUsedBuyChangeAllFrom(long date, String time, String uidBought, String lookingForID);
 
     @Transaction
-    //@Query("SELECT * FROM (SELECT * FROM PDFEntity ORDER BY created DESC) GROUP BY year")
     @Query("SELECT *, MAX(created) FROM PDFEntity GROUP BY year")
     List<PDFEntity> getLatestAnnualReport();
 
@@ -156,7 +147,7 @@ public interface DatabaseDao {
     long insertTransaction(TransactionEntity transaction);
 
     @Insert
-    long insertOldTransaction(TransactionHistoryEntity transaction);
+    void insertOldTransaction(TransactionHistoryEntity transaction);
 
     @Insert
     void insertPhoto(PhotoEntity photo);

@@ -25,6 +25,10 @@ public class TransactionPhotoViewerController {
         this.transactionID = transactionID;
     }
 
+    /**
+     * Metoda pro získání seznamu Uri cest ke snímkům z databáze
+     * @return Seznam Uri cest ke snímkům
+     */
     public ArrayList<Uri> getPhotosUri(){
         ArrayList<Uri> photosUri = new ArrayList<>();
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -35,6 +39,9 @@ public class TransactionPhotoViewerController {
         return photosUri;
     }
 
+    /**
+     * Metoda pro inicializování viewPagerAdapteru a  jeho nastavení pro ViewPager
+     */
     public void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, getPhotosUri());
         photoViewer.setAdapter(viewPagerAdapter);

@@ -19,6 +19,18 @@ import com.bobcikprogramming.kryptoevidence.View.FragmentPDF;
 import java.util.Calendar;
 
 /** https://stackoverflow.com/a/53300524 */
+
+/**
+ * Třída slouží k vytvoření vlastního dialogového okna pro výběr roku
+ *
+ * Třída byla inspirována z:
+ * Zdroj:   Stack Overflow
+ * Dotaz:   https://stackoverflow.com/q/10793811
+ * Odpověď: https://stackoverflow.com/a/53300524
+ * Autor:   Agilanbu
+ * Autor:   https://stackoverflow.com/users/7200297/agilanbu
+ * Datum:   14. listopadu 2018
+ */
 public class MonthYearPickerDialog extends DialogFragment {
 
     private CalendarManager calendar;

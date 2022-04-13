@@ -5,7 +5,6 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -16,7 +15,28 @@ public class ImageManager {
 
     public ImageManager(){}
 
-    /** https://stackoverflow.com/a/17674787 */
+    /**
+     * Metoda k uložení snímků transakce
+     * @param context Třída context activity, ze které je metoda volána
+     * @param photos Seznam cest k snímkům
+     * @return Seznam cest k uloženým snímkům
+     *
+     * Metoda pro uložení obrázku inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/17674634
+     * Odpověď: https://stackoverflow.com/a/17674787
+     * Autor:   Brijesh Thakur
+     * Autor:   https://stackoverflow.com/users/898459/brijesh-thakur
+     * Datum:   16. července 2013
+     *
+     * Metoda pro získání Bitmap z Uri inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/3879992
+     * Odpověď: https://stackoverflow.com/a/4717740
+     * Autor:   Mark Ingram
+     * Autor:   https://stackoverflow.com/users/986/mark-ingram
+     * Datum:   17. ledna 2011
+     */
     public ArrayList<String> saveImage(Context context, ArrayList<Uri> photos){
         ArrayList<String> photosPath = new ArrayList<>();
 
@@ -31,7 +51,6 @@ public class ImageManager {
             File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
 
             try {
-                /** https://stackoverflow.com/a/4717740 */
                 bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photo);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -58,6 +77,12 @@ public class ImageManager {
         return photosPath;
     }
 
+    /**
+     * Metoda k uložení snímku transakce
+     * @param context Třída context activity, ze které je metoda volána
+     * @param photo Cesta ke snímku
+     * @return Cesta k uloženému snímku
+     */
     public String saveImage(Context context, Uri photo){
         ContextWrapper cw = new ContextWrapper(context);
         File dir = cw.getDir("Images", Context.MODE_PRIVATE);
@@ -68,7 +93,6 @@ public class ImageManager {
         File myPath = new File(dir, System.currentTimeMillis() + ".jpg");
 
         try {
-            /** https://stackoverflow.com/a/4717740 */
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photo);
         } catch (IOException e) {
             e.printStackTrace();

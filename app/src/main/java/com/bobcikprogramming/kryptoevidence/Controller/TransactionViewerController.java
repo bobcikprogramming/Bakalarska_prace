@@ -39,48 +39,13 @@ public class TransactionViewerController {
         transactionViewer.setCurrentItem(position);
     }
 
+    /**
+     * Metoda načte data z databáze do seznamu transakcí a seznamu změn
+     */
     public void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         dataFromDatabase = db.databaseDao().getAll();
-        sortListByTime(dataFromDatabase);
-        sortListByDate(dataFromDatabase);
-
         dataFromDatabaseHistory = db.databaseDao().getHistory();
-    }
-
-    private void sortListByDate(List<TransactionWithPhotos> data){
-        TransactionWithPhotos tmp;
-        for(int i = 0; i < data.size() - 1; i++){
-            for(int j = 0; j < data.size() - i - 1; j++){
-                long dateFirst = data.get(j).transaction.date;
-                long dateSecond = data.get(j+1).transaction.date;
-                if(dateFirst < dateSecond){
-                    tmp = data.get(j);
-                    data.set(j, data.get(j+1));
-                    data.set(j+1, tmp);
-                }
-            }
-        }
-    }
-
-    private void sortListByTime(List<TransactionWithPhotos> data) {
-        TransactionWithPhotos tmp;
-        for (int i = 0; i < data.size() - 1; i++) {
-            for (int j = 0; j < data.size() - i - 1; j++) {
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                try {
-                    Date timeFirst = format.parse(data.get(j).transaction.time);
-                    Date timeSecond = format.parse(data.get(j + 1).transaction.time);
-                    if (timeFirst.compareTo(timeSecond) < 0) {
-                        tmp = data.get(j);
-                        data.set(j, data.get(j + 1));
-                        data.set(j + 1, tmp);
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     public void viewPagerAdapterUpdate(){

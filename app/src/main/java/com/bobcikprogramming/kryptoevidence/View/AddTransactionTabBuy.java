@@ -95,7 +95,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
                     boolean saved = controller.saveTransactionBuy(uidCrypto, shared.getBigDecimal(etQuantity), shared.getBigDecimal(etPrice), shared.getFee(etFee),
                             calendar.getDateMillis(shared.getString(tvDate)), shared.getString(tvTime), shared.getString(spinnerCurrency), shared.getPriceWithoutFee(etPrice, etFee));
                     if(saved){
-                        controller.changeAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 0, null, null);
+                        controller.saveAmountOfOwnedCrypto(uidCrypto, shared.getBigDecimal(etQuantity), 0, null, null);
                         Toast.makeText(getContext(), "Transakce byla úspěšně vytvořena.", Toast.LENGTH_SHORT).show();
                         closeActivity();
                     }else{

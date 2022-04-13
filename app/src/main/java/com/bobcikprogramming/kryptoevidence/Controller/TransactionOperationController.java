@@ -40,6 +40,18 @@ public class TransactionOperationController {
         EMPTYBIGDECIMAL = shared.getBigDecimal("-1.0");
     }
 
+    /**
+     * Metoda k uložení transakce "Nákup"
+     * @param uidBought UID nakoupené kryptoměny
+     * @param quantityBought Množství nakoupené kryptoměny
+     * @param price Cena
+     * @param fee Poplatek
+     * @param date Datum
+     * @param time Čas
+     * @param currency Cena vedena v měně
+     * @param quantitySold Cena bez poplatku
+     * @return true - uložení proběhlo v pořádku, jinak false
+     */
     public boolean saveTransactionBuy(String uidBought, BigDecimal quantityBought, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantitySold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
@@ -53,6 +65,18 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Metoda k uložení transakce "Prodej"
+     * @param uidSold UID prodané kryptoměny
+     * @param quantitySold Množství prodané kryptoměny
+     * @param price Cena
+     * @param fee Poplatek
+     * @param date Datum
+     * @param time Čas
+     * @param currency Cena vedena v měně
+     * @param quantityBought Cena bez poplatku
+     * @return true - uložení proběhlo v pořádku, jinak false
+     */
     public boolean saveTransactionSell(String uidSold, BigDecimal quantitySold, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantityBought){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
@@ -66,6 +90,19 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Metoda k uložení transakce "Směna"
+     * @param uidBought UID koupené kryptoměny
+     * @param currency Cena vedena v měně
+     * @param quantityBought Množství koupené kryptoměny
+     * @param priceBought Cena směny
+     * @param fee Poplatek
+     * @param date Datum
+     * @param time Čas
+     * @param uidSold UID prodané kryptoměny
+     * @param quantitySold Množství prodané kryptoměny
+     * @return true - uložení proběhlo v pořádku, jinak false
+     */
     public boolean saveTransactionChange(String uidBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, long date, String time, String uidSold, BigDecimal quantitySold){
         if(!photos.isEmpty()){
             photosPath = imgManager.saveImage(context, photos);
@@ -79,11 +116,14 @@ public class TransactionOperationController {
         }
     }
 
-    public void changeAmountOfOwnedCrypto(String uidCrypto, BigDecimal quantity, int operationType, String uidChange, BigDecimal quantityChange){
-        AppDatabase db = AppDatabase.getDbInstance(context);
-        saveAmountOfOwnedCrypto(uidCrypto, quantity, operationType, uidChange, quantityChange);
-    }
-
+    /**
+     * Metoda slouží k aktualizování hodnoty vlastněné kryptoměny
+     * @param uidCrypto UID kryptoměny
+     * @param quantity Množství ke změně
+     * @param operationType Typ změny 0 - nákup (přidat), 1 - prodej (odebrat), 2 - směna (přidat pro nakoupenou, odebrat pro prodanou)
+     * @param uidChange UID prodané kryptoměny v případě směny, jinak null
+     * @param quantityChange Množství ke změně prodané kryptoměny v případě směny, jinak null
+     */
     public void saveAmountOfOwnedCrypto(String uidCrypto, BigDecimal quantity, int operationType, String uidChange, BigDecimal quantityChange){
         AppDatabase db = AppDatabase.getDbInstance(context);
         CryptocurrencyEntity ownedCrypto = db.databaseDao().getCryptoById(uidCrypto);
@@ -110,9 +150,12 @@ public class TransactionOperationController {
     }
 
     /**
-     * Při evidování nákupu dojde ke kontrole, zda-li není třeba nákup přidat k odpovídajícímu prodeji.
-     * @param date
-     * @param quantity
+     * Při evidování nákupu dojde ke kontrole, zda-li není třeba nákup přidat k odpovídajícímu prodeji
+     * @param transactionID UID transakce
+     * @param quantity Koupené množství
+     * @param date Datum transakce
+     * @param time Čas transakce
+     * @param uidCrypto UID koupené kryptoměny
      */
     private void calcFifoBuy(long transactionID, BigDecimal quantity, long date, String time, String uidCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -120,9 +163,16 @@ public class TransactionOperationController {
         db.databaseDao().resetAmountLeftBuyChangeAfterFirst(String.valueOf(transactionID), date, time, uidCrypto);
         resetTransactionSellAfterNewBuy(String.valueOf(transactionID), uidCrypto, date, time);
 
-        recaclForBuy(transactionID, quantity, date, time, uidCrypto);
+        recalcForBuy(transactionID, quantity, date, time, uidCrypto);
     }
 
+    /**
+     * Metoda slouží k přepočtu transakcí "Prodej" časově následujících po novém nákupu
+     * @param transactionID UID nové transakce nákup
+     * @param uidCrypto UID koupené kryptoměny
+     * @param date Datum nákupu
+     * @param time Čas nákupu
+     */
     private void resetTransactionSellAfterNewBuy(String transactionID, String uidCrypto, long date, String time){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSell = db.databaseDao().getUsedSellChangeFrom(date, time, uidCrypto);
@@ -180,6 +230,14 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Při evidování prodeje dojde ke kontrole, zda-li existuje nákup, ke kterému lze prodej přiřadit
+     * @param transactionID UID nového prodeje
+     * @param quantity Prodané množství
+     * @param date Datum prodeje
+     * @param time Čas prodeje
+     * @param uidCrypto UID prodané kryptoměny
+     */
     public void calcFifoSell(long transactionID, BigDecimal quantity, long date, String time, String uidCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfUsedSales = db.databaseDao().getUsedSellChangeAfter(date, time, uidCrypto);
@@ -205,6 +263,13 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Metoda slouží k vyresetování transakcí "Nákup" časově následujícím za novým prodejem
+     * @param uidCrypto
+     * @param firstBuyDate
+     * @param firstBuyTime
+     * @param listOfUsedSales
+     */
     private void resetTransactionBuyAfterNewSell(String uidCrypto, long firstBuyDate, String firstBuyTime, List<TransactionWithPhotos> listOfUsedSales){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -224,6 +289,12 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Metoda slouží k přepočtu FIFO fronty po přidání nového nákupu
+     * @param sellTransactionID UID transakce "Prodej" ke zpracování
+     * @param quantity Množství ke zpracování
+     * @param listOfAvailableBuys Dostupné nákupy pro daný prodej
+     */
     private void setSellAndBuyForNewSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
@@ -270,9 +341,17 @@ public class TransactionOperationController {
         }
     }
 
+    /**
+     * Zpracování FIFO operace při vytvoření transakce "Směna"
+     * @param transactionID UID transakce
+     * @param quantityBuy Koupené množství
+     * @param quantitySell Prodané množství
+     * @param date Datum transakce
+     * @param time Čas transakce
+     * @param uidBought UID koupené kryptoměny
+     * @param uidSold UID prodané kryptoměny
+     */
     private void calcFifoChange(long transactionID, BigDecimal quantityBuy, BigDecimal quantitySell, long date, String time, String uidBought, String uidSold){
-        AppDatabase db = AppDatabase.getDbInstance(context);
-
         // ----------------------------------------------
         // Nákup:
         calcFifoBuy(transactionID, quantityBuy, date, time, uidBought);
@@ -284,7 +363,15 @@ public class TransactionOperationController {
         // ----------------------------------------------
     }
 
-    private void recaclForBuy(long transactionID, BigDecimal quantity, long date, String time, String uidBought) {
+    /**
+     * Pomocná metoda pro provedení FIFO operace při přidání transakce "Nákup"
+     * @param transactionID UID transakce
+     * @param quantity Koupené množství
+     * @param date Datum transakce
+     * @param time Čas transakce
+     * @param uidBought UID koupené kryptoměny
+     */
+    private void recalcForBuy(long transactionID, BigDecimal quantity, long date, String time, String uidBought) {
         AppDatabase db = AppDatabase.getDbInstance(context);
 
         BigDecimal amountLeft = quantity;
@@ -361,9 +448,6 @@ public class TransactionOperationController {
     }
 
     public ArrayList<Uri> getPhotos() {
-        if(photos == null){
-            System.err.println(">>>>>>>>>>>>>>>>>> chyba 1");
-        }
         return photos;
     }
 

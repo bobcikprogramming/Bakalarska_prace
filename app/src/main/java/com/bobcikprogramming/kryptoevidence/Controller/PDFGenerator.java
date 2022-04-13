@@ -1,15 +1,11 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.os.Build;
 import android.os.Environment;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -28,7 +24,6 @@ import java.util.ArrayList;
 public class PDFGenerator {
     private AssetManager assetManager;
     private Context context;
-    private Activity activity;
 
     private PDDocument doc;
     private PDFont font = null, fontBold = null;
@@ -54,7 +49,7 @@ public class PDFGenerator {
     private BigDecimal total;
     private String fileName;
 
-    public PDFGenerator(AssetManager assetManager, Context context, Activity activity, double eurExchangeRate, double usdExchangeRate, boolean correctRate){
+    public PDFGenerator(AssetManager assetManager, Context context, double eurExchangeRate, double usdExchangeRate, boolean correctRate){
         PDFBoxResourceLoader.init(context);
 
         doc = new PDDocument();
@@ -62,7 +57,6 @@ public class PDFGenerator {
         this.eurExchangeRate = eurExchangeRate;
         this.usdExchangeRate = usdExchangeRate;
         this.context = context;
-        this.activity = activity;
         this.correctRate = correctRate;
 
         calendar = new CalendarManager();
@@ -71,6 +65,17 @@ public class PDFGenerator {
         total = BigDecimal.ZERO;
     }
 
+    /**
+     * Metoda inicializující vytvoření PDF souboru
+     * Postupně zavolá vypsání nákupu, prodeje a směny
+     * Následující soubor poté uloží
+     * @param selectedYear Rok daňového období
+     * @param buyList Seznam nákupů za dané období
+     * @param sellList Seznam prodejů za dané období
+     * @param changeList Seznam směn za dané období
+     * @return true - proběhlo-li uložení v pořádku, jinak false
+     * @throws IOException
+     */
     public boolean createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
         BigDecimal buyTotal;
         BigDecimal sellTotal;
@@ -92,24 +97,47 @@ public class PDFGenerator {
         contentStream.close();
         File path;
         fileName = selectedYear +"_"+ calendar.getActualDateFolderNameFormat() + ".pdf";
-        path = new File(getAppSpecificStorageDir(), fileName);
+        File file = getAppSpecificStorageDir();
+        if(file == null){
+            return false;
+        }
+        path = new File(file, fileName);
 
         doc.save(path);
         doc.close();
         return true;
     }
-
-    /** https://developer.android.com/training/data-storage/app-specific#external-select-location */
+    
+    /**
+     * Metoda pro získání cesty do sloužky s PDF soubory
+     * Neexistuje-li daná složka, tak dojde k jejímu vytvoření
+     * @return Cestu do složky pokud existuje, jinak null
+     * 
+     * Metoda inspirována z:
+     * https://developer.android.com/training/data-storage/app-specific#external-select-location
+     */
     @Nullable
     File getAppSpecificStorageDir() {
         File file = new File(context.getExternalFilesDir(
                 Environment.DIRECTORY_DOCUMENTS), "kryptoevidence_pdf");
-        if (file == null || !file.mkdirs()) {
-            System.err.println("Soubor nebyl vytvořen.");
+        if(!file.exists()){
+            if(!file.mkdirs()){
+                System.err.println("Soubor nebyl vytvořen.");
+                return null;
+            }
         }
         return file;
     }
 
+    /**
+     * Pomocná metoda pro zapsání nového řádku do PDF souboru
+     * @param text Text jenž má být vypsán
+     * @param font Font písma
+     * @param fontSize Velikost písma
+     * @param tx X souřadnice začátku textu
+     * @param ty Y souřadnice začátku textu
+     * @throws IOException
+     */
     private void writeTextNewLineAtOffset(String text, PDFont font, float fontSize, float tx, float ty ) throws IOException {
         contentStream.setFont(font, fontSize);
         contentStream.newLineAtOffset(tx, ty);
@@ -117,11 +145,19 @@ public class PDFGenerator {
         curXVal += tx;
     }
 
+    /**
+     * Metoda pro načtení fontů
+     * @throws IOException
+     */
     private void loadFonts() throws IOException {
         font = PDType0Font.load(doc, assetManager.open("roboto_regular.ttf"));
         fontBold = PDType0Font.load(doc, assetManager.open("roboto_bold.ttf"));
     }
 
+    /**
+     * Metoda pro vytvoření nové stránky
+     * @throws IOException
+     */
     private void createNewPage() throws IOException {
         firstPageRow = true;
         page = new PDPage(PDRectangle.A4);
@@ -163,6 +199,11 @@ public class PDFGenerator {
         curYVal -= 55f;
     }
 
+    /**
+     * Metoda pro vytvoření zápatí
+     * @param pageNum
+     * @throws IOException
+     */
     private void createFooter(String pageNum) throws IOException {
         float width = page.getMediaBox().getWidth() - (MARGINSIDE * 2);
         curYVal = 50;
@@ -189,21 +230,37 @@ public class PDFGenerator {
         contentStream.endText();
     }
 
-    private void insertTotal(float yVal, float moveRight, float textWidth, float textWidthText, String totalText, String total) throws IOException {
+    /**
+     * Metoda pro vypsání celkového součtu operace
+     * @param yVal Hodnota posunu na Y ose
+     * @param moveRight Hodnota posunu na X ose
+     * @param textWidthDes Šířka popisujícího textu
+     * @param textWidthTotal Šířka hodnoty celkového součtu operace
+     * @param des Popisující text
+     * @param total Hodnota celkového součtu operace
+     * @throws IOException
+     */
+    private void insertTotal(float yVal, float moveRight, float textWidthDes, float textWidthTotal, String des, String total) throws IOException {
         curYVal -= yVal;
         contentStream.setNonStrokingColor(0, 0, 0);
-        contentStream.addRect(moveRight, curYVal, textWidth + textWidthText + 5, 2);
+        contentStream.addRect(moveRight, curYVal, textWidthDes + textWidthTotal + 5, 2);
         contentStream.fill();
 
         contentStream.beginText();
         curXVal = 0f;
         curYVal -= 15f;
-        writeTextNewLineAtOffset(totalText, font, 12, moveRight, curYVal);
-        writeTextNewLineAtOffset(total, fontBold, 14, textWidthText + 5, 0);
+        writeTextNewLineAtOffset(des, font, 12, moveRight, curYVal);
+        writeTextNewLineAtOffset(total, fontBold, 14, textWidthTotal + 5, 0);
         curYVal -= 35f;
     }
 
-    /** PDF sekce nákupu */
+    /* PDF sekce nákupu */
+    /**
+     * Metoda pro generování seznamu nákupů
+     * @param buyList Seznam nákupů
+     * @return Celkovou částku nákladů
+     * @throws IOException
+     */
     private BigDecimal createBuy(ArrayList<BuyTransactionPDFList> buyList) throws IOException {
         BigDecimal buyTotal = BigDecimal.ZERO;
         // Vložit popis tabulky
@@ -219,7 +276,7 @@ public class PDFGenerator {
                 if (curYVal - 20f > 70f) {
                     // Dokud jsem nepřetekl obsah stránky
                     // Vypsat prodej
-                    insertBuy(cellWidthXPos, buy);
+                    insertBuy(buy);
                     firstPageRow = false;
 
                 } else {
@@ -240,7 +297,7 @@ public class PDFGenerator {
                     // Vložit prodej
                     contentStream.beginText();
                     curXVal = 0f;
-                    insertBuy(cellWidthXPos, buy);
+                    insertBuy(buy);
                     firstPageRow = false;
                     pageNum += 1;
                 }
@@ -253,7 +310,12 @@ public class PDFGenerator {
         return buyTotal;
     }
 
-    private void insertBuy(float cellWidthXPos, BuyTransactionPDFList buy) throws IOException {
+    /**
+     * Metoda pro výpis jednotlivých nákupů
+     * @param buy Vypisovaný nákup
+     * @throws IOException
+     */
+    private void insertBuy(BuyTransactionPDFList buy) throws IOException {
         curYVal -= 20f;
         int textOverflowCounter = 0;
         ArrayList<String> textOverflow = new ArrayList<>();
@@ -346,6 +408,12 @@ public class PDFGenerator {
         }
     }
 
+    /**
+     * Metoda pro vytvoření hlavičky seznamu nákupů
+     * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu, 
+     *                            false - výpis pokračuje na nové straně)
+     * @throws IOException
+     */
     private void createBuyHeadline(boolean showTransactionType) throws IOException {
         if(curYVal - 55f < 70f) {
             createFooter(String.valueOf(pageNum));
@@ -400,6 +468,11 @@ public class PDFGenerator {
         contentStream.fill();
     }
 
+    /**
+     * Metoda k vypsání celkových nákladů
+     * @param buyTotal Celkové náklady
+     * @throws IOException
+     */
     private void createBuyTotal(String buyTotal) throws IOException {
         contentStream.endText();
         if(curYVal - 25f > 70f) {
@@ -441,9 +514,15 @@ public class PDFGenerator {
             pageNum += 1;
         }
     }
-    /** PDF sekce nákupu */
+    /* PDF sekce nákupu */
 
-    /** PDF sekce prodeje */
+    /* PDF sekce prodeje */
+    /**
+     * Metoda pro generování seznamu prodejů
+     * @param sellList Seznam prodejů
+     * @return Celkovou částku zisku
+     * @throws IOException
+     */
     private BigDecimal createSell(ArrayList<SellTransactionPDFList> sellList) throws IOException {
         boolean firstRow = true;
         BigDecimal sellTotal = BigDecimal.ZERO;
@@ -460,7 +539,7 @@ public class PDFGenerator {
                 if (curYVal - 20f > 70f) {
                     // Dokud jsem nepřetekl obsah stránky
                     // Vypsat prodej
-                    insertSell(cellWidthXPos, sell, firstRow);
+                    insertSell(sell, firstRow);
                     firstPageRow = false;
                     firstRow = false;
 
@@ -482,7 +561,7 @@ public class PDFGenerator {
                     // Vložit prodej
                     contentStream.beginText();
                     curXVal = 0f;
-                    insertSell(cellWidthXPos, sell, false);
+                    insertSell(sell, false);
                     firstPageRow = false;
                     firstRow = false;
                     pageNum += 1;
@@ -496,7 +575,14 @@ public class PDFGenerator {
         return sellTotal;
     }
 
-    private void insertSell(float cellWidthXPos, SellTransactionPDFList sell, boolean firstRow) throws IOException {
+
+    /**
+     * Metoda pro výpis jednotlivých prodejů
+     * @param sell Vypisovaný prodej
+     * @param firstRow boolean hodnota, zda-li se jedná o první řádek výpisu
+     * @throws IOException
+     */
+    private void insertSell(SellTransactionPDFList sell, boolean firstRow) throws IOException {
         curYVal -= 20f;
         int textOverflowCounter = 0;
         ArrayList<String> textOverflow = new ArrayList<>();
@@ -592,6 +678,12 @@ public class PDFGenerator {
         }
     }
 
+    /**
+     * Metoda pro vytvoření hlavičky seznamu prodejů
+     * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu,
+     *                            false - výpis pokračuje na nové straně)
+     * @throws IOException
+     */
     private void createSellHeadline(boolean showTransactionType) throws IOException {
         if(curYVal - 55f < 70f) {
             createFooter(String.valueOf(pageNum));
@@ -646,6 +738,12 @@ public class PDFGenerator {
         contentStream.fill();
     }
 
+    /**
+     * Metoda k vypsání celkového zisku
+     * @param sellTotal Celkový zisk
+     * @throws IOException
+     */
+
     private void createSellTotal(String sellTotal) throws IOException {
         contentStream.endText();
         if(curYVal - 25f > 70f) {
@@ -687,9 +785,15 @@ public class PDFGenerator {
             pageNum += 1;
         }
     }
-    /** PDF sekce prodeje */
+    /* PDF sekce prodeje */
 
-    /** PDF sekce směny */
+    /* PDF sekce směny */
+    /**
+     * Metoda pro generování seznamu směn
+     * @param changeList Seznam směn
+     * @return Celkovou částku zisku
+     * @throws IOException
+     */
     private BigDecimal createChange(ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
         boolean firstRow = true;
         BigDecimal changeTotal = BigDecimal.ZERO;
@@ -706,7 +810,7 @@ public class PDFGenerator {
                 if (curYVal - 20f > 70f) {
                     // Dokud jsem nepřetekl obsah stránky
                     // Vypsat směnu
-                    insertChange(cellWidthXPos, change, firstRow);
+                    insertChange(change, firstRow);
                     firstPageRow = false;
                     firstRow = false;
 
@@ -728,7 +832,7 @@ public class PDFGenerator {
                     // Vložit směnu
                     contentStream.beginText();
                     curXVal = 0f;
-                    insertChange(cellWidthXPos, change, false);
+                    insertChange(change, false);
                     firstPageRow = false;
                     firstRow = false;
                     pageNum += 1;
@@ -742,7 +846,13 @@ public class PDFGenerator {
         return changeTotal;
     }
 
-    private void insertChange(float cellWidthXPos, ChangeTransactionPDFList change, boolean firstRow) throws IOException {
+    /**
+     * Metoda pro výpis jednotlivých směn
+     * @param change Vypisovaná směna
+     * @param firstRow boolean hodnota, zda-li se jedná o první řádek výpisu
+     * @throws IOException
+     */
+    private void insertChange(ChangeTransactionPDFList change, boolean firstRow) throws IOException {
         curYVal -= 20f;
         int textOverflowCounter = 0;
         ArrayList<String> textOverflow = new ArrayList<>();
@@ -832,6 +942,12 @@ public class PDFGenerator {
         }
     }
 
+    /**
+     * Metoda pro vytvoření hlavičky seznamu směn
+     * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu,
+     *                            false - výpis pokračuje na nové straně)
+     * @throws IOException
+     */
     private void createChangeHeadline(boolean showTransactionType) throws IOException {
         if(curYVal - 55f < 70f) {
             createFooter(String.valueOf(pageNum));
@@ -886,6 +1002,12 @@ public class PDFGenerator {
         contentStream.fill();
     }
 
+
+    /**
+     * Metoda k vypsání celkového zisku
+     * @param changeTotal Celkové zisk
+     * @throws IOException
+     */
     private void createChangeTotal(String changeTotal) throws IOException {
         contentStream.endText();
         if(curYVal - 25f > 70f) {
@@ -926,9 +1048,17 @@ public class PDFGenerator {
             pageNum += 1;
         }
     }
-    /** PDF sekce směny */
+    /* PDF sekce směny */
 
-    /** PDF celkový součet */
+    /* PDF celkový součet */
+
+    /**
+     * Metoda pro vytvoření celkového součtu za daňové období
+     * @param buyTotal Celkové náklady za nákup
+     * @param sellTotal Celkový zisk za prodej
+     * @param changeTotal Celkový zisk za směnu
+     * @throws IOException
+     */
     private void createTotalOverview(BigDecimal buyTotal, BigDecimal sellTotal, BigDecimal changeTotal) throws IOException {
         if(curYVal - 95f < 70f) {
             createFooter(String.valueOf(pageNum));
@@ -990,7 +1120,7 @@ public class PDFGenerator {
 
         contentStream.endText();
     }
-    /** PDF celkový součet */
+    /* PDF celkový součet */
 
     public String getFileName(){
         return fileName;

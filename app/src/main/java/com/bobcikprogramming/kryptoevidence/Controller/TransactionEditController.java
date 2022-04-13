@@ -54,12 +54,29 @@ public class TransactionEditController {
         loadDataFromDB(transactionId);
     }
 
+    /**
+     * Metoda pro načtení dat transakce z databáze
+     * @param transactionID
+     */
     private void loadDataFromDB(String transactionID){
         AppDatabase db = AppDatabase.getDbInstance(context);
         transactionWithPhotos = db.databaseDao().getTransactionByTransactionID(transactionID);
         transactionWithHistory = db.databaseDao().getTransactionByTransactionHistoryID(transactionID);
     }
 
+    /**
+     * Metoda pro získání hodnoty, zda-li došlo ke změně dat
+     * @param valueRowFirst Ukazatel na edit textové pole prvního řádku
+     * @param valueRowSecond Ukazatel na edit textové pole druhého řádku
+     * @param spinnerRowThird Ukazatel na spinner třetího řádku
+     * @param valueRowFifth Ukazatel na edit textové pole pátého řádku
+     * @param valueRowSixth Ukazatel na edit textové pole šestého řádku
+     * @param spinnerRowSeventh Ukazatel spinner sedmého řádku
+     * @param valueFee Ukazatel na edit textové pole poplatku
+     * @param valueDate Ukazatel na text view data
+     * @param valueTime Ukazatel na text view času
+     * @param uidSell UID prodávané kryptoměny (využito u směny)
+     */
     public void getUpdateStatus(EditText valueRowFirst, EditText valueRowSecond, Spinner spinnerRowThird, EditText valueRowFifth, EditText valueRowSixth, Spinner spinnerRowSeventh, EditText valueFee, TextView valueDate, TextView valueTime, String uidSell){
         TransactionEntity transaction = getTransactionEntity();
         newTransaction = new TransactionEntity();
@@ -213,6 +230,16 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda provede úkony k aktualizování dat v databázi
+     * @param isEmpty true - všechna povinná pole nejsou řádně vyplněna, jinak false
+     * @param valueDate Ukazatel na text view obsahující datum
+     * @param valueTime Ukazatel na text view obsahující čas
+     * @param descDate Ukazatel na text view s popisem data
+     * @param descTime Ukazatel na text view s popisem času
+     * @param valueNote Ukazatel na edit text s poznámkou ke změně
+     * @return
+     */
     public boolean updateDatabase(boolean isEmpty, TextView valueDate, TextView valueTime, TextView descDate, TextView descTime, EditText valueNote){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean dateAndTimeCorrect = calendar.checkDateAndTime(context, valueDate, descDate, valueTime, descTime);
@@ -281,48 +308,62 @@ public class TransactionEditController {
         return false;
     }
 
+    /**
+     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě změny dat
+     */
     private void editOwnedCrypto(){
         if(operationType != 2){
             if(quantityOld.compareTo(quantityNew) != 0){
                 BigDecimal quantity = quantityNew.subtract(quantityOld);
-                transactionOperation.changeAmountOfOwnedCrypto(uidCrypto, quantity, operationType, null, null);
+                transactionOperation.saveAmountOfOwnedCrypto(uidCrypto, quantity, operationType, null, null);
             }
         }else{
             if (quantityOld.compareTo(quantityNew) != 0) {
                 BigDecimal quantity = quantityNew.subtract(quantityOld);
-                transactionOperation.changeAmountOfOwnedCrypto(uidCrypto, quantity, 0, null, null);
+                transactionOperation.saveAmountOfOwnedCrypto(uidCrypto, quantity, 0, null, null);
             }
             if(cryptoSellChange) {
-                transactionOperation.changeAmountOfOwnedCrypto(uidChangedCrypto, quantityOld, 0, null, null);
-                transactionOperation.changeAmountOfOwnedCrypto(uidCryptoChange, quantityNew, 1, null, null);
+                transactionOperation.saveAmountOfOwnedCrypto(uidChangedCrypto, quantityOld, 0, null, null);
+                transactionOperation.saveAmountOfOwnedCrypto(uidCryptoChange, quantityNew, 1, null, null);
             }else {
                 if (quantityChangeOld.compareTo(quantityChangeNew) != 0) {
                     BigDecimal quantity = quantityChangeNew.subtract(quantityChangeOld);
-                    transactionOperation.changeAmountOfOwnedCrypto(uidCryptoChange, quantity, 1, null, null);
+                    transactionOperation.saveAmountOfOwnedCrypto(uidCryptoChange, quantity, 1, null, null);
                 }
             }
         }
     }
 
+    /**
+     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě smazání dat
+     */
     private void deleteFromOwnedCrypto(){
         if(operationType == 0) {
             BigDecimal quantity = getNegativeQuantity(getTransactionEntity().quantityBought);
-            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().uidBought, quantity, 0, null, null);
+            transactionOperation.saveAmountOfOwnedCrypto(getTransactionEntity().uidBought, quantity, 0, null, null);
         }else if(operationType == 1) {
             BigDecimal quantity = getNegativeQuantity(getTransactionEntity().quantitySold);
-            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().uidSold, quantity, 1, null, null);
+            transactionOperation.saveAmountOfOwnedCrypto(getTransactionEntity().uidSold, quantity, 1, null, null);
         }else {
             BigDecimal quantityBought = getNegativeQuantity(getTransactionEntity().quantityBought);
             BigDecimal quantitySold = getNegativeQuantity(getTransactionEntity().quantitySold);
-            transactionOperation.changeAmountOfOwnedCrypto(getTransactionEntity().uidBought, quantityBought, 2,
+            transactionOperation.saveAmountOfOwnedCrypto(getTransactionEntity().uidBought, quantityBought, 2,
                     getTransactionEntity().uidSold, quantitySold);
         }
     }
 
+    /**
+     * Pomocná metoda pro převod hodnoty množství z typu string na BigDecimal a negaci znaménka
+     * @param quantity Množství typu String
+     * @return Negovaná hodnota typu BigDecimal
+     */
     private BigDecimal getNegativeQuantity(String quantity){
         return shared.getBigDecimal(quantity).multiply(shared.getBigDecimal("-1"));
     }
 
+    /**
+     * Metoda pro smazání transakce z databáze
+     */
     public void deleteFromDatabase(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity toRemove = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
@@ -347,6 +388,13 @@ public class TransactionEditController {
         db.databaseDao().deleteTransactionTable(transactionID);
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při smazání nákupu
+     * @param transactionID UID mazané transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidCrypto UID mazané kryptoměny
+     */
     private void fifoDeleteBuy(String transactionID, long date, String time, String uidCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -363,6 +411,14 @@ public class TransactionEditController {
         recalculateForEditBuy(date, time, uidCrypto);
     }
 
+    /**
+     * Metoda pro vyresetování prodejů vázaných na editovanou transakci
+     * @param transactionID UID editované transakce
+     * @param date Datum editované transakce
+     * @param time Čas editované transakce
+     * @param uidCrypto UID editované kryptoměny
+     * @param editingTimeBefore true - editovaná transakce se posunula v čase před svůj původní čas, jinak false
+     */
     private void resetSales(String transactionID, long date, String time, String uidCrypto, boolean editingTimeBefore){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfSales = db.databaseDao().getUsedSellChangeFrom(date, time, uidCrypto);
@@ -455,6 +511,12 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda slouží k přepočtení FIFO fronty při editaci nákupu
+     * @param date Datum editované transakce
+     * @param time Čas editované transakce
+     * @param uidCrypto UID editované kryptoměny
+     */
     private void recalculateForEditBuy(long date, String time, String uidCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
         List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellChangeNotEmptyFrom(date, time, uidCrypto);
@@ -518,6 +580,13 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při smazání prodeje
+     * @param transactionID UID mazané transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidCrypto UID mazané kryptoměny
+     */
     private void fifoDeleteSell(String transactionID, long date, String time, String uidCrypto){
         // Brát prodeje v cyklu a dokud další prodej nezačíná na jiné transakci než na té, kde první, a přičíst usedFromFirst k prvnímu nákupu
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -564,6 +633,12 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda slouží k přepočtení FIFO fronty při editaci prodeje
+     * @param sellTransactionID UID prodávané transakce
+     * @param quantity Množství, které je třeba zpracovat
+     * @param listOfAvailableBuys Seznam dostupných nákupů pro prodávanou transakci
+     */
     private void recalculateForRemoveSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
@@ -616,6 +691,14 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při smazání směny
+     * @param transactionID UID mazané transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidBought UID mazané kryptoměny (pořízené)
+     * @param uidSold UID mazané kryptoměny (prodané)
+     */
     private void fifoDeleteChange(String transactionID, long date, String time, String uidBought, String uidSold){
         // -------------------------------------------------------
         // Nákup:
@@ -628,6 +711,14 @@ public class TransactionEditController {
         // -------------------------------------------------------
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci množství nakoupené kryptoměny
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidCrypto UID editované kryptoměny
+     * @param newAmountLeft Nová hodnota volné kapacity ke zpracování
+     */
     private void fifoEditAmountBuy(String transactionID, long date, String time, String uidCrypto, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -649,6 +740,14 @@ public class TransactionEditController {
         newTransaction.amountLeft = db.databaseDao().getTransactionByTransactionID(transactionID).transaction.amountLeft;
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci množství prodané kryptoměny
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidCrypto UID editované kryptoměny
+     * @param newAmountLeft Nová hodnota kapacity ke zpracování
+     */
     private void fifoEditAmountSell(String transactionID, long date, String time, String uidCrypto, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -711,6 +810,16 @@ public class TransactionEditController {
         newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci množství směněné kryptoměny
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidBought UID editované kryptoměny (pořízené)
+     * @param uidSold UID editované kryptoměny (prodané)
+     * @param newAmountLeftBuy Nová hodnota volné kapacity ke zpracování (pořízené)
+     * @param newAmountLeftSell Nová hodnota kapacity ke zpracování (prodané)
+     */
     private void fifoEditAmountChange(String transactionID, long date, String time, String uidBought, String uidSold, String newAmountLeftBuy, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // -------------------------------------------------------
@@ -743,6 +852,14 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidBought UID koupené kryptoměny
+     * @param newAmountLeft Nová hodnota volné kapacity ke zpracování
+     */
     private void fifoEditTimeBuy(String transactionID, long date, String time, String uidBought, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -790,6 +907,14 @@ public class TransactionEditController {
         newTransaction.amountLeft = changedBuy.amountLeft;
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidSold UID prodané kryptoměny
+     * @param newAmountLeft Nová hodnota kapacity ke zpracování
+     */
     private void fifoEditTimeSell(String transactionID, long date, String time, String uidSold, String newAmountLeft){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -874,22 +999,15 @@ public class TransactionEditController {
             // Nastavím novou hodnotu měněnému (amountLeft, date, time).
             db.databaseDao().updateChangeSellForEditingTime(transactionID, newAmountLeft, date, time);
 
-            System.out.println("---------------------------- před if");
             if(!listOfUsedSales.isEmpty()) {
-                System.out.println("---------------------------- v if");
                 // Přepočítat od původního. Beru včetně prvního (ten zůstal, jen má jinou hodnotu).
                 List<TransactionWithPhotos> listOfIncompleteSales = db.databaseDao().getSellChangeNotEmptyFromFirst(transactionID, editingTransaction.date, editingTransaction.time, uidSold);
-                if(listOfIncompleteSales.isEmpty()){
-                    System.out.println("-------------------------------- je  to empty");
-                }
                 for (TransactionWithPhotos sell : listOfIncompleteSales) {
                     List<TransactionWithPhotos> listOfAvailableBuys = db.databaseDao().getNotEmptyBuyChangeTo(sell.transaction.date, sell.transaction.time, uidSold);
                     if (listOfAvailableBuys.isEmpty()) {
-                        System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
                         break;
                     }
                     if (sell.transaction.transactionType.equals("Prodej")) {
-                        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                         recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                     } else {
                         recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
@@ -911,6 +1029,7 @@ public class TransactionEditController {
         newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
+
     private void fifoEditTimeChange(String transactionID, long date, String time, String uidBought, String uidSold, String newAmountLeftBuy, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // -------------------------------------------------------
@@ -927,10 +1046,8 @@ public class TransactionEditController {
         // Typ kryptoměny ponechán:
         TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
         if(!cryptoSellChange){
-            System.out.println(">>>>>>>>>>>>>>>CHYBA: změna kryptoměny nezaznamenána");
             fifoEditTimeSell(transactionID, date, time, uidSold, newAmountLeftSell);
         }else {
-            System.out.println(">>>>>>>>>>>>>>>změna kryptoměny zaznamenána");
             // Smazat původní.
             TransactionEntity editingTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
             fifoDeleteSell(transactionID, editingTransaction.date, editingTransaction.time, editingTransaction.uidSold);
@@ -941,6 +1058,14 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidSold UID směněné (prodané) kryptoměny
+     * @param newAmountLeftSell Nová hodnota kapacity ke zpracování
+     */
     private void fifoEditCryptoChange(String transactionID, long date, String time, String uidSold, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // Smazat původní.
@@ -952,6 +1077,11 @@ public class TransactionEditController {
         updateRestOfChange(transactionID, db);
     }
 
+    /**
+     * Pomocná metoda pro aktualizování zbylých hodnot transakce "Směna"
+     * @param transactionID
+     * @param db
+     */
     private void updateRestOfChange(String transactionID, AppDatabase db){
         TransactionEntity changedTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
         newTransaction.amountLeft = changedTransaction.amountLeft;
@@ -962,7 +1092,17 @@ public class TransactionEditController {
         newTransaction.lastTakenFrom = changedTransaction.lastTakenFrom;
     }
 
-    /** https://stackoverflow.com/a/10716773 */
+    /**
+     * Metoda pro smazání snímku
+     * @param path Cesta ke snímku
+     * Metoda inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/10716642
+     * Odpověď: https://stackoverflow.com/a/10716773
+     * Autor:   Dhaval Parmar
+     * Autor:   https://stackoverflow.com/users/1168654/dhaval-parmar
+     * Datum:   23. března 2012
+     */
     private void deleteImage(String path){
         File toDelete = new File(path);
         if(toDelete.exists()){
@@ -970,6 +1110,11 @@ public class TransactionEditController {
         }
     }
 
+    /**
+     * Metoda pro uložení snímku do databáze
+     * @param uri Cesta ke snímku datového typu Uri
+     * @return true - uložení proběhlo, jinak false
+     */
     public boolean saveImageToDatabase(Uri uri){
         AppDatabase db = AppDatabase.getDbInstance(context);
         PhotoEntity photoEntity = new PhotoEntity();

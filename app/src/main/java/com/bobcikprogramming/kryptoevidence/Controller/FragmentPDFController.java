@@ -1,14 +1,10 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.widget.Toast;
-
-import androidx.core.app.ActivityCompat;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.ExchangeByYearEntity;
@@ -20,7 +16,7 @@ import com.bobcikprogramming.kryptoevidence.View.RecyclerViewPDF;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.MathContext;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -143,12 +139,12 @@ public class FragmentPDFController {
         ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
         ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
         ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
-        generator = new PDFGenerator(context.getAssets(), context, activity, eurExchangeRate, usdExchangeRate, correctRate);
+        generator = new PDFGenerator(context.getAssets(), context, eurExchangeRate, usdExchangeRate, correctRate);
 
         try {
-            boolean permissionGaranted = generator.createPDF(selectedYear, buyList, sellList, changeList);
-            if(!permissionGaranted){
-                Toast.makeText(context, "Pro vytvoření PDF je zapotřebí povolit přístup k souborům.", Toast.LENGTH_LONG).show();
+            boolean created = generator.createPDF(selectedYear, buyList, sellList, changeList);
+            if(!created){
+                Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
                 return;
             }
         } catch (IOException e) {
@@ -191,6 +187,12 @@ public class FragmentPDFController {
         return sellList;
     }
 
+    /**
+     * Metoda pro získání seznamu nákupů k výpisu za dané daňové období
+     * @param dateFrom Začátek daňového období
+     * @param dateTo Konec daňového období
+     * @return ArrayList nákupů k výpisu
+     */
     private ArrayList<BuyTransactionPDFList> buyValue(long dateFrom, long dateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<BuyTransactionPDFList> buyList = new ArrayList<>();
@@ -253,11 +255,7 @@ public class FragmentPDFController {
 
             // Zpracuji hodnoty mezi prvním a posledním.
             // Získám nákupy mezi prvním a posledním prodejem.
-            System.out.println(">>>>>>>>>>>>>>>>UIDFIRST: "+uidFirst + " UIDLAST: "+uidLast);
-            System.out.println(">>>>>>>>>>>>>>>>datefirst: "+ calendar.getDateMillis(dateFirst) + " timefirst: "+ timeFirst);
-            System.out.println(">>>>>>>>>>>>>>>>datelast: "+ calendar.getDateMillis(dateLast) + " timelast: "+ timeLast);
             List<TransactionWithPhotos> listOfUsedBuyBetween = db.databaseDao().getUsedBuyChangeBetweenWithoutFirstAndLast(String.valueOf(uidFirst), String.valueOf(uidLast), calendar.getDateMillis(dateFirst), timeFirst, calendar.getDateMillis(dateLast), timeLast, uidCrypto);
-            System.out.println(">>>>>>>>>>>>>>>>>List size: "+listOfUsedBuyBetween.size());
             for (TransactionWithPhotos buy : listOfUsedBuyBetween) {
                 TransactionEntity buyEntity = buy.transaction;
                 // Získáme hodnoty: Cena, Množství, Poplatek.
@@ -286,11 +284,18 @@ public class FragmentPDFController {
 
         }
         // Seřadím.
-        sortListByTime(buyList);
-        sortListByDate(buyList);
+        buyList = sortListByTime(buyList);
+        buyList = sortListByDate(buyList);
         return buyList;
     }
 
+    /**
+     * Pomocná metoda pro vytvoření položky k uložení do seznamu nákupů
+     * @param uid UID daného nákupu
+     * @param usedFrom Množství, jenž bylo z daného nákupu prodána
+     * @param shortName Symbol kryptoměny
+     * @return Třída BuyTransactionPDFList obsahující informace o nákupu, jenž bude uložena do seznamu
+     */
     private BuyTransactionPDFList getBuyTransaction(long uid, BigDecimal usedFrom, String shortName){
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity buy = db.databaseDao().getTransactionByTransactionID(String.valueOf(uid)).transaction;
@@ -309,8 +314,8 @@ public class FragmentPDFController {
             feePerPiece = BigDecimal.ZERO;
         }else{
             // Jinak dělíme.
-            pricePerPiece = price.divide(quantity, 2, RoundingMode.HALF_EVEN);
-            feePerPiece = fee.divide(quantity, 2, RoundingMode.HALF_EVEN);
+            pricePerPiece = price.divide(quantity, MathContext.DECIMAL128);
+            feePerPiece = fee.divide(quantity,  MathContext.DECIMAL128);
         }
 
         // Zjistíme cenu nákupu pro využité množství.
@@ -335,6 +340,12 @@ public class FragmentPDFController {
         return new BuyTransactionPDFList(calendar.getDateFromMillis(buy.date), buy.time, usedFrom.toPlainString(), shortName, price.toString(), fee.toString(), total.toString());
     }
 
+    /**
+     * Metoda pro získání seznamu směn k výpisu za dané daňové období
+     * @param dateFrom Začátek daňového období
+     * @param dateTo Konec daňového období
+     * @return Seznam směn k výpisu
+     */
     private ArrayList<ChangeTransactionPDFList> changeValue(long dateFrom, long dateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ArrayList<ChangeTransactionPDFList> changeList = new ArrayList<>();
@@ -362,7 +373,12 @@ public class FragmentPDFController {
         return changeList;
     }
 
-    private void sortListByDate(ArrayList<BuyTransactionPDFList> data){
+    /**
+     * Metoda k seřazení seznamu podle data
+     * @param data Seznam k seřazení
+     * @return Seřadený seznam
+     */
+    private ArrayList<BuyTransactionPDFList> sortListByDate(ArrayList<BuyTransactionPDFList> data){
         BuyTransactionPDFList tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
@@ -380,9 +396,15 @@ public class FragmentPDFController {
                 }
             }
         }
+        return data;
     }
 
-    private void sortListByTime(ArrayList<BuyTransactionPDFList> data){
+    /**
+     * Metoda k seřazení seznamu podle času
+     * @param data Seznam k seřazení
+     * @return Seřadený seznam
+     */
+    private ArrayList<BuyTransactionPDFList> sortListByTime(ArrayList<BuyTransactionPDFList> data){
         BuyTransactionPDFList tmp;
         for(int i = 0; i < data.size() - 1; i++){
             for(int j = 0; j < data.size() - i - 1; j++){
@@ -400,8 +422,12 @@ public class FragmentPDFController {
                 }
             }
         }
+        return data;
     }
 
+    /**
+     * Metoda k uložení informací o vytvořeném PDF do databáze
+     */
     private void saveToDb(String fileName, BigDecimal total){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -418,12 +444,18 @@ public class FragmentPDFController {
         adapter.setDataList(dataList);
     }
 
+    /**
+     * Metoda pro zobrazení dialogového okna při vytváření PDF záznamu v případě, že nemají všechny prodeje správně evidováno nabytí kryptoměny
+     * @param dateFrom Daňové období od
+     * @param dateTo Daňové období do
+     * @param salesInYear Seznam prodejů v daňovém období
+     */
     private void confirmDialogUnfinishedCreate(long dateFrom, long dateTo, List<TransactionWithPhotos> salesInYear){
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialog);
         builder.setCancelable(true);
         builder.setTitle("Neúplný prodej");
         builder.setMessage("V daném daňovém období se nachází jeden, či více prodejů, " +
-                "jenž nemají kompletně evidováno nabytí prodávané kryptoměny.\n\n" +
+                "jenž nemají kompletně evidován nákup prodávané kryptoměny.\n\n" +
                 "Přejete si pokračovat v generování PDF?");
         builder.setPositiveButton("Pokračovat",
                 new DialogInterface.OnClickListener() {

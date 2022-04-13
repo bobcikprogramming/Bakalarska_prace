@@ -39,6 +39,9 @@ public class TransactionEditPhotoViewerController {
         setViewPagerAdapter();
     }
 
+    /**
+     * Metoda pro inicializování seznamu Uri cest ke snímkům
+     */
     private void setPhotosUri(){
         photosUri = new ArrayList<>();
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -48,11 +51,18 @@ public class TransactionEditPhotoViewerController {
         }
     }
 
+    /**
+     * Metoda pro inicializování viewPagerAdapteru a  jeho nastavení pro ViewPager
+     */
     private void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, photosUri);
         photoViewer.setAdapter(viewPagerAdapter);
     }
 
+    /**
+     * Metoda pro smazání snímku z databáze a ViewPageru na pozici position, proběhlo-li jeho smazání ze souboru úspěšně
+     * @param position Pozice snímku
+     */
     public void deletePhoto(int position){
         AppDatabase db = AppDatabase.getDbInstance(context);
         if(deleteImage(photos.get(position).dest)) {
@@ -64,6 +74,11 @@ public class TransactionEditPhotoViewerController {
         }
     }
 
+    /**
+     * Pomocná metoda na smazání snímku ze souboru
+     * @param path Cesta ke snímku
+     * @return true - snímek smazán, jinak false
+     */
     private boolean deleteImage(String path){
         File toDelete = new File(path);
         if(toDelete.exists()){
@@ -79,6 +94,10 @@ public class TransactionEditPhotoViewerController {
         return true;
     }
 
+    /**
+     * Metoda pro uložení snímku do databáze
+     * @param uri Uri cesta ke snímku
+     */
     public void saveImageToDatabase(Uri uri){
         AppDatabase db = AppDatabase.getDbInstance(context);
         photosUri.add(uri);

@@ -2,11 +2,8 @@ package com.bobcikprogramming.kryptoevidence.Controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -48,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * Metoda k přepnutí mezi fragmenty
+     */
     private void selectFragment(){
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Pomocná metoda k označení vybraného fragmentu ve spodní liště
+     * @param position ID UI komponenty, jenž má být označena
+     */
     public void selectBottomMenu(final int position) {
         Handler uiHandler = new Handler();
         uiHandler.post(new Runnable() {

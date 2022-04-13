@@ -22,11 +22,17 @@ public class PhotoViewerController {
         this.photoViewer = photoViewer;
     }
 
+    /**
+     * Metoda pro inicializaci viewPagerAdapteru a jeho nastavení pro ViewPager
+     */
     public void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, photos);
         photoViewer.setAdapter(viewPagerAdapter);
     }
 
+    /**
+     * Metoda pro smazání snímku
+     */
     public void deletePhoto(){
         int position = photoViewer.getCurrentItem();
         photos.remove(position);

@@ -6,11 +6,8 @@ import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
 import com.bobcikprogramming.kryptoevidence.Model.TransactionWithPhotos;
 import com.bobcikprogramming.kryptoevidence.View.RecyclerViewTransactions;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class FragmentTransactionsController {
@@ -20,13 +17,15 @@ public class FragmentTransactionsController {
     private CalendarManager calendar;
 
     private boolean isSetDateFrom, isSetDateTo;
-    private List<TransactionWithPhotos> dataToShow = new ArrayList<>();
+    private List<TransactionWithPhotos> dataToShow;
 
     public FragmentTransactionsController(){
         isSetDateFrom = false;
         isSetDateTo = false;
 
         calendar = new CalendarManager();
+
+        dataToShow = new ArrayList<>();
     }
 
     public boolean isSetDateFrom() {
@@ -45,51 +44,26 @@ public class FragmentTransactionsController {
         isSetDateTo = setDateTo;
     }
 
+    /**
+     * Metoda načte data z databáze do seznamu transakcí
+     * @param context Třída context activity, ze které je metoda volána
+     * @param adapter Adaptér pro přístup k třídě RecyclerViewTransactions
+     * @param calendarDateFrom Datum od které mají začínat zobrazené transakce
+     * @param calendarDateTo Datum do kterého se mají zobrazovat transakce
+     */
     public void loadDataFromDb(Context context, RecyclerViewTransactions adapter, Calendar calendarDateFrom, Calendar calendarDateTo){
         AppDatabase db = AppDatabase.getDbInstance(context);
         dataFromDatabase = db.databaseDao().getAll();
-        sortListByTime(dataFromDatabase);
-        sortListByDate(dataFromDatabase);
-        getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo);
+        getDataToShow(calendarDateFrom, calendarDateTo);
         adapter.setTransactionData(dataToShow);
     }
 
-    private void sortListByDate(List<TransactionWithPhotos> data){
-        TransactionWithPhotos tmp;
-        for(int i = 0; i < data.size() - 1; i++){
-            for(int j = 0; j < data.size() - i - 1; j++){
-                long dateFirst = data.get(j).transaction.date;
-                long dateSecond = data.get(j+1).transaction.date;
-                if(dateFirst < dateSecond){
-                    tmp = data.get(j);
-                    data.set(j, data.get(j+1));
-                    data.set(j+1, tmp);
-                }
-            }
-        }
-    }
-
-    private void sortListByTime(List<TransactionWithPhotos> data){
-        TransactionWithPhotos tmp;
-        for(int i = 0; i < data.size() - 1; i++){
-            for(int j = 0; j < data.size() - i - 1; j++){
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-                try{
-                    Date timeFirst = format.parse(data.get(j).transaction.time);
-                    Date timeSecond = format.parse(data.get(j+1).transaction.time);
-                    if(timeFirst.compareTo(timeSecond) < 0){
-                        tmp = data.get(j);
-                        data.set(j, data.get(j+1));
-                        data.set(j+1, tmp);
-                    }
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void getDataToShow(List<TransactionWithPhotos> dataFromDatabase, Calendar calendarDateFrom, Calendar calendarDateTo){
+    /**
+     * Metoda pro vyfiltrování seznamu s transakcemi k zobrazení dle data OD a DO
+     * @param calendarDateFrom Datum od které mají začínat zobrazené transakce
+     * @param calendarDateTo Datum do kterého se mají zobrazovat transakce
+     */
+    private void getDataToShow(Calendar calendarDateFrom, Calendar calendarDateTo){
         if(isSetDateFrom || isSetDateTo) {
             int yearFrom = calendarDateFrom.get(Calendar.YEAR);
             int monthFrom = calendarDateFrom.get(Calendar.MONTH) + 1;
@@ -102,25 +76,30 @@ public class FragmentTransactionsController {
             String dateTo = dayTo + "." + monthTo + "." + yearTo;
 
             if(isSetDateFrom && isSetDateTo){
-                dataToShow = getDataFromInterval(dataFromDatabase, dateFrom, dateTo);
+                dataToShow = getDataFromInterval(dateFrom, dateTo);
             } else if (isSetDateFrom) {
-                dataToShow = getDataFromSpecificDate(dataFromDatabase, dateFrom);
+                dataToShow = getDataFromSpecificDate(dateFrom);
             } else{
-                dataToShow = getDataToSpecificDate(dataFromDatabase, dateTo);
+                dataToShow = getDataToSpecificDate(dateTo);
             }
         }else{
             dataToShow = dataFromDatabase;
         }
     }
 
-    private List<TransactionWithPhotos> getDataFromInterval(List<TransactionWithPhotos> dataFromDatabase, String dateFrom, String dateTo){
+    /**
+     * Pomocná metoda pro filtrování dat OD DO
+     * @param dateFrom Datum od které mají začínat zobrazené transakce
+     * @param dateTo Datum do kterého se mají zobrazovat transakce
+     * @return Vyfiltrovaný seznam
+     */
+    private List<TransactionWithPhotos> getDataFromInterval(String dateFrom, String dateTo){
         long dateFromParsed = calendar.getDateMillis(dateFrom);
         long dateToParsed = calendar.getDateMillis(dateTo);
         List<TransactionWithPhotos> newDataList = new ArrayList<>();
 
         for (TransactionWithPhotos transaction : dataFromDatabase) {
             long dateOfTransaction = transaction.transaction.date;
-            /** https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java */
             if (dateOfTransaction >= dateFromParsed && dateOfTransaction <= dateToParsed) {
                 newDataList.add(transaction);
             }
@@ -128,13 +107,17 @@ public class FragmentTransactionsController {
         return newDataList;
     }
 
-    private List<TransactionWithPhotos> getDataFromSpecificDate(List<TransactionWithPhotos> dataFromDatabase, String dateFrom){
+    /**
+     * Pomocná metoda pro filtrování dat OD
+     * @param dateFrom Datum od které mají začínat zobrazené transakce
+     * @return Vyfiltrovaný seznam
+     */
+    private List<TransactionWithPhotos> getDataFromSpecificDate(String dateFrom){
         long dateFromParsed = calendar.getDateMillis(dateFrom);
         List<TransactionWithPhotos> newDataList = new ArrayList<>();
 
         for (TransactionWithPhotos transaction : dataFromDatabase) {
             long dateOfTransaction = transaction.transaction.date;
-            /** https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java */
             if (dateOfTransaction >= dateFromParsed) {
                 newDataList.add(transaction);
             }
@@ -142,13 +125,17 @@ public class FragmentTransactionsController {
         return newDataList;
     }
 
-    private List<TransactionWithPhotos> getDataToSpecificDate(List<TransactionWithPhotos> dataFromDatabase, String dateTo){
+    /**
+     * Pomocná metoda pro filtrování dat DO
+     * @param dateTo Datum do kterého se mají zobrazovat transakce
+     * @return Vyfiltrovaný seznam
+     */
+    private List<TransactionWithPhotos> getDataToSpecificDate(String dateTo){
         long dateToParsed = calendar.getDateMillis(dateTo);
         List<TransactionWithPhotos> newDataList = new ArrayList<>();
 
         for (TransactionWithPhotos transaction : dataFromDatabase) {
             long dateOfTransaction = transaction.transaction.date;
-            // https://stackoverflow.com/questions/2592501/how-to-compare-dates-in-java
             if (dateOfTransaction <= dateToParsed) {
                 newDataList.add(transaction);
             }
@@ -156,11 +143,22 @@ public class FragmentTransactionsController {
         return newDataList;
     }
 
+    /**
+     * Metoda pro obnovení zobrazených dat v recyclerview
+     * @param adapter Adaptér pro přístup k třídě RecyclerViewTransactions
+     * @param calendarDateFrom Datum od které mají začínat zobrazené transakce
+     * @param calendarDateTo Datum do kterého se mají zobrazovat transakce
+     */
     public void refreshAdapter(RecyclerViewTransactions adapter, Calendar calendarDateFrom, Calendar calendarDateTo){
-        getDataToShow(dataFromDatabase, calendarDateFrom, calendarDateTo);
+        getDataToShow(calendarDateFrom, calendarDateTo);
         adapter.setTransactionData(dataToShow);
     }
 
+    /**
+     * Getter pro získání indexu vybrané položky z celkového seznamu transakcí
+     * @param position Pozice v seznamu zobrazených transakcí
+     * @return Pozice v celkovém seznamu transakcí
+     */
     public int getIndexToShow(int position) {
         return dataFromDatabase.indexOf(dataToShow.get(position));
     }

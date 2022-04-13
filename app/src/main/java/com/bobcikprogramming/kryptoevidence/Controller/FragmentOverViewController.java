@@ -89,7 +89,7 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda pro načtení pole s zisky/ztrátou za daňové období z databáze
+     * Metoda pro načtení seznamu s zisky/ztrátou za daňové období z databáze
      */
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -98,15 +98,15 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Getter pro pole s zisky/ztrátou za daňové období
-     * @return Pole s zisky/ztrátou za daňové období
+     * Getter pro seznam s zisky/ztrátou za daňové období
+     * @return Seznam s zisky/ztrátou za daňové období
      */
     public List<PDFEntity> getAnnualReport(){
         return annualList;
     }
 
     /**
-     * Metoda pro získání indexu posledního prvku pole annualList
+     * Metoda pro získání indexu posledního prvku seznamu annualList
      * @return Index
      */
     public int getLastPosition(){

@@ -70,8 +70,8 @@ public class CryptoSelectionController {
     }
 
     /**
-     * Getter pro pole s kryptoměny
-     * @return Pole s kryptoměny
+     * Getter pro seznam s kryptoměny
+     * @return Seznam s kryptoměny
      */
     public ArrayList<CryptocurrencyEntity> getCryptoList() {
         return cryptoListToShow;
