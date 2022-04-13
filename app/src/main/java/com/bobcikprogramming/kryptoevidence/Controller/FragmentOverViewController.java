@@ -31,7 +31,18 @@ public class FragmentOverViewController {
         loadDataFromDb();
     }
 
-    /** https://stackoverflow.com/a/9306962 */
+    /**
+     * Metoda získá ze souboru nastavení barevného módu
+     * @return Nastavení barevného módu
+     *
+     * Metoda inspirována z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/9306155
+     * Odpověď: https://stackoverflow.com/a/9306962
+     * Autor:   https://stackoverflow.com/users/726863/lalit-poptani
+     * Autor:   Lalit Poptani
+     * Datum:   16. února 2012
+     */
     public String readFromFile(){
         String modeType = "system";
 
@@ -62,6 +73,10 @@ public class FragmentOverViewController {
         return modeType;
     }
 
+    /**
+     * Metoda pro uložení nastavení barevného módu
+     * @param mode Nastavení barevného módu
+     */
     public void writeToFile(String mode){
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new
@@ -73,26 +88,37 @@ public class FragmentOverViewController {
         }
     }
 
+    /**
+     * Metoda pro načtení pole s zisky/ztrátou za daňové období z databáze
+     */
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         ownedCryptoList = new ArrayList<>(db.databaseDao().getAllOwnedCrypto());
         annualList = db.databaseDao().getLatestAnnualReport();
     }
 
-    public List<PDFEntity> showAnnualReport(){
-        // Pokud jsou data k zobrazení
-        if(annualList != null || !annualList.isEmpty()){
-            return annualList;
-        }else{
-            return null;
-        }
+    /**
+     * Getter pro pole s zisky/ztrátou za daňové období
+     * @return Pole s zisky/ztrátou za daňové období
+     */
+    public List<PDFEntity> getAnnualReport(){
+        return annualList;
     }
 
+    /**
+     * Metoda pro získání indexu posledního prvku pole annualList
+     * @return Index
+     */
     public int getLastPosition(){
         position = annualList.size() - 1;
         return position;
     }
 
+    /**
+     * Metoda pro filtrování vlastněných kryptoměn podle názvu či symbolu
+     * @param searching Fráze k vyhledání
+     * @return Seznam obsahující pouze kryptoměny jejichž název či symbol se skládá z dané fráze
+     */
     public ArrayList<CryptocurrencyEntity> filter(String searching){
         ArrayList<CryptocurrencyEntity> ownedCryptoListToShow = new ArrayList<>();
 

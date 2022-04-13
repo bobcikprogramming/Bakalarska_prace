@@ -54,18 +54,22 @@ public class FragmentPDFController {
         shared = new SharedMethods();
         selectedYear = "";
 
-        /*ActivityCompat.requestPermissions(activity, new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);*/
-
         loadDataFromDb();
     }
 
+    /**
+     * Metoda pro načtení pole s PDF soubory z databáze
+     */
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         dataList = db.databaseDao().getPDF();
         adapter = new RecyclerViewPDF(context, dataList);
     }
 
+    /**
+     * Setter pro nastavení hodnoty selectedYear
+     * @param selectedYear Hodnota, jenž má být nastavena
+     */
     public void setSelectedYear(String selectedYear){
         this.selectedYear = selectedYear;
 
@@ -76,6 +80,10 @@ public class FragmentPDFController {
         return adapter;
     }
 
+    /**
+     * Metoda pro kontrolu zda-li obsahuje dané daňové období nějaký prodej, pokud ano, volá metodu createPDF,
+     * případně confirmDialogUnfinishedCreate, nemá-li prodej evidován nákup
+     */
     private void createIfThereIsATransaction(){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
@@ -102,6 +110,9 @@ public class FragmentPDFController {
 
     }
 
+    /**
+     * Metoda pro nastavení kurzu
+     */
     private void setExchangeRate() {
         AppDatabase db = AppDatabase.getDbInstance(context);
         ExchangeByYearEntity exchange = db.databaseDao().getExchange(Integer.parseInt(selectedYear));
@@ -122,6 +133,12 @@ public class FragmentPDFController {
         }
     }
 
+    /**
+     * Metoda pro vytvoření PDF záznamu
+     * @param dateFrom Začátek daňového období
+     * @param dateTo Konec daňového období
+     * @param salesInYear Pole prodejů v daném daňovém období
+     */
     private void createPDF(long dateFrom, long dateTo, List<TransactionWithPhotos> salesInYear){
         ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
         ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
@@ -135,7 +152,6 @@ public class FragmentPDFController {
                 return;
             }
         } catch (IOException e) {
-            System.out.println("Chyba: "+e);
             e.printStackTrace();
             Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
             return;
@@ -143,6 +159,11 @@ public class FragmentPDFController {
         saveToDb(generator.getFileName(), generator.getTotal());
     }
 
+    /**
+     * Metoda pro získání seznamu prodejů k výpisu za dané daňové období
+     * @param salesInYear Seznam prodejů v daném daňovém období
+     * @return ArrayList prodejů k výpisu
+     */
     private ArrayList<SellTransactionPDFList> sellValue(List<TransactionWithPhotos> salesInYear){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // Sečíst zisky z prodeje od prvního prodeje v roce po poslední (Zaokrouhleno na dvě desetiná místa (kvůli pozdějšímu výpisu v PDF)).

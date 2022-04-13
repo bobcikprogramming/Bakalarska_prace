@@ -175,6 +175,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     private boolean deletePDFFile(String fileName){
         File dirName = getAppSpecificStorageDir();
         if(dirName == null){
+            System.out.println(">>>>>>>>>jsem zde");
             Toast.makeText(context, "PDF záznam úspěšně smazán.", Toast.LENGTH_SHORT).show();
             return true;
         }

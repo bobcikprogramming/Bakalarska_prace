@@ -13,9 +13,6 @@ import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +38,12 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
         AppDatabase.getDbInstance(context).databaseDao().deleteCrypto();
     }
 
+    /**
+     * Stažení kryptoměn z API.
+     * Přidělení market ranku prvním 500.
+     * Limit čekání na operaci 3 minuty.
+     * @return Vrací výsledek typu string
+     */
     @Override
     protected String doInBackground(Void... voids) {
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -78,25 +81,14 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
                         return;
                     }
 
+                    boolean result;
                     for(int i = 0; i < jsonArray.length(); i++) {
-                        cryptoEntity = new CryptocurrencyEntity();
-                        try {
-                            if (jsonArray.getJSONObject(i).getString("symbol").toLowerCase().contains("realtoken")) {
-                                continue;
-                            }
-                            cryptoEntity.uid = jsonArray.getJSONObject(i).getString("id");
-                            cryptoEntity.shortName = jsonArray.getJSONObject(i).getString("symbol").toUpperCase();
-                            cryptoEntity.longName = jsonArray.getJSONObject(i).getString("name");
-                            cryptoEntity.rank = 999999;
-                            cryptoEntity.amount = "0";
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        result = saveCrypto(jsonArray, i, db);
+                        if(!result){
                             return;
                         }
-                        db.databaseDao().insertCryptocurrency(cryptoEntity);
                     }
 
-                    //int pages = (int)Math.ceil(jsonArray.length() / 250);
                     for(int i = 1; i <= 2; i++){
                         String urlApiCurrencyMarket = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=250&page="+i;
                         Request requestMarket = new Request.Builder().url(urlApiCurrencyMarket).build();
@@ -121,18 +113,10 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
                                     return;
                                 }
 
+                                boolean result;
                                 for(int i = 0; i < jsonArray.length(); i++) {
-                                    try {
-                                        if (jsonArray.getJSONObject(i).getString("symbol").toLowerCase().contains("realtoken")) {
-                                            continue;
-                                        }
-                                        String rank = jsonArray.getJSONObject(i).getString("market_cap_rank");
-                                        String id = jsonArray.getJSONObject(i).getString("id");
-                                        if(!rank.equals("null")){
-                                            db.databaseDao().updateRankSettingCrypto(id, Integer.parseInt(rank));
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                    result = saveRank(jsonArray, i, db);
+                                    if(!result){
                                         return;
                                     }
                                 }
@@ -151,18 +135,76 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
             }
         });
         try {
-            countDownLatch.await(2L, TimeUnit.MINUTES);
+            countDownLatch.await(3L, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return "api";
     }
 
+    /**
+     * Metoda pro uložení market ranku do databáze
+     * @param jsonArray JsonArray obdržený z API
+     * @param pos pozice objektu v jsonArray
+     * @param db Přístup k lokální databázi
+     * @return true - uložení (nebo přeskočení) proběhlo v pořádku, jinak false
+     */
+    private boolean saveRank(JSONArray jsonArray, int pos, AppDatabase db){
+        try {
+            if (jsonArray.getJSONObject(pos).getString("symbol").toLowerCase().contains("realtoken")) {
+                return true;
+            }
+            String rank = jsonArray.getJSONObject(pos).getString("market_cap_rank");
+            String id = jsonArray.getJSONObject(pos).getString("id");
+            if(!rank.equals("null")){
+                db.databaseDao().updateRankSettingCrypto(id, Integer.parseInt(rank));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Metoda pro uložení kryptoměn do databáze
+     * @param jsonArray JsonArray obdržený z API
+     * @param pos pozice objektu v jsonArray
+     * @param db Přístup k lokální databázi
+     * @return true - uložení (nebo přeskočení) proběhlo v pořádku, jinak false
+     */
+    private boolean saveCrypto(JSONArray jsonArray, int pos, AppDatabase db){
+        CryptocurrencyEntity cryptoEntity = new CryptocurrencyEntity();
+        try {
+            if (jsonArray.getJSONObject(pos).getString("symbol").toLowerCase().contains("realtoken")) {
+                return true;
+            }
+            cryptoEntity.uid = jsonArray.getJSONObject(pos).getString("id");
+            cryptoEntity.shortName = jsonArray.getJSONObject(pos).getString("symbol").toUpperCase();
+            cryptoEntity.longName = jsonArray.getJSONObject(pos).getString("name");
+            cryptoEntity.rank = 999999;
+            cryptoEntity.amount = "0";
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        db.databaseDao().insertCryptocurrency(cryptoEntity);
+        return true;
+    }
+
+    /**
+     * Po skončení operace vrací výsledekem typu string pomocí delegátoru
+     * @param result výsledek typu string
+     */
     @Override
     protected void onPostExecute(String result) {
         delegate.TaskCompletionResult(result);
     }
 
+    /**
+     * Metoda pro zobrazení oznámení o stahování dat
+     * @param loadText Stringová hednota s textem k zobrazení
+     */
     private void showLoading(String loadText){
         progressBar.setVisibility(View.VISIBLE);
         tvUpdateInfo.setVisibility(View.VISIBLE);

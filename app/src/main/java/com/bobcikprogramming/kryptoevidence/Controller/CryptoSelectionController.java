@@ -19,12 +19,20 @@ public class CryptoSelectionController {
         loadCryptoFromDb();
     }
 
+    /**
+     * Metoda k načtení seznamu kryptoměn z databáze
+     */
     private void loadCryptoFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
         cryptoList = new ArrayList<>(db.databaseDao().getAllCrypto());
         cryptoListToShow = cryptoList;
     }
 
+    /**
+     * Metoda k odstranění vybrané kryptoměny z výběru "Prodané kryptoměny" u transakce "Směna"
+     * @param id UID kryptoměny k odstranění ze seznamu
+     * @return Seznam kryptoměn bez uvedené kryptoměny
+     */
     public ArrayList<CryptocurrencyEntity> removeSelectedValue(String id){
         ArrayList<CryptocurrencyEntity> cryptoListToShow;
         int objPosToRemove = -1;
@@ -41,6 +49,11 @@ public class CryptoSelectionController {
         return cryptoListToShow;
     }
 
+    /**
+     * Metoda pro filtrování kryptoměn podle názvu či symbolu
+     * @param searching Fráze k vyhledání
+     * @return Seznam obsahující pouze kryptoměny jejichž název či symbol se skládá z dané fráze
+     */
     public ArrayList<CryptocurrencyEntity> filter(String searching){
         cryptoListToShow = new ArrayList<>();
         if(searching.length() == 0){
@@ -56,6 +69,10 @@ public class CryptoSelectionController {
         return cryptoListToShow;
     }
 
+    /**
+     * Getter pro pole s kryptoměny
+     * @return Pole s kryptoměny
+     */
     public ArrayList<CryptocurrencyEntity> getCryptoList() {
         return cryptoListToShow;
     }

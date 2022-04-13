@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bobcikprogramming.kryptoevidence.Model.AppDatabase;
-import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.Model.DataVersionEntity;
 import com.bobcikprogramming.kryptoevidence.Model.ExchangeByYearEntity;
 import com.google.firebase.database.DataSnapshot;
@@ -19,18 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
 
@@ -53,6 +42,11 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
         yearReference = exchangeReference.child("year");
     }
 
+    /**
+     * Stažení kurzů z databáze Firebase.
+     * Limit čekání na operaci 2 minuty.
+     * @return Vrací výsledek typu string
+     */
     @Override
     protected String doInBackground(Void... voids) {
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -61,12 +55,12 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
         versionReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ((Activity)context).runOnUiThread(new Runnable() {
+                /*((Activity)context).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         showLoading("Hledání aktualizací...");
                     }
-                });
+                });*/
                 int version = Integer.parseInt(dataSnapshot.getValue().toString());
                 int appDbVersion = db.databaseDao().getDataVersionRate();
                 if(version != appDbVersion) {
@@ -76,7 +70,8 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
                             showLoading("Stahování dat...");
                         }
                     });
-                    downloadExchangeData(db, appDbVersion, version);
+                    getExchangeByYearFromFirebase(db);
+                    updateVersion(db, appDbVersion, version);
                 }
                 countDownLatch.countDown();
             }
@@ -94,14 +89,22 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
         return "firebase";
     }
 
+    /**
+     * Po skončení operace vrací výsledekem typu string pomocí delegátoru
+     * @param result výsledek typu string
+     */
     @Override
     protected void onPostExecute(String result) {
         delegate.TaskCompletionResult(result);
     }
 
-    private void downloadExchangeData(AppDatabase db, int versionAppDB, int newVersion){
-        db.databaseDao().deleteExchange();
-        getExchangeByYearFromFirebase(db);
+    /**
+     * Jedná-li se o první stažení, tak metoda vytvoří tabulku verze a nahraje staženou verzi, jinak ji v tabulce aktualizuje
+     * @param db Přístup k lokální databízi
+     * @param versionAppDB Verze uložená v lokální databázi
+     * @param newVersion Verze v databázi Firebase
+     */
+    private void updateVersion(AppDatabase db, int versionAppDB, int newVersion){
         if(versionAppDB == 0){
             DataVersionEntity dataVersion = new DataVersionEntity();
             dataVersion.versionRate = newVersion;
@@ -111,7 +114,12 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
         }
     }
 
+    /**
+     * Metoda stáhne a uloží kurzy za jednotlivé roky
+     * @param db Přístup k lokální databázi
+     */
     private void getExchangeByYearFromFirebase(AppDatabase db){
+        db.databaseDao().deleteExchange();
         yearReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull  DataSnapshot dataSnapshot) {
@@ -133,6 +141,10 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
         });
     }
 
+    /**
+     * Metoda pro zobrazení oznámení o stahování dat
+     * @param loadText Stringová hednota s textem k zobrazení
+     */
     private void showLoading(String loadText){
         progressBar.setVisibility(View.VISIBLE);
         tvUpdateInfo.setVisibility(View.VISIBLE);
