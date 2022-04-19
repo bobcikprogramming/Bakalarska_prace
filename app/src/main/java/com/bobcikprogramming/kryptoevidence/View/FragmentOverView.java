@@ -169,7 +169,6 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                 break;
             case R.id.imgBtnShowMore:
                 if(!showMoreOpen) {
-                    // https://stackoverflow.com/a/3940823
                     imgBtnShowMore.setImageResource(R.drawable.ic_show_more_anim);
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                         AnimatedVectorDrawable animatedVectorDrawable =
@@ -372,13 +371,15 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
                         // keyboard is closed
                         if (isKeyboardShowing) {
                             isKeyboardShowing = false;
-                            Animation layoutShow = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-                            layoutTop.startAnimation(layoutShow);
-                            layoutTop.setVisibility(View.VISIBLE);
-                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)layoutOwned.getLayoutParams();
-                            int newTop = shared.dpToPx(40, getContext());
-                            params.setMargins(0, newTop, 0, 0);
-                            layoutOwned.setLayoutParams(params);
+                            if(getContext() != null) {
+                                Animation layoutShow = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
+                                layoutTop.startAnimation(layoutShow);
+                                layoutTop.setVisibility(View.VISIBLE);
+                                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) layoutOwned.getLayoutParams();
+                                int newTop = shared.dpToPx(40, getContext());
+                                params.setMargins(0, newTop, 0, 0);
+                                layoutOwned.setLayoutParams(params);
+                            }
                         }
                     }
                 }

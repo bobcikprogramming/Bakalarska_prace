@@ -731,6 +731,7 @@ public class TransactionEditController {
         db.databaseDao().resetAmountLeftBuyChangeAfterFirst(transactionID, date, time, uidCrypto);
 
         // Nastavit novou hodnotu editovanému nákupu.
+        newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
         db.databaseDao().updateAmountLeft(transactionID, newAmountLeft);
 
         // Přepočítat.
@@ -774,6 +775,7 @@ public class TransactionEditController {
 
         // Nastavím novou hodnotu měněnému.
         TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+        newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
         if(sellEntity.transactionType.equals("Prodej")) {
             db.databaseDao().updateAmountLeft(transactionID, newAmountLeft);
         }else{
@@ -881,6 +883,7 @@ public class TransactionEditController {
             db.databaseDao().resetAmountLeftBuyChangeFrom(date, time, uidBought);
 
             // Nastavit novou hodnotu editovanému nákupu. (amountLeft, date, time)
+            newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
             db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
 
             // Přepočítat od nového data
@@ -896,6 +899,7 @@ public class TransactionEditController {
             db.databaseDao().resetAmountLeftBuyChangeAfterFirst(transactionID, editingTransaction.date, editingTransaction.time, uidBought);
 
             // Nastavit novou hodnotu editovanému nákupu. (amountLeft, date, time)
+            newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
             db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
 
             // Přepočítat od původního data
@@ -951,6 +955,7 @@ public class TransactionEditController {
 
             // Nastavím novou hodnotu měněnému (amountLeft, date, time).
             TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
+            newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
             if(sellEntity.transactionType.equals("Prodej")) {
                 db.databaseDao().updateForEditingTime(transactionID, newAmountLeft, date, time);
             }else{
@@ -997,6 +1002,7 @@ public class TransactionEditController {
             }
 
             // Nastavím novou hodnotu měněnému (amountLeft, date, time).
+            newAmountLeft = shared.getBigDecimal(newAmountLeft).compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmountLeft;
             db.databaseDao().updateChangeSellForEditingTime(transactionID, newAmountLeft, date, time);
 
             if(!listOfUsedSales.isEmpty()) {

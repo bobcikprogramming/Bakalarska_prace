@@ -188,9 +188,9 @@ public class TransactionOperationController {
             /** Pokud je první nákup prováděn až po datu nového nákupu */
             if(firstBuyDate.after(newBuyDate) || (firstBuyDate.equals(newBuyDate) && firstBuyTime.after(newBuyTime))){
                 if(sellToReset.transaction.transactionType.equals("Prodej")) {
-                    db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), "-1.0", "-1.0", "-1", "-1");
+                    db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), sellToReset.transaction.quantitySold, "-1.0", "-1.0", "-1", "-1");
                 }else{
-                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(sellToReset.transaction.quantitySold), "-1.0", "-1.0", "-1", "-1");
+                    db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sellToReset.transaction.uidTransaction), sellToReset.transaction.quantitySold, "-1.0", "-1.0", "-1", "-1");
                 }
                 continue;
             }
@@ -222,10 +222,11 @@ public class TransactionOperationController {
                 lastTakenFrom = sellToReset.transaction.lastTakenFrom;
             }
 
+            String amountLeft = restAmount.compareTo(BigDecimal.ZERO) == 0 ? "0" : restAmount.toPlainString();
             if(sellToReset.transaction.transactionType.equals("Prodej")) {
-                db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), amountLeft, usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }else{
-                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sellToReset.transaction.uidTransaction), String.valueOf(restAmount), usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sellToReset.transaction.uidTransaction), amountLeft, usedFromFirst, usedFromLast, String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }
         }
     }
@@ -330,14 +331,16 @@ public class TransactionOperationController {
                 firstTakenFrom = buy.transaction.uidTransaction;
                 first = false;
             }
+            String amountLeft = newAmoutLeftBuy.compareTo(BigDecimal.ZERO) == 0 ? "0" : newAmoutLeftBuy.toPlainString();
             lastTakenFrom = buy.transaction.uidTransaction;
-            db.databaseDao().updateAmountLeft(String.valueOf(buy.transaction.uidTransaction), String.valueOf(newAmoutLeftBuy));
+            db.databaseDao().updateAmountLeft(String.valueOf(buy.transaction.uidTransaction), amountLeft);
         }
         TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionHistoryID(sellTransactionID).transaction;
+        String amountLeft = quantity.compareTo(BigDecimal.ZERO) == 0 ? "0" : quantity.toPlainString();
         if(sellEntity.transactionType.equals("Prodej")) {
-            db.databaseDao().updateFifoCalc(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            db.databaseDao().updateFifoCalc(sellTransactionID, amountLeft, String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }else{
-            db.databaseDao().updateFifoCalcChangeSell(sellTransactionID, String.valueOf(quantity), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+            db.databaseDao().updateFifoCalcChangeSell(sellTransactionID, amountLeft, String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
         }
     }
 
@@ -433,18 +436,22 @@ public class TransactionOperationController {
 
                     lastTakenFrom = nextBuy.transaction.uidTransaction;
 
-                    db.databaseDao().updateAmountLeft(String.valueOf(nextBuy.transaction.uidTransaction), String.valueOf(amountOfNextBuy));
+                    String amountLeftString = amountOfNextBuy.compareTo(BigDecimal.ZERO) == 0 ? "0" : amountOfNextBuy.toPlainString();
+                    db.databaseDao().updateAmountLeft(String.valueOf(nextBuy.transaction.uidTransaction), amountLeftString);
                 }
 
             }
+
+            String amountLeftString = inSellLeft.compareTo(BigDecimal.ZERO) == 0 ? "0" : inSellLeft.toPlainString();
             if(sell.transaction.transactionType.equals("Prodej")) {
-                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalc(String.valueOf(sell.transaction.uidTransaction), amountLeftString, String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }else {
-                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sell.transaction.uidTransaction), String.valueOf(inSellLeft), String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
+                db.databaseDao().updateFifoCalcChangeSell(String.valueOf(sell.transaction.uidTransaction), amountLeftString, String.valueOf(usedFromFirst), String.valueOf(usedFromLast), String.valueOf(firstTakenFrom), String.valueOf(lastTakenFrom));
             }
         }
 
-        db.databaseDao().updateAmountLeft(String.valueOf(transactionID), String.valueOf(amountLeft));
+        String amountLeftString = amountLeft.compareTo(BigDecimal.ZERO) == 0 ? "0" : amountLeft.toPlainString();
+        db.databaseDao().updateAmountLeft(String.valueOf(transactionID), amountLeftString);
     }
 
     public ArrayList<Uri> getPhotos() {

@@ -43,6 +43,14 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
      * Přidělení market ranku prvním 500.
      * Limit čekání na operaci 3 minuty.
      * @return Vrací výsledek typu string
+     *
+     * Vyčkání na dokončení akce inspirován z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/66502210
+     * Odpověď: https://stackoverflow.com/a/66502384
+     * Autor:   Shlomi Katriel
+     * Autor:   https://stackoverflow.com/users/11958566/shlomi-katriel
+     * Datum:   6. března 2021
      */
     @Override
     protected String doInBackground(Void... voids) {
@@ -52,7 +60,7 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
         String urlApiCurrencyList = "https://api.coingecko.com/api/v3/coins/list";
         Request requestList = new Request.Builder().url(urlApiCurrencyList).build();
 
-        CountDownLatch countDownLatch = new CountDownLatch(1); // https://stackoverflow.com/a/66502384
+        CountDownLatch countDownLatch = new CountDownLatch(1);
 
         client.newCall(requestList).enqueue(new Callback() {
             @Override

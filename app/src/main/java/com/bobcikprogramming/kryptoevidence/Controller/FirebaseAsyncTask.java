@@ -46,21 +46,23 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
      * Stažení kurzů z databáze Firebase.
      * Limit čekání na operaci 2 minuty.
      * @return Vrací výsledek typu string
+     *
+     * Vyčkání na dokončení akce inspirován z:
+     * Zdroj:   Stack Overflow
+     * Dotaz:   https://stackoverflow.com/q/66502210
+     * Odpověď: https://stackoverflow.com/a/66502384
+     * Autor:   Shlomi Katriel
+     * Autor:   https://stackoverflow.com/users/11958566/shlomi-katriel
+     * Datum:   6. března 2021
      */
     @Override
     protected String doInBackground(Void... voids) {
         AppDatabase db = AppDatabase.getDbInstance(context);
 
-        CountDownLatch countDownLatch = new CountDownLatch(1); // https://stackoverflow.com/a/66502384
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         versionReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                /*((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showLoading("Hledání aktualizací...");
-                    }
-                });*/
                 int version = Integer.parseInt(dataSnapshot.getValue().toString());
                 int appDbVersion = db.databaseDao().getDataVersionRate();
                 if(version != appDbVersion) {
