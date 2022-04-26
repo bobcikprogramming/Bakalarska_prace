@@ -398,7 +398,7 @@ public class TransactionEditController {
     private void fifoDeleteBuy(String transactionID, long date, String time, String uidCrypto){
         AppDatabase db = AppDatabase.getDbInstance(context);
 
-        // Všechny prodeje od prvního prodeje který je na tomto nákupu resetovat. První je potřeba udělat zvlášť.
+        // Všechny prodeje od prvního prodeje, který je na tomto nákupu resetovat. První je potřeba udělat zvlášť.
         resetSales(transactionID, date, time, uidCrypto, false);
 
         // Resetovat všechny nákupy následující po odstraněném.
@@ -625,9 +625,9 @@ public class TransactionEditController {
                     break;
                 }
                 if (sell.transaction.transactionType.equals("Prodej")) {
-                    recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+                    recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                 } else {
-                    recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
+                    recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
                 }
             }
         }
@@ -639,7 +639,7 @@ public class TransactionEditController {
      * @param quantity Množství, které je třeba zpracovat
      * @param listOfAvailableBuys Seznam dostupných nákupů pro prodávanou transakci
      */
-    private void recalculateForRemoveSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys){
+    private void recalculateForEditSell(String sellTransactionID, BigDecimal quantity, List<TransactionWithPhotos> listOfAvailableBuys){
         AppDatabase db = AppDatabase.getDbInstance(context);
         boolean first = true;
         BigDecimal usedFromFirst = EMPTYBIGDECIMAL;
@@ -792,9 +792,9 @@ public class TransactionEditController {
                 }
 
                 if (sell.transaction.transactionType.equals("Prodej")) {
-                    recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+                    recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                 } else {
-                    recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
+                    recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
                 }
             }
         }
@@ -972,9 +972,9 @@ public class TransactionEditController {
                         break;
                     }
                     if (sell.transaction.transactionType.equals("Prodej")) {
-                        recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+                        recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                     } else {
-                        recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
+                        recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
                     }
                 }
             }
@@ -1014,9 +1014,9 @@ public class TransactionEditController {
                         break;
                     }
                     if (sell.transaction.transactionType.equals("Prodej")) {
-                        recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
+                        recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeft), listOfAvailableBuys);
                     } else {
-                        recalculateForRemoveSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
+                        recalculateForEditSell(String.valueOf(sell.transaction.uidTransaction), shared.getBigDecimal(sell.transaction.amountLeftChangeSell), listOfAvailableBuys);
                     }
                 }
             }
@@ -1050,7 +1050,6 @@ public class TransactionEditController {
         // -------------------------------------------------------
         // Prodej:
         // Typ kryptoměny ponechán:
-        TransactionEntity sellEntity = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
         if(!cryptoSellChange){
             fifoEditTimeSell(transactionID, date, time, uidSold, newAmountLeftSell);
         }else {

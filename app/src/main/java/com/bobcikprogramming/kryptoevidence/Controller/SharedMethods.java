@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import com.bobcikprogramming.kryptoevidence.R;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**
  * Třída slouží k obecným funkcím využívaných na více místech.
@@ -190,8 +191,9 @@ public class SharedMethods {
                 int lenOfInteger = number.split("\\.")[0].length();
                 int toCut = 6 - lenOfInteger;
                 double round = Math.pow(10, toCut);
+                DecimalFormat trailingZeros = new DecimalFormat("0.#");
                 quantityBought = (double) Math.round(quantityBought * round) / round;
-                number = "~" + quantityBought;
+                number = "~" + trailingZeros.format(quantityBought);
             }
         }
         return number;
