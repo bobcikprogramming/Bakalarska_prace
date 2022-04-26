@@ -39,7 +39,8 @@
     <color name="overviewListDescriptionTextColor">#4F4F4F</color>
     <color name="overviewListShortNameTextColor">@color/black</color>
     <color name="overviewListLongNameTextColor">#3F3F3F</color>
-    <color name="overviewListCryptoAmountTextColor">@color/black</color>
+    <color name="overviewListCryptoAmountRoundedTextColor">@color/black</color>
+    <color name="overviewListCryptoAmountTextColor">#5F5F5F</color>
     <color name="recyclerItemOfCryptoSelectionLongNameTextColor">@color/black</color>
     <color name="recyclerItemOfCryptoSelectionShortNameTextColor">#5F5F5F</color>
     <color name="historyHeadlineTextColor">#008000</color>

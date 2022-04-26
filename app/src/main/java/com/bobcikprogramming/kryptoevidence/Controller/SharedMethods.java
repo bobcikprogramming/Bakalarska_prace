@@ -227,6 +227,17 @@ public class SharedMethods {
     }
 
     /**
+     * Metoda pro zaokrouhlení čísla typu String na X desetinných míst
+     * @param toEdit Číslo typu String
+     * @param x Počet desetinných míst
+     * @return Zaokrouhlené číslo
+     */
+    public BigDecimal getXDecimalBigDecimal(String toEdit, int x){
+        BigDecimal toRound = getBigDecimal(toEdit);
+        return toRound.setScale(x, BigDecimal.ROUND_HALF_EVEN);
+    }
+
+    /**
      * Metoda na převod display metrics hodnoty na pixely
      * @param dp Display metrics hodnota
      * @param context Třída context activity, ze které je metoda volána

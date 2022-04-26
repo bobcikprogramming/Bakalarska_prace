@@ -261,20 +261,23 @@ public class CalendarManager {
      * @param tvDateTo Ukazatel na text view obsahující datum "DO"
      * @param activity Třída activity ze které je metoda volána
      * @param calendarDateTo Instance třídy Calendar pro nastavení vlastní maximální hodnoty
+     * @param controller Instance třídy FragmentTransactionsController nutná pro přístup, zdali byl nastaven datum
      */
-    public void openDateDialogWindowForFilter(boolean isDateFrom, DatePickerDialog.OnDateSetListener dateSetListener, TextView tvDateFrom, TextView tvDateTo, Activity activity, Calendar calendarDateTo){
-        FragmentTransactionsController controller = new FragmentTransactionsController();
-
+    public void openDateDialogWindowForFilter(boolean isDateFrom, DatePickerDialog.OnDateSetListener dateSetListener, TextView tvDateFrom, TextView tvDateTo, Activity activity, Calendar calendarDateTo, FragmentTransactionsController controller){
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
 
         if(controller.isSetDateFrom() && isDateFrom){
+            System.out.println(">>>>>>>>>>>>>>>>"+shared.getString(tvDateFrom));
             String[] dateSplit = shared.getString(tvDateFrom).split("\\.");
             day = Integer.parseInt(dateSplit[0]);
             month = Integer.parseInt(dateSplit[1]) - 1;
             year = Integer.parseInt(dateSplit[2]);
+        }else{
+            System.out.println(">>>>>>>>>>>>>>>>controller.isSetDateFrom(): "+controller.isSetDateFrom());
+            System.out.println(">>>>>>>>>>>>>>>>isDateFrom: "+isDateFrom);
         }
 
         if(controller.isSetDateTo() && !isDateFrom){

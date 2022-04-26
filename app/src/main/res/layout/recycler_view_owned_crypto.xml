@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:id="@+id/layoutOwnedCrypto"
     android:orientation="vertical">
 
@@ -22,12 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
+                style="@style/TextViewMarquee"
                 android:textColor="@color/overviewListShortNameTextColor"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -38,37 +33,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                style="@style/TextViewMarquee"
                 android:gravity="bottom"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
                 android:textColor="@color/overviewListLongNameTextColor"
                 android:textSize="17sp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvAmount"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical|end"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:paddingStart="10dp"
-            android:paddingEnd="0dp"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textColor="@color/overviewListCryptoAmountTextColor"
-            android:textSize="20sp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tvAmountRounded"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                style="@style/TextViewMarquee"
+                android:gravity="end"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/overviewListCryptoAmountRoundedTextColor"
+                android:textSize="20sp"
+                tools:ignore="SpeakableTextPresentCheck" />
 
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                style="@style/TextViewMarquee"
+                android:gravity="bottom|end"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textColor="@color/overviewListCryptoAmountTextColor"
+                android:textSize="15sp"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

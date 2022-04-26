@@ -200,7 +200,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         tvDateFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindowForFilter(true, dateSetListenerDateFrom, tvDateFrom, tvDateTo, getActivity(), calendarDateTo);
+                calendar.openDateDialogWindowForFilter(true, dateSetListenerDateFrom, tvDateFrom, tvDateTo, getActivity(), calendarDateTo, controller);
             }
         });
 
@@ -226,7 +226,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
         tvDateTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calendar.openDateDialogWindowForFilter(false, dateSetListenerDateTo, tvDateFrom, tvDateTo, getActivity(), calendarDateTo);
+                calendar.openDateDialogWindowForFilter(false, dateSetListenerDateTo, tvDateFrom, tvDateTo, getActivity(), calendarDateTo, controller);
             }
         });
 

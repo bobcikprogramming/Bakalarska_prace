@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 import com.bobcikprogramming.kryptoevidence.R;
 
@@ -18,10 +19,13 @@ public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOw
 
     private ArrayList<CryptocurrencyEntity> dataList;
     private Context context;
+    private SharedMethods shared;
 
     public RecyclerViewOwnedCrypto(Context context, ArrayList<CryptocurrencyEntity> dataList) {
         this.context = context;
         this.dataList = dataList;
+
+        shared = new SharedMethods();
     }
 
     @Override
@@ -35,7 +39,8 @@ public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOw
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tvShortName.setText(dataList.get(position).shortName);
         holder.tvLongName.setText(dataList.get(position).longName);
-        holder.tvAmount.setText(dataList.get(position).amount);
+        holder.tvAmountRounded.setText(shared.getXDecimalBigDecimal(dataList.get(position).amount, 4).stripTrailingZeros().toPlainString());
+        holder.tvAmount.setText(shared.getBigDecimal(dataList.get(position).amount).stripTrailingZeros().toPlainString());
 
         holder.tvShortName.setSelected(true);
         holder.tvLongName.setSelected(true);
@@ -50,13 +55,14 @@ public class RecyclerViewOwnedCrypto extends RecyclerView.Adapter<RecyclerViewOw
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvLongName, tvShortName, tvAmount;
+        private TextView tvLongName, tvShortName, tvAmountRounded, tvAmount;
         private LinearLayout item;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvShortName = itemView.findViewById(R.id.tvShortName);
             tvLongName = itemView.findViewById(R.id.tvLongName);
+            tvAmountRounded = itemView.findViewById(R.id.tvAmountRounded);
             tvAmount = itemView.findViewById(R.id.tvAmount);
 
             item = itemView.findViewById(R.id.layoutOwnedCrypto);
