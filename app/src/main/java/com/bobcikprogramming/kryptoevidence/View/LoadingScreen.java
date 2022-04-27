@@ -30,6 +30,15 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading_screen);
 
+        if (!isTaskRoot()) {
+            final Intent intent = getIntent();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
+                    Intent.ACTION_MAIN.equals(intent.getAction())) {
+                finish();
+                return;
+            }
+        }
+
         controller = new LoadingScreenController(this);
         handler = new Handler();
 
