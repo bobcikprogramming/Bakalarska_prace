@@ -12,6 +12,15 @@ import android.widget.TextView;
 
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class AddTransaction extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout btnBuy, btnSell, btnChange;
@@ -42,7 +51,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         btnBuy = findViewById(R.id.tabButtonBuy);
@@ -63,7 +72,7 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -99,13 +108,13 @@ public class AddTransaction extends AppCompatActivity implements View.OnClickLis
     }
 
     /**
-     * Metoda pro vykonání událostí při uzavření okna
+     * Metoda pro ukončení aktivity. Je navrácena boolean hodnota uložena pod klíčem "close".
      * @param close pravdivostní hodnota, zda-li bylo okno uzavřeno pomocí tlačítka close
      */
     private void closeActivity(boolean close){
         Intent intent = new Intent();
         intent.putExtra("close", close);
-        setResult(RESULT_OK, intent );
+        setResult(RESULT_OK, intent);
         finish();
     }
 

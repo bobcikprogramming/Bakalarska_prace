@@ -15,6 +15,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionEditPhotoViewerController {
 
     private ViewPager photoViewer;
@@ -40,7 +49,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     /**
-     * Metoda pro inicializování seznamu Uri cest ke snímkům
+     * Metoda pro inicializování seznamu Uri cest, uložených v databázi, ke snímkům.
      */
     private void setPhotosUri(){
         photosUri = new ArrayList<>();
@@ -52,7 +61,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     /**
-     * Metoda pro inicializování viewPagerAdapteru a  jeho nastavení pro ViewPager
+     * Metoda pro inicializování viewPagerAdapteru a jeho nastavení pro ViewPager.
      */
     private void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, photosUri);
@@ -60,7 +69,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     /**
-     * Metoda pro smazání snímku z databáze a ViewPageru na pozici position, proběhlo-li jeho smazání ze souboru úspěšně
+     * Metoda pro smazání snímku z databáze a ViewPageru na pozici position, proběhlo-li jeho smazání ze souboru úspěšně.
      * @param position Pozice snímku
      */
     public void deletePhoto(int position){
@@ -75,7 +84,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     /**
-     * Pomocná metoda na smazání snímku ze souboru
+     * Pomocná metoda pro smazání snímku ze souboru.
      * @param path Cesta ke snímku
      * @return true - snímek smazán, jinak false
      */
@@ -95,7 +104,7 @@ public class TransactionEditPhotoViewerController {
     }
 
     /**
-     * Metoda pro uložení snímku do databáze
+     * Metoda pro uložení snímku do databáze.
      * @param uri Uri cesta ke snímku
      */
     public void saveImageToDatabase(Uri uri){

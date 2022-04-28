@@ -15,6 +15,15 @@ import android.widget.ImageView;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionViewerController;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBack, btnEdit;
@@ -39,7 +48,7 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -57,7 +66,7 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         transactionViewer = findViewById(R.id.viewPagerTransaction);
@@ -69,7 +78,7 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * Metoda pro ukončení activity
+     * Metoda pro ukončení activity. Je navrácena boolean hodnota pod klíčem "changed".
      */
     private void closeActivity(){
         Intent intent = new Intent();
@@ -79,7 +88,7 @@ public class TransactionViewer extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<Intent> infoActivityTransactionEditLauncher = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),

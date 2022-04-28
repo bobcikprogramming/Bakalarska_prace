@@ -15,6 +15,15 @@ import com.bobcikprogramming.kryptoevidence.View.FragmentTransactions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
@@ -46,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Metoda k přepnutí mezi fragmenty
+     * Metoda přepínající mezi fragmenty.
      */
     private void selectFragment(){
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Pomocná metoda k označení vybraného fragmentu ve spodní liště
+     * Pomocná metoda k označení vybraného fragmentu ve spodní liště.
      * @param position ID UI komponenty, jenž má být označena
      */
     public void selectBottomMenu(final int position) {

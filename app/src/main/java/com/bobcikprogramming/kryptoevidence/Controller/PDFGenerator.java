@@ -1,6 +1,5 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
@@ -20,6 +19,15 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
 
 public class PDFGenerator {
     private AssetManager assetManager;
@@ -66,9 +74,9 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda inicializující vytvoření PDF souboru
-     * Postupně zavolá vypsání nákupu, prodeje a směny
-     * Následující soubor poté uloží
+     * Metoda inicializující vytvoření PDF souboru.
+     * Postupně zavolá vypsání nákupu, prodeje a směny.
+     * Následující soubor poté uloží.
      * @param selectedYear Rok daňového období
      * @param buyList Seznam nákupů za dané období
      * @param sellList Seznam prodejů za dané období
@@ -109,8 +117,8 @@ public class PDFGenerator {
     }
     
     /**
-     * Metoda pro získání cesty do sloužky s PDF soubory
-     * Neexistuje-li daná složka, tak dojde k jejímu vytvoření
+     * Metoda pro získání cesty do sloužky s PDF soubory.
+     * Neexistuje-li daná složka, tak dojde k jejímu vytvoření.
      * @return Cestu do složky pokud existuje, jinak null
      * 
      * Metoda inspirována z:
@@ -130,7 +138,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Pomocná metoda pro zapsání nového řádku do PDF souboru
+     * Pomocná metoda pro zapsání nového řádku do PDF souboru.
      * @param text Text jenž má být vypsán
      * @param font Font písma
      * @param fontSize Velikost písma
@@ -146,7 +154,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro načtení fontů
+     * Metoda pro načtení fontů.
      * @throws IOException
      */
     private void loadFonts() throws IOException {
@@ -155,7 +163,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vytvoření nové stránky
+     * Metoda pro vytvoření nové stránky a vypsání záhlaví.
      * @throws IOException
      */
     private void createNewPage() throws IOException {
@@ -200,7 +208,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vytvoření zápatí
+     * Metoda pro vytvoření zápatí.
      * @param pageNum
      * @throws IOException
      */
@@ -231,7 +239,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vypsání celkového součtu operace
+     * Metoda pro vypsání celkového součtu operace.
      * @param yVal Hodnota posunu na Y ose
      * @param moveRight Hodnota posunu na X ose
      * @param textWidthDes Šířka popisujícího textu
@@ -256,7 +264,7 @@ public class PDFGenerator {
 
     /* PDF sekce nákupu */
     /**
-     * Metoda pro generování seznamu nákupů
+     * Metoda pro generování seznamu nákupů.
      * @param buyList Seznam nákupů
      * @return Celkovou částku nákladů
      * @throws IOException
@@ -311,7 +319,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro výpis jednotlivých nákupů
+     * Metoda pro výpis jednotlivých nákupů.
      * @param buy Vypisovaný nákup
      * @throws IOException
      */
@@ -409,7 +417,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vytvoření hlavičky seznamu nákupů
+     * Metoda pro vytvoření hlavičky seznamu nákupů.
      * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu, 
      *                            false - výpis pokračuje na nové straně)
      * @throws IOException
@@ -469,7 +477,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda k vypsání celkových nákladů
+     * Metoda k vypsání celkových nákladů.
      * @param buyTotal Celkové náklady
      * @throws IOException
      */
@@ -518,7 +526,7 @@ public class PDFGenerator {
 
     /* PDF sekce prodeje */
     /**
-     * Metoda pro generování seznamu prodejů
+     * Metoda pro generování seznamu prodejů.
      * @param sellList Seznam prodejů
      * @return Celkovou částku zisku
      * @throws IOException
@@ -577,7 +585,7 @@ public class PDFGenerator {
 
 
     /**
-     * Metoda pro výpis jednotlivých prodejů
+     * Metoda pro výpis jednotlivých prodejů.
      * @param sell Vypisovaný prodej
      * @param firstRow boolean hodnota, zda-li se jedná o první řádek výpisu
      * @throws IOException
@@ -679,7 +687,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vytvoření hlavičky seznamu prodejů
+     * Metoda pro vytvoření hlavičky seznamu prodejů.
      * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu,
      *                            false - výpis pokračuje na nové straně)
      * @throws IOException
@@ -739,7 +747,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda k vypsání celkového zisku
+     * Metoda k vypsání celkového zisku.
      * @param sellTotal Celkový zisk
      * @throws IOException
      */
@@ -789,7 +797,7 @@ public class PDFGenerator {
 
     /* PDF sekce směny */
     /**
-     * Metoda pro generování seznamu směn
+     * Metoda pro generování seznamu směn.
      * @param changeList Seznam směn
      * @return Celkovou částku zisku
      * @throws IOException
@@ -847,7 +855,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro výpis jednotlivých směn
+     * Metoda pro výpis jednotlivých směn.
      * @param change Vypisovaná směna
      * @param firstRow boolean hodnota, zda-li se jedná o první řádek výpisu
      * @throws IOException
@@ -943,7 +951,7 @@ public class PDFGenerator {
     }
 
     /**
-     * Metoda pro vytvoření hlavičky seznamu směn
+     * Metoda pro vytvoření hlavičky seznamu směn.
      * @param showTransactionType boolean hodnota, zda-li se má vypsat typ transakce (true - začátek výpisu,
      *                            false - výpis pokračuje na nové straně)
      * @throws IOException
@@ -1004,7 +1012,7 @@ public class PDFGenerator {
 
 
     /**
-     * Metoda k vypsání celkového zisku
+     * Metoda k vypsání celkového zisku.
      * @param changeTotal Celkové zisk
      * @throws IOException
      */
@@ -1053,7 +1061,7 @@ public class PDFGenerator {
     /* PDF celkový součet */
 
     /**
-     * Metoda pro vytvoření celkového součtu za daňové období
+     * Metoda pro vytvoření celkového součtu za daňové období.
      * @param buyTotal Celkové náklady za nákup
      * @param sellTotal Celkový zisk za prodej
      * @param changeTotal Celkový zisk za směnu

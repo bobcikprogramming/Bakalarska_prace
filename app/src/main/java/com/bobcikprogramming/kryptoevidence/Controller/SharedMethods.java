@@ -18,8 +18,14 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
- * Třída slouží k obecným funkcím využívaných na více místech.
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
  */
+
 public class SharedMethods {
 
     public SharedMethods(){}
@@ -34,7 +40,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání stringu z text view
+     * Metoda pro získání stringu z pole text view.
      * @param stringFrom Ukazatel na text view
      * @return Získaný string
      */
@@ -43,7 +49,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání stringu ze spinneru
+     * Metoda pro získání stringu ze spinneru.
      * @param stringFrom Ukazatel na spinner
      * @return Získaný string
      */
@@ -52,7 +58,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání hodnoty poplatku
+     * Metoda pro získání hodnoty poplatku. Není-li nastaven, vrací hodnotu 0.
      * @param etFee Ukazatel na edit text poplatku
      * @return Hodnotu poplatku nebo hodnotu 0.0, není-li hodnota uvedena
      */
@@ -61,7 +67,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání hodnoty BigDecimal z edit textového pole
+     * Metoda pro získání hodnoty BigDecimal z edit textového pole.
      * @param stringFrom Ukazatel na edit textové pole
      * @return Hodnota převedena na typ BigDecimal
      */
@@ -70,7 +76,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání hodnoty BigDecimal ze stringu
+     * Metoda pro získání hodnoty BigDecimal ze stringu.
      * @param stringFrom Hodnota typu string
      * @return Hodnota převedena na typ BigDecimal
      */
@@ -79,7 +85,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání hodnoty BigDecimal z double
+     * Metoda pro získání hodnoty BigDecimal z double.
      * @param doubleFrom Hodnota typu Double
      * @return Hodnota převedena na typ BigDecimal
      */
@@ -89,7 +95,7 @@ public class SharedMethods {
 
 
     /**
-     * Metoda pro získání ceny bez poplatku
+     * Metoda pro získání ceny bez poplatku.
      * @param etPrice Ukazatel na edit textové pole s cenou
      * @param etFee Ukazatel na edit textové pole s poplatkem
      * @return Získaná cena
@@ -101,7 +107,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro získání zisku (cena bez poplatku)
+     * Metoda pro získání zisku (cena bez poplatku).
      * @param etPrice Ukazatel na edit textové pole s cenou
      * @param etFee Ukazatel na edit textové pole s poplatkem
      * @return Získaný zisk
@@ -113,7 +119,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda na převod hodnoty z edit textového pole na hodnotu Double
+     * Metoda na převod hodnoty z edit textového pole na hodnotu double.
      * @param toParse Ukazatel na edit textové pole
      * @return Získaná hodnota
      */
@@ -123,7 +129,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro skrytí klávesnice
+     * Metoda pro skrytí klávesnice.
      * @param activity Třída activity, ve které byla metoda provolána
      */
     public void hideKeyBoard(Activity activity){
@@ -134,7 +140,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro kontrolo, zda-li byla všechna povinná pole vyplněna
+     * Metoda pro kontrolo, zda-li byla všechna povinná pole vyplněna (verze pro TextView).
      * @param toCheck Ukazatel na text view, jenž má být vyplněno
      * @param description Ukazatel text view s popisem povinného pole
      * @param prevValue boolean hodnota obsahující výsledek předcházející kontroly
@@ -155,7 +161,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro kontrolo, zda-li byla všechna povinná pole vyplněna
+     * Metoda pro kontrolo, zda-li byla všechna povinná pole vyplněna (verze pro EditText).
      * @param toCheck Ukazatel na edit text, jenž má být vyplněno
      * @param description Ukazatel text view s popisem povinného pole
      * @param prevValue boolean hodnota obsahující výsledek předcházející kontroly
@@ -176,7 +182,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro zpracování vyobrazení čísel u přehledu transakcí
+     * Metoda pro zaokrouhlení čísla na počet míst. Maximální hodnotu tvoří číslo 999 999, minimální -999 999
      * @param number string obsahující číslo k vyobrazení
      * @return Zpracovaná hodnota
      */
@@ -200,7 +206,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro zaokrouhlení čísla typu Double na dvě desetinná místa
+     * Metoda pro zaokrouhlení čísla typu double na dvě desetinná místa.
      * @param toEdit Číslo typu Double
      * @return Zaokrouhlené číslo
      */
@@ -210,7 +216,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro zaokrouhlení čísla typu string na dvě desetinná místa
+     * Metoda pro zaokrouhlení čísla typu String na dvě desetinná místa.
      * @param toEdit Číslo typu string
      * @return Zaokrouhlené číslo
      */
@@ -220,7 +226,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro zaokrouhlení čísla typu BigDecimal na dvě desetinná místa
+     * Metoda pro zaokrouhlení čísla typu BigDecimal na dvě desetinná místa.
      * @param toEdit Číslo typu BigDecimal
      * @return Zaokrouhlené číslo
      */
@@ -229,7 +235,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda pro zaokrouhlení čísla typu String na X desetinných míst
+     * Metoda pro zaokrouhlení čísla typu String na X desetinných míst.
      * @param toEdit Číslo typu String
      * @param x Počet desetinných míst
      * @return Zaokrouhlené číslo
@@ -240,7 +246,7 @@ public class SharedMethods {
     }
 
     /**
-     * Metoda na převod display metrics hodnoty na pixely
+     * Metoda na převod display metrics hodnoty na pixely.
      * @param dp Display metrics hodnota
      * @param context Třída context activity, ze které je metoda volána
      * @return Hodnotu v pixelech

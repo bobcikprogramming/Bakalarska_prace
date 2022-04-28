@@ -16,6 +16,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.APIAsyncTask;
 import com.bobcikprogramming.kryptoevidence.Controller.TaskDelegate;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
 
     private TextView tvUpdateInfo;
@@ -48,7 +57,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         tvUpdateInfo = findViewById(R.id.tvUpdateInfo);
@@ -75,7 +84,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Spuštění asynchronní operace pro stažení dat z API
+     * Spuštění asynchronní operace pro stažení dat z API.
      */
     private void startAsynctaskAPI() {
         APIAsyncTask asyncTask = new APIAsyncTask(this, this, tvUpdateInfo, progressBar);
@@ -83,7 +92,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Spuštění asynchronní operace pro stažení dat z Firebase
+     * Spuštění asynchronní operace pro stažení dat z Firebase.
      */
     private void startAsynctaskFirebase() {
         FirebaseAsyncTask asyncTask = new FirebaseAsyncTask(this, this, tvUpdateInfo, progressBar);
@@ -91,7 +100,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda vyčká dvě sekundy a poté zavolá metodu startAsynctaskFirebase
+     * Metoda vyčká dvě sekundy a poté zavolá metodu startAsynctaskFirebase.
      */
     private void showLoadingScreenDelay(){
         handler.postDelayed(new Runnable() {
@@ -102,7 +111,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda pro spuštění activity MainActivity
+     * Metoda pro spuštění activity MainActivity.
      */
     private void startActivity(){
         Intent intent = new Intent(LoadingScreen.this, MainActivity.class);
@@ -111,7 +120,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda vyčká dvě sekundy a poté zavolá metodu startActivity
+     * Metoda vyčká dvě sekundy a poté zavolá metodu startActivity.
      */
     private void startActivityDelay(){
         handler.postDelayed(new Runnable() {
@@ -122,7 +131,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda pro nastavení barevného módu aplikace
+     * Metoda pro nastavení barevného módu aplikace.
      */
     private void setModeofGUI(){
         String modeType = controller.readFromFile();
@@ -140,7 +149,7 @@ public class LoadingScreen extends AppCompatActivity implements TaskDelegate {
     }
 
     /**
-     * Metoda přijímající výsledek asynchronních operací
+     * Metoda přijímající výsledek asynchronních operací.
      * @param result Výsledek operace
      */
     @Override

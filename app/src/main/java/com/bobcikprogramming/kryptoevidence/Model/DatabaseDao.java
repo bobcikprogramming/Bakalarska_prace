@@ -8,6 +8,15 @@ import androidx.room.Update;
 
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 @Dao
 public interface DatabaseDao {
 

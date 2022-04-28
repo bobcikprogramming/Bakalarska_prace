@@ -23,6 +23,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class FragmentPDFController {
 
     private String selectedYear;
@@ -54,7 +63,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro načtení pole s PDF soubory z databáze
+     * Metoda pro načtení pole s informacemi o PDF souborech z databáze.
      */
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -63,7 +72,8 @@ public class FragmentPDFController {
     }
 
     /**
-     * Setter pro nastavení hodnoty selectedYear
+     * Setter pro nastavení hodnoty selectedYear.
+     * Metoda dále volá metodu createIfThereIsATransaction().
      * @param selectedYear Hodnota, jenž má být nastavena
      */
     public void setSelectedYear(String selectedYear){
@@ -78,7 +88,7 @@ public class FragmentPDFController {
 
     /**
      * Metoda pro kontrolu zda-li obsahuje dané daňové období nějaký prodej, pokud ano, volá metodu createPDF,
-     * případně confirmDialogUnfinishedCreate, nemá-li prodej evidován nákup
+     * případně confirmDialogUnfinishedCreate, nemá-li prodej evidován nákup.
      */
     private void createIfThereIsATransaction(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -107,7 +117,8 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro nastavení kurzu
+     * Metoda pro nastavení kurzu. Kurz je nastaven postupně v pořadí: kurz pro daný rok (existuje-li),
+     * jinak kurz pro nejbližšá předchozí rok (existuje-li), jinak defaultní hodnota.
      */
     private void setExchangeRate() {
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -130,7 +141,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro vytvoření PDF záznamu
+     * Metoda pro vytvoření PDF záznamu.
      * @param dateFrom Začátek daňového období
      * @param dateTo Konec daňového období
      * @param salesInYear Pole prodejů v daném daňovém období
@@ -156,7 +167,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro získání seznamu prodejů k výpisu za dané daňové období
+     * Metoda pro získání seznamu prodejů k výpisu za dané daňové období.
      * @param salesInYear Seznam prodejů v daném daňovém období
      * @return ArrayList prodejů k výpisu
      */
@@ -188,7 +199,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro získání seznamu nákupů k výpisu za dané daňové období
+     * Metoda pro získání seznamu nákupů k výpisu za dané daňové období.
      * @param dateFrom Začátek daňového období
      * @param dateTo Konec daňového období
      * @return ArrayList nákupů k výpisu
@@ -290,7 +301,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Pomocná metoda pro vytvoření položky k uložení do seznamu nákupů
+     * Pomocná metoda pro vytvoření položky k uložení do seznamu nákupů.
      * @param uid UID daného nákupu
      * @param usedFrom Množství, jenž bylo z daného nákupu prodána
      * @param shortName Symbol kryptoměny
@@ -341,7 +352,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro získání seznamu směn k výpisu za dané daňové období
+     * Metoda pro získání seznamu směn k výpisu za dané daňové období.
      * @param dateFrom Začátek daňového období
      * @param dateTo Konec daňového období
      * @return Seznam směn k výpisu
@@ -374,7 +385,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda k seřazení seznamu podle data
+     * Metoda k seřazení seznamu podle data.
      * @param data Seznam k seřazení
      * @return Seřadený seznam
      */
@@ -400,7 +411,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda k seřazení seznamu podle času
+     * Metoda k seřazení seznamu podle času.
      * @param data Seznam k seřazení
      * @return Seřadený seznam
      */
@@ -426,7 +437,7 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda k uložení informací o vytvořeném PDF do databáze
+     * Metoda k uložení informací o vytvořeném PDF do databáze.
      */
     private void saveToDb(String fileName, BigDecimal total){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -445,7 +456,8 @@ public class FragmentPDFController {
     }
 
     /**
-     * Metoda pro zobrazení dialogového okna při vytváření PDF záznamu v případě, že nemají všechny prodeje správně evidováno nabytí kryptoměny
+     * Metoda pro zobrazení dialogového okna při vytváření PDF záznamu v případě,
+     * že nemají všechny prodeje správně evidováno nabytí kryptoměny.
      * @param dateFrom Daňové období od
      * @param dateTo Daňové období do
      * @param salesInYear Seznam prodejů v daňovém období

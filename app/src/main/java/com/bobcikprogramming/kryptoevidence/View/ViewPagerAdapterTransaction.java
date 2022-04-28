@@ -27,6 +27,15 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
+/**
  * Třída vytvořena na základě tutoriálu z:
  * Odkaz:   https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/
  * Datum:   15. září 2020
@@ -107,7 +116,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         recyclerViewTransactionInfo = itemView.findViewById(R.id.recyclerViewTransactionInfo);
@@ -131,7 +140,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     }
 
     /**
-     * Metoda pro nastavení nadpisu a viditelnosti indikátoru další transakce
+     * Metoda pro nastavení nadpisu a viditelnosti indikátoru další transakce.
      * @param transaction
      */
     private void setupHeadline(TransactionEntity transaction){
@@ -147,7 +156,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
 
 
     /**
-     * Metoda k aktualizování výpisu transakce
+     * Metoda k aktualizování výpisu transakce.
      * @param dataList Pole s daty transakce k výpisu
      * @param dataListHistory Pole s daty historie transakce k výpisu
      * @param position Pozice transakce z pole transakcí
@@ -175,7 +184,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     }
 
     /**
-     * Metoda k otevření activity TransactionPhotoViewer
+     * Metoda k otevření activity TransactionPhotoViewer.
      * @param postion Pozice transakce z pole transakcí
      */
     private void openGalery(int postion){
@@ -190,7 +199,7 @@ public class ViewPagerAdapterTransaction extends PagerAdapter {
     }
 
     /**
-     * Metoda k zobrazení ImageView se snímkem, obsahuje-li transakce nějaký snímek
+     * Metoda k zobrazení ImageView se snímkem, obsahuje-li transakce nějaký snímek.
      */
     public void showPhotosIfNotEmpty(){
         if(!controller.getPhotos().isEmpty()){

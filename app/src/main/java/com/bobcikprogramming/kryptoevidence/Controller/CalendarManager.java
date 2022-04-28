@@ -20,8 +20,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Třída pro práci s daty
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
  */
+
 public class CalendarManager {
 
     private SharedMethods shared;
@@ -31,7 +37,8 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro nastavení dialogového okna pro výběr data. Výchozí hodnoty jsou v případě již zvoleného data nastaveny na dané datum, jinak na aktuální datum
+     * Metoda pro nastavení dialogového okna pro výběr data.
+     * Výchozí hodnoty jsou v případě již zvoleného data nastaveny na dané datum, jinak na aktuální datum.
      * @param activity Třída activity ze které je metoda volána
      * @param dateSetListener OnDateSetListener jenž naslouhá na dokončení výběru
      * @param date Nastavené datum nebo null, nebylo-li ještě nastaveno
@@ -64,7 +71,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda slouží pro zpracování výsledku DatePickerDialog na datum daného formátu (dd.MM.yyyy)
+     * Metoda slouží pro zpracování výsledku DatePickerDialog na datum daného formátu (dd.MM.yyyy).
      * @param year Zvolený rok
      * @param month Zvolený měsíc
      * @param day Zvolený den
@@ -89,7 +96,8 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro nastavení dialogového okna pro výběr času. Výchozí hodnoty jsou v případě již zvoleného času nastaveny na daný čas, jinak na aktuální čas
+     * Metoda pro nastavení dialogového okna pro výběr času.
+     * Výchozí hodnoty jsou v případě již zvoleného času nastaveny na daný čas, jinak na aktuální čas.
      * @param activity Třída activity ze které je metoda volána
      * @param timeSetListener OnTimeSetListener jenž naslouhá na dokončení výběru
      * @param time Nastavený čas nebo null, nebyl-li ještě nastaven
@@ -111,7 +119,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda slouží pro zpracování výsledku TimePickerDialog na čas daného formátu (HH:mm)
+     * Metoda slouží pro zpracování výsledku TimePickerDialog na čas daného formátu (HH:mm).
      * @param hour Zvolená hodina
      * @param minute Zvolená minuta
      * @return Stringová hodnota času v daném formátu
@@ -134,7 +142,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda slouží ke kontrole, zda-li navolený datum a čas nepřekročili hodnotu aktuálního času
+     * Metoda slouží ke kontrole, zda-li navolený datum a čas nepřekročili hodnotu aktuálního času.
      * @param context Třída context activity, ze které je metoda volána
      * @param dateToCheck Ukazatel na text view obsahující datum
      * @param dateToCheckDes Ukazatel na text view s popisem pro datum
@@ -181,7 +189,7 @@ public class CalendarManager {
 
 
     /**
-     * Metoda pro získání aktuální data v daném formátu (dd.MM.yyyy)
+     * Metoda pro získání aktuální data v daném formátu (dd.MM.yyyy).
      * @return Stringová hodnota aktuálního data
      */
     public String getActualDay(){
@@ -191,7 +199,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro získání aktuálního roku
+     * Metoda pro získání aktuálního roku.
      * @return Stringová hodnota aktuálního roku
      */
     public String getActualYear(){
@@ -201,7 +209,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro získání aktuálního času
+     * Metoda pro získání aktuálního času.
      * @return Stringová hodnota aktuálního času
      */
     public String getActualTime(){
@@ -211,7 +219,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro získání aktuálního data a času ve formátu (yyyyMMddHHmmss)
+     * Metoda pro získání aktuálního data a času ve formátu (yyyyMMddHHmmss).
      * @return Stringová hodnota aktuálního data a času
      */
     public String getActualDateFolderNameFormat(){
@@ -221,7 +229,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro převod data ve stringová podobě na formát Data (dd.MM.yyyy)
+     * Metoda pro převod data ve stringové podobě na formát Data (dd.MM.yyyy).
      * @param dateInString Stringová hodnota data
      * @return Datum ve formátu Date
      */
@@ -237,7 +245,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro převod času ve stringová hodnotě na formát Date (HH:mm)
+     * Metoda pro převod času ve stringové hodnotě na formát Date (HH:mm).
      * @param timeInString Stringová hodnota času
      * @return Čas ve formátu Date
      */
@@ -254,7 +262,8 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro nastavení dialogového okna pro výběr data. Výchozí hodnoty jsou zvoleny dle nastavení filteru
+     * Metoda pro nastavení dialogového okna pro výběr data.
+     * Výchozí hodnoty jsou zvoleny dle nastavení filteru, není-li nastaven, jsou uvažovány aktuální hodnoty.
      * @param isDateFrom boolean hodnota, zda-li se jedná o nastavení dialogového okna pro volbu data "OD"
      * @param dateSetListener  OnDateSetListener jenž naslouhá na dokončení výběru
      * @param tvDateFrom Ukazatel na text view obsahující datum "OD"
@@ -270,14 +279,10 @@ public class CalendarManager {
         int day = calendar.get(Calendar.DAY_OF_MONTH); //day of month -> protože měsíce mají různý počet dní
 
         if(controller.isSetDateFrom() && isDateFrom){
-            System.out.println(">>>>>>>>>>>>>>>>"+shared.getString(tvDateFrom));
             String[] dateSplit = shared.getString(tvDateFrom).split("\\.");
             day = Integer.parseInt(dateSplit[0]);
             month = Integer.parseInt(dateSplit[1]) - 1;
             year = Integer.parseInt(dateSplit[2]);
-        }else{
-            System.out.println(">>>>>>>>>>>>>>>>controller.isSetDateFrom(): "+controller.isSetDateFrom());
-            System.out.println(">>>>>>>>>>>>>>>>isDateFrom: "+isDateFrom);
         }
 
         if(controller.isSetDateTo() && !isDateFrom){
@@ -297,7 +302,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda na převod data na milisekundy
+     * Metoda na převod data na milisekundy.
      * @param dateInString Stringová hodnota data
      * @return Datum v milisekundách typu long
      */
@@ -306,7 +311,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro nastavení aktuálního data na milisekundy
+     * Metoda vrací aktuální datum v milisekundách.
      * @return Datum v milisekundách typu long
      */
     public long getActualDateMillis(){
@@ -314,7 +319,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro nastavení aktuální data a času na milisekundy
+     * Metoda vrací aktuální datum a čas v milisekundách.
      * @return Datum a čas v milisekundách typu long
      */
     public long getActualDateTimeMillis(){
@@ -322,7 +327,7 @@ public class CalendarManager {
     }
 
     /**
-     * Metoda pro získání data z milisekund
+     * Metoda pro získání data z milisekund.
      * @param millis Datum v milisekundách typu long
      * @return Stringová hodnota data
      */

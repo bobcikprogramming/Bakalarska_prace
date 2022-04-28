@@ -34,6 +34,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class AddTransactionTabChange extends Fragment implements View.OnClickListener {
 
     private EditText etQuantityBuy, etQuantitySell, etPriceBuy, etFee;
@@ -81,7 +90,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -123,7 +132,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         etQuantityBuy = view.findViewById(R.id.editTextQuantityChangeBuy);
@@ -156,7 +165,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda pro vykonání událostí při uzavření okna
+     * Metoda pro ukončení aktivity. Jsou navráceny boolean hodnoty pod klíčem "close" a "change".
      */
     private void closeActivity(){
         Intent intent = new Intent();
@@ -167,7 +176,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda pro výběr data pomocí dialogového okna
+     * Metoda pro výběr data pomocí dialogového okna.
      */
     private void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
@@ -187,7 +196,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda pro výběr času pomocí dialogového okna
+     * Metoda pro výběr času pomocí dialogového okna.
      */
     private void openClock(){
         tvTime.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +216,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda pro získání adaptéru prvku spinner
+     * Metoda pro získání adaptéru prvku spinner.
      * @param itemId UI pro položky spinneru
      * @param layoutId UI pro layout spinneru
      * @param dropDownId UI pro layout otevřeného spinneru
@@ -220,7 +229,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
             new ActivityResultContracts.GetContent(),
@@ -238,7 +247,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             });
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -258,7 +267,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             });
 
     /**
-     * Metoda pro otevření PhotoViewer activity
+     * Metoda pro otevření PhotoViewer activity.
      */
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
@@ -267,7 +276,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<Intent> cryptoSelectionForSell = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -285,7 +294,7 @@ public class AddTransactionTabChange extends Fragment implements View.OnClickLis
             });
 
     /**
-     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna.
      * @return true - vyplněna, jinak false
      */
     private boolean shakeEmpty(){

@@ -6,6 +6,15 @@ import androidx.room.PrimaryKey;
 
 import java.math.BigDecimal;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 @Entity
 public class TransactionHistoryEntity {
 

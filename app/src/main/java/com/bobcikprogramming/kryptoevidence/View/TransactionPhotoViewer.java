@@ -12,6 +12,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.TransactionPhotoViewerCon
 import com.bobcikprogramming.kryptoevidence.R;
 import com.google.android.material.tabs.TabLayout;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionPhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager photoViewer;
@@ -36,7 +45,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
@@ -51,7 +60,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -64,7 +73,7 @@ public class TransactionPhotoViewer extends AppCompatActivity implements View.On
     }
 
     /**
-     * Metoda pro ukončení activity
+     * Metoda pro ukončení activity.
      */
     private void closeActivity(){
         Intent intent = new Intent();

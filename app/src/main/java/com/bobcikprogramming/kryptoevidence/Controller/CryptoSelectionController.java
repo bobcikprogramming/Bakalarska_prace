@@ -7,6 +7,15 @@ import com.bobcikprogramming.kryptoevidence.Model.CryptocurrencyEntity;
 
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class CryptoSelectionController {
     private Context context;
 
@@ -20,7 +29,8 @@ public class CryptoSelectionController {
     }
 
     /**
-     * Metoda k načtení seznamu kryptoměn z databáze
+     * Metoda k načtení seznamu kryptoměn z databáze do seznamu cryptoList a cryptoListToShow.
+     * CryptoList uchovává všechna data pro účel filtrování, cryptoListToShow uchovává zobrazovaná data.
      */
     private void loadCryptoFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -29,7 +39,8 @@ public class CryptoSelectionController {
     }
 
     /**
-     * Metoda k odstranění vybrané kryptoměny z výběru "Prodané kryptoměny" u transakce "Směna"
+     * Metoda k odstranění vybrané kryptoměny z výběru "Prodané kryptoměny" u transakce "Směna".
+     * Odstraněnou kryptoměnou je kryptoměna vybraná na počátku vytvoření transakce, tedy kryptoměna uvažovaná jako nabytá.
      * @param id UID kryptoměny k odstranění ze seznamu
      * @return Seznam kryptoměn bez uvedené kryptoměny
      */
@@ -50,7 +61,7 @@ public class CryptoSelectionController {
     }
 
     /**
-     * Metoda pro filtrování kryptoměn podle názvu či symbolu
+     * Metoda pro filtrování kryptoměn podle názvu či symbolu.
      * @param searching Fráze k vyhledání
      * @return Seznam obsahující pouze kryptoměny jejichž název či symbol se skládá z dané fráze
      */

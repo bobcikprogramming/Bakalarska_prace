@@ -14,6 +14,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionOperationController {
 
     private ArrayList<Uri> photos;
@@ -41,7 +50,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda k uložení transakce "Nákup"
+     * Metoda k uložení transakce nákup.
      * @param uidBought UID nakoupené kryptoměny
      * @param quantityBought Množství nakoupené kryptoměny
      * @param price Cena
@@ -66,7 +75,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda k uložení transakce "Prodej"
+     * Metoda k uložení transakce prodej.
      * @param uidSold UID prodané kryptoměny
      * @param quantitySold Množství prodané kryptoměny
      * @param price Cena
@@ -91,7 +100,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda k uložení transakce "Směna"
+     * Metoda k uložení transakce směna.
      * @param uidBought UID koupené kryptoměny
      * @param currency Cena vedena v měně
      * @param quantityBought Množství koupené kryptoměny
@@ -117,7 +126,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda slouží k aktualizování hodnoty vlastněné kryptoměny
+     * Metoda slouží k aktualizování hodnoty vlastněné kryptoměny.
      * @param uidCrypto UID kryptoměny
      * @param quantity Množství ke změně
      * @param operationType Typ změny 0 - nákup (přidat), 1 - prodej (odebrat), 2 - směna (přidat pro nakoupenou, odebrat pro prodanou)
@@ -150,7 +159,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Při evidování nákupu dojde ke kontrole, zda-li není třeba nákup přidat k odpovídajícímu prodeji
+     * Při evidování nákupu dojde ke kontrole, zda-li není třeba nákup přidat k odpovídajícímu prodeji.
      * @param transactionID UID transakce
      * @param quantity Koupené množství
      * @param date Datum transakce
@@ -167,7 +176,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda slouží k přepočtu transakcí "Prodej" časově následujících po novém nákupu
+     * Metoda slouží k přepočtu transakcí prodej časově následujících po novém nákupu.
      * @param transactionID UID nové transakce nákup
      * @param uidCrypto UID koupené kryptoměny
      * @param date Datum nákupu
@@ -185,7 +194,7 @@ public class TransactionOperationController {
             String timeFrom = firstBuy.transaction.time;
             Date firstBuyTime = calendar.getTimeFormat(timeFrom);
             Date newBuyTime = calendar.getTimeFormat(time);
-            /** Pokud je první nákup prováděn až po datu nového nákupu */
+            /* Pokud je první nákup prováděn až po datu nového nákupu */
             if(firstBuyDate.after(newBuyDate) || (firstBuyDate.equals(newBuyDate) && firstBuyTime.after(newBuyTime))){
                 if(sellToReset.transaction.transactionType.equals("Prodej")) {
                     db.databaseDao().updateFifoCalc(String.valueOf(sellToReset.transaction.uidTransaction), sellToReset.transaction.quantitySold, "-1.0", "-1.0", "-1", "-1");
@@ -232,7 +241,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Při evidování prodeje dojde ke kontrole, zda-li existuje nákup, ke kterému lze prodej přiřadit
+     * Při evidování prodeje dojde ke kontrole, zda-li existuje nákup, ke kterému lze prodej přiřadit-
      * @param transactionID UID nového prodeje
      * @param quantity Prodané množství
      * @param date Datum prodeje
@@ -265,7 +274,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda slouží k vyresetování transakcí "Nákup" časově následujícím za novým prodejem
+     * Metoda slouží k vyresetování transakcí "Nákup" časově následujícím za novým prodejem.
      * @param uidCrypto
      * @param firstBuyDate
      * @param firstBuyTime
@@ -291,7 +300,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Metoda slouží k přepočtu FIFO fronty po přidání nového nákupu
+     * Metoda slouží k přepočtu FIFO fronty po přidání nového nákupu.
      * @param sellTransactionID UID transakce "Prodej" ke zpracování
      * @param quantity Množství ke zpracování
      * @param listOfAvailableBuys Dostupné nákupy pro daný prodej
@@ -345,7 +354,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Zpracování FIFO operace při vytvoření transakce "Směna"
+     * Zpracování FIFO operace při vytvoření transakce směna.
      * @param transactionID UID transakce
      * @param quantityBuy Koupené množství
      * @param quantitySell Prodané množství
@@ -367,7 +376,7 @@ public class TransactionOperationController {
     }
 
     /**
-     * Pomocná metoda pro provedení FIFO operace při přidání transakce "Nákup"
+     * Pomocná metoda pro provedení FIFO operace při přidání transakce nákup.
      * @param transactionID UID transakce
      * @param quantity Koupené množství
      * @param date Datum transakce

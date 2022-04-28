@@ -14,6 +14,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionViewerController {
 
     private ViewPagerAdapterTransaction viewPagerAdapter;
@@ -40,7 +49,7 @@ public class TransactionViewerController {
     }
 
     /**
-     * Metoda načte data z databáze do seznamu transakcí a seznamu změn
+     * Metoda načte data z databáze do seznamu transakcí (dataFromDatabase) a seznamu změn (dataFromDatabaseHistory).
      */
     public void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);

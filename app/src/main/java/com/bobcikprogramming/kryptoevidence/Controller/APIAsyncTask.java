@@ -23,6 +23,15 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
 
     private TaskDelegate delegate;
@@ -175,7 +184,9 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Metoda pro uložení kryptoměn do databáze
+     * Metoda pro uložení kryptoměn do databáze.
+     * Pokud se jedná o typ "realtoken", je daná měna přeskočena.
+     * Market rank je nastaven na defualtní hodnotu 999999.
      * @param jsonArray JsonArray obdržený z API
      * @param pos pozice objektu v jsonArray
      * @param db Přístup k lokální databázi
@@ -201,7 +212,7 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Po skončení operace vrací výsledekem typu string pomocí delegátoru
+     * Po skončení operace vrací výsledekem typu string pomocí delegátoru.
      * @param result výsledek typu string
      */
     @Override
@@ -210,7 +221,7 @@ public class APIAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Metoda pro zobrazení oznámení o stahování dat
+     * Metoda pro zobrazení oznámení o stahování dat.
      * @param loadText Stringová hednota s textem k zobrazení
      */
     private void showLoading(String loadText){

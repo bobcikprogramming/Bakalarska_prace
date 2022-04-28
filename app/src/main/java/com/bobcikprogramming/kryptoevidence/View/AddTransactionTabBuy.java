@@ -34,6 +34,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.Controller.TransactionOperationController;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class AddTransactionTabBuy extends Fragment implements View.OnClickListener {
 
     private EditText etQuantity, etPrice, etFee;
@@ -83,7 +92,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -116,7 +125,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         etQuantity = view.findViewById(R.id.editTextQuantityBuy);
@@ -147,7 +156,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro vykonání událostí při uzavření okna
+     * Metoda pro ukončení aktivity. Jsou navráceny boolean hodnoty pod klíčem "close" a "changed".
      */
     private void closeActivity(){
         Intent intent = new Intent();
@@ -158,7 +167,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro získání adaptéru prvku spinner
+     * Metoda pro získání adaptéru prvku spinner.
      * @param itemId UI pro položky spinneru
      * @param layoutId UI pro layout spinneru
      * @param dropDownId UI pro layout otevřeného spinneru
@@ -179,7 +188,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro výběr data pomocí dialogového okna
+     * Metoda pro výběr data pomocí dialogového okna.
      */
     private void openCalendar(){
         tvDate.setOnClickListener(new View.OnClickListener() {
@@ -199,7 +208,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro výběr času pomocí dialogového okna
+     * Metoda pro výběr času pomocí dialogového okna.
      */
     private void openClock(){
         tvTime.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +228,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      *
      * Metoda inspirována z:
      * https://developer.android.com/training/basics/intents/result
@@ -240,7 +249,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
             });
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<Intent> appGallery = registerForActivityResult(
         new ActivityResultContracts.StartActivityForResult(),
@@ -260,7 +269,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
         });
 
     /**
-     * Metoda pro otevření PhotoViewer activity
+     * Metoda pro otevření PhotoViewer activity.
      */
     private void openPhotoViewerActivity(){
         Intent photoViewer = new Intent(getContext(), PhotoViewer.class);
@@ -269,7 +278,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna
+     * Metoda pro kontrolu, zda-li jsou všechna povinná pole vyplněna.
      * @return true - vyplněna, jinak false
      */
     private boolean shakeEmpty(){
@@ -284,7 +293,7 @@ public class AddTransactionTabBuy extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro skrytí klávesnice při otevření spinneru
+     * Metoda pro skrytí klávesnice při otevření spinneru.
      */
     private void hideKeyBoardOnSpinnerTouch(){
         spinnerCurrency.setOnTouchListener(new View.OnTouchListener() {

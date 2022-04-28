@@ -1,7 +1,5 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
-// https://stackoverflow.com/a/13079815
-
 /**
  * Delegátor využívaný u asynchronních operací API a Firebase
  *

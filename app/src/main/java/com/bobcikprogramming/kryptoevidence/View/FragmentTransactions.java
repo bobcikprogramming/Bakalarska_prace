@@ -27,6 +27,15 @@ import com.bobcikprogramming.kryptoevidence.R;
 
 import java.util.Calendar;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class FragmentTransactions extends Fragment implements View.OnClickListener{
 
     private RecyclerView recyclerView;
@@ -85,7 +94,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -114,7 +123,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         recyclerView = view.findViewById(R.id.recyclerViewTransaction);
@@ -138,7 +147,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro nastavení viditelnosti layoutu s filtrem
+     * Metoda pro nastavení viditelnosti layoutu s filtrem.
      * @param animLayout ID animace pro layout
      * @param animTextview ID animace pro text view
      * @param filterIcon ID icony filtru
@@ -163,7 +172,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro restartování hodnoty filtru
+     * Metoda pro restartování hodnoty filtru.
      */
     private void resetFilterValues(){
         calendarDateTo = Calendar.getInstance();
@@ -179,7 +188,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda slouží k předání pozice vybrané transakce z recyclerview do activity, jenž inicializovala aktuální activity
+     * Metoda slouží k předání pozice vybrané transakce z recyclerview zpšt do activity, jež inicializovala aktuální activity.
      */
     private View.OnClickListener myClickListener = new View.OnClickListener()
     {
@@ -194,7 +203,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     };
 
     /**
-     * Metoda pro otevření dialogového okna pro výběr data "OD"
+     * Metoda pro otevření dialogového okna pro výběr data "OD".
      */
     public void openCalendarForDateFrom(){
         tvDateFrom.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +229,7 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
     }
 
     /**
-     * Metoda pro otevření dialogového okna pro výběr data "DO"
+     * Metoda pro otevření dialogového okna pro výběr data "DO".
      */
     public void openCalendarForDateTo(){
         tvDateTo.setOnClickListener(new View.OnClickListener() {
@@ -241,7 +250,6 @@ public class FragmentTransactions extends Fragment implements View.OnClickListen
 
                 controller.setSetDateTo(true);
 
-                /** https://stackoverflow.com/a/11430439 */
                 if(calendarDateTo.getTimeInMillis() < calendarDateFrom.getTimeInMillis()){
                     tvDateFrom.setText("Nastavit");
                     tvDateFrom.setTextColor(ContextCompat.getColor(getContext(), R.color.button));

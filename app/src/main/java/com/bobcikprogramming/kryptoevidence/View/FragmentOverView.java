@@ -35,6 +35,14 @@ import com.bobcikprogramming.kryptoevidence.R;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
 
 public class FragmentOverView extends Fragment implements View.OnClickListener {
 
@@ -86,7 +94,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         imgBtnModeLight = view.findViewById(R.id.imgBtnModeLight);
@@ -129,7 +137,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      *
      * Metoda pro kontrolu verze SDK:
@@ -225,7 +233,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda pro změnu barevného módu aplikace
+     * Metoda pro změnu barevného módu aplikace.
      */
     private void setModeOfGUI(){
         String modeType = controller.readFromFile();
@@ -254,7 +262,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda pro výpis zisku/ztárty za daňová období
+     * Metoda pro výpis zisku/ztárty za daňová období.
      *
      * Metoda pro změnu velikosti textu:
      * Zdroj:   Stack Overflow
@@ -308,7 +316,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda k aktualizování pole vlastněných kryptoměn na základě fráze v edit textu
+     * Metoda k aktualizování pole vlastněných kryptoměn na základě fráze v edit textu.
      */
     private void searchOnChange(){
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -332,7 +340,7 @@ public class FragmentOverView extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Metoda pro skrytí/zobrazení overviewLayout při vysunutí/zasunutí klávesnice
+     * Metoda pro skrytí/zobrazení overviewLayout při vysunutí/zasunutí klávesnice.
      *
      * Metoda převzata z:
      * Zdroj:   Stack Overflow

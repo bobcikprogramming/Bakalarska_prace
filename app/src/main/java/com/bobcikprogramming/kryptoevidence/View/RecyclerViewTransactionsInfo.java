@@ -14,6 +14,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.TransactionInfoList;
 
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class RecyclerViewTransactionsInfo extends RecyclerView.Adapter<RecyclerViewTransactionsInfo.ViewHolder>{
 
     private ArrayList<TransactionInfoList> dataList;

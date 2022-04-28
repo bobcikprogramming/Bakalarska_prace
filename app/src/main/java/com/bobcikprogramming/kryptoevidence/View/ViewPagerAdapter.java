@@ -17,7 +17,9 @@ import com.bobcikprogramming.kryptoevidence.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/** https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/ */
+/**
+ * Třída převzata z:
+ * https://www.geeksforgeeks.org/image-slider-in-android-using-viewpager/ */
 public class ViewPagerAdapter extends PagerAdapter implements ViewPager.OnPageChangeListener {
 
     private ArrayList<Uri> photos;

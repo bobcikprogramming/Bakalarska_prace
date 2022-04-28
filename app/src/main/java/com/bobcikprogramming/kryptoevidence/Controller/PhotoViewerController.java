@@ -9,6 +9,15 @@ import com.bobcikprogramming.kryptoevidence.View.ViewPagerAdapter;
 
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class PhotoViewerController {
 
     private ArrayList<Uri> photos;
@@ -23,7 +32,7 @@ public class PhotoViewerController {
     }
 
     /**
-     * Metoda pro inicializaci viewPagerAdapteru a jeho nastavení pro ViewPager
+     * Metoda pro inicializaci viewPagerAdapteru a jeho nastavení pro ViewPager.
      */
     public void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, photos);
@@ -31,7 +40,7 @@ public class PhotoViewerController {
     }
 
     /**
-     * Metoda pro smazání snímku
+     * Metoda pro smazání snímku.
      */
     public void deletePhoto(){
         int position = photoViewer.getCurrentItem();

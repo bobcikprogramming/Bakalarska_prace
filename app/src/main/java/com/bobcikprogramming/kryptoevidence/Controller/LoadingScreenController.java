@@ -28,7 +28,9 @@ public class LoadingScreenController {
     }
 
     /**
-    * Metoda získá ze souboru nastavení barevného módu
+    * Metoda získá ze souboru nastavení barevného módu.
+     * V případě, že soubor neexistuje, dojde k jeho vytvoření a uložení základního nastavení "system",
+     * které je i navráceno.
     * @return Nastavení barevného módu
     */
     public String readFromFile(){
@@ -62,7 +64,7 @@ public class LoadingScreenController {
     }
 
     /**
-     * Metoda pro uložení nastavení barevného módu
+     * Metoda pro uložení nastavení barevného módu.
      * @param mode Nastavení barevného módu
      */
     public void writeToFile(String mode){

@@ -11,12 +11,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class ImageManager {
 
     public ImageManager(){}
 
     /**
-     * Metoda k uložení snímků transakce
+     * Metoda k uložení snímků transakce.
      * @param context Třída context activity, ze které je metoda volána
      * @param photos Seznam cest k snímkům
      * @return Seznam cest k uloženým snímkům
@@ -78,7 +87,7 @@ public class ImageManager {
     }
 
     /**
-     * Metoda k uložení snímku transakce
+     * Metoda k uložení snímku transakce.
      * @param context Třída context activity, ze které je metoda volána
      * @param photo Cesta ke snímku
      * @return Cesta k uloženému snímku

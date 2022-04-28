@@ -18,6 +18,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class ViewPagerAdapterTransactionController {
 
     private List<TransactionWithPhotos> dataList;
@@ -36,7 +45,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k seřazení seznamu dle data (od nejvyššího po nejnižší)
+     * Metoda slouží k seřazení seznamu dle data (od nejvyššího po nejnižší).
      * @param data Seznam k seřazení
      * @return Seřazený seznam
      */
@@ -62,7 +71,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k seřazení seznamu dle času (od nejvyššího po nejnižší)
+     * Metoda slouží k seřazení seznamu dle času (od nejvyššího po nejnižší).
      * @param data Seznam k seřazení
      * @return Seřazený seznam
      */
@@ -88,7 +97,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k převedení transakce "Nákup" nebo "Prodej" do vyobrazovací podoby
+     * Metoda slouží k převedení transakce nákup nebo prodej do vyobrazovací podoby (přidání odpovídajícího popisu).
      * @param context Třída context activity, ze které je metoda volána
      * @return Seznam řádků s daty k vyobrazení
      */
@@ -177,7 +186,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k převedení transakci "Směna" do vyobrazovací podoby
+     * Metoda slouží k převedení transakci směna do vyobrazovací podoby (přidání odpovídajícího popisu).
      * @param context Třída context activity, ze které je metoda volána
      * @return Seznam řádků s daty k vyobrazení
      */
@@ -249,7 +258,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k převedení historie transakce do vyobrazovací podoby historie
+     * Metoda slouží k převedení historie transakce do vyobrazovací podoby historie (přidání odpovídajícího popisu).
      * @param context Třída context activity, ze které je metoda volána
      * @return Seznam řádků s daty k vyobrazení
      */
@@ -339,7 +348,7 @@ public class ViewPagerAdapterTransactionController {
     }
 
     /**
-     * Metoda slouží k získání seznamu změn transakce z databáze
+     * Metoda slouží k získání seznamu změn transakce z databáze.
      * @param position Pozice transakce
      * @return Seznam změn transakce
      */

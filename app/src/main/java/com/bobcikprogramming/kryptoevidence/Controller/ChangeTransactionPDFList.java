@@ -1,5 +1,14 @@
 package com.bobcikprogramming.kryptoevidence.Controller;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class ChangeTransactionPDFList {
     String date, quantityBought, nameBought, quantitySold, nameSold, total;
 

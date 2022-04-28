@@ -14,6 +14,15 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class FragmentOverViewController {
 
     private Context context;
@@ -32,7 +41,9 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda získá ze souboru nastavení barevného módu
+     * Metoda získá ze souboru nastavení barevného módu.
+     * V případě že soubor s nastavením neexistuje, dojde k jeho vytvoření, uložení hodnoty "system" a tato hodnota je
+     * rovněž navrácena.
      * @return Nastavení barevného módu
      *
      * Metoda inspirována z:
@@ -74,7 +85,7 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda pro uložení nastavení barevného módu
+     * Metoda pro uložení nastavení barevného módu.
      * @param mode Nastavení barevného módu
      */
     public void writeToFile(String mode){
@@ -89,7 +100,7 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda pro načtení seznamu s zisky/ztrátou za daňové období z databáze
+     * Metoda pro načtení seznamu s zisky/ztrátou za daňové období z databáze.
      */
     private void loadDataFromDb(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -106,7 +117,7 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda pro získání indexu posledního prvku seznamu annualList
+     * Metoda pro získání indexu posledního prvku seznamu annualList.
      * @return Index
      */
     public int getLastPosition(){
@@ -115,7 +126,7 @@ public class FragmentOverViewController {
     }
 
     /**
-     * Metoda pro filtrování vlastněných kryptoměn podle názvu či symbolu
+     * Metoda pro filtrování vlastněných kryptoměn podle názvu či symbolu.
      * @param searching Fráze k vyhledání
      * @return Seznam obsahující pouze kryptoměny jejichž název či symbol se skládá z dané fráze
      */

@@ -5,10 +5,33 @@ import android.content.Context;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionOperationModel {
 
     public TransactionOperationModel(){}
 
+    /**
+     * Metoda pro uložení transakce nákup do databáze.
+     * @param context Třída context activity, ze které je metoda volána
+     * @param uidBought ID koupené kryptoměny
+     * @param quantityBought Koupené množství
+     * @param price Cena
+     * @param fee Poplatek
+     * @param date Datum provedení
+     * @param time Čas provedení
+     * @param currency Měna
+     * @param quantitySold Cena bez poplatku
+     * @param photosPath Seznam cest k přiloženým snímkům
+     * @return ID vytvořené transakce
+     */
     public long saveTransactionBuyToDb(Context context, String uidBought, BigDecimal quantityBought, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -36,6 +59,20 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
+    /**
+     * Metoda pro uložení transakce prodej do databáze.
+     * @param context Třída context activity, ze které je metoda volána
+     * @param uidSold ID prodané kryptoměny
+     * @param quantitySold Prodané množství
+     * @param price Cena
+     * @param fee Poplatek
+     * @param date Datum provedení
+     * @param time Čas provedení
+     * @param currency Měna
+     * @param quantityBought Cena bez poplatku
+     * @param photosPath Seznam cest k přiloženým snímkům
+     * @return ID vytvořené transakce
+     */
     public long saveTransactionSellToDb(Context context, String uidSold, BigDecimal quantitySold, BigDecimal price, Double fee, long date, String time, String currency, BigDecimal quantityBought, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -62,6 +99,21 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
+    /**
+     * Metoda pro uložení transakce směna do databáze.
+     * @param context Třída context activity, ze které je metoda volána
+     * @param uidBought ID koupené kryptoměny
+     * @param currency Měna
+     * @param quantityBought Koupené množství
+     * @param priceBought Cena koupené kryptoměny
+     * @param fee Poplatek
+     * @param date Datum provedení
+     * @param time Čas provedení
+     * @param uidSold ID prodané kryptoměny
+     * @param quantitySold Prodané množství
+     * @param photosPath Seznam cest k přiloženým snímkům
+     * @return ID vytvořené transakce
+     */
     public long saveTransactionChangeToDb(Context context, String uidBought, String currency, BigDecimal quantityBought, BigDecimal priceBought, Double fee, long date, String time, String uidSold, BigDecimal quantitySold, ArrayList<String> photosPath) {
         AppDatabase db = AppDatabase.getDbInstance(context);
         TransactionEntity transactionEntity = new TransactionEntity();
@@ -89,6 +141,12 @@ public class TransactionOperationModel {
         return uidTransaction;
     }
 
+    /**
+     * Metoda pro aktualizování množství vlastněné kryptoměny.
+     * @param context Třída context activity, ze které je metoda volána
+     * @param uid ID kryptoměny
+     * @param amount Nová hodnota množství
+     */
     public void updateAmountOfOwnedCrypto(Context context, String uid, BigDecimal amount){
         AppDatabase db = AppDatabase.getDbInstance(context);
         if(amount.compareTo(BigDecimal.ZERO) == 0){

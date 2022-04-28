@@ -21,6 +21,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
 
     private TaskDelegate delegate;
@@ -92,7 +101,7 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Po skončení operace vrací výsledekem typu string pomocí delegátoru
+     * Po skončení operace vrací výsledekem typu string pomocí delegátoru.
      * @param result výsledek typu string
      */
     @Override
@@ -101,7 +110,7 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Jedná-li se o první stažení, tak metoda vytvoří tabulku verze a nahraje staženou verzi, jinak ji v tabulce aktualizuje
+     * Jedná-li se o první stažení, tak metoda vytvoří tabulku verze a nahraje staženou verzi, jinak ji v tabulce aktualizuje.
      * @param db Přístup k lokální databízi
      * @param versionAppDB Verze uložená v lokální databázi
      * @param newVersion Verze v databázi Firebase
@@ -117,7 +126,7 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Metoda stáhne a uloží kurzy za jednotlivé roky
+     * Metoda stáhne a uloží kurzy za jednotlivé roky.
      * @param db Přístup k lokální databázi
      */
     private void getExchangeByYearFromFirebase(AppDatabase db){
@@ -144,7 +153,7 @@ public class FirebaseAsyncTask extends AsyncTask<Void, Integer, String> {
     }
 
     /**
-     * Metoda pro zobrazení oznámení o stahování dat
+     * Metoda pro zobrazení oznámení o stahování dat.
      * @param loadText Stringová hednota s textem k zobrazení
      */
     private void showLoading(String loadText){

@@ -12,6 +12,15 @@ import com.bobcikprogramming.kryptoevidence.View.ViewPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionPhotoViewerController {
 
     private Context context;
@@ -26,7 +35,7 @@ public class TransactionPhotoViewerController {
     }
 
     /**
-     * Metoda pro získání seznamu Uri cest ke snímkům z databáze
+     * Metoda pro získání seznamu Uri cest ke snímkům z databáze.
      * @return Seznam Uri cest ke snímkům
      */
     public ArrayList<Uri> getPhotosUri(){
@@ -40,7 +49,7 @@ public class TransactionPhotoViewerController {
     }
 
     /**
-     * Metoda pro inicializování viewPagerAdapteru a  jeho nastavení pro ViewPager
+     * Metoda pro inicializování viewPagerAdapteru a jeho nastavení pro ViewPager.
      */
     public void setViewPagerAdapter(){
         viewPagerAdapter = new ViewPagerAdapter(context, getPhotosUri());

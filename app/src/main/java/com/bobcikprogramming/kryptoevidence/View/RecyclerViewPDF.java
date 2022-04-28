@@ -33,6 +33,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHolder>{
 
     private List<PDFEntity> dataList;
@@ -76,7 +85,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda pro inicializaci pole PDF záznamů a aktualizování recyclerview
+     * Metoda pro inicializaci pole PDF záznamů a aktualizování recyclerview.
      * @param dataList Pole PDF záznamů
      */
     public void setDataList(List<PDFEntity> dataList) {
@@ -85,7 +94,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda pro výběr aplikace k otevření PDF souboru
+     * Metoda pro výběr aplikace k otevření PDF souboru.
      * @param fileName název PDF souboru
      *
      * Metoda pro udělení oprávnění k přístupu k souboru pro aplikace ke čtení souboru:
@@ -138,7 +147,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda pro získání cesty do sloužky s PDF soubory
+     * Metoda pro získání cesty do sloužky s PDF soubory.
      * @return Cestu do složky pokud existuje, jinak null
      */
     @Nullable
@@ -149,7 +158,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda pro smazání PDF souboru z databáze a recyclerview
+     * Metoda pro smazání PDF souboru z databáze a recyclerview.
      * @param fileName Název PDF souboru
      * @param position Pozice v recyclerview
      */
@@ -164,7 +173,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda pro smazání PDF souboru ze složky
+     * Metoda pro smazání PDF souboru ze složky.
      * @param fileName Název PDF souboru
      * @return boolean hodnotu o úspěchu operace
      */
@@ -189,7 +198,7 @@ public class RecyclerViewPDF extends RecyclerView.Adapter<RecyclerViewPDF.ViewHo
     }
 
     /**
-     * Metoda dialogováho okna pro potvrzení smazání PDF záznamu
+     * Metoda dialogováho okna pro potvrzení smazání PDF záznamu.
      * @param fileName Název PDF záznamu
      * @param position Pozice v recyclerview
      */

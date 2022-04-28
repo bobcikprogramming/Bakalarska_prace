@@ -21,6 +21,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.CryptoSelectionController
 import com.bobcikprogramming.kryptoevidence.Controller.SharedMethods;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class CryptoSelection extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
@@ -49,7 +58,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -66,7 +75,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity
+     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity.
      */
     @Override
     public void onBackPressed() {
@@ -74,7 +83,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         recyclerView = findViewById(R.id.recyclerViewCryptoSelection);
@@ -94,7 +103,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda pro ukončení activity
+     * Metoda pro ukončení activity. Vrací boolean hodnotu pod klíčem "changed".
      */
     private void closeActivity(boolean changed){
         Intent intent = new Intent();
@@ -104,7 +113,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda k aktualizování pole seznamu kryptoměn na základě fráze v edit textu
+     * Metoda k aktualizování pole seznamu kryptoměn na základě fráze v edit textu.
      */
     private void searchOnChange(){
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -128,7 +137,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Metoda slouží k předání ID vybrané kryptoměny z recyclerview do activity, jenž inicializovala aktuální activity
+     * Metoda slouží k předání ID vybrané kryptoměny z recyclerview do activity, jenž inicializovala aktuální activity.
      */
     private View.OnClickListener myClickListener = new View.OnClickListener()
     {
@@ -144,7 +153,7 @@ public class CryptoSelection extends AppCompatActivity implements View.OnClickLi
     };
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<Intent> addActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

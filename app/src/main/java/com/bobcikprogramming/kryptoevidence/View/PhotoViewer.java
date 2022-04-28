@@ -20,6 +20,15 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class PhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager photoViewer;
@@ -43,7 +52,7 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
@@ -58,7 +67,7 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -77,7 +86,7 @@ public class PhotoViewer extends AppCompatActivity implements View.OnClickListen
     }
 
     /**
-     * Metoda pro ukončení activity
+     * Metoda pro ukončení activity. Vrací seznam cest k snímkům pod klíčem "photos".
      */
     private void closeActivity(){
         Intent intent = new Intent();

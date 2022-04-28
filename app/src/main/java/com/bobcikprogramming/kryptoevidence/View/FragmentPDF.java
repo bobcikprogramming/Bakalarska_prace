@@ -16,6 +16,14 @@ import com.bobcikprogramming.kryptoevidence.Controller.FragmentPDFController;
 import com.bobcikprogramming.kryptoevidence.Controller.MonthYearPickerDialog;
 import com.bobcikprogramming.kryptoevidence.R;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
 
 public class FragmentPDF extends Fragment {
 
@@ -46,7 +54,7 @@ public class FragmentPDF extends Fragment {
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(View view){
         recyclerView = view.findViewById(R.id.recyclerViewPDF);
@@ -58,7 +66,7 @@ public class FragmentPDF extends Fragment {
     }
 
     /**
-     * Metoda pro výběr data pomocí dialogového okna
+     * Metoda pro výběr data pomocí dialogového okna.
      */
     public void openCalendar(){
         btnAdd.setOnClickListener(new View.OnClickListener() {

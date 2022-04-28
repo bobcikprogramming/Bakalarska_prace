@@ -18,6 +18,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionEditController {
 
     private TransactionWithPhotos transactionWithPhotos;
@@ -55,7 +64,9 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro načtení dat transakce z databáze
+     * Metoda pro načtení dat transakce z databáze.
+     * Data transakce jsou uloženy v seznamu transactionWithPhotos.
+     * Data historie transakce jsou ullženy v seznamu transactionWithHistory.
      * @param transactionID
      */
     private void loadDataFromDB(String transactionID){
@@ -65,7 +76,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro získání hodnoty, zda-li došlo ke změně dat
+     * Metoda pro získání hodnoty, zda-li došlo ke změně dat.
      * @param valueRowFirst Ukazatel na edit textové pole prvního řádku
      * @param valueRowSecond Ukazatel na edit textové pole druhého řádku
      * @param spinnerRowThird Ukazatel na spinner třetího řádku
@@ -231,7 +242,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda provede úkony k aktualizování dat v databázi
+     * Metoda pro aktualizování dat v databázi.
      * @param isEmpty true - všechna povinná pole nejsou řádně vyplněna, jinak false
      * @param valueDate Ukazatel na text view obsahující datum
      * @param valueTime Ukazatel na text view obsahující čas
@@ -309,7 +320,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě změny dat
+     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě změny dat.
      */
     private void editOwnedCrypto(){
         if(operationType != 2){
@@ -335,7 +346,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě smazání dat
+     * Metoda provede aktualizaci množství vlastněné kryptoměny na základě smazání dat.
      */
     private void deleteFromOwnedCrypto(){
         if(operationType == 0) {
@@ -353,7 +364,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Pomocná metoda pro převod hodnoty množství z typu string na BigDecimal a negaci znaménka
+     * Pomocná metoda pro převod hodnoty množství z typu string na BigDecimal a negaci znaménka.
      * @param quantity Množství typu String
      * @return Negovaná hodnota typu BigDecimal
      */
@@ -362,7 +373,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro smazání transakce z databáze
+     * Metoda pro smazání transakce z databáze.
      */
     public void deleteFromDatabase(){
         AppDatabase db = AppDatabase.getDbInstance(context);
@@ -389,7 +400,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při smazání nákupu
+     * Metoda pro výpočet FIFO operace při smazání nákupu.
      * @param transactionID UID mazané transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -412,7 +423,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro vyresetování prodejů vázaných na editovanou transakci
+     * Metoda pro vyresetování prodejů vázaných na editovanou transakci.
      * @param transactionID UID editované transakce
      * @param date Datum editované transakce
      * @param time Čas editované transakce
@@ -442,7 +453,7 @@ public class TransactionEditController {
         if(firstSell != null) {
             db.databaseDao().resetAmountLeftUsedSellAfterFirst(String.valueOf(firstSell.uidTransaction), firstSell.date, firstSell.time, uidCrypto);
             db.databaseDao().resetAmountLeftUsedChangeAfterFirst(String.valueOf(firstSell.uidTransaction), firstSell.date, firstSell.time, uidCrypto);
-            /** Pro první zjistit kolik bylo vzato z prodeje před smazaným prodejem a tuto hodnotu odečíst od obnoveného množství */
+            /* Pro první zjistit kolik bylo vzato z prodeje před smazaným prodejem a tuto hodnotu odečíst od obnoveného množství */
             TransactionEntity firstBuy = db.databaseDao().getTransactionByTransactionID(String.valueOf(firstSell.firstTakenFrom)).transaction;
             long dateFrom = firstBuy.date;
             String timeFrom = firstBuy.time;
@@ -512,7 +523,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda slouží k přepočtení FIFO fronty při editaci nákupu
+     * Metoda slouží k přepočtení FIFO fronty při editaci nákupu.
      * @param date Datum editované transakce
      * @param time Čas editované transakce
      * @param uidCrypto UID editované kryptoměny
@@ -581,7 +592,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při smazání prodeje
+     * Metoda pro výpočet FIFO operace při smazání prodeje.
      * @param transactionID UID mazané transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -634,7 +645,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda slouží k přepočtení FIFO fronty při editaci prodeje
+     * Metoda slouží k přepočtení FIFO fronty při editaci prodeje.
      * @param sellTransactionID UID prodávané transakce
      * @param quantity Množství, které je třeba zpracovat
      * @param listOfAvailableBuys Seznam dostupných nákupů pro prodávanou transakci
@@ -692,7 +703,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při smazání směny
+     * Metoda pro výpočet FIFO operace při smazání směny.
      * @param transactionID UID mazané transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -712,7 +723,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci množství nakoupené kryptoměny
+     * Metoda pro výpočet FIFO operace při editaci množství nakoupené kryptoměny.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -742,7 +753,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci množství prodané kryptoměny
+     * Metoda pro výpočet FIFO operace při editaci množství prodané kryptoměny.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -813,7 +824,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci množství směněné kryptoměny
+     * Metoda pro výpočet FIFO operace při editaci množství směněné kryptoměny.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -855,7 +866,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * Metoda pro výpočet FIFO operace při editaci času transakce nákup.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -912,7 +923,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * Metoda pro výpočet FIFO operace při editaci času transakce prodej.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -1035,7 +1046,16 @@ public class TransactionEditController {
         newTransaction.usedFromLast = changedSell.usedFromLast;
     }
 
-
+    /**
+     * Metoda pro výpočet FIFO operace při editaci času transakce směna.
+     * @param transactionID UID editované transakce
+     * @param date Datum transakce (typu long)
+     * @param time Čas transakce
+     * @param uidBought UID koupené kryptoměny
+     * @param uidSold UID prodané kryptoměny
+     * @param newAmountLeftBuy Nová hodnota kapacity koupené kryptoměny ke zpracování
+     * @param newAmountLeftSell Nová hodnota kapacity prodané kryptoměny ke zpracování
+     */
     private void fifoEditTimeChange(String transactionID, long date, String time, String uidBought, String uidSold, String newAmountLeftBuy, String newAmountLeftSell){
         AppDatabase db = AppDatabase.getDbInstance(context);
         // -------------------------------------------------------
@@ -1064,7 +1084,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro výpočet FIFO operace při eidtaci času transakce
+     * Metoda pro výpočet FIFO operace při editaci prodané kryptoměny transakce směna.
      * @param transactionID UID editované transakce
      * @param date Datum transakce (typu long)
      * @param time Čas transakce
@@ -1083,9 +1103,9 @@ public class TransactionEditController {
     }
 
     /**
-     * Pomocná metoda pro aktualizování zbylých hodnot transakce "Směna"
-     * @param transactionID
-     * @param db
+     * Pomocná metoda pro aktualizování zbylých hodnot transakce směna.
+     * @param transactionID id editované transakce
+     * @param db inicializovaná abstraktní třída AppDatabase pro přístup k databázi
      */
     private void updateRestOfChange(String transactionID, AppDatabase db){
         TransactionEntity changedTransaction = db.databaseDao().getTransactionByTransactionID(transactionID).transaction;
@@ -1098,8 +1118,9 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro smazání snímku
+     * Metoda pro smazání snímku.
      * @param path Cesta ke snímku
+     *
      * Metoda inspirována z:
      * Zdroj:   Stack Overflow
      * Dotaz:   https://stackoverflow.com/q/10716642
@@ -1116,7 +1137,7 @@ public class TransactionEditController {
     }
 
     /**
-     * Metoda pro uložení snímku do databáze
+     * Metoda pro uložení snímku do databáze.
      * @param uri Cesta ke snímku datového typu Uri
      * @return true - uložení proběhlo, jinak false
      */

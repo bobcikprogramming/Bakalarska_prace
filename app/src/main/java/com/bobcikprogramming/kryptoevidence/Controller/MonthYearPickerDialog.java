@@ -18,8 +18,6 @@ import com.bobcikprogramming.kryptoevidence.View.FragmentPDF;
 
 import java.util.Calendar;
 
-/** https://stackoverflow.com/a/53300524 */
-
 /**
  * Třída slouží k vytvoření vlastního dialogového okna pro výběr roku
  *

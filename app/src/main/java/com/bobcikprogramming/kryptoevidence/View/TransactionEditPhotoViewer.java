@@ -18,6 +18,15 @@ import com.bobcikprogramming.kryptoevidence.Controller.TransactionEditPhotoViewe
 import com.bobcikprogramming.kryptoevidence.R;
 import com.google.android.material.tabs.TabLayout;
 
+/**
+ * Projekt: Krypto Evidence
+ * Autor: Pavel Bobčík
+ * Institut: VUT Brno - Fakulta informačních technologií
+ * Rok vytvoření: 2021
+ *
+ * Bakalářská práce (2022): Správa transakcí s kryptoměnami
+ */
+
 public class TransactionEditPhotoViewer extends AppCompatActivity implements View.OnClickListener {
 
     private ViewPager photoViewer;
@@ -41,7 +50,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda pro inicializování prvků UI
+     * Metoda pro inicializování prvků UI.
      */
     private void setupUIViews(){
         photoViewer = findViewById(R.id.viewPagerPhoto);
@@ -59,7 +68,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda zpracovávající reakci na kliknutí na daný prvek
+     * Metoda zpracovávající reakci na kliknutí na daný prvek.
      * @param view Základní prvek UI komponent
      */
     @Override
@@ -78,7 +87,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity
+     * Metoda reagující na kliknutí na nativní android tlačítko zpět a uzavírající activity.
      */
     @Override
     public void onBackPressed() {
@@ -86,7 +95,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda pro smazání snímku
+     * Metoda pro smazání snímku.
      */
     private void deletePhoto(){
         int position = photoViewer.getCurrentItem();
@@ -98,7 +107,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda pro vytvoření dialogového okna k potvrzení smazání snímku
+     * Metoda pro vytvoření dialogového okna k potvrzení smazání snímku.
      * @param position pozice snímku
      */
     private void confirmDialogDelete(int position){
@@ -127,7 +136,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda pro ukončení activity
+     * Metoda pro ukončení activity. Je navrácena boolean hodnoty pod klíčem "photoChange".
      */
     private void closeActivity(){
         Intent intent = new Intent();
@@ -137,7 +146,7 @@ public class TransactionEditPhotoViewer extends AppCompatActivity implements Vie
     }
 
     /**
-     * Metoda zpracující návrat z aktivity
+     * Metoda zpracující návrat z aktivity.
      */
     ActivityResultLauncher<String> androidGallery = registerForActivityResult(
         new ActivityResultContracts.GetContent(),
