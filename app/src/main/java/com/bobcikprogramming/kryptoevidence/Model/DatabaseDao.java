@@ -25,10 +25,6 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> getAll();
 
     @Transaction
-    @Query("SELECT * FROM ModeEntity")
-    List<ModeEntity> getType();
-
-    @Transaction
     @Query("SELECT * FROM PDFEntity ORDER BY file_name DESC")
     List<PDFEntity> getPDF();
 

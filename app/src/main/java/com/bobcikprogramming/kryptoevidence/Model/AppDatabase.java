@@ -15,7 +15,7 @@ import androidx.room.RoomDatabase;
  * Bakalářská práce (2022): Správa transakcí s kryptoměnami
  */
 
-@Database(entities = {TransactionEntity.class, TransactionHistoryEntity.class, PhotoEntity.class, ModeEntity.class, PDFEntity.class, ExchangeByYearEntity.class, DataVersionEntity.class, CryptocurrencyEntity.class}, version = 1)
+@Database(entities = {TransactionEntity.class, TransactionHistoryEntity.class, PhotoEntity.class, PDFEntity.class, ExchangeByYearEntity.class, DataVersionEntity.class, CryptocurrencyEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DatabaseDao databaseDao();
