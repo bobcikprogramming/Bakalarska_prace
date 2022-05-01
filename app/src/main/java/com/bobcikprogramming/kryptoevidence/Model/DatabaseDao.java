@@ -97,6 +97,10 @@ public interface DatabaseDao {
     List<TransactionWithPhotos> getUnfinishedSellBetween(long dateFrom, long dateTo);
 
     @Transaction
+    @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Směna' AND (amount_left_change_sell == 0 OR amount_left_change_sell == 0.0) AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
+    List<TransactionWithPhotos> getDoneSellChangeBetween(long dateFrom, long dateTo);
+
+    @Transaction
     @Query("SELECT * FROM TransactionEntity WHERE transaction_type = 'Směna' AND amount_left_change_sell != quantity_sold AND date BETWEEN :dateFrom AND :dateTo ORDER BY date, time")
     List<TransactionWithPhotos> getUsedChangeBetween(long dateFrom, long dateTo);
 

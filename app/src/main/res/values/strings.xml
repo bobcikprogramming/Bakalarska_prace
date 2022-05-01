@@ -54,6 +54,7 @@
     <string name="overViewTax">Daňové období:</string>
     <string name="overViewName">Název</string>
     <string name="amount">Množství</string>
+    <string name="inCurrency">CZK</string>
     <!-- Text v okne transaction -->
     <string name="transactionHeadline">Přehled transakcí</string>
     <string name="currency">Měna</string>

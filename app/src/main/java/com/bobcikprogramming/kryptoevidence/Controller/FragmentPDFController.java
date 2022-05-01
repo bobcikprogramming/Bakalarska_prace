@@ -97,12 +97,13 @@ public class FragmentPDFController {
 
         long dateFrom = calendar.getDateMillis("01.01." + selectedYear);
         long dateTo = calendar.getDateMillis("31.12." + selectedYear);
-        // Zkontrolovat, zdali v daném roce existuje prodej.
+        // Zkontrolovat, zdali v daném roce existuje prodej nebo platná směna.
 
         List<TransactionWithPhotos> unfinishedSalesInYear = db.databaseDao().getUnfinishedSellBetween(dateFrom, dateTo);
         List<TransactionWithPhotos> salesInYear = db.databaseDao().getUsedSellBetween(dateFrom, dateTo);
+        List<TransactionWithPhotos> changesInYear = db.databaseDao().getDoneSellChangeBetween(dateFrom, dateTo);
         if(unfinishedSalesInYear == null || unfinishedSalesInYear.isEmpty()){
-            if(salesInYear.isEmpty()){
+            if(salesInYear.isEmpty() && changesInYear.isEmpty()){
                 // Pokud ne:
                 // Nevytváří se daňové období (vypsat že neproběhla žádná transakce).
                 Toast.makeText(context, "Nebyla evidována žádná transakce za dané daňové období.", Toast.LENGTH_LONG).show();
@@ -150,10 +151,10 @@ public class FragmentPDFController {
         ArrayList<BuyTransactionPDFList> buyList = buyValue(dateFrom, dateTo);
         ArrayList<SellTransactionPDFList> sellList = sellValue(salesInYear);
         ArrayList<ChangeTransactionPDFList> changeList = changeValue(dateFrom, dateTo);
-        generator = new PDFGenerator(context.getAssets(), context, eurExchangeRate, usdExchangeRate, correctRate);
+        generator = new PDFGenerator(context.getAssets(), context, eurExchangeRate, usdExchangeRate, correctRate, selectedYear);
 
         try {
-            boolean created = generator.createPDF(selectedYear, buyList, sellList, changeList);
+            boolean created = generator.createPDF(buyList, sellList, changeList);
             if(!created){
                 Toast.makeText(context, "Chyba při vytváření PDF. Prosím opakujte akci.", Toast.LENGTH_LONG).show();
                 return;

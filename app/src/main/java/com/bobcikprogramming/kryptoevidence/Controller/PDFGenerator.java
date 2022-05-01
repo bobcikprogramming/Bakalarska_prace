@@ -56,8 +56,9 @@ public class PDFGenerator {
     private boolean firstPageRow;
     private BigDecimal total;
     private String fileName;
+    private String selectedYear;
 
-    public PDFGenerator(AssetManager assetManager, Context context, double eurExchangeRate, double usdExchangeRate, boolean correctRate){
+    public PDFGenerator(AssetManager assetManager, Context context, double eurExchangeRate, double usdExchangeRate, boolean correctRate, String selectedYear){
         PDFBoxResourceLoader.init(context);
 
         doc = new PDDocument();
@@ -66,6 +67,7 @@ public class PDFGenerator {
         this.usdExchangeRate = usdExchangeRate;
         this.context = context;
         this.correctRate = correctRate;
+        this.selectedYear = selectedYear;
 
         calendar = new CalendarManager();
         shared = new SharedMethods();
@@ -77,14 +79,13 @@ public class PDFGenerator {
      * Metoda inicializující vytvoření PDF souboru.
      * Postupně zavolá vypsání nákupu, prodeje a směny.
      * Následující soubor poté uloží.
-     * @param selectedYear Rok daňového období
      * @param buyList Seznam nákupů za dané období
      * @param sellList Seznam prodejů za dané období
      * @param changeList Seznam směn za dané období
      * @return true - proběhlo-li uložení v pořádku, jinak false
      * @throws IOException
      */
-    public boolean createPDF(String selectedYear,  ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
+    public boolean createPDF(ArrayList<BuyTransactionPDFList> buyList,  ArrayList<SellTransactionPDFList> sellList, ArrayList<ChangeTransactionPDFList> changeList) throws IOException {
         BigDecimal buyTotal;
         BigDecimal sellTotal;
         BigDecimal changeTotal;
@@ -185,7 +186,7 @@ public class PDFGenerator {
         writeTextNewLineAtOffset(taxDate, font, 14, MARGINSIDE, curYVal);
 
         float textWidth = (fontBold.getStringWidth(taxDate) / 1000.0f) * 14 + 2;
-        writeTextNewLineAtOffset("2022", fontBold, 17, textWidth, 0);
+        writeTextNewLineAtOffset(selectedYear, fontBold, 17, textWidth, 0);
 
         contentStream.setNonStrokingColor(100, 100, 100);
         String createdBy = "Vytvořeno pomocí aplikace";
