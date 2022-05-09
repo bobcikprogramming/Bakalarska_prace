@@ -197,9 +197,8 @@ public class SharedMethods {
                 int lenOfInteger = number.split("\\.")[0].length();
                 int toCut = 6 - lenOfInteger;
                 double round = Math.pow(10, toCut);
-                DecimalFormat trailingZeros = new DecimalFormat("0.#");
                 quantityBought = (double) Math.round(quantityBought * round) / round;
-                number = "~" + trailingZeros.format(quantityBought);
+                number = "~" + quantityBought;
             }
         }
         return number;
